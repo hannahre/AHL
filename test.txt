@@ -1,7 +1,69 @@
-Hope this is working
-Double checking
 
-blah blah blah 
-Adding a branch and saving to it 
+********************************************************************************
+//MIDUS 2 (ICPSR 04652) 
+********************************************************************************
+//Files to be merged: Folder MIDUS 2 includes DS001(DATASET 0001: M2_P1_AGGREGATE DATA) 
+	//DS002(DATASET 0002: M2_P1_DISPOSITION CODES) DS003(Survey Weights) 
+	//DS004(DATASET 0004: M2_P1_CODED TEXT DATA) 
+//For each (DS001 DS002 DS004)open, sort M2ID, do supplemental syntax (comes with raw data files
+	//from ICPSR; replaces user-defined numeric missing values (e.g., -9) with generic 
+	//system missing "."), save as MIDUS2A MIDUS2B MIDUS2D
+	//DS003 (weights) does not have supplemental syntax. Open, sort by M2ID and save as MIDUS2C 
 
-Checking out desktop
+*DS001: Aggregate Data 
+	use 		MIDUS2\DS0001\04652-0001-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	quietly do 	MIDUS2\DS0001\04652-0001-Supplemental_syntax.do 
+	save 		MIDUS2\DS0001\MIDUS2A.dta, replace 
+
+*DS002: Disposition Codes 
+	use			MIDUS2\DS0002\04652-0002-Data.dta, clear 
+	sort		M2ID
+	describe, s
+	quietly do 	MIDUS2\DS0002\04652-0002-Supplemental_syntax.do
+	save 		MIDUS2\DS0002\MIDUS2B.dta, replace 
+
+*DS003: Survey Weights  
+	use 		MIDUS2\DS0003\04652-0003-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	save		MIDUS2\DS0003\MIDUS2C.dta, replace
+	
+*DS004: Coded Text Data 
+	use			MIDUS2\DS0004\04652-0004-Data.dta, clear 
+	sort		M2ID
+	describe, s
+	quietly do 	MIDUS2\DS0004\04652-0004-Supplemental_syntax.do
+	save 		MIDUS2\DS0004\MIDUS2D.dta, replace 
+
+//Merge MIDUS2B MIDUS2C MIDUS2D to MIDUS2A, save as MIDUS2
+//Check Merge
+	//MIDUS2A obs = vars = 
+	//MIDUS2B obs = vars = 
+	//MIDUS2C obs = vars = 
+	//MIDUS2D obs = vars = 
+	
+*Merge MIDUS2B (using) to MIDUS2A (master), save as MIDUS2 	
+	use 		MIDUS2\DS0001\MIDUS2A.dta
+	merge 		1:1 M2ID using MIDUS2\DS0002\MIDUS2B.dta
+	describe, s
+	rename 		_merge merge3
+	label var 	merge3 "Merge MIDUS2B (using) to MIDUS2A (master)"
+	save		MIDUS2\MIDUS2.dta, replace 
+
+*Merge MIDUS2C (using) to MIDUS2 (master), save as MIDUS2
+	use 		MIDUS2\MIDUS2.dta, clear	
+	merge 		1:1 M2ID using MIDUS2\DS0003\MIDUS2C.dta
+	describe, s
+	rename 		_merge merge4
+	label var 	merge4 "Merge MIDUS3C (using) to product of A+B (master)"
+	save		MIDUS2\MIDUS2.dta, replace 
+
+*Merge MIDUS2D (using) to MIDUS2 (master), save as MIDUS2
+	use 		MIDUS2\MIDUS2.dta, clear	
+	merge 		1:1 M2ID using MIDUS2\DS0004\MIDUS2D.dta
+	describe, s
+	rename 		_merge merge5
+	label var 	merge5 "Merge MIDUS2D (using) to product of A+B+C (master)"
+	save		MIDUS2\MIDUS2.dta, replace
