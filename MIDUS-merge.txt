@@ -1,0 +1,118 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\MIDUS-merge.txt
+  log type:  text
+ opened on:  24 Jul 2019, 10:59:38
+
+. 
+. version 13 
+
+. clear all 
+
+. set linesize 80
+
+. set more off 
+
+. 
+. //Project: Dissertation AHL 
+. //Created by: Hannah Andrews
+. //Date: 07/23/18
+. //Task: All merge tasks completed through this do-file. 
+. 
+. ******************************************************************************
+> **
+. //MIDUS 1 (ICPSR 02760)
+. ******************************************************************************
+> **
+. //Files to be merged: Folder MIDUS 1 includes DS001 (DATASET 0001: MAIN, SIBLI
+> NGS AND TWIN DATA) 
+. //DS004 (DATASET 0004: TWIN SCREENER DATA) and DS005 (DATASET 0005: CODED TEXT
+>  DATA) 
+. //For each (DS001 DS004 DS005) open, sort M2ID, do supplemental syntax (comes 
+> with raw data files
+.         //from ICPSR; replaces user-defined numeric missing values (e.g., -9) 
+> with generic 
+.         //system missing "."), save as MIDUS1A, MIDUS1B, MIDUS1C. 
+. 
+. *DS001: Main, Siblings, Twin Data 
+.         use             MIDUS1\DS0001\02760-0001-Data.dta, clear
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data
+> )
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS1\DS0001\02760-0001-Data.dta
+  obs:         7,108                          Midlife in the United States
+                                                (MIDUS 1), 1995-1996, Main,
+                                                Siblings and Twin Data
+ vars:         2,098                          21 Mar 2019 11:59
+ size:    45,718,656                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS1\DS0001\02760-0001-Supplemental_syntax.do 
+
+.         save            MIDUS1\DS0001\MIDUS1A.dta, replace 
+file MIDUS1\DS0001\MIDUS1A.dta saved
+
+. 
+. *DS004: Twin Screener Data
+.         use                     MIDUS1\DS0004\02760-0004-Data.dta, clear 
+(Midlife in the United States (MIDUS 1), 1995-1996, Twin Screener Data)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS1\DS0004\02760-0004-Data.dta
+  obs:         1,914                          Midlife in the United States
+                                                (MIDUS 1), 1995-1996, Twin
+                                                Screener Data
+ vars:            90                          21 Mar 2019 12:00
+ size:     1,626,900                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS1\DS0004\02760-0004-Supplemental_syntax.do
+
+.         save            MIDUS1\DS0004\MIDUS1B.dta, replace 
+file MIDUS1\DS0004\MIDUS1B.dta saved
+
+. 
+. *DS005: Coded text data 
+.         use             MIDUS1\DS0005\02760-0005-Data.dta, clear
+(Midlife in the United States (MIDUS 1), 1995-1996, Coded Text Data)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS1\DS0005\02760-0005-Data.dta
+  obs:         3,950                          Midlife in the United States
+                                                (MIDUS 1), 1995-1996, Coded Text
+                                                Data
+ vars:            82                          21 Mar 2019 12:00
+ size:       655,700                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS1\DS0005\02760-0005-Supplemental_syntax.do 
+
+.         save            MIDUS1\DS0005\MIDUS1C.dta, replace
+file MIDUS1\DS0005\MIDUS1C.dta saved
+
+. 
+. //Merge MIDUS1B and MIDUS1C to MIDUS1A, save as MIDUS1
+.         use     MIDUS1\DS0001\MIDUS1A.dta, clear        
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data
+> )
+
+.         merge 1:1 M2ID using "C:\Users\hanna\git\AHL\MIDUS1\DS0004\MIDUS1B.dta
+> " "C:\Users\hanna\git\AHL\MIDUS1\DS0005\MIDUS1C.dta"
+invalid '"C:\Users\hanna\git\AHL\MIDUS1\DS0005\MIDUS1C.dta' 
+r(198);
+
+end of do-file
+
+r(198);
+
+. exit, clear
