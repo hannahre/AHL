@@ -1,0 +1,140 @@
+----------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Merge-error.log
+  log type:  text
+ opened on:  24 Jul 2019, 16:50:08
+
+. 
+. use MIDUS2\DS0001\04652-0001-Data.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+. describe, s
+
+Contains data from MIDUS2\DS0001\04652-0001-Data.dta
+  obs:         4,963                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Aggregate Data
+ vars:         2,279                          18 Oct 2017 16:22
+ size:    24,780,259                          
+Sorted by:  
+
+. tab SAMPLMAJ
+
+    Major sample |
+  identification |      Freq.     Percent        Cum.
+-----------------+-----------------------------------
+        MAIN RDD |      2,257       45.48       45.48
+         SIBLING |        733       14.77       60.25
+            TWIN |      1,484       29.90       90.15
+CITY OVERSAMPLES |        489        9.85      100.00
+-----------------+-----------------------------------
+           Total |      4,963      100.00
+
+. 
+. use MIDUS2\DS0002\04652-0002-Data.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Disposition Codes)
+
+. describe, s
+
+Contains data from MIDUS2\DS0002\04652-0002-Data.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Disposition Codes
+ vars:            12                          18 Oct 2017 16:22
+ size:       184,808                          
+Sorted by:  
+
+. tab SAMPLMAJ
+
+    Major sample |
+  identification |
+    (aka Sample) |      Freq.     Percent        Cum.
+-----------------+-----------------------------------
+        MAIN RDD |      3,487       49.06       49.06
+         SIBLING |        950       13.37       62.42
+            TWIN |      1,914       26.93       89.35
+CITY OVERSAMPLES |        757       10.65      100.00
+-----------------+-----------------------------------
+           Total |      7,108      100.00
+
+. 
+. use MIDUS2\DS0003\04652-0003-Data.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Main Weights Data)
+
+. describe, s
+
+Contains data from MIDUS2\DS0003\04652-0003-Data.dta
+  obs:         2,257                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Main Weights Data
+ vars:            11                          18 Oct 2017 16:23
+ size:        94,794                          
+Sorted by:  
+
+. tab SAMPLMAJ
+
+    Major sample |
+  identification |
+    (aka Sample) |      Freq.     Percent        Cum.
+-----------------+-----------------------------------
+        MAIN RDD |      2,257      100.00      100.00
+-----------------+-----------------------------------
+           Total |      2,257      100.00
+
+. 
+. use MIDUS2\DS0004\04652-0004-Data.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Coded Text Data)
+
+. describe, s
+
+Contains data from MIDUS2\DS0004\04652-0004-Data.dta
+  obs:         4,963                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Coded Text Data
+ vars:           142                          18 Oct 2017 16:23
+ size:     1,429,344                          
+Sorted by:  
+
+. tab SAMPLMAJ
+
+   Major sample |
+ identification |
+   (aka Sample) |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+       Main RDD |      2,257       45.48       45.48
+        Sibling |        733       14.77       60.25
+           Twin |      1,484       29.90       90.15
+City oversample |        489        9.85      100.00
+----------------+-----------------------------------
+          Total |      4,963      100.00
+
+.  
+. use MIDUS2-Biomarker\DS0001\29282-0001-Data.dta, clear
+(Midlife in the United States (MIDUS 2): Biomarker Project, 2004-2009, Aggregated)
+
+. describe, s
+
+Contains data from MIDUS2-Biomarker\DS0001\29282-0001-Data.dta
+  obs:         1,255                          Midlife in the United States (MIDUS 2): Biomarker
+                                                Project, 2004-2009, Aggregated
+ vars:         3,228                          29 Oct 2018 16:04
+ size:    13,038,195                          
+Sorted by:  
+
+. tab SAMPLMAJ
+
+   Major sample |
+ identification |
+   (aka Sample) |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+       MAIN RDD |        640       51.00       51.00
+        SIBLING |          6        0.48       51.47
+           TWIN |        388       30.92       82.39
+CITY OVERSAMPLE |         20        1.59       83.98
+      MILWAUKEE |        201       16.02      100.00
+----------------+-----------------------------------
+          Total |      1,255      100.00
+
+. 
+. log close
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Merge-error.log
+  log type:  text
+ closed on:  24 Jul 2019, 16:50:08
+----------------------------------------------------------------------------------------------------
