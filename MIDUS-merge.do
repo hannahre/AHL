@@ -155,8 +155,8 @@ set maxvar 32767
 	quietly do 	MIDUS2-Biomarker\DS0001\29282-0001-Supplemental_syntax.do
 	*201 observations from the milwaukee sample (not included in the main sample 
 		*but were part of the biomarker project. 
-	describe, s
 	drop 		if SAMPLMAJ==13
+	describe, s
 	save 		MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta, replace 
 
 ********************************************************************************
