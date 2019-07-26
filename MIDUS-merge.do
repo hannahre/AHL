@@ -12,7 +12,14 @@ set maxvar 32767
 //Project: Dissertation AHL 
 //Created by: Hannah Andrews
 //Date: 07/23/18
-//Task: All merge tasks completed through this do-file. 
+//Task: All data cleaning tasks. 
+	//Part 1: Merge data within each wave 
+	//Part 2: Coding variables 
+	//Part 3: Merge data across waves (note combinations here) 
+
+////////////////////////////////////////////////////////////////////////////////
+**PART 1: Merge data within each wave 
+////////////////////////////////////////////////////////////////////////////////
 
 ********************************************************************************
 //MIDUS 1 (ICPSR 02760)
@@ -162,7 +169,7 @@ set maxvar 32767
 ********************************************************************************
 	///MIDUS2 Biomarker Stacked Medication data- M2ID does not uniquely identify observations. 
 	///Because I am not using the medication data as of today (07/24/19)I just won't merge it. 
-	///Instead, merging 
+	
 *DS002: Stacked Medication Data  
 *	use			MIDUS2-Biomarker\DS0002\29282-0002-Data.dta, clear 
 *	sort		M2ID
@@ -202,16 +209,131 @@ set maxvar 32767
 //MIDUS 3 (ICPSR 36346) 
 ********************************************************************************
 //Files to be merged: Folder MIDUS 3 contains DS001(DATASET 0001: AGGREGATE DATA) 
-//DS002 (DATASET 0002: DISPOSITION CODES) DS003 (DATASET 0003: CODED TEXT DATA) 
-//For each (DS001 DS002 DS003) open, do supplemental syntax, save as MIDUS3A MIDUS3B
-//MIDUS3C
+	//DS002 (DATASET 0002: DISPOSITION CODES) DS003 (DATASET 0003: CODED TEXT DATA) 
+//For each (DS001 DS002 DS003) open, sort M2ID, do supplemental syntax(comes with raw data files
+	//from ICPSR; replaces user-defined numeric missing values (e.g., -9) with generic 
+	//system missing "."), save as MIDUS3A MIDUS3B MIDUS3C
+
+*DS001: Aggregate Data 
+	use 		MIDUS3\DS0001\36346-0001-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	quietly do 	MIDUS3\DS0001\36346-0001-Supplemental_syntax.do 
+	save 		MIDUS3\DS0001\MIDUS3A.dta, replace 
+
+*DS002: Disposition Codes 
+	use			MIDUS3\DS0002\36346-0002-Data.dta, clear 
+	sort		M2ID
+	describe, s
+	quietly do 	MIDUS3\DS0002\36346-0002-Supplemental_syntax.do
+	save 		MIDUS3\DS0002\MIDUS3B.dta, replace 
+
+*DS003: Coded Text Data  
+	use 		MIDUS3\DS0003\36346-0003-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	quietly do 	MIDUS3\DS0003\36346-0003-Supplemental_syntax.do
+	save		MIDUS3\DS0003\MIDUS3C.dta, replace
 
 //Merge MIDUS3B and MIDUS3C to MIDUS3A, save as MIDUS 3
+//Check Merge
+	//MIDUS3A obs = 3,294 vars = 2,613
+	//MIDUS3B obs = 7,108 vars = 6
+	//MIDUS3C obs = 3,137 vars = 183 
+
+*Merge MIDUS3B (using) to MIDUS3A (master), save as MIDUS3P1	
+	use 		MIDUS3\DS0001\MIDUS3A.dta
+	merge 		1:1 M2ID using MIDUS3\DS0002\MIDUS3B.dta
+	describe, s
+	rename 		_merge merge7
+	label var 	merge7 "Merge MIDUS3B (using) to MIDUS3A (master)"
+	save		MIDUS3\MIDUS3P1.dta, replace 
+
+*Merge MIDUS3C (using) to MIDUS3P1 (master), save as MIDUS3P1
+	use 		MIDUS3\MIDUS3P1.dta, clear	
+	merge 		1:1 M2ID using MIDUS3\DS0003\MIDUS3C.dta
+	describe, s
+	rename 		_merge merge8
+	label var 	merge8 "Merge MIDUS3C (using) to product of A+B (master)"
+	save		MIDUS3\MIDUS3P1.dta, replace 
+
+	describe	using MIDUS3\MIDUS3P1.dta, s
+	
+	clear
 
 ********************************************************************************
 //MIDUS 3 Mortality (ICPSR 37237) 
 ********************************************************************************
 //Files to be merged: Folder MIDUS 3 Mortality contains DS001(Mortality data)
-//Open DS001, do supplemental syntax, save as MIDUS3MORT
+	//Open DS001, do supplemental syntax, save as MIDUS3MORT
+	
+*DS001: Mortality data  
+	use 		MIDUS3-Mortality\DS0001\37237-0001-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	quietly do 	MIDUS3-Mortality\DS0001\37237-0001-Supplemental_syntax.do 
+	*80 observations from the milwaukee sample 
+	drop 		if SAMPLMAJ==13
+	describe, s
+	save 		MIDUS3-Mortality\DS0001\MIDUS3MORT.dta, replace 
 
-//Merge MIDUS3MORT to MIDUS3  
+//Merge MIDUS3MORT (using) to MIDUS3 (master); save as MIDUS3 in data-cleaning folder 
+//Check merge
+	//MIDUS3MORT obs = 1,382 vars = 11
+	//MIDUS3P1	 obs = 7,108 vars = 2,797 
+	use 		MIDUS3\MIDUS3P1.dta, clear	
+	merge 		1:1 M2ID using MIDUS3-Mortality\DS0001\MIDUS3MORT.dta
+	describe, s
+	rename 		_merge merge9
+	label var 	merge9 "Merge MIDUS3MORT (using) to MIDUS3P1 (master)"
+	save		data-cleaning\MIDUS3.dta, replace 
+
+	describe	using data-cleaning\MIDUS3.dta, s
+	
+	clear
+	
+	capture log close 
+
+////////////////////////////////////////////////////////////////////////////////
+**PART 2: Coding Variables 
+////////////////////////////////////////////////////////////////////////////////
+log using MIDUS-recodes.txt, replace text
+
+version 13 
+clear all 
+set linesize 100
+set more off 
+set maxvar 32767
+
+*Coding set up: Code for each variable is shown together across waves (e.g. alcohol
+	*coding for all waves is displayed together). 
+	
+********************************************************************************
+//CAM Variables 
+********************************************************************************
+	
+	
+	
+	
+********************************************************************************
+//THL Variables 
+********************************************************************************	
+	
+
+	
+********************************************************************************
+//Socieconomic Variables  
+********************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+

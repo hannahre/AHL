@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\hanna\git\AHL\MIDUS-merge.txt
   log type:  text
- opened on:  24 Jul 2019, 16:55:08
+ opened on:  25 Jul 2019, 18:27:19
 
 . 
 . version 13 
@@ -122,7 +122,7 @@ file MIDUS1\DS0005\MIDUS1C.dta saved
 Contains data from MIDUS1\DS0001\MIDUS1A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:         2,185                          24 Jul 2019 16:55
+ vars:         2,185                          25 Jul 2019 18:27
  size:    51,682,268                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -155,7 +155,7 @@ file MIDUS1\MIDUS1.dta saved
 Contains data from MIDUS1\MIDUS1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:         2,267                          24 Jul 2019 16:55
+ vars:         2,267                          25 Jul 2019 18:27
  size:    52,840,872                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -168,6 +168,8 @@ Sorted by:  M2ID
 file data-cleaning\MIDUS1.dta saved
 
 . 
+.         clear 
+
 . ********************************************************************************
 . //MIDUS 2 (ICPSR 04652) 
 . ********************************************************************************
@@ -291,7 +293,7 @@ file MIDUS2\DS0004\MIDUS2D.dta saved
 Contains data from MIDUS2\DS0001\MIDUS2A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,289                          24 Jul 2019 16:55
+ vars:         2,289                          25 Jul 2019 18:27
  size:    35,625,296                          
 Sorted by:  
      Note:  dataset has changed since last saved
@@ -325,7 +327,7 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,299                          24 Jul 2019 16:55
+ vars:         2,299                          25 Jul 2019 18:27
  size:    35,888,292                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -361,7 +363,7 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,437                          24 Jul 2019 16:55
+ vars:         2,437                          25 Jul 2019 18:27
  size:    37,842,992                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -379,12 +381,14 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          24 Jul 2019 16:55
+  obs:         7,108                          25 Jul 2019 18:27
  vars:         2,437                          
  size:    37,871,424                          
 Sorted by:  M2ID  
 
 .         
+.         clear
+
 . ********************************************************************************
 . //MIDUS 2 Biomarker (ICPSR 29282) 
 . ********************************************************************************
@@ -415,6 +419,16 @@ Sorted by:  M2ID
 .                 *but were part of the biomarker project. 
 .         drop            if SAMPLMAJ==13
 (201 observations deleted)
+
+.         describe, s
+
+Contains data from MIDUS2-Biomarker\DS0001\29282-0001-Data.dta
+  obs:         1,054                          Midlife in the United States (MIDUS 2): Biomarker
+                                                Project, 2004-2009, Aggregated
+ vars:         3,228                          29 Oct 2018 16:04
+ size:    10,950,006                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
 
 .         save            MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta, replace 
 file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
@@ -448,7 +462,7 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 . 
 . //Merge MIDUS2BIOA (using) to MIDUS2P1 (master). Save as MIDUS2 in data-cleaning folder. 
 . //Check Merge   
-.         //MIDUS2BIOA obs = 1,255 vars = 3,228
+.         //MIDUS2BIOA obs = 1,054 vars = 3,228
 .         //MIDUS2P1       obs = 7,108 vars = 2,437
 .         
 .         use             MIDUS2\MIDUS2P1.dta, clear
@@ -473,7 +487,7 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         5,661                          24 Jul 2019 16:55
+ vars:         5,661                          25 Jul 2019 18:27
  size:   111,595,600                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -491,17 +505,268 @@ file data-cleaning\MIDUS2.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          24 Jul 2019 16:55
+  obs:         7,108                          25 Jul 2019 18:27
  vars:         5,661                          
  size:   111,624,032                          
 Sorted by:  M2ID  
 
 . 
+.         clear 
+
+. ********************************************************************************
+. //MIDUS 3 (ICPSR 36346) 
+. ********************************************************************************
+. //Files to be merged: Folder MIDUS 3 contains DS001(DATASET 0001: AGGREGATE DATA) 
+.         //DS002 (DATASET 0002: DISPOSITION CODES) DS003 (DATASET 0003: CODED TEXT DATA) 
+. //For each (DS001 DS002 DS003) open, sort M2ID, do supplemental syntax(comes with raw data files
+.         //from ICPSR; replaces user-defined numeric missing values (e.g., -9) with generic 
+.         //system missing "."), save as MIDUS3A MIDUS3B MIDUS3C
+. 
+. *DS001: Aggregate Data 
+.         use             MIDUS3\DS0001\36346-0001-Data.dta, clear
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS3\DS0001\36346-0001-Data.dta
+  obs:         3,294                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Aggregate Data
+ vars:         2,613                          17 Apr 2019 09:09
+ size:    19,734,354                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS3\DS0001\36346-0001-Supplemental_syntax.do 
+
+.         save            MIDUS3\DS0001\MIDUS3A.dta, replace 
+file MIDUS3\DS0001\MIDUS3A.dta saved
+
+. 
+. *DS002: Disposition Codes 
+.         use                     MIDUS3\DS0002\36346-0002-Data.dta, clear 
+(Midlife in the United States (MIDUS 3), 2013-2014, Disposition Codes)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS3\DS0002\36346-0002-Data.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Disposition Codes
+ vars:             6                          17 Apr 2019 09:10
+ size:       113,728                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS3\DS0002\36346-0002-Supplemental_syntax.do
+
+.         save            MIDUS3\DS0002\MIDUS3B.dta, replace 
+file MIDUS3\DS0002\MIDUS3B.dta saved
+
+. 
+. *DS003: Coded Text Data  
+.         use             MIDUS3\DS0003\36346-0003-Data.dta, clear
+(Midlife in the United States (MIDUS 3), 2013-2014, Coded Text Data)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS3\DS0003\36346-0003-Data.dta
+  obs:         3,137                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Coded Text Data
+ vars:           183                          19 Apr 2019 15:19
+ size:     1,154,416                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS3\DS0003\36346-0003-Supplemental_syntax.do
+
+.         save            MIDUS3\DS0003\MIDUS3C.dta, replace
+file MIDUS3\DS0003\MIDUS3C.dta saved
+
+. 
+. //Merge MIDUS3B and MIDUS3C to MIDUS3A, save as MIDUS 3
+. //Check Merge
+.         //MIDUS3A obs = 3,294 vars = 2,613
+.         //MIDUS3B obs = 7,108 vars = 6
+.         //MIDUS3C obs = 3,137 vars = 183 
+. 
+. *Merge MIDUS3B (using) to MIDUS3A (master), save as MIDUS3P1    
+.         use             MIDUS3\DS0001\MIDUS3A.dta
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+.         merge           1:1 M2ID using MIDUS3\DS0002\MIDUS3B.dta
+(label SAMPLMAJ already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         3,814
+        from master                         0  (_merge==1)
+        from using                      3,814  (_merge==2)
+
+    matched                             3,294  (_merge==3)
+    -----------------------------------------
+
+.         describe, s
+
+Contains data from MIDUS3\DS0001\MIDUS3A.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Aggregate Data
+ vars:         2,617                          25 Jul 2019 18:27
+ size:    42,633,784                          
+Sorted by:  
+     Note:  dataset has changed since last saved
+
+.         rename          _merge merge7
+
+.         label var       merge7 "Merge MIDUS3B (using) to MIDUS3A (master)"
+
+.         save            MIDUS3\MIDUS3P1.dta, replace 
+file MIDUS3\MIDUS3P1.dta saved
+
+. 
+. *Merge MIDUS3C (using) to MIDUS3P1 (master), save as MIDUS3P1
+.         use             MIDUS3\MIDUS3P1.dta, clear      
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+.         merge           1:1 M2ID using MIDUS3\DS0003\MIDUS3C.dta
+(label SAMPLMAJ already defined)
+(label C1PRSEX already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         3,971
+        from master                     3,971  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                             3,137  (_merge==3)
+    -----------------------------------------
+
+.         describe, s
+
+Contains data from MIDUS3\MIDUS3P1.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Aggregate Data
+ vars:         2,797                          25 Jul 2019 18:27
+ size:    45,185,556                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
+.         rename          _merge merge8
+
+.         label var       merge8 "Merge MIDUS3C (using) to product of A+B (master)"
+
+.         save            MIDUS3\MIDUS3P1.dta, replace 
+file MIDUS3\MIDUS3P1.dta saved
+
+. 
+.         describe        using MIDUS3\MIDUS3P1.dta, s
+
+Contains data                                 Midlife in the United States
+                                                (MIDUS 3), 2013-2014, Aggregate
+                                                Data
+  obs:         7,108                          25 Jul 2019 18:27
+ vars:         2,797                          
+ size:    45,213,988                          
+Sorted by:  M2ID  
+
+.         
+.         clear
+
+. 
+. ********************************************************************************
+. //MIDUS 3 Mortality (ICPSR 37237) 
+. ********************************************************************************
+. //Files to be merged: Folder MIDUS 3 Mortality contains DS001(Mortality data)
+.         //Open DS001, do supplemental syntax, save as MIDUS3MORT
+.         
+. *DS001: Mortality data  
+.         use             MIDUS3-Mortality\DS0001\37237-0001-Data.dta, clear
+(Midlife in the United States (MIDUS 3): Mortality Data, 2016)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS3-Mortality\DS0001\37237-0001-Data.dta
+  obs:         1,382                          Midlife in the United States (MIDUS 3): Mortality
+                                                Data, 2016
+ vars:            11                          15 Feb 2019 16:05
+ size:        48,370                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS3-Mortality\DS0001\37237-0001-Supplemental_syntax.do 
+
+.         *80 observations from the milwaukee sample 
+.         drop            if SAMPLMAJ==13
+(80 observations deleted)
+
+.         describe, s
+
+Contains data from MIDUS3-Mortality\DS0001\37237-0001-Data.dta
+  obs:         1,302                          Midlife in the United States (MIDUS 3): Mortality
+                                                Data, 2016
+ vars:            11                          15 Feb 2019 16:05
+ size:        45,570                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
+.         save            MIDUS3-Mortality\DS0001\MIDUS3MORT.dta, replace 
+file MIDUS3-Mortality\DS0001\MIDUS3MORT.dta saved
+
+. 
+. //Merge MIDUS3MORT (using) to MIDUS3 (master); save as MIDUS3 in data-cleaning folder 
+. //Check merge
+.         //MIDUS3MORT obs = 1,382 vars = 11
+.         //MIDUS3P1       obs = 7,108 vars = 2,797 
+.         use             MIDUS3\MIDUS3P1.dta, clear      
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+.         merge           1:1 M2ID using MIDUS3-Mortality\DS0001\MIDUS3MORT.dta
+(label B1PGENDER already defined)
+(label SAMPLMAJ already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         5,806
+        from master                     5,806  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                             1,302  (_merge==3)
+    -----------------------------------------
+
+.         describe, s
+
+Contains data from MIDUS3\MIDUS3P1.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Aggregate Data
+ vars:         2,805                          25 Jul 2019 18:27
+ size:    45,356,148                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
+.         rename          _merge merge9
+
+.         label var       merge9 "Merge MIDUS3MORT (using) to MIDUS3P1 (master)"
+
+.         save            data-cleaning\MIDUS3.dta, replace 
+file data-cleaning\MIDUS3.dta saved
+
+. 
+.         describe        using data-cleaning\MIDUS3.dta, s
+
+Contains data                                 Midlife in the United States
+                                                (MIDUS 3), 2013-2014, Aggregate
+                                                Data
+  obs:         7,108                          25 Jul 2019 18:27
+ vars:         2,805                          
+ size:    45,384,580                          
+Sorted by:  M2ID  
+
+.         
+.         clear
+
+. 
 end of do-file
 
-. log close
-      name:  <unnamed>
-       log:  C:\Users\hanna\git\AHL\MIDUS-merge.txt
-  log type:  text
- closed on:  24 Jul 2019, 16:55:21
-----------------------------------------------------------------------------------------------------
+. exit, clear
