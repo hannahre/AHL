@@ -1,28 +1,61 @@
-********************************************************************************
-//MIDUS 3 Mortality (ICPSR 37237) 
-********************************************************************************
-//Files to be merged: Folder MIDUS 3 Mortality contains DS001(Mortality data)
-	//Open DS001, do supplemental syntax, save as MIDUS3MORT
-	
-*DS001: Mortality data  
-	use 		MIDUS3-Mortality\DS0001\37237-0001-Data.dta, clear
-	sort 		M2ID
-	describe, s
-	quietly do 	MIDUS3-Mortality\DS0001\37237-0001-Supplemental_syntax.do 
-	save 		MIDUS3-Mortality\DS0001\MIDUS3MORT.dta, replace 
+*CAM associated with each var # across all waves
+	*cam1	Acupuncture
+	*cam2	Biofeedback
+	*cam3	Chiropractic
+	*cam4 	Energy healing
+	*cam5	Exercise/movement therapy
+	*cam6	Herbal therapy
+	*cam7 	High-dose mega-vitamins used 
+	*cam8	Homeopathy 
+	*cam9	Hypnosis
+	*cam10	Imagery techniques
+	*cam11	Massage therapy
+	*cam12	Spiritual practices 
+	*cam13	Meditation
+	*cam14	Special diets
+	*cam15	Spiritual healing
+	*cam16	Other non-traditional therapy 
 
-//Merge MIDUS3MORT (using) to MIDUS3 (master); save as MIDUS3 in data-cleaning folder 
-//Check merge
-	//MIDUS3MORT obs = vars = 
-	//MIDUS3P1	 obs = vars =
-	use 		MIDUS3\MIDUS3P1.dta, clear	
-	merge 		1:1 M2ID using MIDUS3-Mortality\DS0001\MIDUS3MORT.dta
-	describe, s
-	rename 		_merge merge9
-	label var 	merge9 "Merge MIDUS3MORT (using) to product of MIDUS3P1 (master)"
-	save		MIDUS3\MIDUS3P1.dta, replace 
-
-	describe	using MIDUS3\MIDUS3P1.dta, s
+//Wave 1
+*Check coding and distribution of all cam variables 
+	foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+		A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+		fre `var'
+	}
+		
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	*Create new variable that denotes wave and cam var #. 
+	*Create local to act as a counter for generated acam vars. 
+	local period=1	
+	foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+		A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+		recode `var' (1 = 1) (2 = 0) (. = .), gen(acam`period')
+		tab `var' acam`period', missing
+		local period=`period'+1
+	}
 	
-	clear
+	save, replace
+		
+//Wave 2 
+use MIDUS2.dta, clear
+
+*Check coding and distribution of all cam variables 
+	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
+		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {
+		fre `var' 
+	}
+
+*Rename all CAM vars for easier coding 
+	renvars B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I B1SA56J B1SA56K ///
+		B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S \ bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16, display
+	
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	forval i=1/16 {
+		recode bcam`i' (1/4= 1) (5 = 0) (7 8 9 . = .)
+		label values bcamdum`i' camlab
+		tab bcamdum`i' bcam`i', missing 
+	}
+
+//Wave 3 
 

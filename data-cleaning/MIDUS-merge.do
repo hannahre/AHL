@@ -1,7 +1,7 @@
 local dir "C:\Users\hanna\git\AHL"
 cd `dir'
 capture log close 
-log using MIDUS-merge.txt, replace text
+log using data-cleaning\MIDUS-merge.txt, replace text
 
 version 13 
 clear all 
@@ -297,6 +297,9 @@ set maxvar 32767
 ////////////////////////////////////////////////////////////////////////////////
 **PART 2: Coding Variables 
 ////////////////////////////////////////////////////////////////////////////////
+local dir "C:\Users\hanna\git\AHL\data-cleaning"
+cd `dir'
+capture log close 
 log using MIDUS-recodes.txt, replace text
 
 version 13 
@@ -308,24 +311,97 @@ set maxvar 32767
 *Coding set up: Code for each variable is shown together across waves (e.g. alcohol
 	*coding for all waves is displayed together). 
 	
+*Variable naming conventions: 
+	*Waves: each variable starts with a letter denoting the wave it belongs to 
+	*	a=wave 1, b=wave2, 3=wave3
+	
 ********************************************************************************
 //CAM Variables 
 ********************************************************************************
+*CAM associated with each var # across all waves
+	*cam1	Acupuncture
+	*cam2	Biofeedback
+	*cam3	Chiropractic
+	*cam4 	Energy healing
+	*cam5	Exercise/movement therapy
+	*cam6	Herbal therapy
+	*cam7 	High-dose mega-vitamins used 
+	*cam8	Homeopathy 
+	*cam9	Hypnosis
+	*cam10	Imagery techniques
+	*cam11	Massage therapy
+	*cam12	Spiritual practices 
+	*cam13	Meditation
+	*cam14	Special diets
+	*cam15	Spiritual healing
+	*cam16	Other non-traditional therapy 
+
+//Wave 1
+use MIDUS1.dta, clear 
+*Check coding and distribution of all cam variables 
+	foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+		A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+		fre `var'
+	}
+		
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	*Create new variable that denotes wave and cam var #. 
+	*Create local to act as a counter for generated acam vars. 
+	local period=1	
+	foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+		A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+		recode `var' (1 = 1) (2 = 0) (. = .), gen(acam`period')
+		tab `var' acam`period', missing
+		local period=`period'+1
+	}
 	
+	save, replace
 	
+//Wave 2 
+use MIDUS2.dta, clear
+
+*Display coding and distribution of all cam variables 
+	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
+		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {
+		fre `var' 
+	}
+
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	*Create new variable that denotes wave and cam var #. 
+	*Create local to act as a counter for generated acam vars. 
+	local period=1	
+	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
+		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {
+		recode `var' (1/4= 1) (5 = 0) (. = .), gen(bcam`period')
+		tab `var' bcam`period', missing
+		local period=`period'+1
+	}
+
+	save, replace 
 	
-	
+//Wave 3 
+
 ********************************************************************************
 //THL Variables 
 ********************************************************************************	
-	
+//Alcohol 
 
-	
+//Wave 1
+*use MIDUS1.dta, clear 
+
+//Wave 2
+*use MIDUS2.dta, clear
+
+//Wave 3
+*use MIDUS3.dta, clear 	
+
 ********************************************************************************
 //Socieconomic Variables  
 ********************************************************************************
-	
-	
+
+//Income 
+
+	//Wave 1
 	
 	
 	
