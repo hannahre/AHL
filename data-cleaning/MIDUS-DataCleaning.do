@@ -400,10 +400,49 @@ use MIDUS2.dta, clear
 ********************************************************************************
 
 //Income 
+//Top-coded at 300,000. Continuous. 
+
+	//Wave 1
+	use MIDUS1.dta, clear 
+	rename A1SHHTOT ahhinc
+	save, replace 
+	
+	//Wave 2
+	use MIDUS2.dta, clear 
+	rename B1STINC1 bhhinc 
+	save, replace 
+	
+	//Wave 3 
+	use MIDUS3.dta, clear 
+	rename C1STINC chhinc
+	save, replace 
+	
+//Education 
+
+	//Wave 1
+	use MIDUS1.dta, clear
+	rename A1PB1 aeduc 
+	save, replace
+	
+	//Wave 2
+	use MIDUS2.dta, clear 
+	rename B1PB1 beduc 
+	save, replace 
+
+	//Wave 3
+	use MIDUS3.dta, clear 
+	rename C1PB1 ceduc
+	save, replace 
+	
+//Occupation 
 
 	//Wave 1
 	
+	//Wave 2
 	
+	//Wave 3
+
+//Employment 
 	
 	
 	
