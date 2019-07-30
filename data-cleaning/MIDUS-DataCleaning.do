@@ -355,6 +355,11 @@ use MIDUS1.dta, clear
 		local period=`period'+1
 	}
 	
+*Create count variable (sum of CAMs) 
+	egen acamsum = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 ///
+		acam11 acam12 acam13 acam14 acam15 acam16), missing
+	*07/29/19 Need to create in other waves 
+	
 	save, replace
 	
 //Wave 2 
