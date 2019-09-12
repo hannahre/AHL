@@ -336,6 +336,17 @@ set maxvar 32767
 	*cam15	Spiritual healing
 	*cam16	Other non-traditional therapy 
 
+*Only at Wave 1
+	*cam17	Alt drugs used 
+	
+*Only at Waves 2 and 3
+	*cam18	Phys/Occupational therapy
+	*cam19	Physician prescribd diet freq
+	*cam20 	Weight control diet freq
+		
+********************************************************************************
+//CAM Co-Occurrence Indices  
+********************************************************************************
 //Wave 1
 use MIDUS1.dta, clear 
 *Check coding and distribution of all cam variables 
@@ -354,6 +365,15 @@ use MIDUS1.dta, clear
 		tab `var' acam`period', missing
 		local period=`period'+1
 	}
+	
+*Dummy A1SALTER (only in wave 1). 
+notes A1SALTER: only appears at Wave 1. See SAQ question A40 
+notes A1SALTER: Used sedatives, tranquilizers, amphetamines, analgesics, 
+notes A1SALTER: prozac, inhalants, marijuana or hashish, cocaine or crack, 
+notes A1SALTER: LSD or other hallucinogens, or heroin on their own or in a 
+notes A1SALTER: other than prescribed by a doctor. 
+	recode A1SALTER (1 = 1) (2 = 0) (. = .), gen(acam17)
+	tab A1SALTER acam17, missing
 	
 *Create count variable (sum of CAMs) 
 	egen acamsum = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 ///
@@ -384,7 +404,13 @@ use MIDUS2.dta, clear
 
 	save, replace 
 	
+*09/12 next time- create dummy count var 
+	
 //Wave 3 
+use MIDUS3.dta, clear 
+
+*Display coding and distribution of all cam variables 
+	
 
 ********************************************************************************
 //THL Variables 
@@ -442,6 +468,7 @@ use MIDUS2.dta, clear
 //Occupation 
 
 	//Wave 1
+	
 	
 	//Wave 2
 	
