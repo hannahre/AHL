@@ -17,4 +17,73 @@ use MIDUS1.dta, clear
 		local period=`period'+1
 	}
 	
-*Create count variable for CAM use 
+*Create count variable (sum of CAMs) 
+	egen acamsum rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam11 acam12 acam13 acam14 acam15 acam16), missing
+	
+acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam11 acam12 acam13 acam14 acam15 acam16
+
+//Wave 2 
+use MIDUS2.dta, clear
+
+*Display coding and distribution of all cam variables 
+	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
+		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S B1SA56E B1SA56O B1SA56P{
+		fre `var' 
+	}
+
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	*Create new variable that denotes wave and cam var #. 
+	*Create local to act as a counter for generated acam vars. 
+	local period=1	
+	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
+		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S B1SA56E B1SA56O B1SA56P {
+		recode `var' (1/4= 1) (5 = 0) (. = .), gen(bcam`period')
+		tab `var' bcam`period', missing
+		local period=`period'+1
+	}
+
+*Create co-occurrence index 1 
+	egen bcamco1 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam11 bcam12 bcam13 ///
+		bcam14 bcam15 bcam16), missing
+		
+*Create co-occurrence index 2 
+	egen bcamco1 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam11 bcam12 bcam13 ///
+		bcam14 bcam15 bcam16), missing
+
+	save, replace 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+forvalues i=1/16 {
+	tab B1POCMAJ bcam`i', missing 
+	}

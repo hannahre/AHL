@@ -337,12 +337,12 @@ set maxvar 32767
 	*cam16	Other non-traditional therapy 
 
 *Only at Wave 1
-	*cam17	Alt drugs used 
+	*cam20	Alt drugs used
 	
 *Only at Waves 2 and 3
-	*cam18	Phys/Occupational therapy
-	*cam19	Physician prescribd diet freq
-	*cam20 	Weight control diet freq
+	*cam17	Phys/Occupational therapy
+	*cam18	Physician prescribd diet freq
+	*cam19 	Weight control diet freq
 		
 ********************************************************************************
 //CAM Co-Occurrence Indices  
@@ -372,13 +372,12 @@ notes A1SALTER: Used sedatives, tranquilizers, amphetamines, analgesics,
 notes A1SALTER: prozac, inhalants, marijuana or hashish, cocaine or crack, 
 notes A1SALTER: LSD or other hallucinogens, or heroin on their own or in a 
 notes A1SALTER: other than prescribed by a doctor. 
-	recode A1SALTER (1 = 1) (2 = 0) (. = .), gen(acam17)
-	tab A1SALTER acam17, missing
+	recode A1SALTER (1 = 1) (2 = 0) (. = .), gen(acam20)
+	tab A1SALTER acam20, missing
 	
 *Create count variable (sum of CAMs) 
-	egen acamsum = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 ///
+	egen acamco1 = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10///
 		acam11 acam12 acam13 acam14 acam15 acam16), missing
-	*07/29/19 Need to create in other waves 
 	
 	save, replace
 	
@@ -402,16 +401,50 @@ use MIDUS2.dta, clear
 		local period=`period'+1
 	}
 
+*Create co-occurrence index 1 
+	egen bcamco1 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
+		bcam14 bcam15 bcam16), missing
+		
+*Create co-occurrence index 2 
+	egen bcamco2 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
+		bcam14 bcam15 bcam16 bcam17 bcam18 bcam19), missing
+
 	save, replace 
 	
-*09/12 next time- create dummy count var 
-	
 //Wave 3 
-use MIDUS3.dta, clear 
+use MIDUS3.dta, clear
 
 *Display coding and distribution of all cam variables 
-	
+	foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J ///
+		C1SA52K C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
+		fre `var' 
+	}
 
+*Write loop to dummy all CAM vars 0=never 1=used in the last year 
+	*Create new variable that denotes wave and cam var #. 
+	*Create local to act as a counter for generated acam vars. 
+	local period=1	
+	foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J ///
+		C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
+		recode `var' (1/4= 1) (5 = 0) (. = .), gen(ccam`period')
+		tab `var' ccam`period', missing
+		local period=`period'+1
+	}
+
+*Create co-occurrence index 1 
+	egen ccamco1 rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
+		ccam14 ccam15 ccam16), missing
+		
+*Create co-occurrence index 2 
+	egen ccamco2 rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
+		ccam14 ccam15 ccam16 ccam17 ccam18 ccam19), missing
+
+	save, replace 
+
+********************************************************************************
+//CAM Mean Indices  
+********************************************************************************
+	
 ********************************************************************************
 //THL Variables 
 ********************************************************************************	
