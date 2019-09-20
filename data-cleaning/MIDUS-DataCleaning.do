@@ -444,7 +444,17 @@ use MIDUS3.dta, clear
 ********************************************************************************
 //CAM Mean Indices  
 ********************************************************************************
-	
+//Wave 1
+use MIDUS1.dta, clear
+
+*Create new var that is the average across all CAMs 
+	egen acamme1 = rowmean(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 ///
+		acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16)
+*Check that egen ran correctly 
+	assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
+		acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
+*9/19 252 false.. 
+
 ********************************************************************************
 //THL Variables 
 ********************************************************************************	

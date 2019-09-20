@@ -1,9 +1,24 @@
-	foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
-		B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {
-		fre `var' 
-	}
-	
-*Distributions of original CAM variables: export graphs to one doc 
+*Create new var that is the average across all CAMs 
+	egen acamme1 = rowmean(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 ///
+		acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16)
+	*Check that egen ran correctly 
+	assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
+		acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
+
+
+
+
+
+
+acam1 ==. | acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + acam8 + acam9 + acam10 + acam11 + acam12 + acam13 +
+acam14 + acam15 + acam16
+
+
+
+gen error = 1 if acamme1 != ((acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + acam8 + acam9 + acam10 + ///
+	acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16)
+replace error = 0 if acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + acam8 + acam9 + acam10 + ///
+	acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
 
 
 
@@ -28,15 +43,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-forvalues i=1/16 {
-	tab B1POCMAJ bcam`i', missing 
-	}
