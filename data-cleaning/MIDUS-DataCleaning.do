@@ -341,7 +341,7 @@ set maxvar 32767
 	
 *Only at Waves 2 and 3
 	*cam17	Phys/Occupational therapy
-	*cam18	Physician prescribd diet freq
+	*cam18	Physician prescribed diet freq
 	*cam19 	Weight control diet freq
 		
 ********************************************************************************
@@ -455,13 +455,20 @@ use MIDUS1.dta, clear
 		acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
 	*252 false- missing on one or more cams. 
 	
+save, replace 
+	
 //Waves 2
 use MIDUS2.dta, clear 
 
 *Create new var that is the average across CAMs 1-16
 	egen bcamme1 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
 		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16)
-*Check that egen ran correctly 
+		
+*Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3)
+	egen bcamme2 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19)
+		
+save, replace
 		
 //Wave 3
 use MIDUS3.dta, clear 
@@ -469,6 +476,12 @@ use MIDUS3.dta, clear
 *Create new var that is the average across CAMs 1-16
 	egen ccamme1 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
 		ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16)
+		
+*Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3) 
+	egen ccamme2 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
+		ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16 ccam17 ccam18 ccam19)
+		
+save, replace 
 
 ********************************************************************************
 //THL Variables 
