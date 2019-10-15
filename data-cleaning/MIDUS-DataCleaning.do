@@ -540,15 +540,92 @@ save, replace
 
 	//Wave 1
 	
-	
 	//Wave 2
 	
 	//Wave 3
 
 //Employment 
+
+********************************************************************************
+//Health Locus of Control 
+********************************************************************************
 	
+********************************************************************************
+//Controls  
+********************************************************************************	
+//Age
+
+	//Wave 1
+	use MIDUS1.dta, clear
+	rename A1PRAGE_2019 aage
+	save, replace
 	
+	//Wave 2
+	use MIDUS2.dta, clear
+	rename B1PAGE_M2 bage 
+	save, replace 
 	
+	//Wave 3
+	use MIDUS3.dta, clear 
+	rename C1PRAGE cage
+	save, replace 
+
+//Race/Ethnicity
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Sex
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Religiosity
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Spirituality
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Childhood SES 
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Health insurance 
+
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
+//Types of healthcare providers seen 
+	
+	//Wave 1
+	
+	//Wave 2
+	
+	//Wave 3
+
 	
 	
 	
