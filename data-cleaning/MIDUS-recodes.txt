@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\hanna\git\AHL\data-cleaning\MIDUS-recodes.txt
   log type:  text
- opened on:  27 Jul 2019, 15:38:28
+ opened on:  20 Nov 2019, 14:55:32
 
 . 
 . version 13 
@@ -45,6 +45,17 @@
 .         *cam15  Spiritual healing
 .         *cam16  Other non-traditional therapy 
 . 
+. *Only at Wave 1
+.         *cam20  Alt drugs used
+.         
+. *Only at Waves 2 and 3
+.         *cam17  Phys/Occupational therapy
+.         *cam18  Physician prescribed diet freq
+.         *cam19  Weight control diet freq
+.                 
+. ********************************************************************************
+. //CAM Co-Occurrence Indices  
+. ********************************************************************************
 . //Wave 1
 . use MIDUS1.dta, clear 
 (Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
@@ -441,6 +452,40 @@ therapy frequency (12 |      frequency (12 months))
 ----------------------+---------------------------------+----------
                 Total |     6,008        143        957 |     7,108 
 
+
+.         
+. *Dummy A1SALTER (only in wave 1). 
+. notes A1SALTER: only appears at Wave 1. See SAQ question A40 
+
+. notes A1SALTER: Used sedatives, tranquilizers, amphetamines, analgesics, 
+
+. notes A1SALTER: prozac, inhalants, marijuana or hashish, cocaine or crack, 
+
+. notes A1SALTER: LSD or other hallucinogens, or heroin on their own or in a 
+
+. notes A1SALTER: other than prescribed by a doctor. 
+
+.         recode A1SALTER (1 = 1) (2 = 0) (. = .), gen(acam20)
+(3019 differences between A1SALTER and acam20)
+
+.         tab A1SALTER acam20, missing
+
+                      |     RECODE of A1SALTER (Used
+     Used alternative |  alternative medical treatment)
+    medical treatment |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                  Yes |         0      3,275          0 |     3,275 
+                   No |     3,019          0          0 |     3,019 
+                    . |         0          0        814 |       814 
+----------------------+---------------------------------+----------
+                Total |     3,019      3,275        814 |     7,108 
+
+
+.         
+. *Create count variable (sum of CAMs) 
+.         egen acamco1 = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 ///
+>                 acam11 acam12 acam13 acam14 acam15 acam16), missing
+(814 missing values generated)
 
 .         
 .         save, replace
@@ -956,11 +1001,737 @@ non-tradit |
 
 
 . 
+. *Create co-occurrence index 1 
+.         egen bcamco1 = rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam1
+> 1 bcam12 bcam13 ///
+>                 bcam14 bcam15 bcam16), missing
+(3096 missing values generated)
+
+.                 
+. *Create co-occurrence index 2 
+. *2019-11-20 cam17-19 not coded yet. Leave out for now
+. *       egen bcamco2 = rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam1
+> 1 bcam12 bcam13 ///
+> *               bcam14 bcam15 bcam16 bcam17 bcam18 bcam19), missing
+. 
 .         save, replace 
 file MIDUS2.dta saved
 
 .         
 . //Wave 3 
+. use MIDUS3.dta, clear
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+. 
+. *Display coding and distribution of all cam variables 
+.         foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1S
+> A52J ///
+>                 C1SA52K C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
+  2.                 fre `var' 
+  3.         }
+
+C1SA52A -- Acupuncture frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         10       0.14       0.35       0.35
+        2 OFTEN     |         13       0.18       0.45       0.80
+        3 SOMETIMES |         45       0.63       1.57       2.37
+        4 RARELY    |         36       0.51       1.26       3.63
+        5 NEVER     |       2763      38.87      96.37     100.00
+        Total       |       2867      40.33     100.00           
+Missing .           |       4241      59.67                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52B -- Biofeedback frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |          2       0.03       0.07       0.07
+        2 OFTEN     |          3       0.04       0.11       0.18
+        3 SOMETIMES |         10       0.14       0.35       0.53
+        4 RARELY    |         19       0.27       0.67       1.19
+        5 NEVER     |       2823      39.72      98.81     100.00
+        Total       |       2857      40.19     100.00           
+Missing .           |       4251      59.81                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52C -- Chiropractor frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         47       0.66       1.64       1.64
+        2 OFTEN     |        109       1.53       3.79       5.43
+        3 SOMETIMES |        213       3.00       7.41      12.84
+        4 RARELY    |        138       1.94       4.80      17.64
+        5 NEVER     |       2367      33.30      82.36     100.00
+        Total       |       2874      40.43     100.00           
+Missing .           |       4234      59.57                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52D -- Energy healing frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |          5       0.07       0.18       0.18
+        2 OFTEN     |         19       0.27       0.67       0.85
+        3 SOMETIMES |         22       0.31       0.77       1.62
+        4 RARELY    |         29       0.41       1.02       2.64
+        5 NEVER     |       2765      38.90      97.36     100.00
+        Total       |       2840      39.95     100.00           
+Missing .           |       4268      60.05                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52F -- Exercise/movement therapy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |        128       1.80       4.47       4.47
+        2 OFTEN     |        143       2.01       4.99       9.46
+        3 SOMETIMES |        168       2.36       5.86      15.32
+        4 RARELY    |        109       1.53       3.80      19.13
+        5 NEVER     |       2317      32.60      80.87     100.00
+        Total       |       2865      40.31     100.00           
+Missing .           |       4243      59.69                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52G -- Herbal therapy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         33       0.46       1.15       1.15
+        2 OFTEN     |         49       0.69       1.71       2.87
+        3 SOMETIMES |         80       1.13       2.80       5.67
+        4 RARELY    |         53       0.75       1.85       7.52
+        5 NEVER     |       2643      37.18      92.48     100.00
+        Total       |       2858      40.21     100.00           
+Missing .           |       4250      59.79                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52H -- High dose mega-vitamins frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         50       0.70       1.75       1.75
+        2 OFTEN     |         70       0.98       2.44       4.19
+        3 SOMETIMES |         85       1.20       2.97       7.16
+        4 RARELY    |         80       1.13       2.79       9.95
+        5 NEVER     |       2578      36.27      90.05     100.00
+        Total       |       2863      40.28     100.00           
+Missing .           |       4245      59.72                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52I -- Homeopathy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         11       0.15       0.38       0.38
+        2 OFTEN     |         24       0.34       0.84       1.22
+        3 SOMETIMES |         46       0.65       1.61       2.83
+        4 RARELY    |         52       0.73       1.82       4.65
+        5 NEVER     |       2727      38.37      95.35     100.00
+        Total       |       2860      40.24     100.00           
+Missing .           |       4248      59.76                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52J -- Hypnosis frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |          1       0.01       0.03       0.03
+        2 OFTEN     |          2       0.03       0.07       0.10
+        3 SOMETIMES |         12       0.17       0.42       0.52
+        4 RARELY    |         16       0.23       0.56       1.08
+        5 NEVER     |       2830      39.81      98.92     100.00
+        Total       |       2861      40.25     100.00           
+Missing .           |       4247      59.75                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52K -- Imagery techniques frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |          9       0.13       0.32       0.32
+        2 OFTEN     |         10       0.14       0.35       0.67
+        3 SOMETIMES |         53       0.75       1.86       2.53
+        4 RARELY    |         42       0.59       1.47       4.00
+        5 NEVER     |       2735      38.48      96.00     100.00
+        Total       |       2849      40.08     100.00           
+Missing .           |       4259      59.92                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52L -- Massage therapy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         32       0.45       1.14       1.14
+        2 OFTEN     |        100       1.41       3.55       4.69
+        3 SOMETIMES |        202       2.84       7.17      11.86
+        4 RARELY    |        209       2.94       7.42      19.28
+        5 NEVER     |       2274      31.99      80.72     100.00
+        Total       |       2817      39.63     100.00           
+Missing .           |       4291      60.37                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52M -- Prayer/other spiritual frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |        496       6.98      17.37      17.37
+        2 OFTEN     |        351       4.94      12.29      29.67
+        3 SOMETIMES |        256       3.60       8.97      38.63
+        4 RARELY    |         94       1.32       3.29      41.93
+        5 NEVER     |       1658      23.33      58.07     100.00
+        Total       |       2855      40.17     100.00           
+Missing .           |       4253      59.83                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52N -- Relaxation/mediation frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         75       1.06       2.65       2.65
+        2 OFTEN     |        157       2.21       5.54       8.19
+        3 SOMETIMES |        275       3.87       9.70      17.89
+        4 RARELY    |        184       2.59       6.49      24.38
+        5 NEVER     |       2143      30.15      75.62     100.00
+        Total       |       2834      39.87     100.00           
+Missing .           |       4274      60.13                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52Q -- Special diet frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         49       0.69       1.71       1.71
+        2 OFTEN     |         24       0.34       0.84       2.55
+        3 SOMETIMES |         53       0.75       1.85       4.41
+        4 RARELY    |         49       0.69       1.71       6.12
+        5 NEVER     |       2685      37.77      93.88     100.00
+        Total       |       2860      40.24     100.00           
+Missing .           |       4248      59.76                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52R -- Spiritual healing by others frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         12       0.17       0.42       0.42
+        2 OFTEN     |         16       0.23       0.56       0.98
+        3 SOMETIMES |         64       0.90       2.24       3.22
+        4 RARELY    |         56       0.79       1.96       5.18
+        5 NEVER     |       2710      38.13      94.82     100.00
+        Total       |       2858      40.21     100.00           
+Missing .           |       4250      59.79                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52S -- Other non-traditional therapy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         36       0.51       1.29       1.29
+        2 OFTEN     |         13       0.18       0.46       1.75
+        3 SOMETIMES |         17       0.24       0.61       2.36
+        4 RARELY    |         16       0.23       0.57       2.93
+        5 NEVER     |       2716      38.21      97.07     100.00
+        Total       |       2798      39.36     100.00           
+Missing .           |       4310      60.64                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52E -- Physical/occupational therapy frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         57       0.80       2.00       2.00
+        2 OFTEN     |         83       1.17       2.92       4.92
+        3 SOMETIMES |        216       3.04       7.59      12.50
+        4 RARELY    |        137       1.93       4.81      17.32
+        5 NEVER     |       2354      33.12      82.68     100.00
+        Total       |       2847      40.05     100.00           
+Missing .           |       4261      59.95                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52O -- Physician prescribed diet frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |        158       2.22       5.51       5.51
+        2 OFTEN     |        129       1.81       4.50      10.01
+        3 SOMETIMES |        163       2.29       5.69      15.70
+        4 RARELY    |        124       1.74       4.33      20.02
+        5 NEVER     |       2293      32.26      79.98     100.00
+        Total       |       2867      40.33     100.00           
+Missing .           |       4241      59.67                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+C1SA52P -- Weight control diet frequency (12 months)
+-----------------------------------------------------------------
+                    |      Freq.    Percent      Valid       Cum.
+--------------------+--------------------------------------------
+Valid   1 A LOT     |         75       1.06       2.62       2.62
+        2 OFTEN     |         68       0.96       2.37       4.99
+        3 SOMETIMES |        175       2.46       6.11      11.10
+        4 RARELY    |        103       1.45       3.59      14.69
+        5 NEVER     |       2445      34.40      85.31     100.00
+        Total       |       2866      40.32     100.00           
+Missing .           |       4242      59.68                      
+Total               |       7108     100.00                      
+-----------------------------------------------------------------
+
+. 
+. *Write loop to dummy all CAM vars 0=never 1=used in the last year 
+.         *Create new variable that denotes wave and cam var #. 
+.         *Create local to act as a counter for generated acam vars. 
+.         local period=1  
+
+.         foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1S
+> A52J ///
+>                 C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
+  2.                 recode `var' (1/4= 1) (5 = 0) (. = .), gen(ccam`period')
+  3.                 tab `var' ccam`period', missing
+  4.                 local period=`period'+1
+  5.         }
+(2857 differences between C1SA52A and ccam1)
+
+                      |  RECODE of C1SA52A (Acupuncture
+Acupuncture frequency |      frequency (12 months))
+          (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         10          0 |        10 
+                OFTEN |         0         13          0 |        13 
+            SOMETIMES |         0         45          0 |        45 
+               RARELY |         0         36          0 |        36 
+                NEVER |     2,763          0          0 |     2,763 
+                    . |         0          0      4,241 |     4,241 
+----------------------+---------------------------------+----------
+                Total |     2,763        104      4,241 |     7,108 
+
+(2855 differences between C1SA52B and ccam2)
+
+                      |  RECODE of C1SA52B (Biofeedback
+Biofeedback frequency |      frequency (12 months))
+          (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0          2          0 |         2 
+                OFTEN |         0          3          0 |         3 
+            SOMETIMES |         0         10          0 |        10 
+               RARELY |         0         19          0 |        19 
+                NEVER |     2,823          0          0 |     2,823 
+                    . |         0          0      4,251 |     4,251 
+----------------------+---------------------------------+----------
+                Total |     2,823         34      4,251 |     7,108 
+
+(2827 differences between C1SA52C and ccam3)
+
+                      | RECODE of C1SA52C (Chiropractor
+         Chiropractor |      frequency (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         47          0 |        47 
+                OFTEN |         0        109          0 |       109 
+            SOMETIMES |         0        213          0 |       213 
+               RARELY |         0        138          0 |       138 
+                NEVER |     2,367          0          0 |     2,367 
+                    . |         0          0      4,234 |     4,234 
+----------------------+---------------------------------+----------
+                Total |     2,367        507      4,234 |     7,108 
+
+(2835 differences between C1SA52D and ccam4)
+
+                      |    RECODE of C1SA52D (Energy
+       Energy healing |  healing frequency (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0          5          0 |         5 
+                OFTEN |         0         19          0 |        19 
+            SOMETIMES |         0         22          0 |        22 
+               RARELY |         0         29          0 |        29 
+                NEVER |     2,765          0          0 |     2,765 
+                    . |         0          0      4,268 |     4,268 
+----------------------+---------------------------------+----------
+                Total |     2,765         75      4,268 |     7,108 
+
+(2737 differences between C1SA52F and ccam5)
+
+                      |        RECODE of C1SA52F
+    Exercise/movement |    (Exercise/movement therapy
+therapy frequency (12 |      frequency (12 months))
+              months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0        128          0 |       128 
+                OFTEN |         0        143          0 |       143 
+            SOMETIMES |         0        168          0 |       168 
+               RARELY |         0        109          0 |       109 
+                NEVER |     2,317          0          0 |     2,317 
+                    . |         0          0      4,243 |     4,243 
+----------------------+---------------------------------+----------
+                Total |     2,317        548      4,243 |     7,108 
+
+(2825 differences between C1SA52G and ccam6)
+
+                      |    RECODE of C1SA52G (Herbal
+       Herbal therapy |  therapy frequency (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         33          0 |        33 
+                OFTEN |         0         49          0 |        49 
+            SOMETIMES |         0         80          0 |        80 
+               RARELY |         0         53          0 |        53 
+                NEVER |     2,643          0          0 |     2,643 
+                    . |         0          0      4,250 |     4,250 
+----------------------+---------------------------------+----------
+                Total |     2,643        215      4,250 |     7,108 
+
+(2813 differences between C1SA52H and ccam7)
+
+                      |   RECODE of C1SA52H (High dose
+            High dose |   mega-vitamins frequency (12
+        mega-vitamins |             months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         50          0 |        50 
+                OFTEN |         0         70          0 |        70 
+            SOMETIMES |         0         85          0 |        85 
+               RARELY |         0         80          0 |        80 
+                NEVER |     2,578          0          0 |     2,578 
+                    . |         0          0      4,245 |     4,245 
+----------------------+---------------------------------+----------
+                Total |     2,578        285      4,245 |     7,108 
+
+(2849 differences between C1SA52I and ccam8)
+
+                      |  RECODE of C1SA52I (Homeopathy
+ Homeopathy frequency |      frequency (12 months))
+          (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         11          0 |        11 
+                OFTEN |         0         24          0 |        24 
+            SOMETIMES |         0         46          0 |        46 
+               RARELY |         0         52          0 |        52 
+                NEVER |     2,727          0          0 |     2,727 
+                    . |         0          0      4,248 |     4,248 
+----------------------+---------------------------------+----------
+                Total |     2,727        133      4,248 |     7,108 
+
+(2860 differences between C1SA52J and ccam9)
+
+                      |   RECODE of C1SA52J (Hypnosis
+   Hypnosis frequency |      frequency (12 months))
+          (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0          1          0 |         1 
+                OFTEN |         0          2          0 |         2 
+            SOMETIMES |         0         12          0 |        12 
+               RARELY |         0         16          0 |        16 
+                NEVER |     2,830          0          0 |     2,830 
+                    . |         0          0      4,247 |     4,247 
+----------------------+---------------------------------+----------
+                Total |     2,830         31      4,247 |     7,108 
+
+(2785 differences between C1SA52L and ccam10)
+
+                      |    RECODE of C1SA52L (Massage
+      Massage therapy |  therapy frequency (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         32          0 |        32 
+                OFTEN |         0        100          0 |       100 
+            SOMETIMES |         0        202          0 |       202 
+               RARELY |         0        209          0 |       209 
+                NEVER |     2,274          0          0 |     2,274 
+                    . |         0          0      4,291 |     4,291 
+----------------------+---------------------------------+----------
+                Total |     2,274        543      4,291 |     7,108 
+
+(2359 differences between C1SA52M and ccam11)
+
+         Prayer/other | RECODE of C1SA52M (Prayer/other
+  spiritual frequency | spiritual frequency (12 months))
+          (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0        496          0 |       496 
+                OFTEN |         0        351          0 |       351 
+            SOMETIMES |         0        256          0 |       256 
+               RARELY |         0         94          0 |        94 
+                NEVER |     1,658          0          0 |     1,658 
+                    . |         0          0      4,253 |     4,253 
+----------------------+---------------------------------+----------
+                Total |     1,658      1,197      4,253 |     7,108 
+
+(2759 differences between C1SA52N and ccam12)
+
+                      |        RECODE of C1SA52N
+                      | (Relaxation/mediation frequency
+ Relaxation/mediation |           (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         75          0 |        75 
+                OFTEN |         0        157          0 |       157 
+            SOMETIMES |         0        275          0 |       275 
+               RARELY |         0        184          0 |       184 
+                NEVER |     2,143          0          0 |     2,143 
+                    . |         0          0      4,274 |     4,274 
+----------------------+---------------------------------+----------
+                Total |     2,143        691      4,274 |     7,108 
+
+(2811 differences between C1SA52Q and ccam13)
+
+                      | RECODE of C1SA52Q (Special diet
+         Special diet |      frequency (12 months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         49          0 |        49 
+                OFTEN |         0         24          0 |        24 
+            SOMETIMES |         0         53          0 |        53 
+               RARELY |         0         49          0 |        49 
+                NEVER |     2,685          0          0 |     2,685 
+                    . |         0          0      4,248 |     4,248 
+----------------------+---------------------------------+----------
+                Total |     2,685        175      4,248 |     7,108 
+
+(2846 differences between C1SA52R and ccam14)
+
+                      |   RECODE of C1SA52R (Spiritual
+ Spiritual healing by | healing by others frequency (12
+ others frequency (12 |             months))
+              months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         12          0 |        12 
+                OFTEN |         0         16          0 |        16 
+            SOMETIMES |         0         64          0 |        64 
+               RARELY |         0         56          0 |        56 
+                NEVER |     2,710          0          0 |     2,710 
+                    . |         0          0      4,250 |     4,250 
+----------------------+---------------------------------+----------
+                Total |     2,710        148      4,250 |     7,108 
+
+(2762 differences between C1SA52S and ccam15)
+
+                      |     RECODE of C1SA52S (Other
+Other non-traditional |     non-traditional therapy
+therapy frequency (12 |      frequency (12 months))
+              months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         36          0 |        36 
+                OFTEN |         0         13          0 |        13 
+            SOMETIMES |         0         17          0 |        17 
+               RARELY |         0         16          0 |        16 
+                NEVER |     2,716          0          0 |     2,716 
+                    . |         0          0      4,310 |     4,310 
+----------------------+---------------------------------+----------
+                Total |     2,716         82      4,310 |     7,108 
+
+(2790 differences between C1SA52E and ccam16)
+
+                      |        RECODE of C1SA52E
+Physical/occupational |  (Physical/occupational therapy
+therapy frequency (12 |      frequency (12 months))
+              months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         57          0 |        57 
+                OFTEN |         0         83          0 |        83 
+            SOMETIMES |         0        216          0 |       216 
+               RARELY |         0        137          0 |       137 
+                NEVER |     2,354          0          0 |     2,354 
+                    . |         0          0      4,261 |     4,261 
+----------------------+---------------------------------+----------
+                Total |     2,354        493      4,261 |     7,108 
+
+(2709 differences between C1SA52O and ccam17)
+
+                      |   RECODE of C1SA52O (Physician
+ Physician prescribed |  prescribed diet frequency (12
+   diet frequency (12 |             months))
+              months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0        158          0 |       158 
+                OFTEN |         0        129          0 |       129 
+            SOMETIMES |         0        163          0 |       163 
+               RARELY |         0        124          0 |       124 
+                NEVER |     2,293          0          0 |     2,293 
+                    . |         0          0      4,241 |     4,241 
+----------------------+---------------------------------+----------
+                Total |     2,293        574      4,241 |     7,108 
+
+(2791 differences between C1SA52P and ccam18)
+
+                      |    RECODE of C1SA52P (Weight
+                      |    control diet frequency (12
+  Weight control diet |             months))
+frequency (12 months) |         0          1          . |     Total
+----------------------+---------------------------------+----------
+                A LOT |         0         75          0 |        75 
+                OFTEN |         0         68          0 |        68 
+            SOMETIMES |         0        175          0 |       175 
+               RARELY |         0        103          0 |       103 
+                NEVER |     2,445          0          0 |     2,445 
+                    . |         0          0      4,242 |     4,242 
+----------------------+---------------------------------+----------
+                Total |     2,445        421      4,242 |     7,108 
+
+
+. 
+. *Create co-occurrence index 1 
+.         egen ccamco1 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam1
+> 1 ccam12 ccam13 ///
+>                 ccam14 ccam15 ccam16), missing
+(4207 missing values generated)
+
+.                 
+. *Create co-occurrence index 2 
+. *2019-11-20 cam17-19 not coded yet. Leave out for now
+. *       egen ccamco2 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam1
+> 1 ccam12 ccam13 ///
+> *               ccam14 ccam15 ccam16 ccam17 ccam18 ccam19), missing
+. 
+.         save, replace 
+file MIDUS3.dta saved
+
+. 
+. ********************************************************************************
+. //CAM Mean Indices  
+. ********************************************************************************
+. //Wave 1
+. use MIDUS1.dta, clear
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
+
+. 
+. *Create new var that is the average across all CAMs 
+.         egen acamme1 = rowmean(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 ///
+>                 acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16)
+(814 missing values generated)
+
+. *Check that egen ran correctly 
+.         assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
+>                 acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
+252 contradictions in 7108 observations
+assertion is false
+r(9);
+
+end of do-file
+
+r(9);
+
+. do "C:\Users\hanna\AppData\Local\Temp\STD00000000.tmp"
+
+. *Check that egen ran correctly 
+.         capture assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
+>                 acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
+
+.         *252 false- missing on one or more cams. 
+.         
+. save, replace 
+file MIDUS1.dta saved
+
+.         
+. //Waves 2
+. use MIDUS2.dta, clear 
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+. 
+. *Create new var that is the average across CAMs 1-16
+.         egen bcamme1 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+>                 bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16)
+(3096 missing values generated)
+
+.                 
+. *Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3)
+.         egen bcamme2 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+>                 bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19)
+variable bcam17 not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "C:\Users\hanna\AppData\Local\Temp\STD00000000.tmp"
+
+. ********************************************************************************
+. //CAM Mean Indices  
+. ********************************************************************************
+. //Wave 1
+. use MIDUS1.dta, clear
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
+
+. 
+. *Create new var that is the average across all CAMs 
+.         egen acamme1 = rowmean(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 ///
+>                 acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16)
+acamme1 already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "C:\Users\hanna\AppData\Local\Temp\STD00000000.tmp"
+
+. //Waves 2
+. use MIDUS2.dta, clear 
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+. 
+. *Create new var that is the average across CAMs 1-16
+.         egen bcamme1 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+>                 bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16)
+(3096 missing values generated)
+
+.                 
+. *Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3)
+. *2019-11-20 cam17-19 not coded yet. Leave out for now
+. *       egen bcamme2 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+> *               bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19)
+.                 
+. save, replace
+file MIDUS2.dta saved
+
+.                 
+. //Wave 3
+. use MIDUS3.dta, clear 
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+. 
+. *Create new var that is the average across CAMs 1-16
+.         egen ccamme1 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
+>                 ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16)
+(4207 missing values generated)
+
+.                 
+. *Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3) 
+.         egen ccamme2 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
+>                 ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16 ccam17 ccam18 ccam19)
+variable ccam19 not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "C:\Users\hanna\AppData\Local\Temp\STD00000000.tmp"
+
+.                 
+. save, replace 
+file MIDUS3.dta saved
+
 . 
 . ********************************************************************************
 . //THL Variables 
@@ -1045,31 +1816,121 @@ file MIDUS2.dta saved
 file MIDUS3.dta saved
 
 .         
+. //Occupation 
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Employment 
+. 
+. ********************************************************************************
+. //Health Locus of Control 
+. ********************************************************************************
+.         
+. ********************************************************************************
+. //Controls  
+. ********************************************************************************        
+. //Age
+. 
+.         //Wave 1
+.         use MIDUS1.dta, clear
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
+
+.         rename A1PRAGE_2019 aage
+
+.         save, replace
+file MIDUS1.dta saved
+
+.         
+.         //Wave 2
+.         use MIDUS2.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+.         rename B1PAGE_M2 bage 
+
+.         save, replace 
+file MIDUS2.dta saved
+
+.         
+.         //Wave 3
+.         use MIDUS3.dta, clear 
+(Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
+
+.         rename C1PRAGE cage
+
+.         save, replace 
+file MIDUS3.dta saved
+
+. 
+. //Race/Ethnicity
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Sex
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Religiosity
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Spirituality
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Childhood SES 
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Health insurance 
+. 
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+. //Types of healthcare providers seen 
+.         
+.         //Wave 1
+.         
+.         //Wave 2
+.         
+.         //Wave 3
+. 
+.         
+.         
+.         
+.         
+. 
+. 
 . 
 end of do-file
 
-. tab ceduc
+. use MIDUS1.dta
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
 
-   Highest level of education completed |      Freq.     Percent        Cum.
-----------------------------------------+-----------------------------------
-      NO SCHOOL/SOME GRADE SCHOOL (1-6) |          6        0.18        0.18
-  EIGHTH GRADE/JUNIOR HIGH SCHOOL (7-8) |         25        0.76        0.94
-SOME HIGH SCHOOL (9-12 NO DIPLOMA/NO GE |        139        4.23        5.18
-                                    GED |         32        0.97        6.15
-             GRADUATED FROM HIGH SCHOOL |        753       22.94       29.09
- 1 TO 2 YEARS OF COLLEGE, NO DEGREE YET |        510       15.53       44.62
-3 OR MORE YEARS OF COLLEGE, NO DEGREE Y |        105        3.20       47.82
-GRAD. FROM 2-YEAR COLLEGE, VOCATIONAL S |        338       10.30       58.12
-GRADUATED FROM A 4- OR 5-YEAR COLLEGE,  |        718       21.87       79.99
-                   SOME GRADUATE SCHOOL |         76        2.31       82.30
-                        MASTER'S DEGREE |        411       12.52       94.82
-PH.D., ED.D., MD, DDS, LLB, LLD, JD, OR |        170        5.18      100.00
-----------------------------------------+-----------------------------------
-                                  Total |      3,283      100.00
-
-. log close
-      name:  <unnamed>
-       log:  C:\Users\hanna\git\AHL\data-cleaning\MIDUS-recodes.txt
-  log type:  text
- closed on:  27 Jul 2019, 15:39:01
-----------------------------------------------------------------------------------------------------
+. exit, clear

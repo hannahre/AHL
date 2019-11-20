@@ -376,7 +376,7 @@ notes A1SALTER: other than prescribed by a doctor.
 	tab A1SALTER acam20, missing
 	
 *Create count variable (sum of CAMs) 
-	egen acamco1 = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10///
+	egen acamco1 = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 ///
 		acam11 acam12 acam13 acam14 acam15 acam16), missing
 	
 	save, replace
@@ -402,12 +402,13 @@ use MIDUS2.dta, clear
 	}
 
 *Create co-occurrence index 1 
-	egen bcamco1 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
+	egen bcamco1 = rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
 		bcam14 bcam15 bcam16), missing
 		
 *Create co-occurrence index 2 
-	egen bcamco2 rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
-		bcam14 bcam15 bcam16 bcam17 bcam18 bcam19), missing
+*2019-11-20 cam17-19 not coded yet. Leave out for now
+*	egen bcamco2 = rowtotal(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 ///
+*		bcam14 bcam15 bcam16 bcam17 bcam18 bcam19), missing
 
 	save, replace 
 	
@@ -432,12 +433,13 @@ use MIDUS3.dta, clear
 	}
 
 *Create co-occurrence index 1 
-	egen ccamco1 rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
+	egen ccamco1 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
 		ccam14 ccam15 ccam16), missing
 		
 *Create co-occurrence index 2 
-	egen ccamco2 rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
-		ccam14 ccam15 ccam16 ccam17 ccam18 ccam19), missing
+*2019-11-20 cam17-19 not coded yet. Leave out for now
+*	egen ccamco2 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
+*		ccam14 ccam15 ccam16 ccam17 ccam18 ccam19), missing
 
 	save, replace 
 
@@ -451,7 +453,7 @@ use MIDUS1.dta, clear
 	egen acamme1 = rowmean(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 ///
 		acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16)
 *Check that egen ran correctly 
-	assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
+	capture assert acamme1 == (acam1 + acam2 + acam3 + acam4 + acam5 + acam6 + acam7 + ///
 		acam8 + acam9 + acam10 + acam11 + acam12 + acam13 + acam14 + acam15 + acam16)/16
 	*252 false- missing on one or more cams. 
 	
@@ -465,8 +467,9 @@ use MIDUS2.dta, clear
 		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16)
 		
 *Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3)
-	egen bcamme2 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
-		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19)
+*2019-11-20 cam17-19 not coded yet. Leave out for now
+*	egen bcamme2 = rowmean(bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 ///
+*		bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19)
 		
 save, replace
 		
@@ -478,8 +481,9 @@ use MIDUS3.dta, clear
 		ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16)
 		
 *Create new var that is the average across CAMs 1-19 (included at Waves 2 and 3) 
-	egen ccamme2 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
-		ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16 ccam17 ccam18 ccam19)
+*2019-11-20 cam17-19 not coded yet. Leave out for now
+*	egen ccamme2 = rowmean(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ///
+*		ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16 ccam17 ccam18 ccam19)
 		
 save, replace 
 

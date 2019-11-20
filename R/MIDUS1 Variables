@@ -17,15 +17,27 @@ Drinking
 (A2DB9 daily diary) 
 Physical (moderate and vigorous by season) 
 A1SA20 A1SA21 A1SA19 A1SA18
+	Daily diary A2DA4A
 
 
 Socioeconomic Variables 
+Income 
+	ahhinc
+Financial Resources
+	Difficult to Pay Monthly Bills 
+	A1SJ7 
+	
+
 
 
 Health Outcomes 
 A1PA4 A1PA5
 
 Controls
+Age
+	A1PRAGE_2019 
+Marital Status 
+	A1PB17
 
 
 Coded in STATA
