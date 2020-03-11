@@ -34,3 +34,11 @@ experiences- no cog or bio for MIDUS1)
 - Renamed MIDUS2 CAM vars, SES, and health outcomes (biomarkers and chronic conditions) 
 - MAJOR WIN! Found diet and exercise variables in the biomarker data for MIDUS2. Located under Biomarker>Medical History on the collectia portal site. Added to the MIDUS2vars.txt doc 
 - Renamed insurance, locus of control, religious/spiritual, and traditional health behaviors variables in the renaming script. 
+
+# 2020-03-11
+- to do: rename controls (age, race, ethnicity, sex, marital status) 
+- Clean: CAMs, SES, health outcomes, traditional health behaviors, controls (insurance, LOC, religious/spirituality, age, sex, race/ethnicity, marital status)
+- Added biomarker diet and exercise variables to the merged file. 
+- Finished renaming MIDUS2 variables. Refined Merge script- down to 100 variables. 
+- Completed tutorial on regular expressions to help with editing code quickly
+- Tomorrow: start by cleaning CAMs, create dummy variables and an index.  
