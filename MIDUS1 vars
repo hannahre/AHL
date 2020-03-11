@@ -1,0 +1,181 @@
+# MIDUS1 Variables
+# Hannah Andrews 
+# 2020-02-28
+
+M2ID
+M2FAMNUM
+SAMPLMAJ
+A1STATUS
+A1PAGE_M2		Respondent's calculated age at MIDUS 1 Project 1 phone interview
+A1PBYEAR		Respondent's birth year at MIDUS 1 Project 1 phone interview
+A1PRSEX			Respondent's sex
+TOT_SIBS		Total siblings including Main R
+ZYGCAT			Zygotic category
+A1PA4			Physical health self-evaluated
+A1PA5			Mental/emotional health self-evaluated
+A1PA40			Cigarettes per day during heaviest year (current smoker)
+A1PA43			Now smoke cigarettes regularly
+A1PA44			Cigarettes per day during heaviest year (current smoker)
+	
+A1PDEPAF		Depressed Affect (continuous)
+A1PDEPAD		Depressed Affect (binary)
+A1PANXIE		Anxiety Disorder (continuous)
+A1PPANIC		Panic Attack (continuous)
+A1PB1			Highest level of education completed
+A1POCC			Respondent current occupation
+A1PIND			Respondent current industry
+A1POCMJ			R's current occupation - major groups
+A1PINMJ			R's current industry - major groups
+A1PB3A			Current employment - Working
+A1PB3B			Current employment - Self-employed
+A1PB3C			Current employment - Unemployed
+A1PB3D			Current employment - Temporarily laid off
+A1PB3E			Current employment - Retired
+A1PB3F			Current employment - Homemaker
+A1PB3G			Current employment - Full-time student
+A1PB3H			Current employment - Part-time student
+A1PB3I			Current employment - Maternity or sick leave
+A1PB3J			Current employment - Permanently disabled
+A1PB3K			Current employment - Other (specify)
+A1PB17			Marital status currently
+A1PB24			Cohabitation with partner currently
+A1PSAGE			Age of spouse/partner
+A1PB27			Spouse/partner highest level of education completed
+A1POCCS			Spouse/Partner occupation
+A1PINDS			Respondent current industry
+A1POCSMJ		Spousal occupation - major groups
+A1PINSMJ		Spousal industry - major groups
+A1SS7			Which best describes your race?
+A1PD2			Control over life in general at present
+A1SA4			Rate control over health
+A1SA5			Rate thought/effort put into health
+A1SHLOCS		Health Locus of Control - Self
+A1SHLOCO		Health Locus of Control - Others
+A1SCHRON		Number of Chronic Conditions (12 months)
+A1SCHROX		Having Any Chronic Conditions (12 months)
+A1SRXMED		Total Numbers of RX medicine taking (30 days)
+A1SRXMEX		Took any RX medicine (30 days)
+A1SA11A			Takes multi-vitamins regularly
+A1SA11B
+A1SA11C
+A1SA11D
+A1SA11E
+A1SVITAM
+A1SA18
+A1SA19
+A1SVIGOR
+A1SA20
+
+A1SA21
+A1SMODER
+A1SWSTHI
+A1SBMI
+A1SA34
+A1SA35
+A1SUSEMD
+A1SA36A
+A1SA36B
+A1SA36C
+A1SA36D
+A1SA37A
+A1SA37B
+A1SA37C
+A1SA37D
+A1SUSEMH
+
+A1SA39A
+A1SA39B
+A1SA39C
+A1SA39D
+A1SA39E
+A1SA39F
+A1SA39G
+A1SA39H
+A1SA39I
+A1SA39J
+A1SA39K
+A1SA39L
+A1SA39M
+A1SA39N
+A1SA39O
+A1SA39P
+
+A1SA40A
+A1SA40B
+A1SA40C
+A1SA40D
+A1SA40E
+A1SA40F
+A1SA40G
+A1SA40H
+A1SA40I
+A1SA40J
+A1SC1A
+A1SC1B
+A1SC1C
+A1SC1D
+A1SC1E
+A1SC1F
+A1SC1G
+A1SC1H
+A1SPWBA
+A1SPWBE
+A1SPWBG
+A1SCTRL
+A1SCONST
+A1SMASTE
+A1SAGENC
+A1SAGREE
+A1SEXTRA
+A1SNEURO
+A1SCONS
+A1SOPEN
+A1SPERSI
+A1SCHANG
+
+A1SREAPP
+A1SDIREC
+A1STODAY
+A1SFORSG
+A1SINSGH
+A1SI21
+A1SJ6
+A1SJ7
+A1SHHTOT
+A1SL4
+A1SHOMET
+A1SKINNE
+A1SFDSNE
+A1SSPCRI
+A1SR1
+A1SR2A
+
+A1SR2B
+A1SR2C
+A1SR2D
+A1SR2E
+A1SR2F
+A1SR2G
+A1SR2H
+A1SR2I
+A1SR4
+A1SR5
+A1SR6
+A1SE2
+A1SE3
+A1SE4
+A1SE6
+A1SE7
+A1SE9
+A1SE10
+A1PC2
+A1PC3
+
+A1POCCD
+A1PINDD
+A1PC8
+A1PC9
+A1POCCM
+A1PINDM
+A1PC14
+A1PC15

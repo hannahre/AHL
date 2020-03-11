@@ -58,6 +58,9 @@ acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam
 describe(MIDUS1$acam16)
 
 
+############################################################################
+# MIDUS 2 Subsetting
+############################################################################
 
 
 

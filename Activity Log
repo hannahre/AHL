@@ -1,0 +1,36 @@
+# Dissertation Activity Log 
+# Hannah Andrews 
+
+(ctrl+i splits lines according to the width of the window)
+
+# 2020-02-28 Friday 
+- Downloaded MIDUS 1 from ICPSR: Project 1 and Project 2 (survey and daily 
+experiences- no cog or bio for MIDUS1)
+
+# 2020-03-04 
+- August 7th is the latest I can defend to graduate in May. 
+- Do data cleaning and as much analysis as I need to to keep things moving in stata. 
+- Data cleaning: 40 hours; 5 hours per week, March and April 
+- Created THE PLAN with lisannette.
+- Alcohol variable: Found in daily diary data. Available for M1 and M2, A2DB9 and B2DB3
+- Cigarette variable: Found in daily diary data. M1 and M2. A2DB8 and B2DB2
+- Need to merge daily diary 
+
+# 2020-03-06
+- Gah really want to code and clean in R. 
+- Reading on data cleaning in R steps. 
+
+# 2020-03-09
+- Meeting with Terrence today- talk with him about biomarkers. 
+- To do: CAM variables, SES variables, THL variables, health variables, controls. 
+- Finish coding by end of March. 13 hours per week. Working on CAM recodes for MIDUS1 now. 
+- Stopped at line 56 in data-cleaning.R
+
+# 2020-03-10
+- Adding cig and alcohol variables from MIDUS2 daily diary to MIDUS2 data 
+- Rearranged MIDUS2 R git folders to match the merge+subset-MIDUS2 r script (stored in INFO 523 folder right now) 
+- Start writing data description this week so that I understand it more and so I can get feedback from Terrence on what to do with the twins/siblings/missing data. 
+- SCRIPT FLOW: Renaming MIDUS2 vars; so far two r scripts to be run (1) Merge, (2) Renaming. 
+- Renamed MIDUS2 CAM vars, SES, and health outcomes (biomarkers and chronic conditions) 
+- MAJOR WIN! Found diet and exercise variables in the biomarker data for MIDUS2. Located under Biomarker>Medical History on the collectia portal site. Added to the MIDUS2vars.txt doc 
+- Renamed insurance, locus of control, religious/spiritual, and traditional health behaviors variables in the renaming script. 
