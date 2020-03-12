@@ -1,0 +1,75 @@
+File Manifest for ICPSR 26841
+
+Ryff, Carol D., and David M. Almeida. Midlife in the United States (MIDUS
+2): Daily Stress Project, 2004-2009. ICPSR26841-v2. Ann Arbor, MI: Inter-
+university Consortium for Political and Social Research [distributor],
+2017-11-20. http://doi.org/10.3886/ICPSR26841.v2
+
+Details on the version history can be found below the file listings.
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    26841-descriptioncitation.pdf       -       -         -       2018-04-13  -
+
+    26841-related_literature.txt        -       -         -       daily       -
+
+    26841-manifest.txt                  -       -         -       daily       -
+
+
+DS0001 Midlife in the United States (MIDUS 2): Daily Stress Project, 2004-
+2009
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    26841-0001-Codebook.pdf             -       -         -       2017-11-20  0ee50de1f72b5a2943c5d3dc987b235b
+
+    26841-0001-Data.dta                 -       16,176    546     2017-11-20  db2979b149ec83a9a647333896880cfb
+
+    26841-0001-Data.rda                 -       16,176    546     2017-11-20  acb889eae20b26a4972e7a3aba11b8ce
+
+    26841-0001-Data.sav                 -       16,176    546     2017-11-20  28b107bc50d5c0bf73ab9e7124d152ad
+
+    26841-0001-Data.stc                 -       16,176    546     2017-11-20  af9a3d706a3697e64f011d3fb8893347
+
+    26841-0001-Data.tsv                 -       16,176    546     2017-11-20  a622f469dd7d68b815ef55aa8fba6254
+
+    26841-0001-Data.txt                 765     16,176    546     2017-11-20  b797e8d16e628c8a0504cabdd0146c3d
+
+    26841-0001-Documentation-description.pdf -       -         -       2017-11-20  210ac85747f50c7a8cb426a13da34b33
+
+    26841-0001-Documentation-readme.pdf -       -         -       2017-11-20  879e4e4d1afaaff6ec6cdeb52aa48058
+
+    26841-0001-Documentation-saliva.pdf -       -         -       2017-11-20  77f4fa676d7d3434bb46fbd4685c1c43
+
+    26841-0001-Documentation-scales.pdf -       -         -       2017-11-20  05324b6ca4560b9d9bbdaa4f413cf30a
+
+    26841-0001-Documentation-tele_interview.pdf -       -         -       2017-11-20  b1ff3043958572f8c358b0437f3b06d1
+
+    26841-0001-Manual-field_notes.pdf   -       -         -       2017-11-20  d1479c4455cfbb011a392ec5d85ff7db
+
+    26841-0001-Manual-tele_interview.pdf -       -         -       2017-11-20  9c1f4b231db3cb4bb66977594a2cbd1e
+
+    26841-0001-Setup.dct                -       -         -       2017-11-20  c92862eebb7655aa35435bc8371321b4
+
+    26841-0001-Setup.do                 -       -         -       2017-11-20  bbbe2387ba86d30b228401dd1a3b752f
+
+    26841-0001-Setup.sas                -       -         -       2017-11-20  9e7f99dd4a3013f58cdcfc732ef56878
+
+    26841-0001-Setup.sps                -       -         -       2017-11-20  dde416c06fbeae15a9b5816175cef933
+
+    26841-0001-Supplemental_syntax.do   -       -         -       2017-11-20  6fd22e43ba9ef98fc54a4416aa7937a0
+
+    26841-0001-Supplemental_syntax.sas  -       -         -       2017-11-20  8e06d8b14dd7cf9232ba0ce4ffbe9a2e
+
+
+Version History
+
+2017-11-20 This collection is being updated, per request from the PI, to
+reflect a title change; the corresponding downloadable files are only being
+updated to reflect the title change, where applicable. Additionally, an R
+data file is provided in this update.
