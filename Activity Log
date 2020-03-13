@@ -29,19 +29,39 @@ experiences- no cog or bio for MIDUS1)
 # 2020-03-10
 - Adding cig and alcohol variables from MIDUS2 daily diary to MIDUS2 data 
 - Rearranged MIDUS2 R git folders to match the merge+subset-MIDUS2 r script (stored in INFO 523 folder right now) 
-- Start writing data description this week so that I understand it more and so I can get feedback from Terrence on what to do with the twins/siblings/missing data. 
+- Start writing data description this week so that I understand it more and so I can get feedback from Terrence on 
+what to do with the twins/siblings/missing data. 
 - SCRIPT FLOW: Renaming MIDUS2 vars; so far two r scripts to be run (1) Merge, (2) Renaming. 
 - Renamed MIDUS2 CAM vars, SES, and health outcomes (biomarkers and chronic conditions) 
-- MAJOR WIN! Found diet and exercise variables in the biomarker data for MIDUS2. Located under Biomarker>Medical History on the collectia portal site. Added to the MIDUS2vars.txt doc 
-- Renamed insurance, locus of control, religious/spiritual, and traditional health behaviors variables in the renaming script. 
+- MAJOR WIN! Found diet and exercise variables in the biomarker data for MIDUS2. Located under Biomarker>Medical 
+History on the collectia portal site. Added to the MIDUS2vars.txt doc 
+- Renamed insurance, locus of control, religious/spiritual, and traditional health behaviors variables in the 
+renaming script. 
 
 # 2020-03-11
 - to do: rename controls (age, race, ethnicity, sex, marital status) 
-- Clean: CAMs, SES, health outcomes, traditional health behaviors, controls (insurance, LOC, religious/spirituality, age, sex, race/ethnicity, marital status)
+- Clean: CAMs, SES, health outcomes, traditional health behaviors, controls (insurance, LOC, religious/spirituality, 
+age, sex, race/ethnicity, marital status)
 - Added biomarker diet and exercise variables to the merged file. 
 - Finished renaming MIDUS2 variables. Refined Merge script- down to 100 variables. 
 - Completed tutorial on regular expressions to help with editing code quickly
 - Tomorrow: start by cleaning CAMs, create dummy variables and an index.  
 
 # 2020-03-12
-- 
+- Labeled MIDUS2 variables in Renaming script. 
+- Scripts so far: 1-Merge, 2-Rename, 3-cleaning. MIDUS2 output data for each is MIDUS2-# to corresponding script. 
+E.g. output for 1-merge is MIDUS2-1, output for 2-Rename is MIDUS2-2.
+- Named the dataframe (NOT FILE) MIDUS2 in the merge file. So even when saved as different file names it shows up as MIDUS2 in the global environment... Not sure what to do about it. Leaving as is. 
+- https://www.r-bloggers.com/r-code-best-practices/ r code best practices- implement soon. 
+- Converted bcams to dummies, factors, and labeled values. 
+- Next R lab- ask Jeff how to go about checking recodes in R. I mutated the columns, so cannot compare to old vars. 
+- Do first tomorrow: https://stackoverflow.com/questions/38544325/rowsums-na-na-gives-0 Rows with all NAs go to 0 in bCamCount. Need to fix. In 3-cleaning script. 
+
+
+
+
+
+
+
+
+
