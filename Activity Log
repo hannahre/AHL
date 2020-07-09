@@ -51,11 +51,28 @@ age, sex, race/ethnicity, marital status)
 - Labeled MIDUS2 variables in Renaming script. 
 - Scripts so far: 1-Merge, 2-Rename, 3-cleaning. MIDUS2 output data for each is MIDUS2-# to corresponding script. 
 E.g. output for 1-merge is MIDUS2-1, output for 2-Rename is MIDUS2-2.
-- Named the dataframe (NOT FILE) MIDUS2 in the merge file. So even when saved as different file names it shows up as MIDUS2 in the global environment... Not sure what to do about it. Leaving as is. 
+- Named the dataframe (NOT FILE) MIDUS2 in the merge file. So even when saved as different file names it shows up as MIDUS2 in the global 
+environment... Not sure what to do about it. Leaving as is. 
 - https://www.r-bloggers.com/r-code-best-practices/ r code best practices- implement soon. 
 - Converted bcams to dummies, factors, and labeled values. 
 - Next R lab- ask Jeff how to go about checking recodes in R. I mutated the columns, so cannot compare to old vars. 
-- Do first tomorrow: https://stackoverflow.com/questions/38544325/rowsums-na-na-gives-0 Rows with all NAs go to 0 in bCamCount. Need to fix. In 3-cleaning script. 
+- Do first tomorrow: https://stackoverflow.com/questions/38544325/rowsums-na-na-gives-0 Rows with all NAs go to 0 in bCamCount. Need to fix. In 
+3-cleaning script. 
+
+# 2020-03-13
+- Starting with the NAs problems in the cam count index; Success! 
+- Read up on tidy data; reading up on editrules package 
+- Finding editrules very confusing right now. Moving on to coding and cleaning other variables 
+- Started SES inspection, but would like to write edit rules... Trying to figure that out 
+- Do first next session: start writing edit rules or just keep checking variables in MIDUS2 so I can do association rules by Wednesday next week.
+
+# 2020-03-19
+- Just checked in. Tomorrow: start writing edit rules! You got this. 
+
+# 2020-03-20
+- 
+
+
 
 
 

@@ -1,0 +1,22 @@
+# numerical rules 
+
+
+# categorical rules 
+bEverAcupuncture %in% c("No", "Yes")
+         bEverBiofeedback = B1SA56B, 
+         bEverChiropractor = B1SA56C, 
+         bEverEnergy = B1SA56D, 
+         bEverMoveTherapy = B1SA56F,   
+         bEverHerbTherapy = B1SA56G, 
+         bEverMegaVitamins = B1SA56H,  
+         bEverHomeopathy = B1SA56I, 
+         bEverHypnosis = B1SA56J, 
+         bEverImageTech = B1SA56K,  
+         bEverMassage = B1SA56L, 
+         bEverPray = B1SA56M, 
+         bEverMeditate = B1SA56N,  
+         bEverSpecialDiet = B1SA56Q, 
+         bEverSpiritHeal = B1SA56R, 
+         bEverOtherHeal = B1SA56S)
+
+# mixed rules 
