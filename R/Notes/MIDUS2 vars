@@ -1,0 +1,191 @@
+M2ID
+M2FAMNUM	MIDUS 2 Family number
+SAMPLMAJ	Major sample identification
+B1STATUS	Completion status of M2 respondents
+
+B1PRSEX		Respondent Sex (M/F) 							bSex
+B1PAGE_M2	Age 											bAge
+B1PF8_A		Which best describes your race?					bRace
+B1PF3		Ethnic group best describes background			bEthnicity
+B1PB19		Marital status currently						bMaritalStatus
+
+B1PF7A		Racial origins #1	(parents/grandparents race) 							
+B1PF7B		Racial origins #2								
+B1PF7C		Racial origins #3								
+B1PF7D		Racial origins #4								
+B1PF8B		Racial background #2
+
+B1PF3		Ethnic group best describes background
+B1PF2A		Ethnic group #1
+B1PF2B		Ethnic group #2
+B1PF2C		Ethnic group #3
+
+
+B1PA1		Physical Health - self evaluated				bSubjectivePhysicalHealth
+B1PA2		Mental/emotional health self evaluated			bSubjectiveMentalHealth
+B1PA38A		Ever smoked cigarettes regularly				bEverSmokeRegularly
+B1PA37		Age had first cigarette							bAgeFirstCig
+B1PANHED	Anhedonia (continuous)						
+B1PDEPAF	Depressed Affect (continuous)
+B1PDEPRE	Depressed Affect + Anhedon (continuous)			bDepression
+B1PANXIE	Anxiety Disorder (continuous)				
+B1PPANIC	Panic Attack (continuous)						bPanicAttack
+
+
+B1SSPIRI	Spirituality									bSpirituality
+B1SRELID	Religious Identification						bReligiousId
+B1SRELPR	Private Religious Practices						bPrivReligPractice
+B1SRELSU	Religious Support								bReligiousSupport
+B1SRELCA	Religious/Spiritual Coping A				
+B1SRELCB	Religious/Spiritual Coping B
+B1SMNDFU	Mindfulness										bMindfulness
+B1SSPRTE	Daily Spiritual Experiences						bDailySpiritExp
+
+B1SHLOCS	Health Locus of control-Self					bHealthLOCSelf	
+B1SHLOCO	Health Locus of control-Others					bHealthLOCOther
+
+B1SC1		Covered by hlthcare insurance currently 		bHasHealthInsurance
+B1SC3A		R: Insurer directly provides hlth insur			bPrivateInsurance
+B1SC3B		R: Employer provides health insurance			bEmployerInsurance
+B1SC3C		R: SP's employer provides hlth insurance		bSpEmployerInsurance
+B1SC3D		R: Union provides health insurance				bUnionInsurance
+B1SC3E		R: SP's union provides health insurance			bSpUnionInsurance
+B1SC3F		R: Medicare provides health insurance			bMedicareInsurance
+B1SC3G		R: Medicaid/oth provides hlth insurance			bMedicaidInsurance
+B1SC3H		R: Military provides health insurance			bMilitaryInsurance
+B1SA52		Needed med care, couldn't get it (12 mo)		bUnmetMedCareNeeds
+B1SUSEMD	Number Times Seeing Medical Doctor (12 mo)		bMDVisitsLastYear
+
+B1SA54A		# times psychiatrist for ment hlth (12mo)		bPsychVisitsLastYear
+B1SA54B		# time genrl doctor for mentl hlth(12mo)		bMHGenVisitsLastYear
+B1SA54C		# time counselor for mental hlth (12 mo)		bMHCounsel
+
+B1SA56A		Acupuncture frequency (12 mo)					bEverAcupuncture
+B1SA56B		Biofeedback frequency (12 mo)					bEverBiofeedback
+B1SA56C		Chiropractor frequency (12 mo)					bEverChiropractor
+B1SA56D		Energy healing frequency (12 mo)				bEverEnergy
+B1SA56F		Exercise/movement therapy freq (12 mo)			bEverMoveTherapy
+B1SA56G		Herbal therapy frequency (12 mo)				bEverHerbTherapy
+B1SA56H		High dose mega-vitamins frequency (12mo)		bEverMegaVitamins
+B1SA56I		Homeopathy frequency (12 mo)					bEverHomeopathy
+B1SA56J		Hypnosis frequency (12 mo)						bEverHypnosis
+B1SA56K		Imagery techniques frequency (12 mo)			bEverImageTech
+B1SA56L		Massage therapy frequency (12 ms)				bEverMassage
+B1SA56M		Prayer/other spiritual freq (12 mo)				bEverPray
+B1SA56N		Relaxation/mediation frequency (12 mo)			bEverMeditate
+B1SA56Q		Special diet frequency (12 mo)					bEverSpecialDiet
+B1SA56R		Spiritual healing by others freq (12 mo)		bEverSpiritHeal
+B1SA56S		Oth non-traditional therapy freq (12 mo)		bEverOtherHeal
+
+B1SA30A		Vigorous job activity frequency (summer)
+B1SA30B		Vigorous job activity frequency (winter)
+B1SA30C		Vigorous chores activity freq (summer)
+B1SA30D		Vigorous chores activity freq (winter)
+B1SA30E		Vigorous leisure activity freq (summer)
+B1SA30F		Vigorous leisure activity freq (winter)
+B1SA31A		Moderate job activity frequency (summer)
+B1SA31B		Moderate job activity frequency (winter)
+B1SA31C		Moderate chores activity freq (summer)
+B1SA31D		Moderate chores activity freq (winter)
+B1SA31E		Moderate leisure activity freq (summer)
+B1SA31F		Moderate leisure activity freq (winter)
+B1SA32A		Light job activity frequency (summer)
+B1SA32B		Light job activity frequency (winter)
+B1SA32C		Light chores activity frequency (summer)
+B1SA32D		Light chores activity frequency (winter)
+B1SA32E		Light leisure activity freq (summer)
+B1SA32F		Light leisure activity freq (winter)
+
+B4HMETMW	Total number of Metabolic Equivalent of Task (MET) minutes per week	bMetMinPerWk
+			(physical activity measure)
+
+B4SSQ_S3	SLEEP Component 3 - Sleep Duration									bSleepDuration
+
+B1SA57A		Hours of sleep on workdays
+B1SA57B		Minutes of sleep on workdays
+B1SA58A		Hours of sleep on non-workdays
+B1SA58B		Minutes of sleep on non-workdays
+B1SA61A		Trouble fall asleep frequency	
+B1SA61B		Wake up during the night frequency
+B1SA61C		Wake up too early frequency
+B1SA61D		Feel unrested during the day frequency
+
+B2DB2		How many cigarettes did you smoke?									bMeanCig					average across all daily diary days 
+B2DB3		HOW MANY DRINKS DID YOU HAVE?										bMeanAlc					average across all daily diary days 
+	
+B4H19		Average day, how many glasses of water do you drink?				bDailyWater	
+B4H20		Average day, how many sugared beverages do you drink?				bDailySugBev
+B4H21		Average day, how many servings of fruit and vegetables do you eat?	bDailyFruitVeg
+B4H22		Average day, how many servings of whole grain do you eat?			bDailyWholeGrains
+B4H23A		Average week, how often do you eat ocean (oily) fish?
+B4H23B		Average week, how often do you eat beef or high fat meat?
+B4H23C		Average week, how often do you eat lean meat?
+B4H23D		Average week, how often do you eat non-meat protein foods?
+B4H24		Average week, how often do you eat at a fast food restaurant or 	bWkFastfood
+			order food for takeout or delivery?
+
+
+
+
+B1SEARN1	HH total earning income:original value			bTotHHEarnedInc
+B1SPNSN1	HH total pension income:original value			
+B1SSEC1		HH total soc.sec income:original value			
+B1SG7		Difficult to pay monthly bills					bBillsDifficulty
+B1SG23		$ left or owed if cash assets & pd debts		bMoneyAfterDebts	
+B1SG24A		Amt assets/$ owed/left over						bAssetsAfterDebts
+B1POCC		Occupation code - Respondent					bRespOccupation
+B1POCMAJ	R's current occupation - major groups			bRespOccupMajor
+
+B1STINC1	HH total income(wage,pension,ssi,gov asst):original value	bTotHHInc
+B1PB1		Highest level of education completed			bEducation
+			
+
+				
+B1PWGHT1	Survey Weight
+B1PWGHT2	Survey Weight
+B1PWGHT3	Survey Weight
+B1PWGHT4
+B1PWGHT5
+B1PWGHT6
+B1PWGHT7
+B1PWGHT8
+B1PWGHT9
+
+B4HSYMX 	Any Symptoms and Chronic Conditions?--Yes/No				bAnyChronic
+B4HSYMN		Total number of Symptoms and Chronic Conditions				bTotChronic
+B4PBMI		BMI (Body Mass Index)										bBmi
+B4P1GS		Average BP(sitting) systolic								bBloodPressureSys
+B4P1GD		Average BP(sitting) diastolic								bBloodPressureDia
+B4BLDL		Blood LDL Cholesterol (mg/dL)								bCholLDL
+B4BCHOL		Blood Total Cholesterol (mg/dL)								bCholTot
+B4BHDL		Blood HDL Cholesterol (mg/dL)								bCholHDL
+B4BTRIGL	Blood Triglycerides (mg/dL)									bTriglycerides
+B4BDHEA		Blood DHEA (ng/mL)											bDHEA
+B4BDHEAS	Blood DHEA-S (ug/dL)										bDHEAS
+B4BCRP		Blood C-Reactive Protein (ug/mL)							bCReactivePro
+B4BIL6		Blood Serum IL6 (pg/mL)										bIL6	
+B4BMSDIL6	Blood Serum MSD IL6 (pg/mL)									bMsdIL6
+B4BSIL6R	Blood Serum Soluble IL6 Receptor (pg/mL)					bIL6Receptor
+B4BHA1C		Blood Hemoglobin A1c %										bHemoglobinA1c
+B4BGLUC		Blood Fasting Glucose levels mg/dL							bGlucose
+B4BINSLN	Blood Fasting Insulin levels uIU/mL							bInsulin
+B4BIGF1		Blood Fasting IGF1 (Insulin-like Growth Factor 1) ng/mL)	bInsulinGrowthF
+B4BCORTL	Urine Cortisol (ug/dL)										bCortisol
+B4BNECL		Ratio Urine Norepinephrine/Cortisol							
+B4BCLCRE	Urine Cortisol adjusted for Urine Creatinine (ug/g)			
+B4BSCL3A	Saliva cortisol Post-orthostatic average (nmol/L)			
+B4BSCL42	Saliva cortisol final dupl#2 (nmol/L)
+B4BEPIN		Urine Epinephrine (ug/dL)									bEpinephrine
+B4BEPI12	Urine Epinephrine 12 hour (ug/12h)
+B4BEPCRE	Urine Epinephrine adjusted for Urine Creatinine (ug/g)
+B4BNECL		Ratio Urine Norepinephrine/Cortisol
+B4BNOREP	Urine Norepinephrine (ug/dL)								bNorepinephrine
+B4BNE12		Urine Norepinephrine 12 hour (ug/12h)					
+B4BNOCRE	Urine Norepinephrine adjusted for Urine Creatinine (ug/g)
+B4BDOPA		Urine Dopamine (ug/dL)										bDopamine
+B4BDOCRE	Urine Dopamine adjusted for Urine Creatinine (ug/g)
+B4BDOP12	Urine Dopamine 12 hour (ug/12h)
+
+B4QCESD		CESD: Center for Epidemiologic Studies Depression Scale		bCesDepression
+B4QPS_PS	Perceived Stress Scale										bPerceivedStress
+

@@ -1,0 +1,179 @@
+Variable	Variable Description 	OV M1	OV M2	OV M3	OV MR	NV M1	NV M2	NV M3	New Variable Description	Notes 	Recoded across all waves
+Sample ID Variables											
+Respondent ID 			M2ID								
+	MIDUS 2 Family number		M2FAMNUM								
+	Major sample identification		SAMPLMAJ								
+	Completion status of M2 respondents		B1STATUS								
+Demographics											
+Sex	Respondent Sex(M/F)	A1PRSEX	B1PRSEX	C1PRSEX		aSex	bSex	cSex		Find if there are any discrepancies; use wave 1	
+Age	Age 	A1PAGE_M2	B1PAGE_M2	B1PAGE_M2		aAge	bAge	cAge		Use bAge (age from MIDUS II)	
+Race	Which best describes your race?	A1SS7	B1PF8_A	C1PF8A1		aRace	bRace	cRace			
+Ethnicity	Ethnic group best describes background		B1PF3	C1PF3			bEthnicity	cEthnicity			
+Marital Status	Marital status currently	A1PB17	B1PB19	C1PB19		aMaritalStatus	bMaritalStatus	cMaritalStatus			
+	Racial origins #1		B1PF7A				(parents/grandparents race) 				
+	Racial origins #2		B1PF7B								
+	Racial origins #3		B1PF7C								
+	Racial origins #4		B1PF7D								
+	Racial background #2		B1PF8B								
+	Ethnic group #1		B1PF2A								
+	Ethnic group #2		B1PF2B								
+	Ethnic group #3		B1PF2C								
+Mental Health Outcomes											
+	Mental/emotional health self evaluated		B1PA2				bSubjectiveMentalHealth				
+	Anhedonia (continuous)		B1PANHED								
+	Depressed Affect (continuous)		B1PDEPAF								
+Depression 	Depressed Affect + Anhedon (continuous)	A1PDEPRE	B1PDEPRE	C1PDEPRE	RA1PDEPRE	aDepression	bDepression	cDepression			
+Anxiety	Anxiety Disorder (continuous)	A1PANXIE	B1PANXIE	C1PANXIE	RA1PANXIE	aAnxiety	bAnxiety	cAnxiety			
+	Panic Attack (continuous)		B1PPANIC				bPanicAttack				
+CESD Depression Scale	CESD: Center for Epidemiologic Studies Depression Scale		B4QCESD		RA4QCESD		bCesDepression				
+Perceived Stress	Perceived Stress Scale		B4QPS_PS		RA4QPS_PS		bPerceivedStress				
+Religiosity/Sprituality											
+Spirituality 	Spirituality (How spiritual are you? How important is spirituality in your life?)		B1SSPIRI	C1SSPIRI	RA1SSPIRI		bSpirituality	cSpirituality			
+Religious Identification 	Religious Identification (How important is religion in your life? Etc)		B1SRELID	C1SRELID	RA1SRELID		bReligiousId	cReligiousId			
+Freq. Private Religious Practices	"Private Religious Practices (frequency of praying, meditating, chanting, reading the bible in private)"		B1SRELPR	C1SRELPR	RA1SRELPR		bPrivReligPractice	CPrivReligPractice			
+Religious Support	Level of support from religious community (help if you're sick? Do they criticize you?)		B1SRELSU	C1SRELSU	RA1SRELSU		bReligiousSupport	cReligiousSupport			
+R/S Coping Practices	"Religious/Spiritual Coping A (When you are struggling or making a difficult decision, how often do you turn to your practices or beliefs?)"		B1SRELCA	C1SRELCA	RA1SRELCA		bRSCopingPractice	cRSCopingPractice			
+R/S Coping Beliefs	Religious/Spiritual Coping B (Turning to connection with God/greater spiritual force to cope)		B1SRELCB	C1SRELCB	RA1SRELCB		bRSCopingBeliefs	cRSCopingBeliefs			
+Mindfulness	"Mindfulness (I'm mindful/aware of my self and my environment, etc)"		B1SMNDFU	C1SMNDFU	RA1SMNDFU		bMindfulness	cMindfulness			
+Daily Spiritual Experiences	"Daily Spiritual Experiences (feeling deep inner peace and harmony, appreciation for the beauty of life, etc.)"		B1SSPRTE	C1SSPRTE	RA1SSPRTE		bDailySpiritExp	cDailySpiritExp			
+Psychosocial 											
+Health Locus of Control-Self	Health Locus of control-Self (My health depends on things I can do)	A1SHLOCS	B1SHLOCS	C1SHLOCS	RA1SHLOCS	aHealthLOCSelf	bHealthLOCSelf	cHealthLOCSelf			
+Health Locus of Control-Other	Health Locus of control-Others (When I am sick it is in the hands of the doctor; it is difficult for me to get good medical care)	A1SHLOCO	B1SHLOCO	C1SHLOCO	RA1SHLOCO	aHealthLOCOther	bHealthLOCOther	cHealthLOCOther			
+Health Care Access and Utilization											
+Health Insurance Currently (Y/N)	Covered by hlthcare insurance currently 		B1SC1	C1SC1	RA1SC1	aHasHealthInsurance	bHasHealthInsurance	cHasHealthInsurance			
+Private Health Insurance	R: Insurer directly provides hlth insur	A1SC1A	B1SC3A	C1SC3A	RA1SC3A	aPrivateInsurance	bPrivateInsurance	cPrivateInsurance			
+Employer Provided Health Insurance	R: Employer provides health insurance	A1SC1B	B1SC3B	C1SC3B	RA1SC3B	aEmployerInsurance	bEmployerInsurance	cEmployerInsurance			
+Spouse Employer Provided Health Insurance	R: SP's employer provides hlth insurance	A1SC1C	B1SC3C	C1SC3C	RA1SC3C	aSpEmployerInsurace	bSpEmployerInsurance	cSpEmployerInsurance			
+Union Provided Health Insurance	R: Union provides health insurance	A1SC1D	B1SC3D	C1SC3D	RA1SC3D	aUnionInsurance	bUnionInsurance	cUnionInsurance			
+Spouse Union Provided Health Insurance	R: SP's union provides health insurance	A1SC1E	B1SC3E	C1SC3E	RA1SC3E	a	bSpUnionInsurance				
+Medicare	R: Medicare provides health insurance	A1SC1F	B1SC3F	C1SC3F	RA1SC3F		bMedicareInsurance				
+Medicaid	R: Medicaid/oth provides hlth insurance	A1SC1G	B1SC3G	C1SC3G	RA1SC3G		bMedicaidInsurance				
+Military Provides Health Insurance	R: Military provides health insurance	A1SC1H	B1SC3H	C1SC3H	RA1SC3H		bMilitaryInsurance				
+Unmet Medical Care Needs	"Needed med care, couldn't get it (12 mo)"		B1SA52	C1SA48	RA1SA48		bUnmetMedCareNeeds				
+# Times saw Medical Doctor 	Number Times Seeing Medical Doctor (12 mo) (Sum of above)	A1SUSEMD	B1SUSEMD	C1SUSEMD	RA1SUSEMD		bMDVisitsLastYear				
+Psychiatrist	# times psychiatrist for ment hlth (12mo)	A1SA37A	B1SA54A	C1SA50A	RA1SA50A		bPsychVisitsLastYear				
+Gen Doc for Mental Health	# time genrl doctor for mentl hlth(12mo)	A1SA37B	B1SA54B	C1SA50B	RA1SA50B		bMHGenVisitsLastYear				
+Counselor	# time counselor for mental hlth (12 mo)	A1SA37C	B1SA54C	C1SA50C	RA1SA50C		bMHCounsel				
+Spritual Advisor 	# times religious for mental health (12 months)	A1SA37D	B1SA54D	C1SA50D	"	RA1SA50D"		bMHSpiritual				
+# Times saw Mental Health Professional 	Number of times Saw Mental Health Professional (12 months) (Sum of ABCD above)	A1SUSEMH	B1SUSEMH	C1SUSEMH	RA1SUSEMH		bMHVisitsLastYear				
+CAMs											
+Acupuncture	Acupuncture frequency (12 mo)	A1SA39A	B1SA56A	C1SA52A	RA1SA52A	aEverAcupuncture	bEverAcupuncture	cEverAcupuncture			
+Biofeedback	Biofeedback frequency (12 mo)	A1SA39B	B1SA56B	C1SA52B	RA1SA52B	aEverBiofeedback	bEverBiofeedback	cEverBiofeedback			
+Chiropractor	Chiropractor frequency (12 mo)	A1SA39C	B1SA56C	C1SA52C	RA1SA52C	aEverChiropractor	bEverChiropractor	cEverChiropractor			
+Energy Health	Energy healing frequency (12 mo)	A1SA39D	B1SA56D	C1SA52D	RA1SA52D	aEverEnergy	bEverEnergy	cEverEnergy			
+Exercise/Movement Therapy	Exercise/movement therapy freq (12 mo)	A1SA39E	B1SA56F	C1SA52F	RA1SA52F	aEverMoveTherapy	bEverMoveTherapy	cEverMoveTherapy			
+Herbal Therapy	Herbal therapy frequency (12 mo)	A1SA39F	B1SA56G	C1SA52G	RA1SA52G	aEverHerbTherapy	bEverHerbTherapy	cEverHerbTherapy			
+Megavitamins	High dose mega-vitamins frequency (12mo)	A1SA39G	B1SA56H	C1SA52H	RA1SA52H	aEverMegaVitamins	bEverMegaVitamins	cEverMegaVitamins			
+Homeopathy	Homeopathy frequency (12 mo)	A1SA39H	B1SA56I	C1SA52I	RA1SA52I	aHomeopathy	bEverHomeopathy	cHomeopathy			
+Hypnosis	Hypnosis frequency (12 mo)	A1SA39I	B1SA56J	C1SA52J	RA1SA52J	aEverHypnosis	bEverHypnosis	cEverHypnosis			
+Imagery Techniques	Imagery techniques frequency (12 mo)	A1SA39J	B1SA56K	"C1SA52K	"	RA1SA52K	aEverImageTech	bEverImageTech	cEverImageTech			
+Massage	Massage therapy frequency (12 ms)	A1SA39K	B1SA56L	C1SA52L	RA1SA52L	bEverMassage	bEverMassage	cEverMassage			
+Prayer	Prayer/other spiritual freq (12 mo)	A1SA39L	B1SA56M	C1SA52M	RA1SA52M	aEverPray	bEverPray	cEverPray			
+Meditate	Relaxation/mediation frequency (12 mo)	"A1SA39M	"	B1SA56N	"C1SA52N	"	RA1SA52N	aEverMeditate	bEverMeditate	cEverMeditate			
+Special Diet	Special diet frequency (12 mo)	A1SA39N	B1SA56Q	C1SA52Q	RA1SA52Q	aEverSpecialDiet	bEverSpecialDiet	cEverSpecialDiet			
+Spiritual Healing	Spiritual healing by others freq (12 mo)	A1SA39O	B1SA56R	C1SA52R	RA1SA52R	aEverSpiritHeal	bEverSpiritHeal	cEverSpiritHeal			
+Other Heal	Oth non-traditional therapy freq (12 mo)	A1SA39P	B1SA56S	C1SA52S	RA1SA52S	aEverOtherHeal	bEverOtherHeal	cEverOtherHeal			
+Physical Activity											
+	Vigorous job activity frequency (summer)		B1SA30A								
+	Vigorous job activity frequency (winter)		B1SA30B								
+	Vigorous chores activity freq (summer)		B1SA30C								
+	Vigorous chores activity freq (winter)		B1SA30D								
+	Vigorous leisure activity freq (summer)		B1SA30E								
+	Vigorous leisure activity freq (winter)		B1SA30F								
+	Moderate job activity frequency (summer)		B1SA31A								
+	Moderate job activity frequency (winter)		B1SA31B								
+	Moderate chores activity freq (summer)		B1SA31C								
+	Moderate chores activity freq (winter)		B1SA31D								
+	Moderate leisure activity freq (summer)		B1SA31E								
+	Moderate leisure activity freq (winter)		B1SA31F								
+	Light job activity frequency (summer)		B1SA32A								
+	Light job activity frequency (winter)		B1SA32B								
+	Light chores activity frequency (summer)		B1SA32C								
+	Light chores activity frequency (winter)		B1SA32D								
+	Light leisure activity freq (summer)		B1SA32E								
+	Light leisure activity freq (winter)		B1SA32F								
+	Total number of Metabolic Equivalent of Task (MET) minutes per week (physical activity measure)		B4HMETMW				bMetMinPerWk				
+Sleep 											
+	SLEEP Component 3 - Sleep Duration		B4SSQ_S3				bSleepDuration				
+	Hours of sleep on workdays		B1SA57A								
+	Minutes of sleep on workdays		B1SA57B								
+	Hours of sleep on non-workdays		B1SA58A								
+	Minutes of sleep on non-workdays		B1SA58B								
+	Trouble fall asleep frequency		B1SA61A								
+	Wake up during the night frequency		B1SA61B								
+	Wake up too early frequency		B1SA61C								
+	Feel unrested during the day frequency		B1SA61D								
+Smoking and Alcohol Consumption											
+	How many cigarettes did you smoke?		B2DB2				bMeanCig		average across all daily diary days 		
+	HOW MANY DRINKS DID YOU HAVE?		B2DB3				bMeanAlc		average across all daily diary days 		
+	Ever smoked cigarettes regularly		B1PA38A				bEverSmokeRegularly				
+	Age had first cigarette		B1PA37				bAgeFirstCig				
+Diet and Hydration											
+	"Average day, how many glasses of water do you drink?"		B4H19				bDailyWater				
+	"Average day, how many sugared beverages do you drink?"		B4H20				bDailySugBev				
+	"Average day, how many servings of fruit and vegetables do you eat?"		B4H21				bDailyFruitVeg				
+	"Average day, how many servings of whole grain do you eat?"		B4H22				bDailyWholeGrains				
+	"Average week, how often do you eat ocean (oily) fish?"		B4H23A								
+	"Average week, how often do you eat beef or high fat meat?"		B4H23B								
+	"Average week, how often do you eat lean meat?"		B4H23C								
+	"Average week, how often do you eat non-meat protein foods?"		B4H23D								
+	"Average week, how often do you eat at a fast food restaurant or order food for takeout or delivery?"		B4H24				bWkFastfood				
+"Income, Education, Occupation"											
+	HH total earning income:original value		B1SEARN1				bTotHHEarnedInc				
+	HH total pension income:original value		B1SPNSN1								
+	HH total soc.sec income:original value		B1SSEC1								
+	Difficult to pay monthly bills		B1SG7				bBillsDifficulty				
+	$ left or owed if cash assets & pd debts		B1SG23				bMoneyAfterDebts				
+	Amt assets/$ owed/left over		B1SG24A				bAssetsAfterDebts				
+	Occupation code - Respondent		B1POCC				bRespOccupation				
+	R's current occupation - major groups		B1POCMAJ				bRespOccupMajor				
+	"HH total income(wage,pension,ssi,gov asst):original value"		B1STINC1				bTotHHInc				
+	Highest level of education completed		B1PB1				bEducation				
+Survey Weights											
+	Survey Weight		B1PWGHT1								
+	Survey Weight		B1PWGHT2								
+	Survey Weight		B1PWGHT3								
+			B1PWGHT4								
+			B1PWGHT5								
+			B1PWGHT6								
+			B1PWGHT7								
+			B1PWGHT8								
+			B1PWGHT9								
+Physical Health and Biomarkers											
+	Physical Health - self evaluated		B1PA1				bSubjectivePhysicalHealth				
+	Any Symptoms and Chronic Conditions?--Yes/No		B4HSYMX 				bAnyChronic				
+	Total number of Symptoms and Chronic Conditions		B4HSYMN				bTotChronic				
+	BMI (Body Mass Index)		B4PBMI				bBmi				
+	Average BP(sitting) systolic		B4P1GS				bBloodPressureSys				
+	Average BP(sitting) diastolic		B4P1GD				bBloodPressureDia				
+	Blood LDL Cholesterol (mg/dL)		B4BLDL				bCholLDL				
+	Blood Total Cholesterol (mg/dL)		B4BCHOL				bCholTot				
+	Blood HDL Cholesterol (mg/dL)		B4BHDL				bCholHDL				
+	Blood Triglycerides (mg/dL)		B4BTRIGL				bTriglycerides				
+	Blood DHEA (ng/mL)		B4BDHEA				bDHEA				
+	Blood DHEA-S (ug/dL)		B4BDHEAS				bDHEAS				
+	Blood C-Reactive Protein (ug/mL)		B4BCRP				bCReactivePro				
+	Blood Serum IL6 (pg/mL)		B4BIL6				bIL6				
+	Blood Serum MSD IL6 (pg/mL)		B4BMSDIL6				bMsdIL6				
+	Blood Serum Soluble IL6 Receptor (pg/mL)		B4BSIL6R				bIL6Receptor				
+	Blood Hemoglobin A1c %		B4BHA1C				bHemoglobinA1c				
+	Blood Fasting Glucose levels mg/dL		B4BGLUC				bGlucose				
+	Blood Fasting Insulin levels uIU/mL		B4BINSLN				bInsulin				
+	Blood Fasting IGF1 (Insulin-like Growth Factor 1) ng/mL)		B4BIGF1				bInsulinGrowthF				
+	Urine Cortisol (ug/dL)		B4BCORTL				bCortisol				
+	Ratio Urine Norepinephrine/Cortisol		B4BNECL								
+	Urine Cortisol adjusted for Urine Creatinine (ug/g)		B4BCLCRE								
+	Saliva cortisol Post-orthostatic average (nmol/L)		B4BSCL3A								
+	Saliva cortisol final dupl#2 (nmol/L)		B4BSCL42								
+	Urine Epinephrine (ug/dL)		B4BEPIN				bEpinephrine				
+	Urine Epinephrine 12 hour (ug/12h)		B4BEPI12								
+	Urine Epinephrine adjusted for Urine Creatinine (ug/g)		B4BEPCRE								
+	Ratio Urine Norepinephrine/Cortisol		B4BNECL								
+	Urine Norepinephrine (ug/dL)		B4BNOREP				bNorepinephrine				
+	Urine Norepinephrine 12 hour (ug/12h)		B4BNE12								
+	Urine Norepinephrine adjusted for Urine Creatinine (ug/g)		B4BNOCRE								
+	Urine Dopamine (ug/dL)		B4BDOPA				bDopamine				
+	Urine Dopamine adjusted for Urine Creatinine (ug/g)		B4BDOCRE								
+	Urine Dopamine 12 hour (ug/12h)		B4BDOP12								
+											
+											
