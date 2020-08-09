@@ -11,46 +11,41 @@ setwd("C:/Users/hanna/Documents/git/AHL/R")
 
 ########################MIDUS1################################################
 # Takes data from the ICPSR files
-# Merge Survey and Daily Diary Projects
-# Output dataset is "C:/Users/hanna/git/AHL/R/MIDUS1.rda"
+# MIDUS 1 projects and datasets to be merged: Survey and daily diary
 
-# Load Survey Project Datasets
+# Load Survey Project Datasets ####
 load(file = "MIDUS 1/MIDUS 1 Survey/MIDUS1-Survey.rda")
+M1Survey <- da02760.0001 %>% # MIDUS1-Survey loads as da02760.0001
+  select(M2ID, M2FAMNUM, SAMPLMAJ, A1STATUS, A1PRSEX, A1PAGE_M2, A1SS7, A1PB17, A1PA5, A1PANHED,
+         A1PDEPAF, A1PDEPRE, A1PANXIE, A1PPANIC, A1SR1, A1SR1A, A1SR2A,
+         A1SR2B, A1SR2C, A1SR2D, A1SR2E, A1SR2F, A1SR2G, A1SR2H,
+         A1SR2I, A1SR4, A1SR3, A1SR8, A1SR5, A1SR6, A1SHLOCS,
+         A1SHLOCO, A1SC1A, A1SC1B, A1SC1C, A1SC1D, A1SC1E, A1SC1F,
+         A1SC1G, A1SC1H, A1SUSEMD, A1SA37A, A1SA37B, A1SA37C, A1SA37D,
+         A1SUSEMH, A1SA39A, A1SA39B, A1SA39C, A1SA39D, A1SA39E, A1SA39F,
+         A1SA39G, A1SA39H, A1SA39I, A1SA39J, A1SA39K, A1SA39L, A1SA39M,
+         A1SA39N, A1SA39O, A1SA39P, A1SA18, A1SA19, A1SVIGOR, A1SA20,
+         A1SA21, A1SMODER, A1PA41, A1PA40, A1PA42, A1PA43, A1PA45,
+         A1PA53, A1PA53A, A1PA54, A1PA54A, A1PA55, A1PA56, A1SJ8,
+         A1SJ9, A1SHHTOT, A1SJ11, A1SJ12, A1SJ7, A1SJ14, A1SJ15,
+         A1SI14, A1SJCDA, A1POCC, A1PIND, A1POCMJ, A1PINMJ, A1PTSEI,
+         A1PB31, A1POCCS, A1PINDS, A1POCSMJ, A1PINSMJ, A1PTSEIS, A1PB1,
+         A1PB27, A1PA4, A1SA9A, A1SA9B, A1SA9C, A1SA9D, A1SA9E,
+         A1SA9F, A1SA9G, A1SA9H, A1SA9I, A1SA9J, A1SA9K, A1SA9L,
+         A1SA9M, A1SA9N, A1SA9O, A1SA9P, A1SA9Q, A1SA9R, A1SA9S,
+         A1SA9T, A1SA9U, A1SA9V, A1SA9W, A1SA9X, A1SA9Y, A1SA9Z,
+         A1SA9AA, A1SA9BB, A1SA9CC, A1SCHRON, A1SCHROX)
+dim(M1Survey)
+str(M1Survey)
 
-# Subset variables 
-myvars <- c("M2ID", "A1PRSEX", "A1PAGE_M2", "A1SS7", "A1PB17", "A1PA5", "A1PANHED",
-            "A1PDEPAF", "A1PDEPRE", "A1PANXIE", "A1PPANIC", "A1SR1", "A1SR1A", "A1SR2A",
-            "A1SR2B", "A1SR2C", "A1SR2D", "A1SR2E", "A1SR2F", "A1SR2G", "A1SR2H",
-            "A1SR2I", "A1SR4", "A1SR3", "A1SR8", "A1SR5", "A1SR6", "A1SHLOCS",
-            "A1SHLOCO", "A1SC1A", "A1SC1B", "A1SC1C", "A1SC1D", "A1SC1E", "A1SC1F",
-            "A1SC1G", "A1SC1H", "A1SUSEMD", "A1SA37A", "A1SA37B", "A1SA37C", "A1SA37D",
-            "A1SUSEMH", "A1SA39A", "A1SA39B", "A1SA39C", "A1SA39D", "A1SA39E", "A1SA39F",
-            "A1SA39G", "A1SA39H", "A1SA39I", "A1SA39J", "A1SA39K", "A1SA39L", "A1SA39M",
-            "A1SA39N", "A1SA39O", "A1SA39P", "A1SA18", "A1SA19", "A1SVIGOR", "A1SA20",
-            "A1SA21", "A1SMODER", "A1PA41", "A1PA40", "A1PA42", "A1PA43", "A1PA45",
-            "A1PA53", "A1PA53A", "A1PA54", "A1PA54A", "A1PA55", "A1PA56", "A1SJ8",
-            "A1SJ9", "A1SHHTOT", "A1SJ11", "A1SJ12", "A1SJ7", "A1SJ14", "A1SJ15",
-            "A1SI14", "A1SJCDA", "A1POCC", "A1PIND", "A1POCMJ", "A1PINMJ", "A1PTSEI",
-            "A1PB31", "A1POCCS", "A1PINDS", "A1POCSMJ", "A1PINSMJ", "A1PTSEIS", "A1PB1",
-            "A1PB27", "A1PA4", "A1SA9A", "A1SA9B", "A1SA9C", "A1SA9D", "A1SA9E",
-            "A1SA9F", "A1SA9G", "A1SA9H", "A1SA9I", "A1SA9J", "A1SA9K", "A1SA9L",
-            "A1SA9M", "A1SA9N", "A1SA9O", "A1SA9P", "A1SA9Q", "A1SA9R", "A1SA9S",
-            "A1SA9T", "A1SA9U", "A1SA9V", "A1SA9W", "A1SA9X", "A1SA9Y", "A1SA9Z",
-            "A1SA9AA", "A1SA9BB", "A1SA9CC", "A1SCHRON", "A1SCHROX")
-M1S <- da02760.0001[myvars] # MIDUS1-Survey loads as da02760.0001
-dim(M1S)
-str(M1S)
-
-# Load Daily Diary Project Dataset 
+# Load and subset Daily Diary Project Dataset ####
 load(file = "MIDUS 1/MIDUS 1 Daily Diary/MIDUS1-DailyDiary.rda")
-
-# Subset Variables 
 myvars <- c("M2ID","A2DB8","A2DB9")
 M1DD <- da03725.0001[myvars] # MIDUS1-DailyDiary loads into global environment as da03725.0001 
 dim(M1DD)
 str(M1DD)
 
-# Take means for daily diary alcohol and cigarrettes
+# Take means for daily diary alcohol and cigarrettes ####
 diary_means <- M1DD %>% 
   group_by(M2ID) %>% 
   summarise(aMeanCig = mean(A2DB8, na.rm = TRUE), 
@@ -60,97 +55,97 @@ head(diary_means)
 str(diary_means)
 dim(diary_means)
 
-# Merge diary_means and M1S; final dataset is MIDUS1.rda
-MIDUS1 <- merge(x = M1S, y = diary_means, by = "M2ID", all.x = TRUE, all.y = TRUE)
+# Merge diary_means and M1Survey ####
+MIDUS1 <- merge(x = M1Survey, y = diary_means, by = "M2ID", all.x = TRUE, all.y = TRUE)
 str(MIDUS1)
-dim(M1S)
+dim(M1Survey)
 dim(diary_means)
 dim(MIDUS1)
 
 # Save to ahl git repo
-save(MIDUS1, file = "C:/Users/hanna/git/AHL/R/MIDUS1.rda")
+save(MIDUS1, file = "MIDUS1.rda")
 
 ########################MIDUS2################################################
 # Takes data from the ICPSR files
-# Output dataset is "C:/Users/hanna/git/AHL/R/MIDUS2.rda"
+# Output dataset is "MIDUS2.rda"
 
 # MIDUS 2 Survey Data #### 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Survey.rda')
-myvars <- c("M2ID", "M2FAMNUM", "SAMPLMAJ", "B1STATUS", "B1PRSEX", "B1PAGE_M2",
-            "B1PF8_A", "B1PF3", "B1PB19", "B1PA2", "B1PANHED", "B1PDEPAF",
-            "B1PDEPRE", "B1PANXIE", "B1PPANIC", "B1SN1A", "B1SN1AX", "B1SN2A",
-            "B1SN2B", "B1SN2C", "B1SN2D", "B1SN2E", "B1SN2F", "B1SN2G",
-            "B1SN2H", "B1SN2I", "B1SSPIRI", "B1SRELID", "B1SN3D", "B1SN3A",
-            "B1SN3B", "B1SN3C", "B1SRELPR", "B1SN3E", "B1SN4", "B1SN6",
-            "B1SN7", "B1SN8A", "B1SN8B", "B1SN8C", "B1SN8D", "B1SRELSU",
-            "B1SN9A", "B1SN9B", "B1SN9C", "B1SN9D", "B1SN9E", "B1SN9F",
-            "B1SN9G", "B1SN9H", "B1SRELCA", "B1SRELCB", "B1SN10A", "B1SN10B",
-            "B1SN10C", "B1SN10D", "B1SN10E", "B1SSPRTE", "B1SN11A", "B1SN11B",
-            "B1SN11C", "B1SN11D", "B1SN11E", "B1SN11F", "B1SN11G", "B1SN11H",
-            "B1SN11I", "B1SMNDFU", "B1SHLOCS", "B1SHLOCO", "B1SC1", "B1SC3A",
-            "B1SC3B", "B1SC3C", "B1SC3D", "B1SC3E", "B1SC3F", "B1SC3G",
-            "B1SC3H", "B1SA52", "B1SUSEMD", "B1SA54A", "B1SA54B", "B1SA54C",
-            "B1SA54D", "B1SUSEMH", "B1SA56A", "B1SA56B", "B1SA56C", "B1SA56D",
-            "B1SA56F", "B1SA56G", "B1SA56H", "B1SA56I", "B1SA56J", "B1SA56K",
-            "B1SA56L", "B1SA56M", "B1SA56N", "B1SA56Q", "B1SA56R", "B1SA56S",
-            "B1SA30A", "B1SA30B", "B1SA30C", "B1SA30D", "B1SA30E", "B1SA30F",
-            "B1SA31A", "B1SA31B", "B1SA31C", "B1SA31D", "B1SA31E", "B1SA31F",
-            "B1SA32A", "B1SA32B", "B1SA32C", "B1SA32D", "B1SA32E", "B1SA32F",
-            "B1SA57A", "B1SA57B", "B1SA58A", "B1SA58B", "B1SA59A", "B1SA59B",
-            "B1SA60", "B1SA61A", "B1SA61B", "B1SA61C", "B1SA61D", "B1PA37",
-            "B1PA38A", "B1PA38B", "B1PA39", "B1PA41", "B1PA54", "B1PA54A",
-            "B1PA55", "B1PA50", "B1PA51", "B1PA51A", "B1PA52", "B1PA53",
-            "B1SG8A", "B1SG8B", "B1SG8C", "B1SRINC1", "B1SG9A", "B1SG9B",
-            "B1SG9C", "B1SSINC1", "B1STINC1", "B1SEARN1", "B1SPNSN1", "B1SSEC1",
-            "B1SG12", "B1SG7", "B1SG23", "B1SG24A", "B1SF13", "B1SJCDA",
-            "B1POCC", "B1PIND", "B1POCMAJ", "B1PINDMJ", "B1PTSEI", "B1PB37",
-            "B1POCCS", "B1PINDS", "B1PSOCMJ", "B1PSINMJ", "B1PTSEIS",
-            "B1PB1", "B1PB33", "B1PA1", "B1SA11A", "B1SA11B", "B1SA11C", 
-            "B1SA11D", "B1SA11E", "B1SA11F", "B1SA11G", "B1SA11H", "B1SA11I", 
-            "B1SA11J", "B1SA11K", "B1SA11L", "B1SA11M", "B1SA11N", "B1SA11O", 
-            "B1SA11P", "B1SA11Q", "B1SA11R", "B1SA11S", "B1SA11T", "B1SA11U", 
-            "B1SA11V", "B1SA11W", "B1SA11X", "B1SA11Y", "B1SA11Z", "B1SA11AA", 
-            "B1SA11BB", "B1SA11CC", "B1SCHRON", "B1SCHROX")
-M2Survey <- da04652.0001[myvars] # MIDUS2-Survey loads into global environment as da04652.0001
+load(file = 'MIDUS 2/MIDUS 2 Survey/MIDUS2-Survey.rda')
+M2Survey <- da04652.0001 %>%  # MIDUS2-Survey loads into global environment as da04652.0001
+  select(M2ID, M2FAMNUM, SAMPLMAJ, B1STATUS, B1PRSEX, B1PAGE_M2,
+         B1PF8_A, B1PF3, B1PB19, B1PA2, B1PANHED, B1PDEPAF,
+         B1PDEPRE, B1PANXIE, B1PPANIC, B1SN1A, B1SN1AX, B1SN2A,
+         B1SN2B, B1SN2C, B1SN2D, B1SN2E, B1SN2F, B1SN2G,
+         B1SN2H, B1SN2I, B1SSPIRI, B1SRELID, B1SN3D, B1SN3A,
+         B1SN3B, B1SN3C, B1SRELPR, B1SN3E, B1SN4, B1SN6,
+         B1SN7, B1SN8A, B1SN8B, B1SN8C, B1SN8D, B1SRELSU,
+         B1SN9A, B1SN9B, B1SN9C, B1SN9D, B1SN9E, B1SN9F,
+         B1SN9G, B1SN9H, B1SRELCA, B1SRELCB, B1SN10A, B1SN10B,
+         B1SN10C, B1SN10D, B1SN10E, B1SSPRTE, B1SN11A, B1SN11B,
+         B1SN11C, B1SN11D, B1SN11E, B1SN11F, B1SN11G, B1SN11H,
+         B1SN11I, B1SMNDFU, B1SHLOCS, B1SHLOCO, B1SC1, B1SC3A,
+         B1SC3B, B1SC3C, B1SC3D, B1SC3E, B1SC3F, B1SC3G,
+         B1SC3H, B1SA52, B1SUSEMD, B1SA54A, B1SA54B, B1SA54C,
+         B1SA54D, B1SUSEMH, B1SA56A, B1SA56B, B1SA56C, B1SA56D,
+         B1SA56F, B1SA56G, B1SA56H, B1SA56I, B1SA56J, B1SA56K,
+         B1SA56L, B1SA56M, B1SA56N, B1SA56Q, B1SA56R, B1SA56S,
+         B1SA30A, B1SA30B, B1SA30C, B1SA30D, B1SA30E, B1SA30F,
+         B1SA31A, B1SA31B, B1SA31C, B1SA31D, B1SA31E, B1SA31F,
+         B1SA32A, B1SA32B, B1SA32C, B1SA32D, B1SA32E, B1SA32F,
+         B1SA57A, B1SA57B, B1SA58A, B1SA58B, B1SA59A, B1SA59B,
+         B1SA60, B1SA61A, B1SA61B, B1SA61C, B1SA61D, B1PA37,
+         B1PA38A, B1PA38B, B1PA39, B1PA41, B1PA54, B1PA54A,
+         B1PA55, B1PA50, B1PA51, B1PA51A, B1PA52, B1PA53,
+         B1SG8A, B1SG8B, B1SG8C, B1SRINC1, B1SG9A, B1SG9B,
+         B1SG9C, B1SSINC1, B1STINC1, B1SEARN1, B1SPNSN1, B1SSEC1,
+         B1SG12, B1SG7, B1SG23, B1SG24A, B1SF13, B1SJCDA,
+         B1POCC, B1PIND, B1POCMAJ, B1PINDMJ, B1PTSEI, B1PB37,
+         B1POCCS, B1PINDS, B1PSOCMJ, B1PSINMJ, B1PTSEIS,
+         B1PB1, B1PB33, B1PA1, B1SA11A, B1SA11B, B1SA11C, 
+         B1SA11D, B1SA11E, B1SA11F, B1SA11G, B1SA11H, B1SA11I, 
+         B1SA11J, B1SA11K, B1SA11L, B1SA11M, B1SA11N, B1SA11O, 
+         B1SA11P, B1SA11Q, B1SA11R, B1SA11S, B1SA11T, B1SA11U, 
+         B1SA11V, B1SA11W, B1SA11X, B1SA11Y, B1SA11Z, B1SA11AA, 
+         B1SA11BB, B1SA11CC, B1SCHRON, B1SCHROX)
 str(M2Survey)
 dim(M2Survey)
 
 # MIDUS 2 Mortality Data ####
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Mortality.rda')
-myvars <- c("M2ID", "MIDUSSTATUS", "M2P1_DIS", "NDI_DEATHMONTH", "NDI_DEATHYEAR", "M2P2_5MORTAL",
-            "CORE_DEATH_MONTH", "CORE_DEATH_YEAR", "TOTAL_DECEASED")
-M2Mort <- da04652.0002[myvars] # MIDUS2-Mortality loads into global environment as da04652.0002
+load(file = 'MIDUS 2 Survey/MIDUS2-Mortality.rda')
+M2Mort <- da04652.0002 %>% # MIDUS2-Mortality loads into global environment as da04652.0002
+  select(M2ID, MIDUSSTATUS, M2P1_DIS, NDI_DEATHMONTH, NDI_DEATHYEAR, M2P2_5MORTAL,
+         CORE_DEATH_MONTH, CORE_DEATH_YEAR, TOTAL_DECEASED)
 str(M2Mort)
 dim(M2Mort)
 
 
 # MIDUS 2 Weights #### 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Weights.rda')
-myvars <- c("M2ID", "B1PWGHT1", "B1PWGHT2", "B1PWGHT3", "B1PWGHT4", "B1PWGHT5", "B1PWGHT6", 
-             "B1PWGHT7", "B1PWGHT8", "B1PWGHT9")
-M2Weights <- da04652.0003[myvars]
+load(file = 'MIDUS 2/MIDUS 2 Survey/MIDUS2-Weights.rda')
+M2Weights <- da04652.0003 %>% 
+  select(M2ID, B1PWGHT1, B1PWGHT2, B1PWGHT3, B1PWGHT4, B1PWGHT5, B1PWGHT6, 
+         B1PWGHT7, B1PWGHT8, B1PWGHT9)
 str(M2Weights)
 dim(M2Weights)
 
 # MIDUS2 Biomarker data ####
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Biomarker/MIDUS2-Biomarkers.rda')
-myvars <- c("M2ID", "B4QCESD", "B4QPS_PS", "B4H25", "B4HMETMW", "B4SSQ_S3", 
-            "B4H26", "B4H26A", "B4H33", "B4H34", "B4H35", "B4H36", "B4H37", 
-            "B4H16", "B4H17AF", "B4H17AT", "B4H17BF", "B4H17BT", "B4H17CF", 
-            "B4H17CT", "B4H18AF", "B4H18AT", "B4H18BF", "B4H18BT", "B4H18CF", 
-            "B4H18CT", "B4H19", "B4H20", "B4H21", "B4H22", "B4H23A", "B4H23B", 
-            "B4H23C", "B4H23D", "B4H24", "B4HSYMX", "B4HSYMN", "B4PBMI", "B4P1GS", 
-            "B4P1GD", "B4BLDL", "B4BCHOL", "B4BHDL", "B4BTRIGL", "B4BDHEA", 
-            "B4BDHEAS", "B4BCRP", "B4BIL6", "B4BMSDIL6", "B4BSIL6R", "B4BHA1C", 
-            "B4BGLUC", "B4BINSLN", "B4BIGF1", "B4BCORTL", "B4BNECL", "B4BCLCRE", 
-            "B4BSCL3A", "B4BSCL42", "B4BEPIN", "B4BEPI12", "B4BEPCRE", "B4BNECL", 
-            "B4BNOREP", "B4BNE12", "B4BNOCRE", "B4BDOPA", "B4BDOCRE", "B4BDOP12")
-M2Bio <- da29282.0001[,myvars] #MIDUS2-Biomarkers.rda loads into global environment as da29282.0001
+load(file = 'MIDUS 2/MIDUS 2 Biomarker/MIDUS2-Biomarkers.rda')
+M2Bio <- da29282.0001 %>% #MIDUS2-Biomarkers.rda loads into global environment as da29282.0001
+  select(M2ID, B4QCESD, B4QPS_PS, B4H25, B4HMETMW, B4SSQ_S3, 
+         B4H26, B4H26A, B4H33, B4H34, B4H35, B4H36, B4H37, 
+         B4H16, B4H17AF, B4H17AT, B4H17BF, B4H17BT, B4H17CF, 
+         B4H17CT, B4H18AF, B4H18AT, B4H18BF, B4H18BT, B4H18CF, 
+         B4H18CT, B4H19, B4H20, B4H21, B4H22, B4H23A, B4H23B, 
+         B4H23C, B4H23D, B4H24, B4HSYMX, B4HSYMN, B4PBMI, B4P1GS, 
+         B4P1GD, B4BLDL, B4BCHOL, B4BHDL, B4BTRIGL, B4BDHEA, 
+         B4BDHEAS, B4BCRP, B4BIL6, B4BMSDIL6, B4BSIL6R, B4BHA1C, 
+         B4BGLUC, B4BINSLN, B4BIGF1, B4BCORTL, B4BNECL, B4BCLCRE, 
+         B4BSCL3A, B4BSCL42, B4BEPIN, B4BEPI12, B4BEPCRE, B4BNECL, 
+         B4BNOREP, B4BNE12, B4BNOCRE, B4BDOPA, B4BDOCRE, B4BDOP12)
 str(M2Bio)
 dim(M2Bio)
 
 # MIDUS 2 Diary Data #### 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Daily Diary/MIDUS2-DailyDiary.rda')
+load(file = 'MIDUS 2/MIDUS 2 Daily Diary/MIDUS2-DailyDiary.rda')
 myvars <- c("M2ID", "B2DB2", "B2DB3")
 diary <- da26841.0001[myvars]
 
@@ -170,106 +165,64 @@ MIDUS2 <- M2Survey %>%
   full_join(M2Diary, by = "M2ID")
 
 # Save to ahl git repo ####
-save(MIDUS2, file = "C:/Users/hanna/git/AHL/R/MIDUS2.rda")
-
+save(MIDUS2, file = "MIDUS2.rda")
 
 
 ########################MIDUS3################################################
 # Takes data from the ICPSR files
 
-# MIDUS 3 Survey Data 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Survey.rda')
-myvars <- c("M2ID", "M2FAMNUM", "SAMPLMAJ", "B1STATUS", "B1PRSEX", "B1PAGE_M2",
-            "B1PF8_A", "B1PF3", "B1PB19", "B1PA2", "B1PANHED", "B1PDEPAF",
-            "B1PDEPRE", "B1PANXIE", "B1PPANIC", "B1SN1A", "B1SN1AX", "B1SN2A",
-            "B1SN2B", "B1SN2C", "B1SN2D", "B1SN2E", "B1SN2F", "B1SN2G",
-            "B1SN2H", "B1SN2I", "B1SSPIRI", "B1SRELID", "B1SN3D", "B1SN3A",
-            "B1SN3B", "B1SN3C", "B1SRELPR", "B1SN3E", "B1SN4", "B1SN6",
-            "B1SN7", "B1SN8A", "B1SN8B", "B1SN8C", "B1SN8D", "B1SRELSU",
-            "B1SN9A", "B1SN9B", "B1SN9C", "B1SN9D", "B1SN9E", "B1SN9F",
-            "B1SN9G", "B1SN9H", "B1SRELCA", "B1SRELCB", "B1SN10A", "B1SN10B",
-            "B1SN10C", "B1SN10D", "B1SN10E", "B1SSPRTE", "B1SN11A", "B1SN11B",
-            "B1SN11C", "B1SN11D", "B1SN11E", "B1SN11F", "B1SN11G", "B1SN11H",
-            "B1SN11I", "B1SMNDFU", "B1SHLOCS", "B1SHLOCO", "B1SC1", "B1SC3A",
-            "B1SC3B", "B1SC3C", "B1SC3D", "B1SC3E", "B1SC3F", "B1SC3G",
-            "B1SC3H", "B1SA52", "B1SUSEMD", "B1SA54A", "B1SA54B", "B1SA54C",
-            "B1SA54D", "B1SUSEMH", "B1SA56A", "B1SA56B", "B1SA56C", "B1SA56D",
-            "B1SA56F", "B1SA56G", "B1SA56H", "B1SA56I", "B1SA56J", "B1SA56K",
-            "B1SA56L", "B1SA56M", "B1SA56N", "B1SA56Q", "B1SA56R", "B1SA56S",
-            "B1SA30A", "B1SA30B", "B1SA30C", "B1SA30D", "B1SA30E", "B1SA30F",
-            "B1SA31A", "B1SA31B", "B1SA31C", "B1SA31D", "B1SA31E", "B1SA31F",
-            "B1SA32A", "B1SA32B", "B1SA32C", "B1SA32D", "B1SA32E", "B1SA32F",
-            "B1SA57A", "B1SA57B", "B1SA58A", "B1SA58B", "B1SA59A", "B1SA59B",
-            "B1SA60", "B1SA61A", "B1SA61B", "B1SA61C", "B1SA61D", "B1PA37",
-            "B1PA38A", "B1PA38B", "B1PA39", "B1PA41", "B1PA54", "B1PA54A",
-            "B1PA55", "B1PA50", "B1PA51", "B1PA51A", "B1PA52", "B1PA53",
-            "B1SG8A", "B1SG8B", "B1SG8C", "B1SRINC1", "B1SG9A", "B1SG9B",
-            "B1SG9C", "B1SSINC1", "B1STINC1", "B1SEARN1", "B1SPNSN1", "B1SSEC1",
-            "B1SG12", "B1SG7", "B1SG23", "B1SG24A", "B1SF13", "B1SJCDA",
-            "B1POCC", "B1PIND", "B1POCMAJ", "B1PINDMJ", "B1PTSEI", "B1PB37",
-            "B1POCCS", "B1PINDS", "B1PSOCMJ", "B1PSINMJ", "B1PTSEIS",
-            "B1PB1", "B1PB33", "B1PA1", "B1SA11A", "B1SA11B", "B1SA11C", 
-            "B1SA11D", "B1SA11E", "B1SA11F", "B1SA11G", "B1SA11H", "B1SA11I", 
-            "B1SA11J", "B1SA11K", "B1SA11L", "B1SA11M", "B1SA11N", "B1SA11O", 
-            "B1SA11P", "B1SA11Q", "B1SA11R", "B1SA11S", "B1SA11T", "B1SA11U", 
-            "B1SA11V", "B1SA11W", "B1SA11X", "B1SA11Y", "B1SA11Z", "B1SA11AA", 
-            "B1SA11BB", "B1SA11CC", "B1SCHRON", "B1SCHROX")
-M2Survey <- da04652.0001[myvars] # MIDUS2-Survey loads into global environment as da04652.0001
-str(M2Survey)
-dim(M2Survey)
+# MIDUS 3 Survey Data #### 
+load(file = "MIDUS 3/MIDUS 3 Survey/MIDUS3-Survey.rda")
+M3Survey <- da36346.0001 %>%  # MIDUS3-Survey loads into global environment as da36346.0001
+  select(M2ID, M2FAMNUM, SAMPLMAJ, C1STATUS, C1PRSEX, 
+         C1PF8A1, C1PF3, C1PB19, C1PB32A, C1PA2, C1PANHED, 
+         C1PDEPAF, C1PDEPRE, C1PANXIE, C1PPANIC, C1SN1A, C1SN2A, 
+         C1SN2B, C1SN2C, C1SN2D, C1SN2E, C1SN2F, C1SN2G, C1SN2H, 
+         C1SN2I, C1SSPIRI, C1SRELID, C1SN3D, C1SN3A, C1SN3B, 
+         C1SN3C, C1SRELPR, C1SN3E, C1SN4, C1SN7, C1SN8, C1SN9A, 
+         C1SN9B, C1SN9C, C1SN9D, C1SRELSU, C1SN10A, C1SN10B, C1SN10C, 
+         C1SN10D, C1SN10E, C1SN10F, C1SN10G, C1SN10H, C1SRELCA, 
+         C1SRELCB, C1SN11A, C1SN11B, C1SN11C, C1SN11D, C1SN11E, 
+         C1SSPRTE, C1SN12A, C1SN12B, C1SN12C, C1SN12D, C1SN12E, 
+         C1SN12F, C1SN12G, C1SN12H, C1SN12I, C1SMNDFU, C1SHLOCS, 
+         C1SHLOCO, C1SC1, C1SC3A, C1SC3B, C1SC3C, C1SC3D, C1SC3E, 
+         C1SC3F, C1SC3G, C1SC3H, C1SA48, C1SUSEMD, C1SA50A, C1SA50B, 
+         C1SA50C, C1SA50D, C1SUSEMH, C1SA52A, C1SA52B, C1SA52C, 
+         C1SA52D, C1SA52F, C1SA52G, C1SA52H, C1SA52I, C1SA52J, 
+         C1SA52K, C1SA52L, C1SA52M, C1SA52N, C1SA52Q, C1SA52R, 
+         C1SA52S, C1SA26A, C1SA26B, C1SA26C, C1SA26D, C1SA26E, 
+         C1SA26F, C1SA27A, C1SA27B, C1SA27C, C1SA27D, C1SA27E, 
+         C1SA27F, C1SA28A, C1SA28B, C1SA28C, C1SA28D, C1SA28E, 
+         C1SA28F, C1SA53A, C1SA53B, C1SA54A, C1SA54B, C1SA55A, 
+         C1SA55B, C1SA56, C1SA57A, C1SA57B, C1SA57C, C1SA57D, 
+         C1PA37, C1PA38A, C1PA38B, C1PA39, C1PA41, C1PA54, C1PA54A, 
+         C1PA55, C1PA50, C1PA51, C1PA51A, C1PA52, C1PA53, C1SG11A, 
+         C1SG11B, C1SG11C, C1SRINC, C1SG14A, C1SG14B, C1SG14C, 
+         C1SSINC, C1STINC, C1SEARN, C1SPNSN, C1SSEC, C1SG21, C1SG9, 
+         C1SG59, C1SG59B, C1SF24, C1SJCDA, C1POCC, C1PIND, C1POCMAJ,
+         C1PINDMJ, C1PB37, C1POCCS, C1PINDS, C1PSOCMJ, C1PSINMJ, C1PB1, 
+         C1PB33, C1PWGHT1, C1PWGHT2, C1PWGHT3, C1PWGHT4, C1PWGHT5, 
+         C1PWGHT6, C1PWGHT7, C1PWGHT8, C1PWGHT10, C1PWGHT9, C1PA1, 
+         C1SA11A, C1SA11B, C1SA11C, C1SA11D, C1SA11E, C1SA11F, 
+         C1SA11G, C1SA11H, C1SA11I, C1SA11J, C1SA11K, C1SA11L, 
+         C1SA11M, C1SA11N, C1SA11O, C1SA11P, C1SA11Q, C1SA11R, 
+         C1SA11S, C1SA11T, C1SA11U, C1SA11V, C1SA11W, C1SA11X, 
+         C1SA11Y, C1SA11Z, C1SA11AA, C1SA11BB, C1SA11CC, C1SCHRON, C1SCHROX)
+str(M3Survey)
+dim(M3Survey)
 
-# MIDUS 2 Mortality Data ####
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Mortality.rda')
-myvars <- c("M2ID", "MIDUSSTATUS", "M2P1_DIS", "NDI_DEATHMONTH", "NDI_DEATHYEAR", "M2P2_5MORTAL",
-            "CORE_DEATH_MONTH", "CORE_DEATH_YEAR", "TOTAL_DECEASED")
-M2Mort <- da04652.0002[myvars] # MIDUS2-Mortality loads into global environment as da04652.0002
-str(M2Mort)
-dim(M2Mort)
+# MIDUS 3 Mortality Data ####
+load(file = 'MIDUS 3/MIDUS 3 Mortality/MIDUS3-Mortality.rda')
+M3Mort <- da36346.0002 %>% # M3 Mortality loads as da36346.0002 
+  select(M2ID, M3P1_DIS, M3FILTER)
+str(M3Mort)
+dim(M3Mort)
 
+# Merge MIDUS 3 datasets: survey and mortality ####
+MIDUS3 <- M3Survey %>% 
+  full_join(M3Mort, by = "M2ID") 
+str(MIDUS3)
+dim(MIDUS3)
 
-# MIDUS 2 Weights #### 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Survey/MIDUS2-Weights.rda')
-myvars <- c("M2ID", "B1PWGHT1", "B1PWGHT2", "B1PWGHT3", "B1PWGHT4", "B1PWGHT5", "B1PWGHT6", 
-            "B1PWGHT7", "B1PWGHT8", "B1PWGHT9")
-M2Weights <- da04652.0003[myvars]
-str(M2Weights)
-dim(M2Weights)
-
-# MIDUS2 Biomarker data ####
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Biomarker/MIDUS2-Biomarkers.rda')
-myvars <- c("M2ID", "B4QCESD", "B4QPS_PS", "B4H25", "B4HMETMW", "B4SSQ_S3", 
-            "B4H26", "B4H26A", "B4H33", "B4H34", "B4H35", "B4H36", "B4H37", 
-            "B4H16", "B4H17AF", "B4H17AT", "B4H17BF", "B4H17BT", "B4H17CF", 
-            "B4H17CT", "B4H18AF", "B4H18AT", "B4H18BF", "B4H18BT", "B4H18CF", 
-            "B4H18CT", "B4H19", "B4H20", "B4H21", "B4H22", "B4H23A", "B4H23B", 
-            "B4H23C", "B4H23D", "B4H24", "B4HSYMX", "B4HSYMN", "B4PBMI", "B4P1GS", 
-            "B4P1GD", "B4BLDL", "B4BCHOL", "B4BHDL", "B4BTRIGL", "B4BDHEA", 
-            "B4BDHEAS", "B4BCRP", "B4BIL6", "B4BMSDIL6", "B4BSIL6R", "B4BHA1C", 
-            "B4BGLUC", "B4BINSLN", "B4BIGF1", "B4BCORTL", "B4BNECL", "B4BCLCRE", 
-            "B4BSCL3A", "B4BSCL42", "B4BEPIN", "B4BEPI12", "B4BEPCRE", "B4BNECL", 
-            "B4BNOREP", "B4BNE12", "B4BNOCRE", "B4BDOPA", "B4BDOCRE", "B4BDOP12")
-M2Bio <- da29282.0001[,myvars] #MIDUS2-Biomarkers.rda loads into global environment as da29282.0001
-str(M2Bio)
-dim(M2Bio)
-
-# MIDUS 2 Diary Data #### 
-load(file = 'C:/Users/hanna/git/AHL/R/MIDUS 2/MIDUS 2 Daily Diary/MIDUS2-DailyDiary.rda')
-myvars <- c("M2ID", "B2DB2", "B2DB3")
-diary <- da26841.0001[myvars]
-
-M2Diary <- diary %>% 
-  group_by(M2ID) %>%  
-  summarise(bMeanCig = mean(B2DB2, na.rm = TRUE), 
-            bMeanAlc = mean(B2DB3, na.rm = TRUE))
-head(M2Diary)
-str(M2Diary)
-dim(M2Diary)
-
-# Merge all MIDUS 2 datasets: M2Survey, M2Mort, M2Weights, M2Bio, M2Diary ####
-MIDUS2 <- M2Survey %>% 
-  full_join(M2Mort, by = "M2ID") %>% 
-  full_join(M2Weights, by = "M2ID") %>% 
-  full_join(M2Bio, by = "M2ID") %>% 
-  full_join(M2Diary, by = "M2ID")
-
-# Save to ahl git repo
+# Save to ahl git repo ####
+save(MIDUS3, file = "MIDUS3.rda")
