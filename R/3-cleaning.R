@@ -6,30 +6,32 @@
 # All data downloaded from ICPSR
 # Directory "C:/Users/hanna/Documents/git/AHL/R"
 
-dir <- "C:/Users/hanna/git/AHL/R"
+# Set Working Directory ####
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
 setwd(dir)
 
-# install.packages("expss")
+# Load Libraries ####
 library(expss)
 library(Hmisc)
 library(dplyr)
-# install.packages('summarytools')
 library(summarytools)
 library(magrittr)
 library(tidyverse)
 
-# Load all MIDUS data into the global environment 
-load(file = "C:/Users/hanna/Documents/git/AHL/R/MIDUS2-2.rda")
+# Load all MIDUS data into the global environment ####
+load(file = "MIDUS1.rda")
+load(file = "MIDUS2.rda")
+load(file = "MIDUS3.rda")
 
-# Coding Survey Variables
 
-## Complementary and alternative medicine variables 
-# MIDUS 1 ----
+# Complementary and alternative medicine variables ####
+# MIDUS 1 ####
 # Check variable types and distributions
 # subset cam variables from MIDUS1 survey data 
-camsList <- c("A1SA39A", "A1SA39B", "A1SA39C", "A1SA39D", "A1SA39E", "A1SA39F", "A1SA39G", "A1SA39H",
-          "A1SA39I", "A1SA39J", "A1SA39K", "A1SA39L", "A1SA39M", "A1SA39N", "A1SA39O", "A1SA39P")
-acams <- MIDUS1SurvOrig[camsList]
+camsList <- c("A1SA39A", "A1SA39B", "A1SA39C", "A1SA39D", "A1SA39E", "A1SA39F", 
+              "A1SA39G", "A1SA39H", "A1SA39I", "A1SA39J", "A1SA39K", "A1SA39L", 
+              "A1SA39M", "A1SA39N", "A1SA39O", "A1SA39P")
+acams <- MIDUS1[camsList]
 
 # Summary statistics MIDUS 1 CAMs 
 summary(acams) # all coded as 1 = yes, 2 = no, NAs = NA
@@ -42,8 +44,11 @@ dummy <- function(inputVector) {
                   ifelse(inputVector == 2, 0, 
                          ifelse(inputVector == NA, NA))))
 }
-#apply dummy function on selected columns
-MIDUS1SurvOrig <- MIDUS1SurvOrig %>% 
+
+# apply dummy function on selected columns
+MIDUS1-recode <- MIDUS1 %>%  
+  mutate_at(camsList, dummy)
+MIDUS1-recode <- MIDUS1 %>%  
   mutate_at(c("A1SA39A", "A1SA39B", "A1SA39C", "A1SA39D", "A1SA39E", "A1SA39F", 
               "A1SA39G", "A1SA39H", "A1SA39I", "A1SA39J", "A1SA39K", "A1SA39L",
               "A1SA39M", "A1SA39N", "A1SA39O", "A1SA39P"), dummy)
