@@ -249,15 +249,16 @@ table(MIDUS3_recode$cRace, MIDUS3_recode$C1PF7A)
 
 
 
+# Save files ####
+save(MIDUS1_recode, file = "MIDUS1_Recodes.RDS")
+save(MIDUS2_recode, file = "MIDUS2_Recodes.RDS")
+save(MIDUS3_recode, file = "MIDUS3_Recodes.RDS")
 
-
-
-
-
-
-
-
-
+# Export data to Stata ####
+require(foreign)
+write.dta(MIDUS1_recode, "MIDUS1_Recode.dta")
+write.dta(MIDUS2_recode, "MIDUS2_Recode.dta")
+write.dta(MIDUS3_recode, "MIDUS3_Recode.dta")
 
 
 
