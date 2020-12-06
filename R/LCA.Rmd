@@ -1,0 +1,85 @@
+---
+title: "LCA"
+author: "Hannah Andrews"
+date: "11/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
+setwd(dir)
+
+# Load Libraries ####
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(LCA)
+library(poLCA)
+
+# Load all MIDUS data into the global environment ####
+load(file = "MIDUS1.rda")
+load(file = "MIDUS2.rda")
+load(file = "MIDUS3.rda")
+
+```
+# MIDUS 1
+max_II <- -100000
+min_bic <- 100000
+for (i in 2:10) {
+  lc <- poLCA(f, M1LCAData, nclass = i, maxiter = 3000,
+              graph = TRUE, 
+              nrep = 10, verbose = TRUE, calc.se = TRUE)
+  if(lc$bic < min_bic) {
+    min_bic <- lc$bic
+    LCA_best_model <- lc
+  }
+}
+LCA_best_model
+## 1 Class
+```{r echo = FALSE}
+# Source: https://statistics.ohlsen-web.de/latent-class-analysis-polca/
+M1LCAData <- MIDUS1_recode %>% 
+  dplyr::select(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal)
+f <- with(M1LCAData, cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1)
+
+# Create a matrix to hold the best LCA model for each number of classes. 
+lcamat <- matrix(NA, nrow = 10, ncol = 3)
+colnames(lcamat) <- c("Maximum Log-Likelihood", "AIC", "BIC")
+
+lc2 <- poLCA(f, M1LCAData, nclass = 2, graphs = TRUE,
+             na.rm = TRUE, nrep = 500, maxiter = 3000)
+
+
+```
+
+```{r, echo = FALSE}
+MIDUS1.lc2 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
+           data = as.data.frame(MIDUS1_recode), 
+           nclass = 2,
+           nrep = 10)
+MIDUS1.lc3 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
+           data = as.data.frame(MIDUS1_recode), 
+           nclass = 3,
+           nrep = 10)
+```

@@ -11,8 +11,8 @@ library(dplyr)
 load(file = "C:/Users/hanna/Documents/git/AHL/R/MIDUS2-1.rda")
 
 # Rename cam variables 
-MIDUS2 <- MIDUS2 %>% 
-  rename(bEverAcupuncture = B1SA56A, 
+MIDUS2_recode <- MIDUS2 %>% 
+  mutate(bEverAcupuncture = B1SA56A, 
          bEverBiofeedback = B1SA56B, 
          bEverChiropractor = B1SA56C, 
          bEverEnergy = B1SA56D, 
@@ -27,10 +27,11 @@ MIDUS2 <- MIDUS2 %>%
          bEverMeditate = B1SA56N,  
          bEverSpecialDiet = B1SA56Q, 
          bEverSpiritHeal = B1SA56R, 
-         bEverOtherHeal = B1SA56S)
+         bEverOtherHeal = B1SA56S) %>% 
+  # dummy function 
 
 # SES variables 
-MIDUS2 <- MIDUS2 %>%
+MIDUS2_recode_new <- MIDUS2_recode %>%
   rename(bTotHHInc = B1STINC1, 
          bBillsDifficulty = B1SG7, 
          bMoneyAfterDebts = B1SG23, 

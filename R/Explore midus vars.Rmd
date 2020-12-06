@@ -1,0 +1,402 @@
+---
+title: "Explore MIDUS Data"
+author: "Hannah Andrews"
+date: "11/9/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
+setwd(dir)
+
+# Load Libraries ####
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(ztable)
+library(naniar)
+
+# Load all MIDUS data into the global environment ####
+load(file = "MIDUS1.rda")
+load(file = "MIDUS2.rda")
+load(file = "MIDUS3.rda")
+
+#options(scipen = 999)
+```
+
+# CAMS
+# MIDUS 1 CAMS 
+```{r, echo = FALSE} 
+# trying to create a table that has the proportion of respondents that answered yes to each CAM item.
+acams_percent <- acams %>% 
+  count(A1SA39A, A1SA39B, A1SA39C, A1SA39D, A1SA39E, A1SA39F, 
+        A1SA39G, A1SA39H, A1SA39I, A1SA39J, A1SA39K, A1SA39L, 
+        A1SA39M, A1SA39N, A1SA39O, A1SA39P) %>% 
+  mutate(perc = prop.table(n)*100) %>% 
+  dplyr::select(-n)
+as.data.frame(acams_percent)
+```
+
+# Income 
+### MIDUS 1 Income: A1SHHTOT
+
+```{r MIDUS1, echo = FALSE}
+summary(MIDUS1$A1SHHTOT) # summary statistics: min, max, quartiles, mean
+MIDUS1 %>% 
+  ggplot( aes(x = factor(1), y = A1SHHTOT)) +
+  geom_boxplot() + # Create boxplots
+  geom_jitter(width = 0.15, size = .5, na.rm = TRUE) + # Add a point for each observation
+  scale_y_continuous(labels = comma)
+str(MIDUS1$A1SHHTOT)
+MIDUS1 %>% summarise(M1IncomeDistinctValues = n_distinct(A1SHHTOT), # Count distinct values
+                     M1IncomeNAs = sum(is.na(A1SHHTOT)), # sum of NAs
+                     M1IncomeMedian = median(A1SHHTOT, na.rm = TRUE)) # median, remove NAs
+
+```
+
+### MIDUS 2 Income: B1STINC1
+```{r MIDUS2, echo = FALSE} 
+# Descriptive Statistics for M2 Income 
+summary(MIDUS2$B1STINC1)
+MIDUS2 %>% 
+  ggplot( aes(x = factor(1), y = B1STINC1)) +
+  geom_boxplot() + # Create boxplots
+  geom_jitter(width = 0.15, size = .5, na.rm = TRUE) + # Add a point for each observation
+  scale_y_continuous(labels = comma)
+str(MIDUS2$B1STINC1)
+MIDUS2 %>% summarise(M2IncomeDistinctValues =n_distinct(B1STINC1), 
+                     M2IncomeNAs = sum(is.na(B1STINC1)), 
+                     M2IncomeMedian = median(B1STINC1, na.rm = TRUE))
+```
+
+### MIDUS 3 Income: C1STINC
+```{r MIDUS3, echo = FALSE}
+summary(MIDUS3$C1STINC) # summary statistics: min, max, quartiles, mean
+MIDUS3 %>% 
+  ggplot( aes(x = factor(1), y = C1STINC)) +
+  geom_boxplot() + # Create boxplots
+  geom_jitter(width = 0.15, size = .5, na.rm = TRUE) + # Add a point for each observation
+  scale_y_continuous(labels = comma)
+str(MIDUS3$C1STINC)
+MIDUS3 %>% summarise(M3IncomeDistinctValues = n_distinct(C1STINC), # Count distinct values
+                     M3IncomeNAs = sum(is.na(C1STINC)), # sum of NAs
+                     M3IncomeMedian = median(C1STINC, na.rm = TRUE)) # median, remove NAs
+
+```
+
+### MIDUS 1 Income: A1SHHTOT
+```{r, echo = FALSE}
+#hist(MIDUS1$A1SHHTOT,
+#main = "MIDUS1 Total HH Income",
+#     xlab = "Total HH Income", 
+#     breaks = 500)
+M1IncomePlot <- ggplot(data = MIDUS1, aes(x = A1SHHTOT)) + 
+                      geom_density() # Create density plot
+M1IncomePlot +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(limits = c(0.0e+00, 1.1e-5))
+```
+
+### MIDUS 2 Income: B1STINC1
+```{r, echo=FALSE}
+M2IncomePlot <- ggplot(data = MIDUS2, aes(x = B1STINC1)) + 
+  geom_density() # Create density plot
+M2IncomePlot +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(limits = c(0.0e+00, 1.1e-5))
+```
+
+### MIDUS 2 Income: C1STINC
+```{r, echo = FALSE}
+M3IncomePlot <- ggplot(data = MIDUS3, aes(x = C1STINC)) + 
+  geom_density() # Create density plot
+M3IncomePlot +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(limits = c(0.0e+00, 1.1e-5))
+```
+
+# Education 
+### MIDUS 1 Education: A1PB1
+```{r, echo = FALSE}
+#summary(MIDUS1$A1PB1)
+str(MIDUS1$A1PB1)
+table(MIDUS1$A1PB1, useNA = "always")
+#M1EducationBar <- MIDUS1 %>% 
+#  drop_na(A1PB1) %>% 
+#  ggplot(aes(x = A1PB1)) +
+#  geom_bar(fill = "lightblue") +
+#  geom_text(stat='count', aes(label=..count..)) +
+#  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#  ylim(0,2200)
+#M1EducationBar
+M1EducationProportions <- MIDUS1 %>% 
+  drop_na(A1PB1) %>% 
+  ggplot(aes(x = A1PB1)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M1EducationProportions
+```
+
+### MIDUS 2 Education: B1PB1
+```{r, echo = FALSE}
+str(MIDUS2$B1PB1)
+table(MIDUS2$B1PB1, useNA = "always")
+#M2EducationBar <- ggplot(data = MIDUS2, aes(x = B1PB1)) +
+#  geom_bar(fill = "lightblue") +
+#  geom_text(stat='count', aes(label=..count..)) +
+#  ylim(0, 2500) +
+#  coord_flip()
+#M2EducationBar
+M2EducationProportions <- MIDUS2 %>% 
+  drop_na(B1PB1) %>% 
+  ggplot(aes(x = B1PB1)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M2EducationProportions
+```
+
+### MIDUS 3 Education: C1PB1
+```{r, echo = FALSE}
+str(MIDUS3$C1PB1)
+table(MIDUS3$C1PB1, useNA = "always")
+#M3EducationBar <- ggplot(data = MIDUS3, aes(x = C1PB1)) +
+#  geom_bar(fill = "lightblue") +
+#  geom_text(stat='count', aes(label=..count..)) +
+#  coord_flip()
+#M3EducationBar
+M3EducationProportions <- MIDUS3 %>% 
+  drop_na(C1PB1) %>% 
+  ggplot(aes(x = C1PB1)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M3EducationProportions
+```
+# Gender
+
+### MIDUS 1 Gender: A1PRSEX
+```{r, echo = FALSE}
+summary(MIDUS1$A1PRSEX)
+str(MIDUS1$A1PRSEX)
+M1GenderProportions <- MIDUS1 %>% 
+  drop_na(A1PRSEX) %>% 
+  ggplot(aes(x = A1PRSEX)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Gender") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, .6),name = "Proportion")
+M1GenderProportions
+```
+
+### MIDUS 2 Gender: B1PRSEX
+```{r, echo = FALSE}
+summary(MIDUS2$B1PRSEX)
+str(MIDUS2$B1PRSEX)
+M2GenderProportions <- MIDUS2 %>% 
+  drop_na(B1PRSEX) %>% 
+  ggplot(aes(x = B1PRSEX)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Gender") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, .6), name = "Proportion")
+M2GenderProportions
+```
+
+### MIDUS 3 Gender: C1PRSEX
+```{r, echo = FALSE}
+summary(MIDUS3$C1PRSEX)
+str(MIDUS3$C1PRSEX)
+M3GenderProportions <- MIDUS3 %>% 
+  drop_na(C1PRSEX) %>% 
+  ggplot(aes(x = C1PRSEX)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Gender") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, .6), name = "Proportion")
+M3GenderProportions
+```
+
+# Race and Ethnicity
+### MIDUS 1 Race: A1SS7
+```{r, echo = FALSE}
+summary(MIDUS1$A1SS7)
+str(MIDUS1$A1SS7)
+```
+### MIDUS 2 Race and Ethnicity: B1PF7A and Hispanic (B1PF1)
+```{r, echo = FALSE}
+summary(MIDUS2$B1PF1)
+summary(MIDUS2$B1PF7A)
+str(MIDUS2$B1PF1)
+str(MIDUS2$B1PF7A)
+```
+### MIDUS 3 Race and Ethnicity: Race C1PF7A and Ethnicity C1PF1
+```{r, echo = FALSE}
+summary(MIDUS3$C1PF1)
+summary(MIDUS3$C1PF7A)
+str(MIDUS3$C1PF1)
+str(MIDUS3$C1PF7A)
+```
+### MIDUS 1 Race 
+```{r, echo = FALSE}
+M1RaceBar <- ggplot(data = MIDUS1, aes(x = A1SS7)) +
+  geom_bar(fill = "lightblue") +
+  geom_text(stat='count', aes(label=..count..)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M1RaceBar
+```
+### MIDUS 2 Race and Ethnicity
+```{r, echo = FALSE}
+M2RaceBar <- ggplot(data = MIDUS2, aes(x = B1PF7A)) +
+  geom_bar(fill = "lightblue") +
+  geom_text(stat='count', aes(label=..count..)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M2RaceBar
+M2EthnicityBar <- ggplot(data = MIDUS2, aes(x = B1PF1)) +
+  geom_bar(fill = "lightblue") +
+  geom_text(stat = "count", aes(label = ..count.. )) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M2EthnicityBar
+```
+### MIDUS 3 Race and Ethnicity
+```{r, echo = FALSE}
+M3RaceBar <- ggplot(data = MIDUS3, aes(x = C1PF7A)) +
+  geom_bar(fill = "lightblue") +
+  geom_text(stat='count', aes(label=..count..)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M3RaceBar
+M3EthnicityBar <- ggplot(data = MIDUS3, aes(x = C1PF1)) +
+  geom_bar(fill = "lightblue") +
+  geom_text(stat = "count", aes(label = ..count.. )) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+M3EthnicityBar
+```
+
+# Health Locus of Control 
+### MIDUS 1 Health Locus of Control - Self: A1SHLOCS
+```{r, echo=FALSE}
+# Higher scores reflect higher levels of positive/negative affect.
+summary(MIDUS1$A1SHLOCS)
+str(MIDUS1$A1SHLOCS)
+MIDUS1 %>% summarise(M1HLOCSelfDistinctValues = n_distinct(A1SHLOCS))
+M1HLOCSelfPlot <- ggplot(data = MIDUS1, aes(x = A1SHLOCS)) +
+  geom_density()
+M1HLOCSelfPlot
+```
+### MIDUS 2 Health Locus of Control - Self B1SHLOCS
+```{r, echo = FALSE}
+summary(MIDUS2$B1SHLOCS)
+str(MIDUS2$B1SHLOCS)
+MIDUS2 %>% summarise(M2HLOCSelfDistinctValues = n_distinct(B1SHLOCS))
+M2HLOCSelfPLot <- ggplot(data = MIDUS2, aes(x = B1SHLOCS)) +
+  geom_density()
+M2HLOCSelfPLot
+```
+### MIDUS 3 Health Locus of Control - Self C1SHLOCS
+```{r, echo = FALSE}
+summary(MIDUS3$C1SHLOCS)
+str(MIDUS3$C1SHLOCS)
+MIDUS3 %>% summarise(M3HLOCSelfDistinctValues = n_distinct(C1SHLOCS))
+M3HLOCSelfPLot <- ggplot(data = MIDUS3, aes(x = C1SHLOCS)) +
+  geom_density()
+M3HLOCSelfPLot
+```
+
+
+
+# Health Locus of Control - Other
+### MIDUS 1 Health Locus of Control- Other A1SHLOCO
+```{r, echo = FALSE}
+summary(MIDUS1$A1SHLOCO)
+str(MIDUS1$A1SHLOCO)
+MIDUS1 %>% summarise(M1HLOCOtherDistinctValues = n_distinct(A1SHLOCO))
+M1HLOCOtherPLot <- ggplot(data = MIDUS1, aes(x = A1SHLOCO)) +
+  geom_density()
+M1HLOCOtherPLot
+```
+### MIDUS 2 Health Locus of Control - Other B1SHLOCO
+```{r, echo = FALSE}
+summary(MIDUS2$B1SHLOCO)
+str(MIDUS2$B1SHLOCO)
+MIDUS2 %>% summarise(M2HLOCOtherDistinctValues = n_distinct(B1SHLOCO))
+M2HLOCOtherPLot <- ggplot(data = MIDUS2, aes(x = B1SHLOCO)) +
+  geom_density()
+M2HLOCOtherPLot
+```
+### MIlDUS 3 Health Locus of Control - Other C1SHLOCO
+```{r, echo = FALSE}
+summary(MIDUS3$C1SHLOCO)
+str(MIDUS3$C1SHLOCO)
+MIDUS3 %>% summarise(M3HLOCOtherDistinctValues = n_distinct(C1SHLOCO))
+M3HLOCOtherPLot <- ggplot(data = MIDUS3, aes(x = C1SHLOCO)) +
+  geom_density()
+M3HLOCOtherPLot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Function for exploring continuous variables
+```{r, echo=FALSE}
+ExploreCont <- function(x, column){
+  print(summary(x[,column]))
+  distinctVal <- x %>% dplyr::summarise(dfvarDistinctValues = n_distinct(!!as.name(column)))
+  dfvarPlot <- ggplot(data = x, aes(x = !!as.name(column))) +
+    geom_density()
+  print(dfvarPlot)
+  return_list <- list(distinctVal = distinctVal, 
+                      varplot = dfvarPlot)
+  return(return_list)
+}
+
+M2Rel <- ExploreCont(MIDUS2,"B1SRELCA")
+```
+
+
+```{r, echo=FALSE}
+M2Rel$varplot
+```
+
+
+
+ExploreCont <- function(x, variable, dfvarDistinctValues, dfvarPlot){
+  x %>% 
+    summary(variable) %>% 
+    str(variable) %>% 
+    dplyr::summarise(dfvarDistinctValues = n_distinct(variable))
+  dfvarPlot <- ggplot(data = x, aes(x = variable)) +
+    geom_density()
+  ReturnList <- list(dfvarDistinctValues, dfvarPlot)
+  return(ReturnList)
+}
+
+
+
+
+
+
+
+
+
