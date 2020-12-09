@@ -36,17 +36,33 @@ load(file = "MIDUS3.rda")
 #options(scipen = 999)
 ```
 
+```{r, echo=FALSE}
+# Function for exploring continuous variables
+ExploreCont <- function(x, column){
+  print(summary(x[,column]))
+  distinctVal <- x %>% dplyr::summarise(dfvarDistinctValues = n_distinct(!!as.name(column)))
+  dfvarPlot <- ggplot(data = x, aes(x = !!as.name(column))) +
+    geom_density()
+  print(dfvarPlot)
+  return_list <- list(distinctVal = distinctVal, 
+                      varplot = dfvarPlot)
+  return(return_list)
+}
+
+M2Rel <- ExploreCont(MIDUS2,"B1SRELCA")
+M2Rel$distinctVal
+```
 # CAMS
 # MIDUS 1 CAMS 
 ```{r, echo = FALSE} 
 # trying to create a table that has the proportion of respondents that answered yes to each CAM item.
-acams_percent <- acams %>% 
-  count(A1SA39A, A1SA39B, A1SA39C, A1SA39D, A1SA39E, A1SA39F, 
-        A1SA39G, A1SA39H, A1SA39I, A1SA39J, A1SA39K, A1SA39L, 
-        A1SA39M, A1SA39N, A1SA39O, A1SA39P) %>% 
-  mutate(perc = prop.table(n)*100) %>% 
-  dplyr::select(-n)
-as.data.frame(acams_percent)
+#acams_percent <- acams %>% 
+ # count(A1SA39A, A1SA39B, A1SA39C, A1SA39D, A1SA39E, A1SA39F, 
+  #      A1SA39G, A1SA39H, A1SA39I, A1SA39J, A1SA39K, A1SA39L, 
+   #     A1SA39M, A1SA39N, A1SA39O, A1SA39P) %>% 
+  #mutate(perc = prop.table(n)*100) %>% 
+  #dplyr::select(-n)
+#as.data.frame(acams_percent)
 ```
 
 # Income 
@@ -358,39 +374,9 @@ M3HLOCOtherPLot
 
 
 
-# Function for exploring continuous variables
 ```{r, echo=FALSE}
-ExploreCont <- function(x, column){
-  print(summary(x[,column]))
-  distinctVal <- x %>% dplyr::summarise(dfvarDistinctValues = n_distinct(!!as.name(column)))
-  dfvarPlot <- ggplot(data = x, aes(x = !!as.name(column))) +
-    geom_density()
-  print(dfvarPlot)
-  return_list <- list(distinctVal = distinctVal, 
-                      varplot = dfvarPlot)
-  return(return_list)
-}
 
-M2Rel <- ExploreCont(MIDUS2,"B1SRELCA")
 ```
-
-
-```{r, echo=FALSE}
-M2Rel$varplot
-```
-
-
-
-ExploreCont <- function(x, variable, dfvarDistinctValues, dfvarPlot){
-  x %>% 
-    summary(variable) %>% 
-    str(variable) %>% 
-    dplyr::summarise(dfvarDistinctValues = n_distinct(variable))
-  dfvarPlot <- ggplot(data = x, aes(x = variable)) +
-    geom_density()
-  ReturnList <- list(dfvarDistinctValues, dfvarPlot)
-  return(ReturnList)
-}
 
 
 

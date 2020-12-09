@@ -44,30 +44,62 @@ for (i in 2:10) {
   }
 }
 LCA_best_model
+
+```{r, echo = FALSE}
+# Different example: https://statistics.ohlsen-web.de/latent-class-analysis-polca/
+# Code below: https://stackoverflow.com/questions/48793923/finding-the-best-lca-model-in-polca-r-package
+library(poLCA)
+library(foreach)
+library(doParallel)
+
+acl <- function(df,   #a data.frame with your data 
+                k,       #the maximum number of classes to fit
+                formula) {  
+  foreach(i=1:k, .packages="poLCA") %dopar% poLCA(formula, df, nclass=i, 
+                                                  graphs = TRUE, nrep = 100
+  )
+}
+
+f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+           aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+           aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+           aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1
+
+# Creates a table that compares the models. 
+compare_classes_acl <- function(model) {
+  entropy<-function (p) sum(-p*log(p)) #to assess the quality of classification
+  table_LCA <- data.frame(Model=0, AIC=0, BIC=0, MaxLogLikelihood=0, LikelihoodRatio=0, Entropy=0, PropInSmallestClass=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_LCA [i,1] <- paste("Model", i)
+    table_LCA [i,2] <- model[[i]]$aic
+    table_LCA [i,3] <- model[[i]]$bic
+    table_LCA [i,4] <- model[[i]]$llik
+    table_LCA [i,5] <- model[[i]]$Gsq
+    error_prior <- entropy(model[[i]]$P)
+    error_post <- mean(apply(model[[i]]$posterior,1, entropy),na.rm = TRUE)
+    table_LCA [i,6] <- round(((error_prior-error_post) / error_prior),3)
+    table_LCA [i,7] <- min(model[[i]]$P)*100
+  }
+  return(table_LCA)
+}
+
+test <- acl(MIDUS1_recode, 10, f)
+compare_classes_acl(test)
+```
+
 ## 1 Class
 ```{r echo = FALSE}
-# Source: https://statistics.ohlsen-web.de/latent-class-analysis-polca/
-M1LCAData <- MIDUS1_recode %>% 
-  dplyr::select(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-            aCamEverSpecialDiet, aCamEverSpiritHeal)
-f <- with(M1LCAData, cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1)
-
-# Create a matrix to hold the best LCA model for each number of classes. 
-lcamat <- matrix(NA, nrow = 10, ncol = 3)
-colnames(lcamat) <- c("Maximum Log-Likelihood", "AIC", "BIC")
-
-lc2 <- poLCA(f, M1LCAData, nclass = 2, graphs = TRUE,
-             na.rm = TRUE, nrep = 500, maxiter = 3000)
 
 
 ```
 
 ```{r, echo = FALSE}
+f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1
+
+
 MIDUS1.lc2 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
             aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
             aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
@@ -75,6 +107,8 @@ MIDUS1.lc2 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEne
            data = as.data.frame(MIDUS1_recode), 
            nclass = 2,
            nrep = 10)
+
+
 MIDUS1.lc3 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
             aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
             aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,

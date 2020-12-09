@@ -1,0 +1,41 @@
+---
+title: "Committee Meeting 12/11"
+author: "Hannah Andrews"
+date: "12/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
+setwd(dir)
+
+# Load Libraries ####
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(ztable)
+library(naniar)
+
+# Load all MIDUS data into the global environment ####
+load(file = "MIDUS1.rda")
+load(file = "MIDUS2.rda")
+load(file = "MIDUS3.rda")
+
+#options(scipen = 999)
+```
+# Variable Distributions
+## Complementary and Alternative Medicines (CAMs)
+### MIDUS 1 Indiviudal CAMs
+```{r, echo = FALSE}
+
+```

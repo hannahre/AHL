@@ -41,7 +41,7 @@ setwd(dir)
                    ifelse(inputVector == 2, 1, 
                           ifelse(inputVector == NA, NA))))
   }
-
+  
 # MIDUS 2 CAM dummy recode function ####
 # Create list of CAM vars 
   bcams_list <- c("B1SA56A", "B1SA56B", "B1SA56C", "B1SA56D", "B1SA56F", 
@@ -54,8 +54,8 @@ setwd(dir)
   str(bcams)
   ordinal_dummy <- function(inputVector){
     inputVector <- as.numeric(inputVector)
-    return (ifelse( inputVector%in% c(1, 2, 3, 4), 1,
-                    ifelse(inputVector == 5, 0,
+    return (ifelse( inputVector%in% c(1, 2, 3, 4), 2,
+                    ifelse(inputVector == 5, 1,
                            ifelse(inputVector == NA, NA))))
   }
 
@@ -119,8 +119,18 @@ setwd(dir)
            aCamEverSpiritHeal = A1SA39O,
            aCamEverOtherHeal = A1SA39P) 
 
-
-
+# Convert CAMs back into factors.
+  camslist <- c("aCamEverAcupuncture", "aCamEverBiofeedback", "aCamEverChiropractor", 
+                "aCamEverEnergy", "aCamEverMoveTherapy", "aCamEverHerbTherapy", 
+                "aCamEverMegaVitamins", "aCamEverHomeopathy", "aCamEverHypnosis", 
+                "aCamEverImageTech", "aCamEverMassage", "aCamEverPray", 
+                "aCamEverMeditate", "aCamEverSpecialDiet", "aCamEverSpiritHeal")
+  MIDUS1_recode <- MIDUS1_recode %>% 
+    mutate_at(camslist, funs(factor(.))) 
+  for(i in camslist) {
+    levels(MIDUS1_recode[[i]]) <- c("No", "Yes")  
+  }
+  
 # MIDUS 2 Recodes: education, gender, health locus of control, income, cam dummies, summed CAM index #### 
   MIDUS2_recode <- MIDUS2 %>% 
       mutate(bEducation = recode(B1PB1,
@@ -144,23 +154,35 @@ setwd(dir)
       mutate(ignore = all(is.na(across(starts_with("B1SA56"))))) %>%
       mutate(bCam_sum = if_else(ignore, NA_real_, rowSums(across(starts_with("B1SA56")), na.rm = TRUE))) %>% 
       dplyr::select(-ignore) %>% 
-      rename(bEverAcupuncture = B1SA56A,  # rename all variables 
-             bEverBiofeedback = B1SA56B,
-             bEverChiropractor = B1SA56C,
-             bEverEnergy = B1SA56D,
-             bEverMoveTherapy = B1SA56F,
-             bEverHerbTherapy = B1SA56G,
-             bEverMegaVitamins = B1SA56H,
-             bEverHomeopathy = B1SA56I,
-             bEverHypnosis = B1SA56J,
-             bEverImageTech = B1SA56K,
-             bEverMassage = B1SA56L,
-             bEverPray = B1SA56M,
-             bEverMeditate = B1SA56N,
-             bEverSpecialDiet = B1SA56Q,
-             bEverSpiritHeal = B1SA56R,
-             bEverOtherHeal = B1SA56S)
-      
+      rename(bCamEverAcupuncture = B1SA56A,  # rename all variables 
+           bCamEverBiofeedback = B1SA56B,
+           bCamEverChiropractor = B1SA56C,
+           bCamEverEnergy = B1SA56D,
+           bCamEverMoveTherapy = B1SA56F,
+           bCamEverHerbTherapy = B1SA56G,
+           bCamEverMegaVitamins = B1SA56H,
+           bCamEverHomeopathy = B1SA56I,
+           bCamEverHypnosis = B1SA56J,
+           bCamEverImageTech = B1SA56K,
+           bCamEverMassage = B1SA56L,
+           bCamEverPray = B1SA56M,
+           bCamEverMeditate = B1SA56N,
+           bCamEverSpecialDiet = B1SA56Q,
+           bCamEverSpiritHeal = B1SA56R,
+           bCamEverOtherHeal = B1SA56S)
+  
+# Convert CAMs back into factors
+  camslist <- c("bCamEverAcupuncture", "bCamEverBiofeedback", "bCamEverChiropractor", 
+                "bCamEverEnergy", "bCamEverMoveTherapy", "bCamEverHerbTherapy", 
+                "bCamEverMegaVitamins", "bCamEverHomeopathy", "bCamEverHypnosis", 
+                "bCamEverImageTech", "bCamEverMassage", "bCamEverPray", 
+                "bCamEverMeditate", "bCamEverSpecialDiet", "bCamEverSpiritHeal")
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    mutate_at(camslist, funs(factor(.))) 
+  for(i in camslist) {
+    levels(MIDUS2_recode[[i]]) <- c("No", "Yes")  
+  }
+
 # MIDUS2 Race Recode #### 
       as.numeric(MIDUS2$B1PF7A)[100:110]
       MIDUS2$B1PF7A[100:110]
@@ -183,6 +205,27 @@ MIDUS2_recode$bRace <- factor(x = MIDUS2_recode$bRace,
                                             "Other"))
 MIDUS2_recode[15:25,] %>% select(B1PF7A, B1PF1, bRace)
 table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
+
+# MIDUS 2 Sleep Recode: Sleep difficulties 
+  # Check missing patterns
+  sleep_vars <- c("B1SA61A", "B1SA61B", "B1SA61C")
+  MIDUS2_sleep <- MIDUS2[sleep_vars] # subset that includes the subjective sleep vars 
+  gg_miss_upset(MIDUS2_sleep) # visualize missing case patterns
+  sleep_complete <- MIDUS2_sleep[complete.cases(MIDUS2_sleep), ] # dataframe with complete cases on sleep vars
+  str(sleep_complete)
+  # Only 18 cases are missing on some combinations of sleep vars; 3328 missing on all. Do not include cases with any missing values in the average. 
+  sapply(MIDUS2_recode[,c("B1SA61A", "B1SA61B", "B1SA61C")], class) # check class of sleep variables
+  MIDUS2_recode[sleep_vars] <- sapply(MIDUS2_recode[sleep_vars], as.numeric) # convert sleep vars to numeric 
+  MIDUS2_recode$bSleepDifficulty <- rowMeans(MIDUS2_recode[,c("B1SA61A", "B1SA61B", "B1SA61C")])
+  describe(MIDUS2_recode$bSleepDifficulty)
+  
+# MIDUS 2 Sleep Duration 
+  MIDUS2_recode <- MIDUS2 %>% 
+    rename(bSleepDuration = B4SSQ_S3)
+
+# MIDUS 2 Pittsburgh Sleep Quality Index 
+  describe(MIDUS2$B4SSQ_GS)
+  summary(MIDUS2$B4SSQ_GS)
   
 # MIDUS 3 Recodes education, gender, health locus of control, income, cam dummies, summed CAM index ####
   MIDUS3_recode <- MIDUS3 %>% 
@@ -207,47 +250,71 @@ table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
       mutate(ignore = all(is.na(across(starts_with("C1SA52"))))) %>%
       mutate(cCam_sum = if_else(ignore, NA_real_, rowSums(across(starts_with("C1SA52")), na.rm = TRUE))) %>% 
       dplyr::select(-ignore) %>% 
-      rename(cEverAcupuncture = C1SA52A, # rename all variables 
-             cEverBiofeedback = C1SA52B,
-             cEverChiropractor = C1SA52C,
-             cEverEnergy = C1SA52D,
-             cEverMoveTherapy = C1SA52F,
-             cEverHerbTherapy = C1SA52G,
-             cEverMegaVitamins = C1SA52H,
-             cHomeopathy = C1SA52I,
-             cEverHypnosis = C1SA52J,
-             cEverImageTech = C1SA52K,
-             cEverMassage = C1SA52L,
-             cEverPray = C1SA52M,
-             cEverMeditate = C1SA52N,
-             cEverSpecialDiet = C1SA52Q,
-             cEverSpiritHeal = C1SA52R,
-             cEverOtherHeal = C1SA52S)
+      rename(cCamEverAcupuncture = C1SA52A, # rename all variables 
+           cCamEverBiofeedback = C1SA52B,
+           cCamEverChiropractor = C1SA52C,
+           cCamEverEnergy = C1SA52D,
+           cCamEverMoveTherapy = C1SA52F,
+           cCamEverHerbTherapy = C1SA52G,
+           cCamEverMegaVitamins = C1SA52H,
+           cCamEverHomeopathy = C1SA52I,
+           cCamEverHypnosis = C1SA52J,
+           cCamEverImageTech = C1SA52K,
+           cCamEverMassage = C1SA52L,
+           cCamEverPray = C1SA52M,
+           cCamEverMeditate = C1SA52N,
+           cCamEverSpecialDiet = C1SA52Q,
+           cCamEverSpiritHeal = C1SA52R,
+           cCamEverOtherHeal = C1SA52S)
   
+# Convert CAMs back into factors
+    camslist <- c("cCamEverAcupuncture", "cCamEverBiofeedback", "cCamEverChiropractor", 
+                  "cCamEverEnergy", "cCamEverMoveTherapy", "cCamEverHerbTherapy", 
+                  "cCamEverMegaVitamins", "cCamEverHomeopathy", "cCamEverHypnosis", 
+                  "cCamEverImageTech", "cCamEverMassage", "cCamEverPray", 
+                  "cCamEverMeditate", "cCamEverSpecialDiet", "cCamEverSpiritHeal")
+    MIDUS3_recode <- MIDUS3_recode %>% 
+      mutate_at(camslist, funs(factor(.))) 
+    for(i in camslist) {
+      levels(MIDUS3_recode[[i]]) <- c("No", "Yes")  
+    }
+
 # MIDUS 3 Race Recode #### 
-as.numeric(MIDUS3$C1PF7A)[100:110] # index- view rows 100-110 for specified column
-MIDUS3$C1PF7A[100:110] # view above as factors
-which(as.numeric(MIDUS3$C1PF7A)==3) # find which rows are coded as three
-MIDUS3_recode <- MIDUS3_recode %>% 
-  mutate(C1PF7Aint=as.numeric(C1PF7A), C1PF1int=as.numeric(C1PF1)) %>% 
-  mutate(cRace = case_when(
-    is.na(C1PF7Aint) | is.na(C1PF1int) ~ "NA",
-    C1PF7Aint == 1 & C1PF1int == 1 ~ "Non-Hispanic White",
-    C1PF7Aint == 2 & C1PF1int == 1 ~ "Non-Hispanic Black",
-    C1PF1int != 1 ~  "Hispanic", 
-    C1PF7Aint %in% c(7,8) ~ "NA",
-    TRUE ~ "Other"
-  )) 
-MIDUS3_recode$cRace[MIDUS3_recode$cRace=="NA"] <- NA
-MIDUS3_recode$cRace <- factor(x = MIDUS3_recode$cRace, 
-                              levels = c("Non-Hispanic White",
-                                         "Non-Hispanic Black",
-                                         "Hispanic",
-                                         "Other"))
-MIDUS3_recode[15:25,] %>% select(C1PF7A, C1PF1, cRace)
-table(MIDUS3_recode$cRace, MIDUS3_recode$C1PF7A)
+  as.numeric(MIDUS3$C1PF7A)[100:110] # index- view rows 100-110 for specified column
+  MIDUS3$C1PF7A[100:110] # view above as factors
+  which(as.numeric(MIDUS3$C1PF7A)==3) # find which rows are coded as three
+  MIDUS3_recode <- MIDUS3_recode %>% 
+    mutate(C1PF7Aint=as.numeric(C1PF7A), C1PF1int=as.numeric(C1PF1)) %>% 
+    mutate(cRace = case_when(
+      is.na(C1PF7Aint) | is.na(C1PF1int) ~ "NA",
+      C1PF7Aint == 1 & C1PF1int == 1 ~ "Non-Hispanic White",
+      C1PF7Aint == 2 & C1PF1int == 1 ~ "Non-Hispanic Black",
+      C1PF1int != 1 ~  "Hispanic", 
+      C1PF7Aint %in% c(7,8) ~ "NA",
+      TRUE ~ "Other"
+    )) 
+  MIDUS3_recode$cRace[MIDUS3_recode$cRace=="NA"] <- NA
+  MIDUS3_recode$cRace <- factor(x = MIDUS3_recode$cRace, 
+                                levels = c("Non-Hispanic White",
+                                           "Non-Hispanic Black",
+                                           "Hispanic",
+                                           "Other"))
+  MIDUS3_recode[15:25,] %>% select(C1PF7A, C1PF1, cRace)
+  table(MIDUS3_recode$cRace, MIDUS3_recode$C1PF7A)
 
-
+# MIDUS 3 Sleep Recode: Sleep difficulties 
+  # Check missing patterns
+  sleep_vars <- c("C1SA57A", "C1SA57B", "C1SA57C")
+  MIDUS3_sleep <- MIDUS3[sleep_vars] # subset that includes the subjective sleep vars
+  gg_miss_upset(MIDUS3_sleep) # visualize missing case patterns
+  sleep_complete <- MIDUS3_sleep[complete.cases(MIDUS3_sleep), ] # dataframe with complete cases on sleep vars
+  str(sleep_complete)
+  # 18 cases are missing on some combinations of sleep vars; 4194 missing on all. Do not include cases with any missing values in the average. 
+  sapply(MIDUS3_recode[,c("C1SA57A", "C1SA57B", "C1SA57C")], class) # check class of sleep variables
+  MIDUS3_recode[sleep_vars] <- sapply(MIDUS3_recode[sleep_vars], as.numeric) # convert sleep vars to numeric 
+  MIDUS3_recode$cSleepDifficulty <- rowMeans(MIDUS3_recode[,c("C1SA57A", "C1SA57B", "C1SA57C")])
+  describe(MIDUS3_recode$cSleepDifficulty)
+  
 
 # Save files ####
 save(MIDUS1_recode, file = "MIDUS1_Recodes.RDS")
