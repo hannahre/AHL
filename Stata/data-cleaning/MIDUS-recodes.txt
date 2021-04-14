@@ -1,0 +1,539 @@
+----------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Stata\data-cleaning\MIDUS-recodes.txt
+  log type:  text
+ opened on:  19 Feb 2021, 11:59:05
+
+. 
+. version 13 
+
+. clear all 
+
+. set linesize 100
+
+. set more off 
+
+. set maxvar 32767
+
+
+. 
+. *Coding set up: Code for each variable is shown together across waves (e.g. alcohol
+.         *coding for all waves is displayed together). 
+.         
+. *Variable naming conventions: 
+.         *Waves: each variable starts with a letter denoting the wave it belongs to 
+.         *       a=wave 1, b=wave2, 3=wave3
+.         
+. ********************************************************************************
+. //CAM Variables 
+. ********************************************************************************
+. *CAM associated with each var # across all waves
+.         *cam1   Acupuncture
+.         *cam2   Biofeedback
+.         *cam3   Chiropractic
+.         *cam4   Energy healing
+.         *cam5   Exercise/movement therapy
+.         *cam6   Herbal therapy
+.         *cam7   High-dose mega-vitamins used 
+.         *cam8   Homeopathy 
+.         *cam9   Hypnosis
+.         *cam10  Imagery techniques
+.         *cam11  Massage therapy
+.         *cam12  Spiritual practices 
+.         *cam13  Meditation
+.         *cam14  Special diets
+.         *cam15  Spiritual healing
+.         *cam16  Other non-traditional therapy 
+. 
+. *Only at Wave 1
+.         *cam20  Alt drugs used
+.         
+. *Only at Waves 2 and 3
+.         *cam17  Phys/Occupational therapy
+.         *cam18  Physician prescribed diet freq
+.         *cam19  Weight control diet freq
+.                 
+. ********************************************************************************
+. //CAM Co-Occurrence Indices  
+. ********************************************************************************
+. //Wave 1
+. use MIDUS1.dta, clear 
+(Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
+
+. *Check coding and distribution of all cam variables 
+.         foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+>                 A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+  2.                 fre `var'
+  3.         }
+
+A1SA39A -- Acupuncture frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |         81       1.14       1.29       1.29
+        2 No  |       6198      87.20      98.71     100.00
+        Total |       6279      88.34     100.00           
+Missing .     |        829      11.66                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39B -- Biofeedback frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |         48       0.68       0.77       0.77
+        2 No  |       6224      87.56      99.23     100.00
+        Total |       6272      88.24     100.00           
+Missing .     |        836      11.76                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39C -- Chiropractor frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        759      10.68      12.08      12.08
+        2 No  |       5523      77.70      87.92     100.00
+        Total |       6282      88.38     100.00           
+Missing .     |        826      11.62                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39D -- Energy healing frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |         91       1.28       1.45       1.45
+        2 No  |       6180      86.94      98.55     100.00
+        Total |       6271      88.22     100.00           
+Missing .     |        837      11.78                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39E -- Exercise/movement therapy frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |       1113      15.66      17.74      17.74
+        2 No  |       5162      72.62      82.26     100.00
+        Total |       6275      88.28     100.00           
+Missing .     |        833      11.72                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39F -- Herbal therapy frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        318       4.47       5.07       5.07
+        2 No  |       5951      83.72      94.93     100.00
+        Total |       6269      88.20     100.00           
+Missing .     |        839      11.80                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39G -- High dose mega-vitamins frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        293       4.12       4.67       4.67
+        2 No  |       5976      84.07      95.33     100.00
+        Total |       6269      88.20     100.00           
+Missing .     |        839      11.80                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39H -- Homeopathy frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        145       2.04       2.32       2.32
+        2 No  |       6105      85.89      97.68     100.00
+        Total |       6250      87.93     100.00           
+Missing .     |        858      12.07                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39I -- Hypnosis frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |         78       1.10       1.24       1.24
+        2 No  |       6198      87.20      98.76     100.00
+        Total |       6276      88.29     100.00           
+Missing .     |        832      11.71                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39J -- Imagery techniques frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        195       2.74       3.11       3.11
+        2 No  |       6075      85.47      96.89     100.00
+        Total |       6270      88.21     100.00           
+Missing .     |        838      11.79                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39K -- Massage therapy frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        538       7.57       8.59       8.59
+        2 No  |       5725      80.54      91.41     100.00
+        Total |       6263      88.11     100.00           
+Missing .     |        845      11.89                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39L -- Prayer/other spiritual frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |       1903      26.77      30.38      30.38
+        2 No  |       4360      61.34      69.62     100.00
+        Total |       6263      88.11     100.00           
+Missing .     |        845      11.89                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39M -- Relaxation/mediation frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        843      11.86      13.44      13.44
+        2 No  |       5430      76.39      86.56     100.00
+        Total |       6273      88.25     100.00           
+Missing .     |        835      11.75                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39N -- Special diet frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        688       9.68      10.96      10.96
+        2 No  |       5591      78.66      89.04     100.00
+        Total |       6279      88.34     100.00           
+Missing .     |        829      11.66                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39O -- Spiritual healing by others frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        206       2.90       3.29       3.29
+        2 No  |       6060      85.26      96.71     100.00
+        Total |       6266      88.15     100.00           
+Missing .     |        842      11.85                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+A1SA39P -- Other non-traditional therapy frequency (12 months)
+-----------------------------------------------------------
+              |      Freq.    Percent      Valid       Cum.
+--------------+--------------------------------------------
+Valid   1 Yes |        143       2.01       2.32       2.32
+        2 No  |       6008      84.52      97.68     100.00
+        Total |       6151      86.54     100.00           
+Missing .     |        957      13.46                      
+Total         |       7108     100.00                      
+-----------------------------------------------------------
+
+.                 
+. *Write loop to dummy all CAM vars 0=never 1=used in the last year 
+.         *Create new variable that denotes wave and cam var #. 
+.         *Create local to act as a counter for generated acam vars. 
+.         local period=1  
+
+.         foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
+>                 A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {
+  2.                 recode `var' (1 = 1) (2 = 0) (. = .), gen(acam`period')
+  3.                 tab `var' acam`period', missing
+  4.                 local period=`period'+1
+  5.         }
+acam1 already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab A1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+            No school/some grade school |         38        0.54        0.54
+        Eighth grade/junior high school |        127        1.79        2.33
+                       Some high school |        516        7.27        9.60
+                                    GED |        109        1.54       11.13
+             Graduated from high school |      1,951       27.50       38.63
+ 1 to 2 years of college, no degree yet |      1,302       18.35       56.98
+3 or more years of college, no degree y |        333        4.69       61.68
+Graduated from a 2-year college or voca |        538        7.58       69.26
+Graduated from a 4- or 5-year college,  |      1,240       17.48       86.74
+                   Some graduate school |        197        2.78       89.51
+                        Master's degree |        487        6.86       96.38
+PH.D, ED.D, MD, DDS, LLB, LLD, JD, or o |        257        3.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,095      100.00
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab A1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+            No school/some grade school |         38        0.54        0.54
+        Eighth grade/junior high school |        127        1.79        2.33
+                       Some high school |        516        7.27        9.60
+                                    GED |        109        1.54       11.13
+             Graduated from high school |      1,951       27.50       38.63
+ 1 to 2 years of college, no degree yet |      1,302       18.35       56.98
+3 or more years of college, no degree y |        333        4.69       61.68
+Graduated from a 2-year college or voca |        538        7.58       69.26
+Graduated from a 4- or 5-year college,  |      1,240       17.48       86.74
+                   Some graduate school |        197        2.78       89.51
+                        Master's degree |        487        6.86       96.38
+PH.D, ED.D, MD, DDS, LLB, LLD, JD, or o |        257        3.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,095      100.00
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab A1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+            No school/some grade school |         38        0.54        0.54
+        Eighth grade/junior high school |        127        1.79        2.33
+                       Some high school |        516        7.27        9.60
+                                    GED |        109        1.54       11.13
+             Graduated from high school |      1,951       27.50       38.63
+ 1 to 2 years of college, no degree yet |      1,302       18.35       56.98
+3 or more years of college, no degree y |        333        4.69       61.68
+Graduated from a 2-year college or voca |        538        7.58       69.26
+Graduated from a 4- or 5-year college,  |      1,240       17.48       86.74
+                   Some graduate school |        197        2.78       89.51
+                        Master's degree |        487        6.86       96.38
+PH.D, ED.D, MD, DDS, LLB, LLD, JD, or o |        257        3.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,095      100.00
+
+. 
+end of do-file
+
+. freq A1PB1
+unrecognized command:  freq
+r(199);
+
+. frequency A1PB1
+unrecognized command:  frequency
+r(199);
+
+. codebook A1PB1
+
+----------------------------------------------------------------------------------------------------
+A1PB1                                                           Highest level of education completed
+----------------------------------------------------------------------------------------------------
+
+                  type:  numeric (int)
+                 label:  A1PB1
+
+                 range:  [1,12]                       units:  1
+         unique values:  12                       missing .:  13/7108
+
+              examples:  5     Graduated from high school
+                         6     1 to 2 years of college, no degree yet
+                         7     3 or more years of college, no degree yet
+                         9     Graduated from a 4- or 5-year college, or bachelor's degree
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab A1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+            No school/some grade school |         38        0.54        0.54
+        Eighth grade/junior high school |        127        1.79        2.33
+                       Some high school |        516        7.27        9.60
+                                    GED |        109        1.54       11.13
+             Graduated from high school |      1,951       27.50       38.63
+ 1 to 2 years of college, no degree yet |      1,302       18.35       56.98
+3 or more years of college, no degree y |        333        4.69       61.68
+Graduated from a 2-year college or voca |        538        7.58       69.26
+Graduated from a 4- or 5-year college,  |      1,240       17.48       86.74
+                   Some graduate school |        197        2.78       89.51
+                        Master's degree |        487        6.86       96.38
+PH.D, ED.D, MD, DDS, LLB, LLD, JD, or o |        257        3.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,095      100.00
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         recode A1PB1 (1/3 = 1) (4/5 = 2) (6/8 = 3) (9 = 4) (10/12 = 5) (97 = .) (. = .), gen AEduc
+option gen incorrectly specified
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         recode A1PB1 (1/3 = 1) (4/5 = 2) (6/8 = 3) (9 = 4) (10/12 = 5) (97 = .) (. = .), gen(AEduc
+> )
+(7057 differences between A1PB1 and AEduc)
+
+.         table A1PB1 AEduc, missing 
+
+----------------------------------------------------------------------------
+                                         | RECODE of A1PB1 (Highest level of
+                                         |       education completed)       
+    Highest level of education completed |     1      2      3      4      5
+-----------------------------------------+----------------------------------
+             No school/some grade school |    38      .      .      .      .
+         Eighth grade/junior high school |   127      .      .      .      .
+                        Some high school |   516      .      .      .      .
+                                     GED |     .    109      .      .      .
+              Graduated from high school |     .  1,951      .      .      .
+  1 to 2 years of college, no degree yet |     .      .  1,302      .      .
+3 or more years of college, no degree ye |     .      .    333      .      .
+Graduated from a 2-year college or vocat |     .      .    538      .      .
+Graduated from a 4- or 5-year college, o |     .      .      .  1,240      .
+                    Some graduate school |     .      .      .      .    197
+                         Master's degree |     .      .      .      .    487
+PH.D, ED.D, MD, DDS, LLB, LLD, JD, or ot |     .      .      .      .    257
+----------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         use MIDUS2.dta, clear 
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab B1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+      NO SCHOOL/SOME GRADE SCHOOL (1-6) |         14        0.28        0.28
+  EIGHTH GRADE/JUNIOR HIGH SCHOOL (7-8) |         65        1.31        1.59
+SOME HIGH SCHOOL (9-12 NO DIPLOMA/NO GE |        230        4.64        6.23
+                                    GED |         61        1.23        7.47
+             GRADUATED FROM HIGH SCHOOL |      1,266       25.54       33.01
+ 1 TO 2 YEARS OF COLLEGE, NO DEGREE YET |        885       17.86       50.87
+3 OR MORE YEARS OF COLLEGE, NO DEGREE Y |        209        4.22       55.08
+GRAD. FROM 2-YEAR COLLEGE, VOCATIONAL S |        390        7.87       62.95
+GRADUATED FROM A 4- OR 5-YEAR COLLEGE,  |        957       19.31       82.26
+                   SOME GRADUATE SCHOOL |        152        3.07       85.33
+                        MASTER'S DEGREE |        498       10.05       95.38
+PH.D., ED.D., MD, DDS, LLB, LLD, JD, OR |        229        4.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      4,956      100.00
+
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab B1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+      NO SCHOOL/SOME GRADE SCHOOL (1-6) |         14        0.28        0.28
+  EIGHTH GRADE/JUNIOR HIGH SCHOOL (7-8) |         65        1.31        1.59
+SOME HIGH SCHOOL (9-12 NO DIPLOMA/NO GE |        230        4.64        6.23
+                                    GED |         61        1.23        7.47
+             GRADUATED FROM HIGH SCHOOL |      1,266       25.54       33.01
+ 1 TO 2 YEARS OF COLLEGE, NO DEGREE YET |        885       17.86       50.87
+3 OR MORE YEARS OF COLLEGE, NO DEGREE Y |        209        4.22       55.08
+GRAD. FROM 2-YEAR COLLEGE, VOCATIONAL S |        390        7.87       62.95
+GRADUATED FROM A 4- OR 5-YEAR COLLEGE,  |        957       19.31       82.26
+                   SOME GRADUATE SCHOOL |        152        3.07       85.33
+                        MASTER'S DEGREE |        498       10.05       95.38
+PH.D., ED.D., MD, DDS, LLB, LLD, JD, OR |        229        4.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      4,956      100.00
+
+. 
+.         * Recode Education 
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab B1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+      NO SCHOOL/SOME GRADE SCHOOL (1-6) |         14        0.28        0.28
+  EIGHTH GRADE/JUNIOR HIGH SCHOOL (7-8) |         65        1.31        1.59
+SOME HIGH SCHOOL (9-12 NO DIPLOMA/NO GE |        230        4.64        6.23
+                                    GED |         61        1.23        7.47
+             GRADUATED FROM HIGH SCHOOL |      1,266       25.54       33.01
+ 1 TO 2 YEARS OF COLLEGE, NO DEGREE YET |        885       17.86       50.87
+3 OR MORE YEARS OF COLLEGE, NO DEGREE Y |        209        4.22       55.08
+GRAD. FROM 2-YEAR COLLEGE, VOCATIONAL S |        390        7.87       62.95
+GRADUATED FROM A 4- OR 5-YEAR COLLEGE,  |        957       19.31       82.26
+                   SOME GRADUATE SCHOOL |        152        3.07       85.33
+                        MASTER'S DEGREE |        498       10.05       95.38
+PH.D., ED.D., MD, DDS, LLB, LLD, JD, OR |        229        4.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      4,956      100.00
+
+. 
+.         * Recode Education 
+. 
+end of do-file
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+.         tab B1PB1
+
+   Highest level of education completed |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+      NO SCHOOL/SOME GRADE SCHOOL (1-6) |         14        0.28        0.28
+  EIGHTH GRADE/JUNIOR HIGH SCHOOL (7-8) |         65        1.31        1.59
+SOME HIGH SCHOOL (9-12 NO DIPLOMA/NO GE |        230        4.64        6.23
+                                    GED |         61        1.23        7.47
+             GRADUATED FROM HIGH SCHOOL |      1,266       25.54       33.01
+ 1 TO 2 YEARS OF COLLEGE, NO DEGREE YET |        885       17.86       50.87
+3 OR MORE YEARS OF COLLEGE, NO DEGREE Y |        209        4.22       55.08
+GRAD. FROM 2-YEAR COLLEGE, VOCATIONAL S |        390        7.87       62.95
+GRADUATED FROM A 4- OR 5-YEAR COLLEGE,  |        957       19.31       82.26
+                   SOME GRADUATE SCHOOL |        152        3.07       85.33
+                        MASTER'S DEGREE |        498       10.05       95.38
+PH.D., ED.D., MD, DDS, LLB, LLD, JD, OR |        229        4.62      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      4,956      100.00
+
+. 
+.         * Recode Education 
+. 
+end of do-file
+
+. save c:\users\hanna\appdata\local\temp\emergency_close_stata_st.dta, rep
+> lace
+(note: file c:\users\hanna\appdata\local\temp\emergency_close_stata_st.dta
+>  not found)
+file c:\users\hanna\appdata\local\temp\emergency_close_stata_st.dta saved

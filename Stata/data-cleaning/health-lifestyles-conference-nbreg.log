@@ -1,0 +1,345 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Stata\data-cleaning\health-lifestyles-confer
+> ence-nbreg.log
+  log type:  text
+ opened on:  23 Feb 2021, 10:56:27
+
+. use health-lifestyles-conference.dta, clear
+(Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
+
+. 
+. version 12
+
+. macro drop _all
+
+. set linesize 80
+
+. set matsize 1000
+
+. set more off
+
+. 
+. nbreg bCamCo i.bEduc
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -7126.2906  
+Iteration 1:   log likelihood = -7126.2831  
+Iteration 2:   log likelihood = -7126.2831  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6269.9278  
+Iteration 1:   log likelihood = -6269.8943  
+Iteration 2:   log likelihood = -6269.8943  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -6224.7479  
+Iteration 1:   log likelihood = -6223.4656  
+Iteration 2:   log likelihood = -6223.4648  
+Iteration 3:   log likelihood = -6223.4648  
+
+Negative binomial regression                      Number of obs   =       3560
+                                                  LR chi2(4)      =      92.86
+Dispersion     = mean                             Prob > chi2     =     0.0000
+Log likelihood = -6223.4648                       Pseudo R2       =     0.0074
+
+-------------------------------------------------------------------------------
+       bCamCo |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        bEduc |
+HS Diploma..  |   .3757077   .1155862     3.25   0.001      .149163    .6022524
+Some Colle..  |   .6601698   .1140186     5.79   0.000     .4366975    .8836421
+College Grad  |   .8211243   .1160873     7.07   0.000     .5935973    1.048651
+Graduate o..  |   .7457013   .1166508     6.39   0.000       .51707    .9743326
+              |
+        _cons |  -.1170927   .1072012    -1.09   0.275    -.3272031    .0930178
+--------------+----------------------------------------------------------------
+     /lnalpha |  -.0451594   .0457128                     -.1347549    .0444361
+--------------+----------------------------------------------------------------
+        alpha |   .9558451   .0436944                      .8739301    1.045438
+-------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1805.64 Prob>=chibar2 = 0.000
+
+.         est store model1 
+
+. nbreg bCamCo lnbHhInc
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -7241.9415  
+Iteration 1:   log likelihood = -7241.9415  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6269.9278  
+Iteration 1:   log likelihood = -6269.8943  
+Iteration 2:   log likelihood = -6269.8943  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -6269.5191  
+Iteration 1:   log likelihood =  -6269.519  
+
+Negative binomial regression                      Number of obs   =       3560
+                                                  LR chi2(1)      =       0.75
+Dispersion     = mean                             Prob > chi2     =     0.3863
+Log likelihood = -6269.519                        Pseudo R2       =     0.0001
+
+------------------------------------------------------------------------------
+      bCamCo |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    lnbHhInc |     .01936   .0223263     0.87   0.386    -.0243987    .0631188
+       _cons |    .296184   .2440615     1.21   0.225    -.1821679    .7745358
+-------------+----------------------------------------------------------------
+    /lnalpha |   .0111069    .044631                     -.0763683    .0985822
+-------------+----------------------------------------------------------------
+       alpha |   1.011169   .0451295                      .9264749    1.103605
+------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1944.84 Prob>=chibar2 = 0.000
+
+.         est store model2
+
+. nbreg bCamCo i.bEduc i.bRace bSex bReligId bSpirit,irr
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -6581.3895  
+Iteration 1:   log likelihood = -6581.3534  
+Iteration 2:   log likelihood = -6581.3534  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6265.5415  
+Iteration 1:   log likelihood = -6265.5165  
+Iteration 2:   log likelihood = -6265.5165  
+
+Fitting full model:
+
+Iteration 0:   log likelihood =  -6033.329  
+Iteration 1:   log likelihood = -5992.6964  
+Iteration 2:   log likelihood = -5991.2246  
+Iteration 3:   log likelihood = -5991.2236  
+Iteration 4:   log likelihood = -5991.2236  
+
+Negative binomial regression                      Number of obs   =       3556
+                                                  LR chi2(10)     =     548.59
+Dispersion     = mean                             Prob > chi2     =     0.0000
+Log likelihood = -5991.2236                       Pseudo R2       =     0.0438
+
+-------------------------------------------------------------------------------
+       bCamCo |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        bEduc |
+HS Diploma..  |   1.418347   .1569294     3.16   0.002     1.141836     1.76182
+Some Colle..  |   1.813392     .19779     5.46   0.000     1.464366    2.245607
+College Grad  |   2.227638   .2471294     7.22   0.000     1.792314    2.768695
+Graduate o..  |   2.137228    .238313     6.81   0.000     1.717659    2.659283
+              |
+        bRace |
+Non-Hispan..  |   .8777213   .0966372    -1.18   0.236      .707358    1.089116
+Mexican Am..  |   1.093708   .1302958     0.75   0.452     .8659558     1.38136
+  Other Race  |   .9298141   .1106177    -0.61   0.541     .7364288    1.173982
+              |
+         bSex |   1.477945   .0605247     9.54   0.000     1.363955    1.601462
+     bReligId |   .9865325   .0041132    -3.25   0.001     .9785037    .9946272
+      bSpirit |   1.311891   .0213378    16.69   0.000     1.270729    1.354386
+        _cons |   .1544389   .0220726   -13.07   0.000     .1167084    .2043673
+--------------+----------------------------------------------------------------
+     /lnalpha |  -.3509393   .0524985                     -.4538345   -.2480441
+--------------+----------------------------------------------------------------
+        alpha |   .7040265   .0369603                      .6351879    .7803255
+-------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1180.26 Prob>=chibar2 = 0.000
+
+.         est store model3
+
+. nbreg bCamCo lnbHhInc i.bRace bSex bReligId bSpirit,irr
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -6688.5957  
+Iteration 1:   log likelihood = -6688.5628  
+Iteration 2:   log likelihood = -6688.5628  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6265.5415  
+Iteration 1:   log likelihood = -6265.5165  
+Iteration 2:   log likelihood = -6265.5165  
+
+Fitting full model:
+
+Iteration 0:   log likelihood =  -6069.001  
+Iteration 1:   log likelihood = -6039.6787  
+Iteration 2:   log likelihood = -6038.9614  
+Iteration 3:   log likelihood = -6038.9612  
+
+Negative binomial regression                      Number of obs   =       3556
+                                                  LR chi2(7)      =     453.11
+Dispersion     = mean                             Prob > chi2     =     0.0000
+Log likelihood = -6038.9612                       Pseudo R2       =     0.0362
+
+-------------------------------------------------------------------------------
+       bCamCo |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     lnbHhInc |   1.075451   .0229165     3.41   0.001      1.03146    1.121317
+              |
+        bRace |
+Non-Hispan..  |   .8626977    .096105    -1.33   0.185     .6934807    1.073206
+Mexican Am..  |    1.10025   .1331324     0.79   0.430     .8679496    1.394725
+  Other Race  |   .9544106   .1150527    -0.39   0.699      .753571    1.208777
+              |
+         bSex |   1.458448   .0605789     9.09   0.000      1.34442    1.582147
+     bReligId |   .9844924   .0041658    -3.69   0.000     .9763612    .9926912
+      bSpirit |   1.325978    .021845    17.13   0.000     1.283846    1.369492
+        _cons |   .1241811   .0329005    -7.87   0.000     .0738819    .2087242
+--------------+----------------------------------------------------------------
+     /lnalpha |  -.2834239   .0508593                     -.3831063   -.1837416
+--------------+----------------------------------------------------------------
+        alpha |   .7532004   .0383072                      .6817404    .8321508
+-------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1299.20 Prob>=chibar2 = 0.000
+
+.         est store model4
+
+. nbreg bCamCo i.bEduc lnbHhInc i.bRace bSex bReligId bSpirit,irr
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -6581.3873  
+Iteration 1:   log likelihood = -6581.3511  
+Iteration 2:   log likelihood = -6581.3511  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6265.5415  
+Iteration 1:   log likelihood = -6265.5165  
+Iteration 2:   log likelihood = -6265.5165  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -6033.3142  
+Iteration 1:   log likelihood = -5992.6197  
+Iteration 2:   log likelihood = -5991.1401  
+Iteration 3:   log likelihood = -5991.1391  
+Iteration 4:   log likelihood = -5991.1391  
+
+Negative binomial regression                      Number of obs   =       3556
+                                                  LR chi2(11)     =     548.75
+Dispersion     = mean                             Prob > chi2     =     0.0000
+Log likelihood = -5991.1391                       Pseudo R2       =     0.0438
+
+-------------------------------------------------------------------------------
+       bCamCo |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        bEduc |
+HS Diploma..  |    1.41023   .1572495     3.08   0.002      1.13338    1.754705
+Some Colle..  |   1.799933    .198982     5.32   0.000     1.449294    2.235406
+College Grad  |   2.204785   .2507252     6.95   0.000     1.764285    2.755267
+Graduate o..  |   2.113779   .2423828     6.53   0.000     1.688317    2.646459
+              |
+     lnbHhInc |   1.009131   .0223037     0.41   0.681     .9663496    1.053806
+              |
+        bRace |
+Non-Hispan..  |    .879168   .0968689    -1.17   0.242     .7084094    1.091087
+Mexican Am..  |    1.09348   .1302573     0.75   0.453     .8657938    1.381044
+  Other Race  |   .9313675   .1108697    -0.60   0.550     .7375549     1.17611
+              |
+         bSex |   1.480321   .0609011     9.53   0.000     1.365643    1.604629
+     bReligId |   .9866147   .0041185    -3.23   0.001     .9785755      .99472
+      bSpirit |    1.31231    .021371    16.69   0.000     1.271084    1.354872
+        _cons |   .1403462   .0383359    -7.19   0.000     .0821662    .2397223
+--------------+----------------------------------------------------------------
+     /lnalpha |  -.3508616   .0524941                     -.4537482    -.247975
+--------------+----------------------------------------------------------------
+        alpha |   .7040812   .0369601                      .6352427    .7803795
+-------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1180.42 Prob>=chibar2 = 0.000
+
+.         est store model5
+
+. nbreg bCamCo i.bEduc lnbHhInc bHLOCS i.bRace bSex bReligId bSpirit,irr
+
+Fitting Poisson model:
+
+Iteration 0:   log likelihood = -6556.7365  
+Iteration 1:   log likelihood = -6556.7013  
+Iteration 2:   log likelihood = -6556.7013  
+
+Fitting constant-only model:
+
+Iteration 0:   log likelihood = -6265.5415  
+Iteration 1:   log likelihood = -6265.5165  
+Iteration 2:   log likelihood = -6265.5165  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -6028.0468  
+Iteration 1:   log likelihood = -5984.4588  
+Iteration 2:   log likelihood = -5982.6317  
+Iteration 3:   log likelihood = -5982.6301  
+Iteration 4:   log likelihood = -5982.6301  
+
+Negative binomial regression                      Number of obs   =       3556
+                                                  LR chi2(12)     =     565.77
+Dispersion     = mean                             Prob > chi2     =     0.0000
+Log likelihood = -5982.6301                       Pseudo R2       =     0.0451
+
+-------------------------------------------------------------------------------
+       bCamCo |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        bEduc |
+HS Diploma..  |    1.40901   .1567819     3.08   0.002     1.132922     1.75238
+Some Colle..  |   1.785079   .1969273     5.25   0.000     1.437984    2.215954
+College Grad  |    2.17399   .2467419     6.84   0.000     1.740398    2.715605
+Graduate o..  |   2.076364   .2376866     6.38   0.000     1.659068    2.598619
+              |
+     lnbHhInc |    1.00644   .0222048     0.29   0.771     .9638466    1.050915
+       bHLOCS |   1.105219   .0268189     4.12   0.000     1.053885    1.159053
+              |
+        bRace |
+Non-Hispan..  |   .8830278   .0970225    -1.13   0.258     .7119487    1.095217
+Mexican Am..  |   1.080306   .1282192     0.65   0.515     .8560899    1.363245
+  Other Race  |   .9310614   .1105409    -0.60   0.547     .7377664       1.175
+              |
+         bSex |   1.465542    .060206     9.30   0.000     1.352166    1.588424
+     bReligId |   .9864065   .0041073    -3.29   0.001      .978389    .9944896
+      bSpirit |   1.300978   .0212905    16.08   0.000     1.259911    1.343383
+        _cons |   .0845052   .0253344    -8.24   0.000     .0469565    .1520797
+--------------+----------------------------------------------------------------
+     /lnalpha |  -.3654284   .0529435                     -.4691958    -.261661
+--------------+----------------------------------------------------------------
+        alpha |   .6938993   .0367375                      .6255051    .7697719
+-------------------------------------------------------------------------------
+Likelihood-ratio test of alpha=0:  chibar2(01) = 1148.14 Prob>=chibar2 = 0.000
+
+.         est store model6
+
+.         
+. outreg2 [model1 model2 model3] using nbreg123.doc, word replace eform dec(2) l
+> abel symbol(***, **, *) ///
+>         alpha (.001, .01, .05) title (Regression on CAM co-occurrence index) /
+> //
+>         stats(coef ci) stnum(replace coef=exp(coef))
+nbreg123.doc
+dir : seeout
+
+. outreg2 [model4 model5 model6] using nbreg456.doc, word replace eform dec(2) l
+> abel symbol(***, **, *) ///
+>         alpha (.001, .01, .05) title (Regression on CAM co-occurrence index) /
+> //
+>         stats(coef ci) stnum(replace coef=exp(coef))
+nbreg456.doc
+dir : seeout
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Stata\data-cleaning\health-lifestyles-confer
+> ence-nbreg.log
+  log type:  text
+ closed on:  23 Feb 2021, 10:56:32
+--------------------------------------------------------------------------------

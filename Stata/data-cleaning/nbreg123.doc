@@ -1,0 +1,47 @@
+{\rtf1\fs24
+\pard\qc
+Regression on CAM co-occurrence index\par
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx11664\clbrdrt\brdrs\cellx13680\clbrdrt\brdrs\cellx15696\clbrdrt\brdrs\cellx17712\clbrdrt\brdrs\cellx19728\clbrdrt\brdrs\cellx21744\clbrdrt\brdrs\cellx23760
+\ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\qc (4)\cell\qc (5)\cell\qc (6)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx11664\cellx13680\cellx15696\cellx17712\cellx19728\cellx21744\cellx23760
+\ql \cell\qc model1\cell\qc \cell\qc model2\cell\qc \cell\qc model3\cell\qc \cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx11664\cellx13680\cellx15696\cellx17712\cellx19728\cellx21744\cellx23760
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx11664\clbrdrb\brdrs\cellx13680\clbrdrb\brdrs\cellx15696\clbrdrb\brdrs\cellx17712\clbrdrb\brdrs\cellx19728\clbrdrb\brdrs\cellx21744\clbrdrb\brdrs\cellx23760
+\ql VARIABLES\cell\qc bCamCo\cell\qc lnalpha\cell\qc bCamCo\cell\qc lnalpha\cell\qc bCamCo\cell\qc lnalpha\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx11664\cellx13680\cellx15696\cellx17712\cellx19728\cellx21744\cellx23760
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+\ql bCamCo\cell\qc .\cell\qc \cell\qc .\cell\qc \cell\qc .\cell\qc \cell\row
+\ql \cell\qc (. - .)\cell\qc \cell\qc (. - .)\cell\qc \cell\qc (. - .)\cell\qc \cell\row
+\ql RECODE of B1PB1 (Highest level of education completed) = 2, HS Diploma/GED\cell\qc 1.46**\cell\qc \cell\qc \cell\qc \cell\qc 1.42**\cell\qc \cell\row
+\ql \cell\qc (1.16 - 1.83)\cell\qc \cell\qc \cell\qc \cell\qc (1.14 - 1.76)\cell\qc \cell\row
+\ql RECODE of B1PB1 (Highest level of education completed) = 3, Some College/AA Degree\cell\qc 1.94***\cell\qc \cell\qc \cell\qc \cell\qc 1.81***\cell\qc \cell\row
+\ql \cell\qc (1.55 - 2.42)\cell\qc \cell\qc \cell\qc \cell\qc (1.46 - 2.25)\cell\qc \cell\row
+\ql RECODE of B1PB1 (Highest level of education completed) = 4, College Grad\cell\qc 2.27***\cell\qc \cell\qc \cell\qc \cell\qc 2.23***\cell\qc \cell\row
+\ql \cell\qc (1.81 - 2.85)\cell\qc \cell\qc \cell\qc \cell\qc (1.79 - 2.77)\cell\qc \cell\row
+\ql RECODE of B1PB1 (Highest level of education completed) = 5, Graduate or Professional Degree\cell\qc 2.11***\cell\qc \cell\qc \cell\qc \cell\qc 2.14***\cell\qc \cell\row
+\ql \cell\qc (1.68 - 2.65)\cell\qc \cell\qc \cell\qc \cell\qc (1.72 - 2.66)\cell\qc \cell\row
+\ql bRace = 2, Non-Hispanic Black\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 0.88\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (0.71 - 1.09)\cell\qc \cell\row
+\ql bRace = 3, Mexican American and Other Hispanic\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 1.09\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (0.87 - 1.38)\cell\qc \cell\row
+\ql bRace = 4, Other Race\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 0.93\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (0.74 - 1.17)\cell\qc \cell\row
+\ql RECODE of B1PRSEX (Respondent gender)\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 1.48***\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (1.36 - 1.60)\cell\qc \cell\row
+\ql Religious Identification\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 0.99**\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (0.98 - 0.99)\cell\qc \cell\row
+\ql Spirituality\cell\qc \cell\qc \cell\qc \cell\qc \cell\qc 1.31***\cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc (1.27 - 1.35)\cell\qc \cell\row
+\ql lnalpha\cell\qc \cell\qc .\cell\qc \cell\qc .\cell\qc \cell\qc .\cell\row
+\ql \cell\qc \cell\qc (. - .)\cell\qc \cell\qc (. - .)\cell\qc \cell\qc (. - .)\cell\row
+\ql lnbHhInc\cell\qc \cell\qc \cell\qc 1.02\cell\qc \cell\qc \cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc (0.98 - 1.07)\cell\qc \cell\qc \cell\qc \cell\row
+\ql Constant\cell\qc 0.89\cell\qc 0.96\cell\qc 1.34\cell\qc 1.01\cell\qc 0.15***\cell\qc 0.70***\cell\row
+\ql \cell\qc (0.72 - 1.10)\cell\qc (0.87 - 1.05)\cell\qc (0.83 - 2.17)\cell\qc (0.93 - 1.10)\cell\qc (0.12 - 0.20)\cell\qc (0.64 - 0.78)\cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx11664\clbrdrb\brdrs\cellx13680\clbrdrb\brdrs\cellx15696\clbrdrb\brdrs\cellx17712\clbrdrb\brdrs\cellx19728\clbrdrb\brdrs\cellx21744\clbrdrb\brdrs\cellx23760
+\ql Observations\cell\qc 3,560\cell\qc 3,560\cell\qc 3,560\cell\qc 3,560\cell\qc 3,556\cell\qc 3,556\cell\row
+\pard\qc
+ciEform in parentheses\par
+*** p<0.001, ** p<0.01, * p<0.05\par
+}

@@ -1,0 +1,831 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Committee Meeting 12/11},
+  pdfauthor={Hannah Andrews},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Committee Meeting 12/11}
+\author{Hannah Andrews}
+\date{12/8/2020}
+
+\begin{document}
+\maketitle
+
+\hypertarget{variable-distributions}{%
+\section{Variable Distributions}\label{variable-distributions}}
+
+\hypertarget{complementary-and-alternative-medicines-cams}{%
+\subsection{Complementary and Alternative Medicines
+(CAMs)}\label{complementary-and-alternative-medicines-cams}}
+
+\hypertarget{cam-dummies-have-you-used-any-of-the-following-cams-in-the-past-year}{%
+\subsubsection{CAM Dummies: Have you used any of the following CAMs in
+the past
+year?}\label{cam-dummies-have-you-used-any-of-the-following-cams-in-the-past-year}}
+
+\hypertarget{midus-1-indiviudal-cams}{%
+\subsubsection{MIDUS 1 Indiviudal CAMs}\label{midus-1-indiviudal-cams}}
+
+\begin{verbatim}
+## MIDUS1_recode[camslist] 
+## 
+##  15  Variables      7108  Observations
+## --------------------------------------------------------------------------------
+## aCamEverAcupuncture 
+##        n  missing distinct 
+##     6279      829        2 
+##                       
+## Value         No   Yes
+## Frequency   6198    81
+## Proportion 0.987 0.013
+## --------------------------------------------------------------------------------
+## aCamEverBiofeedback 
+##        n  missing distinct 
+##     6272      836        2 
+##                       
+## Value         No   Yes
+## Frequency   6224    48
+## Proportion 0.992 0.008
+## --------------------------------------------------------------------------------
+## aCamEverChiropractor 
+##        n  missing distinct 
+##     6282      826        2 
+##                     
+## Value        No  Yes
+## Frequency  5523  759
+## Proportion 0.88 0.12
+## --------------------------------------------------------------------------------
+## aCamEverEnergy 
+##        n  missing distinct 
+##     6271      837        2 
+##                       
+## Value         No   Yes
+## Frequency   6180    91
+## Proportion 0.985 0.015
+## --------------------------------------------------------------------------------
+## aCamEverMoveTherapy 
+##        n  missing distinct 
+##     6275      833        2 
+##                     
+## Value        No  Yes
+## Frequency  5162 1113
+## Proportion 0.82 0.18
+## --------------------------------------------------------------------------------
+## aCamEverHerbTherapy 
+##        n  missing distinct 
+##     6269      839        2 
+##                       
+## Value         No   Yes
+## Frequency   5951   318
+## Proportion 0.949 0.051
+## --------------------------------------------------------------------------------
+## aCamEverMegaVitamins 
+##        n  missing distinct 
+##     6269      839        2 
+##                       
+## Value         No   Yes
+## Frequency   5976   293
+## Proportion 0.953 0.047
+## --------------------------------------------------------------------------------
+## aCamEverHomeopathy 
+##        n  missing distinct 
+##     6250      858        2 
+##                       
+## Value         No   Yes
+## Frequency   6105   145
+## Proportion 0.977 0.023
+## --------------------------------------------------------------------------------
+## aCamEverHypnosis 
+##        n  missing distinct 
+##     6276      832        2 
+##                       
+## Value         No   Yes
+## Frequency   6198    78
+## Proportion 0.988 0.012
+## --------------------------------------------------------------------------------
+## aCamEverImageTech 
+##        n  missing distinct 
+##     6270      838        2 
+##                       
+## Value         No   Yes
+## Frequency   6075   195
+## Proportion 0.969 0.031
+## --------------------------------------------------------------------------------
+## aCamEverMassage 
+##        n  missing distinct 
+##     6263      845        2 
+##                       
+## Value         No   Yes
+## Frequency   5725   538
+## Proportion 0.914 0.086
+## --------------------------------------------------------------------------------
+## aCamEverPray 
+##        n  missing distinct 
+##     6263      845        2 
+##                     
+## Value        No  Yes
+## Frequency  4360 1903
+## Proportion  0.7  0.3
+## --------------------------------------------------------------------------------
+## aCamEverMeditate 
+##        n  missing distinct 
+##     6273      835        2 
+##                     
+## Value        No  Yes
+## Frequency  5430  843
+## Proportion 0.87 0.13
+## --------------------------------------------------------------------------------
+## aCamEverSpecialDiet 
+##        n  missing distinct 
+##     6279      829        2 
+##                     
+## Value        No  Yes
+## Frequency  5591  688
+## Proportion 0.89 0.11
+## --------------------------------------------------------------------------------
+## aCamEverSpiritHeal 
+##        n  missing distinct 
+##     6266      842        2 
+##                       
+## Value         No   Yes
+## Frequency   6060   206
+## Proportion 0.967 0.033
+## --------------------------------------------------------------------------------
+\end{verbatim}
+
+\hypertarget{midus-2-individual-cams}{%
+\subsubsection{MIDUS 2 Individual CAMs}\label{midus-2-individual-cams}}
+
+\begin{verbatim}
+## MIDUS2_recode[camslist] 
+## 
+##  15  Variables      7354  Observations
+## --------------------------------------------------------------------------------
+## bCamEverAcupuncture 
+##        n  missing distinct 
+##     3980     3374        2 
+##                       
+## Value         No   Yes
+## Frequency   3898    82
+## Proportion 0.979 0.021
+## --------------------------------------------------------------------------------
+## bCamEverBiofeedback 
+##        n  missing distinct 
+##     3969     3385        2 
+##                       
+## Value         No   Yes
+## Frequency   3932    37
+## Proportion 0.991 0.009
+## --------------------------------------------------------------------------------
+## bCamEverChiropractor 
+##        n  missing distinct 
+##     3981     3373        2 
+##                     
+## Value        No  Yes
+## Frequency  3302  679
+## Proportion 0.83 0.17
+## --------------------------------------------------------------------------------
+## bCamEverEnergy 
+##        n  missing distinct 
+##     3956     3398        2 
+##                       
+## Value         No   Yes
+## Frequency   3860    96
+## Proportion 0.976 0.024
+## --------------------------------------------------------------------------------
+## bCamEverMoveTherapy 
+##        n  missing distinct 
+##     3973     3381        2 
+##                     
+## Value        No  Yes
+## Frequency  3369  604
+## Proportion 0.85 0.15
+## --------------------------------------------------------------------------------
+## bCamEverHerbTherapy 
+##        n  missing distinct 
+##     3977     3377        2 
+##                       
+## Value         No   Yes
+## Frequency   3582   395
+## Proportion 0.901 0.099
+## --------------------------------------------------------------------------------
+## bCamEverMegaVitamins 
+##        n  missing distinct 
+##     3974     3380        2 
+##                     
+## Value        No  Yes
+## Frequency  3522  452
+## Proportion 0.89 0.11
+## --------------------------------------------------------------------------------
+## bCamEverHomeopathy 
+##        n  missing distinct 
+##     3968     3386        2 
+##                       
+## Value         No   Yes
+## Frequency   3801   167
+## Proportion 0.958 0.042
+## --------------------------------------------------------------------------------
+## bCamEverHypnosis 
+##        n  missing distinct 
+##     3970     3384        2 
+##                     
+## Value        No  Yes
+## Frequency  3929   41
+## Proportion 0.99 0.01
+## --------------------------------------------------------------------------------
+## bCamEverImageTech 
+##        n  missing distinct 
+##     3956     3398        2 
+##                     
+## Value        No  Yes
+## Frequency  3799  157
+## Proportion 0.96 0.04
+## --------------------------------------------------------------------------------
+## bCamEverMassage 
+##        n  missing distinct 
+##     3950     3404        2 
+##                     
+## Value        No  Yes
+## Frequency  3268  682
+## Proportion 0.83 0.17
+## --------------------------------------------------------------------------------
+## bCamEverPray 
+##        n  missing distinct 
+##     3977     3377        2 
+##                     
+## Value        No  Yes
+## Frequency  2200 1777
+## Proportion 0.55 0.45
+## --------------------------------------------------------------------------------
+## bCamEverMeditate 
+##        n  missing distinct 
+##     3961     3393        2 
+##                     
+## Value        No  Yes
+## Frequency  2999  962
+## Proportion 0.76 0.24
+## --------------------------------------------------------------------------------
+## bCamEverSpecialDiet 
+##        n  missing distinct 
+##     3969     3385        2 
+##                       
+## Value         No   Yes
+## Frequency   3801   168
+## Proportion 0.958 0.042
+## --------------------------------------------------------------------------------
+## bCamEverSpiritHeal 
+##        n  missing distinct 
+##     3972     3382        2 
+##                       
+## Value         No   Yes
+## Frequency   3765   207
+## Proportion 0.948 0.052
+## --------------------------------------------------------------------------------
+\end{verbatim}
+
+\hypertarget{midus-3-individual-cams}{%
+\subsubsection{MIDUS 3 Individual CAMs}\label{midus-3-individual-cams}}
+
+\begin{verbatim}
+## MIDUS3_recode[camslist] 
+## 
+##  15  Variables      7108  Observations
+## --------------------------------------------------------------------------------
+## cCamEverAcupuncture 
+##        n  missing distinct 
+##     2867     4241        2 
+##                       
+## Value         No   Yes
+## Frequency   2763   104
+## Proportion 0.964 0.036
+## --------------------------------------------------------------------------------
+## cCamEverBiofeedback 
+##        n  missing distinct 
+##     2857     4251        2 
+##                       
+## Value         No   Yes
+## Frequency   2823    34
+## Proportion 0.988 0.012
+## --------------------------------------------------------------------------------
+## cCamEverChiropractor 
+##        n  missing distinct 
+##     2874     4234        2 
+##                     
+## Value        No  Yes
+## Frequency  2367  507
+## Proportion 0.82 0.18
+## --------------------------------------------------------------------------------
+## cCamEverEnergy 
+##        n  missing distinct 
+##     2840     4268        2 
+##                       
+## Value         No   Yes
+## Frequency   2765    75
+## Proportion 0.974 0.026
+## --------------------------------------------------------------------------------
+## cCamEverMoveTherapy 
+##        n  missing distinct 
+##     2865     4243        2 
+##                     
+## Value        No  Yes
+## Frequency  2317  548
+## Proportion 0.81 0.19
+## --------------------------------------------------------------------------------
+## cCamEverHerbTherapy 
+##        n  missing distinct 
+##     2858     4250        2 
+##                       
+## Value         No   Yes
+## Frequency   2643   215
+## Proportion 0.925 0.075
+## --------------------------------------------------------------------------------
+## cCamEverMegaVitamins 
+##        n  missing distinct 
+##     2863     4245        2 
+##                     
+## Value        No  Yes
+## Frequency  2578  285
+## Proportion  0.9  0.1
+## --------------------------------------------------------------------------------
+## cCamEverHomeopathy 
+##        n  missing distinct 
+##     2860     4248        2 
+##                       
+## Value         No   Yes
+## Frequency   2727   133
+## Proportion 0.953 0.047
+## --------------------------------------------------------------------------------
+## cCamEverHypnosis 
+##        n  missing distinct 
+##     2861     4247        2 
+##                       
+## Value         No   Yes
+## Frequency   2830    31
+## Proportion 0.989 0.011
+## --------------------------------------------------------------------------------
+## cCamEverImageTech 
+##        n  missing distinct 
+##     2849     4259        2 
+##                     
+## Value        No  Yes
+## Frequency  2735  114
+## Proportion 0.96 0.04
+## --------------------------------------------------------------------------------
+## cCamEverMassage 
+##        n  missing distinct 
+##     2817     4291        2 
+##                     
+## Value        No  Yes
+## Frequency  2274  543
+## Proportion 0.81 0.19
+## --------------------------------------------------------------------------------
+## cCamEverPray 
+##        n  missing distinct 
+##     2855     4253        2 
+##                     
+## Value        No  Yes
+## Frequency  1658 1197
+## Proportion 0.58 0.42
+## --------------------------------------------------------------------------------
+## cCamEverMeditate 
+##        n  missing distinct 
+##     2834     4274        2 
+##                     
+## Value        No  Yes
+## Frequency  2143  691
+## Proportion 0.76 0.24
+## --------------------------------------------------------------------------------
+## cCamEverSpecialDiet 
+##        n  missing distinct 
+##     2860     4248        2 
+##                       
+## Value         No   Yes
+## Frequency   2685   175
+## Proportion 0.939 0.061
+## --------------------------------------------------------------------------------
+## cCamEverSpiritHeal 
+##        n  missing distinct 
+##     2858     4250        2 
+##                       
+## Value         No   Yes
+## Frequency   2710   148
+## Proportion 0.948 0.052
+## --------------------------------------------------------------------------------
+\end{verbatim}
+
+\hypertarget{midus-1-cam-summed-index}{%
+\subsubsection{MIDUS 1 CAM Summed
+Index}\label{midus-1-cam-summed-index}}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##       2      16      17      17      18      32     814
+\end{verbatim}
+
+\begin{verbatim}
+##       median         mean      SE.mean CI.mean.0.95          var      std.dev 
+##       17.000       17.104        0.023        0.044        3.206        1.791 
+##     coef.var 
+##        0.105
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-4-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 814 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-4-3.pdf}
+\#\#\# MIDUS 2 CAM Summed Index
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##       1      16      17      17      18      31    3342
+\end{verbatim}
+
+\begin{verbatim}
+##       median         mean      SE.mean CI.mean.0.95          var      std.dev 
+##       17.000       17.432        0.038        0.074        5.689        2.385 
+##     coef.var 
+##        0.137
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-5-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 3342 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-5-3.pdf}
+\#\#\# MIDUS 3 CAM Summed Index
+
+\begin{verbatim}
+## MIDUS3_recode$cCamSum 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##     2899     4209       27    0.927    17.42    2.329       16       16 
+##      .25      .50      .75      .90      .95 
+##       16       17       18       20       22 
+## 
+## lowest :  1  2  4  6  8, highest: 28 29 30 31 32
+\end{verbatim}
+
+\begin{verbatim}
+##       median         mean      SE.mean CI.mean.0.95          var      std.dev 
+##       17.000       17.419        0.048        0.094        6.733        2.595 
+##     coef.var 
+##        0.149
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-6-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 4209 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-6-3.pdf}
+
+\hypertarget{income}{%
+\subsection{Income}\label{income}}
+
+\hypertarget{midus-1-household-income}{%
+\subsubsection{MIDUS 1 Household
+Income}\label{midus-1-household-income}}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##       0   29000   55000   73380   95000  300000     998
+\end{verbatim}
+
+\begin{verbatim}
+##        median          mean       SE.mean  CI.mean.0.95           var 
+##      55000.00      73379.62        830.03       1627.15 4209495124.10 
+##       std.dev      coef.var 
+##      64880.62          0.88
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-7-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 998 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-7-3.pdf}
+\#\#\# MIDUS 2 Household Income
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##       0   29000   57500   71364   95443  300000    3500
+\end{verbatim}
+
+\begin{verbatim}
+##                          x
+## median            57500.00
+## mean              71363.52
+## SE.mean             973.95
+## CI.mean.0.95       1909.51
+## var          3655822857.30
+## std.dev           60463.40
+## coef.var              0.85
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 3500 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-8-3.pdf}
+\#\#\# MIDUS 3 Household Income
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##       0   34000   68000   87920  121250  300000    4396
+\end{verbatim}
+
+\begin{verbatim}
+##                          x
+## median            68000.00
+## mean              87919.71
+## SE.mean            1421.75
+## CI.mean.0.95       2787.82
+## var          5481942578.04
+## std.dev           74040.14
+## coef.var              0.84
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-9-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 4396 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-9-3.pdf}
+\#\# Education \#\#\# MIDUS 1 Education
+
+\begin{verbatim}
+## 
+##                                       Less than High School 
+##                                                         681 
+##                                          High School or GED 
+##                                                        2060 
+## Some college/Associates/2-year college or vocational school 
+##                                                        2173 
+##                                                   Bachelors 
+##                                                        1437 
+##                             Graduate or Professional Degree 
+##                                                         744 
+##                                                        <NA> 
+##                                                          13
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-10-1.pdf}
+\#\#\# MIDUS 2 Education
+
+\begin{verbatim}
+## 
+##                                       Less than High School 
+##                                                         309 
+##                                          High School or GED 
+##                                                        1327 
+## Some college/Associates/2-year college or vocational school 
+##                                                        1484 
+##                                                   Bachelors 
+##                                                        1109 
+##                             Graduate or Professional Degree 
+##                                                         727 
+##                                                        <NA> 
+##                                                        2398
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-11-1.pdf}
+\#\#\# MIDUS 3 Education
+
+\begin{verbatim}
+## 
+##                                       Less than High School 
+##                                                         170 
+##                                          High School or GED 
+##                                                         785 
+## Some college/Associates/2-year college or vocational school 
+##                                                         953 
+##                                                   Bachelors 
+##                                                         794 
+##                             Graduate or Professional Degree 
+##                                                         581 
+##                                                        <NA> 
+##                                                        3825
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-12-1.pdf}
+\#\# Gender \#\#\# MIDUS 1 Gender
+
+\begin{verbatim}
+## MIDUS1_recode$aGender 
+##        n  missing distinct 
+##     7106        2        2 
+##                                 
+## Value        (1) Male (2) Female
+## Frequency        3440       3666
+## Proportion       0.48       0.52
+\end{verbatim}
+
+\hypertarget{midus-2-gender}{%
+\subsubsection{MIDUS 2 Gender}\label{midus-2-gender}}
+
+\begin{verbatim}
+## MIDUS2_recode$bGender 
+##        n  missing distinct 
+##     4963     2391        2 
+##                                 
+## Value        (1) MALE (2) FEMALE
+## Frequency        2316       2647
+## Proportion       0.47       0.53
+\end{verbatim}
+
+\hypertarget{midus-3-gender}{%
+\subsubsection{MIDUS 3 Gender}\label{midus-3-gender}}
+
+\begin{verbatim}
+## MIDUS3_recode$cGender 
+##        n  missing distinct 
+##     3294     3814        2 
+##                                 
+## Value        (1) MALE (2) FEMALE
+## Frequency        1484       1810
+## Proportion       0.45       0.55
+\end{verbatim}
+
+\hypertarget{education-and-cam-summed-index}{%
+\subsubsection{Education and CAM Summed
+Index}\label{education-and-cam-summed-index}}
+
+\hypertarget{race-and-ethnicity}{%
+\subsection{Race and Ethnicity}\label{race-and-ethnicity}}
+
+\hypertarget{midus-1-race-and-ethnicity}{%
+\subsubsection{MIDUS 1 Race and
+Ethnicity}\label{midus-1-race-and-ethnicity}}
+
+\begin{verbatim}
+## 
+## White Black Other  <NA> 
+##  5600   321   255   932
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-17-1.pdf}
+\#\#\# MIDUS 2 Race and Ethnicity
+
+\begin{verbatim}
+## 
+## Non-Hispanic White Non-Hispanic Black           Hispanic              Other 
+##               4392                225                151                164 
+##               <NA> 
+##               2422
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-18-1.pdf}
+\#\#\# MIDUS 3 Race and Ethnicity
+
+\begin{verbatim}
+## 
+## Non-Hispanic White Non-Hispanic Black           Hispanic              Other 
+##               2853                121                 98                191 
+##               <NA> 
+##               3845
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-19-1.pdf}
+\# Bivariate Distributions \#\# Income and CAMs \#\#\# MIDUS 1
+
+\begin{verbatim}
+## Warning: Removed 1022 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = -0.9, df = 6084, p-value = 0.4
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.036  0.014
+## sample estimates:
+##    cor 
+## -0.011
+\end{verbatim}
+
+\hypertarget{midus-2}{%
+\subsubsection{MIDUS 2}\label{midus-2}}
+
+\begin{verbatim}
+## Warning: Removed 3523 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = 1, df = 3829, p-value = 0.2
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.010  0.053
+## sample estimates:
+##   cor 
+## 0.022
+\end{verbatim}
+
+\hypertarget{midus-2-1}{%
+\subsubsection{MIDUS 2}\label{midus-2-1}}
+
+\begin{verbatim}
+## Warning: Removed 4416 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{Distributions-and-Missing-Data_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x and y
+## t = 4, df = 2690, p-value = 0.00004
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.041 0.116
+## sample estimates:
+##   cor 
+## 0.079
+\end{verbatim}
+
+\hypertarget{education-and-cam-sum}{%
+\subsection{Education and CAM Sum}\label{education-and-cam-sum}}
+
+\end{document}

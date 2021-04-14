@@ -1,0 +1,57 @@
+----------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\hanna\git\AHL\Stata\data-cleaning\MIDUS-merge.txt
+  log type:  text
+ opened on:  23 Feb 2021, 09:28:10
+
+. 
+. version 13 
+
+. clear all 
+
+. set linesize 100
+
+. set more off 
+
+. set maxvar 32767
+
+
+. 
+. //Project: Dissertation AHL 
+. //Created by: Hannah Andrews
+. //Date: 07/23/18
+. //Task: All data cleaning tasks. 
+.         //Part 1: Merge data within each wave 
+.         //Part 2: Coding variables 
+.         //Part 3: Merge data across waves (note combinations here) 
+. 
+. ////////////////////////////////////////////////////////////////////////////////
+> **PART 1: Merge data within each wave 
+. ////////////////////////////////////////////////////////////////////////////////
+> 
+. ********************************************************************************
+. //MIDUS 1 (ICPSR 02760)
+. ********************************************************************************
+. //Files to be merged: Folder MIDUS 1 includes DS001 (DATASET 0001: MAIN, SIBLINGS AND TWIN DATA) 
+. //DS004 (DATASET 0004: TWIN SCREENER DATA) and DS005 (DATASET 0005: CODED TEXT DATA) 
+. //For each (DS001 DS004 DS005) open, sort M2ID, do supplemental syntax (comes with raw data files
+.         //from ICPSR; replaces user-defined numeric missing values (e.g., -9) with generic 
+.         //system missing "."), save as MIDUS1A, MIDUS1B, MIDUS1C. 
+. 
+. *DS001: Main, Siblings, Twin Data 
+.         use             MIDUS1\DS0001\02760-0001-Data.dta, clear
+file MIDUS1\DS0001\02760-0001-Data.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. do "c:\users\hanna\appdata\local\temp\st_stata_temp.tmp"
+
+. local dir "C:\Users\hanna\git\AHL\Stata"
+
+. cd `dir'
+C:\Users\hanna\git\AHL\Stata
+
+. capture log close 

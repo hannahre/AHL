@@ -1,0 +1,55 @@
+File Manifest for ICPSR 37237
+
+Ryff, Carol, David Almeida, John Ayanian, Neil Binkley, Deborah S. Carr,
+Christopher Coe, Richard Davidson, Joseph Grzywacz, Arun Karlamangla,
+Robert Krueger, Margie Lachman, Gayle Love, Marsha Mailick, Daniel Mroczek,
+Barry Radler, Teresa Seeman, Richard Sloan, Duncan Thomas, Maxine
+Weinstein, and David R. Williams. Midlife in the United States (MIDUS 3):
+Mortality Data, 2016. ICPSR37237-v1. Ann Arbor, MI: Inter-university
+Consortium for Political and Social Research [distributor], 2019-03-21.
+http://doi.org/10.3886/ICPSR37237.v1
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37237-descriptioncitation.pdf       -       -         -       2019-03-26  -
+
+    37237-manifest.txt                  -       -         -       daily       -
+
+
+DS0001 Midlife in the United States (MIDUS 3): Mortality Data, 2016
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37237-0001-Codebook-ICPSR.pdf       -       -         -       2019-03-21  fd2879582ff01b780a0bebb063d03dbd
+
+    37237-0001-Data.dta                 -       1,382     11      2019-03-21  a15d58264327805245f1609deb557b2c
+
+    37237-0001-Data.rda                 -       1,382     11      2019-03-21  5f258e6387f478b9d5a6e0fc4e3066a4
+
+    37237-0001-Data.sav                 -       1,382     11      2019-03-21  56dc456106e9163d407555d60e6eaf0f
+
+    37237-0001-Data.stc                 -       1,382     11      2019-03-21  ba7fc9e507722ca916dad4cd68c55e81
+
+    37237-0001-Data.tsv                 -       1,382     11      2019-03-21  8720fd2fa1b79bff63662f50f92ba4dd
+
+    37237-0001-Data.txt                 40      1,382     11      2019-03-21  ecac9b495fa13113356ff1a8a2be2317
+
+    37237-0001-Documentation-naming_coding_conventions.pdf -       -         -       2019-03-21  30dadae58f653c95d30465508c3ac02d
+
+    37237-0001-Setup.dct                -       -         -       2019-03-21  fd9300574f8c2f3cbc5dd1d2813f2a40
+
+    37237-0001-Setup.do                 -       -         -       2019-03-21  83d55513ac69b865221236bbc4281ccb
+
+    37237-0001-Setup.sas                -       -         -       2019-03-21  1522f2da89684f012e33bb12974564ab
+
+    37237-0001-Setup.sps                -       -         -       2019-03-21  82128b04638294886fc65650d61ae4d9
+
+    37237-0001-Supplemental_syntax.do   -       -         -       2019-03-21  7470996b5561b5d810bfb1a096765a0c
+
+    37237-0001-Supplemental_syntax.sas  -       -         -       2019-03-21  4b3f2f58cbfe217ef5c13d58daa31a80
+

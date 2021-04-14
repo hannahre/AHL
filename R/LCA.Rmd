@@ -32,18 +32,6 @@ load(file = "MIDUS3.rda")
 
 ```
 # MIDUS 1
-max_II <- -100000
-min_bic <- 100000
-for (i in 2:10) {
-  lc <- poLCA(f, M1LCAData, nclass = i, maxiter = 3000,
-              graph = TRUE, 
-              nrep = 10, verbose = TRUE, calc.se = TRUE)
-  if(lc$bic < min_bic) {
-    min_bic <- lc$bic
-    LCA_best_model <- lc
-  }
-}
-LCA_best_model
 
 ```{r, echo = FALSE}
 # Different example: https://statistics.ohlsen-web.de/latent-class-analysis-polca/
@@ -56,7 +44,7 @@ acl <- function(df,   #a data.frame with your data
                 k,       #the maximum number of classes to fit
                 formula) {  
   foreach(i=1:k, .packages="poLCA") %dopar% poLCA(formula, df, nclass=i, 
-                                                  graphs = TRUE, nrep = 100
+                                                  nrep = 100
   )
 }
 
@@ -87,11 +75,6 @@ test <- acl(MIDUS1_recode, 10, f)
 compare_classes_acl(test)
 ```
 
-## 1 Class
-```{r echo = FALSE}
-
-
-```
 
 ```{r, echo = FALSE}
 f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,

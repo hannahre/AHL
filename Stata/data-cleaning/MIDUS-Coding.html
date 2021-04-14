@@ -1,0 +1,1913 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body {
+  max-width: 980px;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 45px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable,
+.markdown-body .highlighttable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr,
+.markdown-body .highlighttable {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite,
+.markdown-body .highlighttable pre,
+.markdown-body .highlighttable div.highlight {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td,
+.markdown-body .highlighttable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headerlink {
+  font: normal 400 16px fontawesome-mini;
+  vertical-align: middle;
+  margin-left: -16px;
+  float: left;
+  display: inline-block;
+  text-decoration: none;
+  opacity: 0;
+  color: #333;
+}
+
+.markdown-body .headerlink:focus {
+  outline: none;
+}
+
+.markdown-body h1 .headerlink {
+  margin-top: 0.8rem;
+}
+
+.markdown-body h2 .headerlink,
+.markdown-body h3 .headerlink {
+  margin-top: 0.6rem;
+}
+
+.markdown-body h4 .headerlink {
+  margin-top: 0.2rem;
+}
+
+.markdown-body h5 .headerlink,
+.markdown-body h6 .headerlink {
+  margin-top: 0;
+}
+
+.markdown-body .headerlink:hover,
+.markdown-body h1:hover .headerlink,
+.markdown-body h2:hover .headerlink,
+.markdown-body h3:hover .headerlink,
+.markdown-body h4:hover .headerlink,
+.markdown-body h5:hover .headerlink,
+.markdown-body h6:hover .headerlink {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite,
+.markdown-body .highlight {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body .highlight pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* MultiMarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px fontawesome-mini;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\e157';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>/*GitHub*/
+.highlight {background-color:#fff;color:#333333;}
+.highlight .hll {background-color:#ffffcc;}
+.highlight .c{color:#999988;font-style:italic}
+.highlight .err{color:#a61717;background-color:#e3d2d2}
+.highlight .k{font-weight:bold}
+.highlight .o{font-weight:bold}
+.highlight .cm{color:#999988;font-style:italic}
+.highlight .cp{color:#999999;font-weight:bold}
+.highlight .c1{color:#999988;font-style:italic}
+.highlight .cs{color:#999999;font-weight:bold;font-style:italic}
+.highlight .gd{color:#000000;background-color:#ffdddd}
+.highlight .ge{font-style:italic}
+.highlight .gr{color:#aa0000}
+.highlight .gh{color:#999999}
+.highlight .gi{color:#000000;background-color:#ddffdd}
+.highlight .go{color:#888888}
+.highlight .gp{color:#555555}
+.highlight .gs{font-weight:bold}
+.highlight .gu{color:#800080;font-weight:bold}
+.highlight .gt{color:#aa0000}
+.highlight .kc{font-weight:bold}
+.highlight .kd{font-weight:bold}
+.highlight .kn{font-weight:bold}
+.highlight .kp{font-weight:bold}
+.highlight .kr{font-weight:bold}
+.highlight .kt{color:#445588;font-weight:bold}
+.highlight .m{color:#009999}
+.highlight .s{color:#dd1144}
+.highlight .n{color:#333333}
+.highlight .na{color:teal}
+.highlight .nb{color:#0086b3}
+.highlight .nc{color:#445588;font-weight:bold}
+.highlight .no{color:teal}
+.highlight .ni{color:purple}
+.highlight .ne{color:#990000;font-weight:bold}
+.highlight .nf{color:#990000;font-weight:bold}
+.highlight .nn{color:#555555}
+.highlight .nt{color:navy}
+.highlight .nv{color:teal}
+.highlight .ow{font-weight:bold}
+.highlight .w{color:#bbbbbb}
+.highlight .mf{color:#009999}
+.highlight .mh{color:#009999}
+.highlight .mi{color:#009999}
+.highlight .mo{color:#009999}
+.highlight .sb{color:#dd1144}
+.highlight .sc{color:#dd1144}
+.highlight .sd{color:#dd1144}
+.highlight .s2{color:#dd1144}
+.highlight .se{color:#dd1144}
+.highlight .sh{color:#dd1144}
+.highlight .si{color:#dd1144}
+.highlight .sx{color:#dd1144}
+.highlight .sr{color:#009926}
+.highlight .s1{color:#dd1144}
+.highlight .ss{color:#990073}
+.highlight .bp{color:#999999}
+.highlight .vc{color:teal}
+.highlight .vg{color:teal}
+.highlight .vi{color:teal}
+.highlight .il{color:#009999}
+.highlight .gc{color:#999;background-color:#EAF2F5}
+</style><title>MIDUS-Coding</title></head><body><article class="markdown-body"><h1 id="part-2-coding-variables">PART 2: Coding Variables<a class="headerlink" href="#part-2-coding-variables" title="Permanent link"></a></h1>
+<div class="highlight"><pre>local dir <span class="s">&quot;C:\Users\hanna\git\AHL\Stata\data-cleaning&quot;</span>
+cd `<span class="kp">dir</span><span class="s">&#39;</span>
+<span class="o">*</span>capture log close 
+<span class="o">*</span>log using MIDUS<span class="o">-</span>recodes.txt<span class="p">,</span> replace text
+
+version <span class="m">13</span> 
+clear all 
+set linesize <span class="m">100</span>
+set more off 
+set maxvar <span class="m">32767</span>
+</pre></div>
+
+<p>Coding set up: Code for each variable is shown together across waves (e.g. alcohol
+    *coding for all waves is displayed together). </p>
+<p>Variable naming conventions: 
+    *Waves: each variable starts with a letter denoting the wave it belongs to 
+    *   a=wave 1, b=wave2, 3=wave3</p>
+<h2 id="socieconomic-variables">Socieconomic Variables<a class="headerlink" href="#socieconomic-variables" title="Permanent link"></a></h2>
+<h3 id="income">Income<a class="headerlink" href="#income" title="Permanent link"></a></h3>
+<h4 id="wave-1">Wave 1<a class="headerlink" href="#wave-1" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check coding<span class="p">,</span> skew<span class="p">,</span> and kurtosis
+    codebook A1SHHTOT
+    sum A1SHHTOT<span class="p">,</span> detail
+    hist A1SHHTOT
+    <span class="o">*</span> Generate new variable <span class="o">-</span> logged income 
+    generate lnAHhInc <span class="o">=</span> ln<span class="p">(</span>A1SHHTOT<span class="p">)</span>
+    sum lnAHhInc<span class="p">,</span> detail
+    hist lnAHhInc
+    notes lnAHhInc<span class="o">:</span> original variable skewness <span class="m">1.64</span> kurtosis <span class="m">5.60</span>
+    notes lnAHhInc<span class="o">:</span> logged variable skewness <span class="m">-1.03</span> kurtosis <span class="m">5.77</span>
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h4 id="wave-2">Wave 2<a class="headerlink" href="#wave-2" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check coding<span class="p">,</span> skew<span class="p">,</span> kurtosis
+    codebook B1STINC1
+    sum B1STINC1<span class="p">,</span> detail
+    hist B1STINC1 
+    <span class="o">*</span> Generate new variable <span class="o">-</span> logged income
+    generate lnbHhInc <span class="o">=</span> ln<span class="p">(</span>B1STINC1<span class="p">)</span>
+    sum lnbHhInc<span class="p">,</span> detail
+    hist lnbHhInc 
+    notes lnbHhInc<span class="o">:</span> original variable skewness <span class="m">1.60</span> kurtosis <span class="m">6.07</span>
+    notes lnbHhInc<span class="o">:</span> logged variable skewness <span class="m">-1.37</span> kurtosis <span class="m">6.81</span>
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h4 id="wave-3">Wave 3<a class="headerlink" href="#wave-3" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check coding<span class="p">,</span> skewness<span class="p">,</span> and kurtosis
+    codebook C1STINC
+    sum C1STINC<span class="p">,</span> detail 
+    hist C1STINC
+    <span class="o">*</span> Generate new variable <span class="o">-</span> logged income 
+    generate lnCHhInc <span class="o">=</span> ln<span class="p">(</span>C1STINC<span class="p">)</span>
+    sum lnCHhInc<span class="p">,</span> detail
+    hist lnCHhInc
+    notes lnCHhInc<span class="o">:</span> original variable skewness <span class="m">1.24</span> kurtosis <span class="m">4.08</span>
+    note lnCHhInc<span class="o">:</span> logged variable skewness <span class="m">-1.37</span> kurtosis <span class="m">5.73</span>
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h3 id="education">Education<a class="headerlink" href="#education" title="Permanent link"></a></h3>
+<p>Note on coding: &ldquo;some graduate school&rdquo; categorized with graduate/professional degree
+<div class="highlight"><pre>    notes<span class="o">:</span> Education variables <span class="s">&quot;some graduate school&quot;</span> categorized with graduate<span class="o">/</span>professional degree
+</pre></div></p>
+<h4 id="wave-1_1">Wave 1<a class="headerlink" href="#wave-1_1" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear
+    tab A1PB1
+    <span class="o">*</span> Recode Education 
+    recode A1PB1 <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">3</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">4</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">6</span><span class="o">/</span><span class="m">8</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">9</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="p">(</span><span class="m">10</span><span class="o">/</span><span class="m">12</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="p">(</span><span class="m">97</span> <span class="o">=</span> <span class="m">.</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>AEduc<span class="p">)</span>
+    label define education <span class="m">1</span> <span class="s">&quot;Less than High School&quot;</span> <span class="m">2</span> <span class="s">&quot;HS Diploma/GED&quot;</span> <span class="m">3</span> <span class="s">&quot;Some College/AA Degree&quot;</span> <span class="o">///</span>
+        <span class="m">4</span> <span class="s">&quot;College Grad&quot;</span> <span class="m">5</span> <span class="s">&quot;Graduate or Professional Degree&quot;</span>
+    label values AEduc education
+    tab A1PB1 AEduc<span class="p">,</span> missing 
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_1">Wave 2<a class="headerlink" href="#wave-2_1" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    tab B1PB1<span class="p">,</span> <span class="kp">missing</span>
+    <span class="o">*</span> Recode Education 
+    recode B1PB1 <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">3</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">4</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">6</span><span class="o">/</span><span class="m">8</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">9</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="p">(</span><span class="m">10</span><span class="o">/</span><span class="m">12</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="p">(</span><span class="m">97</span> <span class="o">=</span> <span class="m">.</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>bEduc<span class="p">)</span>
+    label define education <span class="m">1</span> <span class="s">&quot;Less than High School&quot;</span> <span class="m">2</span> <span class="s">&quot;HS Diploma/GED&quot;</span> <span class="m">3</span> <span class="s">&quot;Some College/AA Degree&quot;</span> <span class="o">///</span>
+        <span class="m">4</span> <span class="s">&quot;College Grad&quot;</span> <span class="m">5</span> <span class="s">&quot;Graduate or Professional Degree&quot;</span> 
+    label values bEduc education
+    tab B1PB1 bEduc<span class="p">,</span> missing 
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h4 id="wave-3_1">Wave 3<a class="headerlink" href="#wave-3_1" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear 
+    tab C1PB1<span class="p">,</span><span class="kp">missing</span>
+    <span class="o">*</span> Recode Education
+    recode C1PB1 <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">3</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">4</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">6</span><span class="o">/</span><span class="m">8</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">9</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="p">(</span><span class="m">10</span><span class="o">/</span><span class="m">12</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="p">(</span><span class="m">97</span><span class="o">/</span><span class="m">98</span> <span class="o">=</span> <span class="m">.</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>CEduc<span class="p">)</span>
+    label define education <span class="m">1</span> <span class="s">&quot;Less than High School&quot;</span> <span class="m">2</span> <span class="s">&quot;HS Diploma/GED&quot;</span> <span class="m">3</span> <span class="s">&quot;Some College/AA Degree&quot;</span> <span class="o">///</span>
+        <span class="m">4</span> <span class="s">&quot;College Grad&quot;</span> <span class="m">5</span> <span class="s">&quot;Graduate or Professional Degree&quot;</span> 
+    label values CEduc education
+    tab C1PB1 CEduc<span class="p">,</span> missing 
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h2 id="health-locus-of-control">Health Locus of Control<a class="headerlink" href="#health-locus-of-control" title="Permanent link"></a></h2>
+<h3 id="self">Self<a class="headerlink" href="#self" title="Permanent link"></a></h3>
+<h4 id="wave-1_2">Wave 1<a class="headerlink" href="#wave-1_2" title="Permanent link"></a></h4>
+<h4 id="wave-2_2">Wave 2<a class="headerlink" href="#wave-2_2" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    tab B1SHLOCS<span class="p">,</span> <span class="kp">missing</span>
+    sum B1SHLOCS<span class="p">,</span> detail
+    <span class="o">*</span> skew <span class="m">-2.02</span> kurtosis <span class="m">9.5</span>
+    hist B1SHLOCS
+    rename B1SHLOCS bHLOCS
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_2">Wave 3<a class="headerlink" href="#wave-3_2" title="Permanent link"></a></h4>
+<h2 id="controls">Controls<a class="headerlink" href="#controls" title="Permanent link"></a></h2>
+<h3 id="age">Age<a class="headerlink" href="#age" title="Permanent link"></a></h3>
+<h4 id="wave-1_3">Wave 1<a class="headerlink" href="#wave-1_3" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear
+    sum A1PRAGE_2019<span class="p">,</span> detail
+    rename A1PRAGE_2019 AAge
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_3">Wave 2<a class="headerlink" href="#wave-2_3" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    sum B1PAGE_M2<span class="p">,</span> detail
+    rename B1PAGE_M2 bAge 
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h4 id="wave-3_3">Wave 3<a class="headerlink" href="#wave-3_3" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear 
+    sum C1PRAGE<span class="p">,</span> detail
+    rename C1PRAGE CAge
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h3 id="raceethnicity">Race/Ethnicity<a class="headerlink" href="#raceethnicity" title="Permanent link"></a></h3>
+<h4 id="wave-1_4">Wave 1<a class="headerlink" href="#wave-1_4" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear 
+    tab A1SS7<span class="p">,</span> <span class="kp">missing</span>
+    recode A1SS7 <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">3</span><span class="o">/</span><span class="m">6</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>ARace<span class="p">)</span>
+    label define race <span class="m">1</span> <span class="s">&quot;White&quot;</span> <span class="m">2</span> <span class="s">&quot;Black&quot;</span> <span class="m">3</span> <span class="s">&quot;Other&quot;</span>
+    label values ARace race
+    tab A1SS7 ARace<span class="p">,</span> missing 
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_4">Wave 2<a class="headerlink" href="#wave-2_4" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    tab B1PF1<span class="p">,</span> <span class="kp">missing</span>
+    tab B1PF7A<span class="p">,</span> <span class="kp">missing</span>
+    generate bRace <span class="o">=</span> <span class="m">.</span> 
+        replace bRace <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> B1PF7A <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;</span> B1PF1 <span class="o">==</span> <span class="m">1</span>
+        replace bRace <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> B1PF7A <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> B1PF1 <span class="o">==</span> <span class="m">1</span> 
+        replace bRace <span class="o">=</span> <span class="m">3</span> <span class="kr">if</span> B1PF1 <span class="o">!=</span> <span class="m">1</span>
+        replace bRace <span class="o">=</span> <span class="m">4</span> <span class="kr">if</span> <span class="p">(</span>B1PF7A <span class="o">&gt;=</span> <span class="m">3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>B1PF7A <span class="o">&lt;=</span> <span class="m">6</span><span class="p">)</span> <span class="o">&amp;</span> B1PF1 <span class="o">==</span> <span class="m">1</span>
+        replace bRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> B1PF7A <span class="o">==</span> <span class="m">7</span> <span class="o">|</span> B1PF7A <span class="o">==</span> <span class="m">8</span>
+        replace bRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> B1PF1 <span class="o">==</span> <span class="m">97</span> <span class="o">|</span> B1PF1 <span class="o">==</span> <span class="m">98</span>
+        replace bRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> <span class="kp">missing</span><span class="p">(</span>B1PF7A<span class="p">,</span> B1PF1<span class="p">)</span>
+    label define race2 <span class="m">1</span> <span class="s">&quot;Non-Hispanic White&quot;</span> <span class="m">2</span> <span class="s">&quot;Non-Hispanic Black&quot;</span> <span class="m">3</span> <span class="o">///</span>
+        <span class="s">&quot;Mexican American and Other Hispanic&quot;</span> <span class="m">4</span> <span class="s">&quot;Other Race&quot;</span>
+    label values bRace race2
+    tab bRace B1PF7A<span class="p">,</span> <span class="kp">missing</span>
+    tab bRace B1PF1<span class="p">,</span> <span class="kp">missing</span>
+    <span class="o">*</span>Checked with browse 
+    <span class="kp">save</span><span class="p">,</span> replace 
+</pre></div>
+
+<h4 id="wave-3_4">Wave 3<a class="headerlink" href="#wave-3_4" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear
+    tab C1PF1<span class="p">,</span> <span class="kp">missing</span>
+    tab C1PF7A<span class="p">,</span> <span class="kp">missing</span>
+    generate CRace <span class="o">=</span> <span class="m">.</span> 
+        replace CRace <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> C1PF7A <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;</span> C1PF1 <span class="o">==</span> <span class="m">1</span>
+        replace CRace <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> C1PF7A <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> C1PF1 <span class="o">==</span> <span class="m">1</span> 
+        replace CRace <span class="o">=</span> <span class="m">3</span> <span class="kr">if</span> C1PF1 <span class="o">!=</span> <span class="m">1</span>
+        replace CRace <span class="o">=</span> <span class="m">4</span> <span class="kr">if</span> <span class="p">(</span>C1PF7A <span class="o">&gt;=</span> <span class="m">3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>C1PF7A <span class="o">&lt;=</span> <span class="m">6</span><span class="p">)</span> <span class="o">&amp;</span> C1PF1 <span class="o">==</span> <span class="m">1</span>
+        replace CRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> C1PF7A <span class="o">==</span> <span class="m">7</span> <span class="o">|</span> C1PF7A <span class="o">==</span> <span class="m">8</span>
+        replace CRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> C1PF1 <span class="o">==</span> <span class="m">97</span> <span class="o">|</span> C1PF1 <span class="o">==</span> <span class="m">98</span>
+        replace CRace <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> <span class="kp">missing</span><span class="p">(</span>C1PF7A<span class="p">,</span> C1PF1<span class="p">)</span>
+    label define race3 <span class="m">1</span> <span class="s">&quot;Non-Hispanic White&quot;</span> <span class="m">2</span> <span class="s">&quot;Non-Hispanic Black&quot;</span> <span class="m">3</span> <span class="o">///</span>
+        <span class="s">&quot;Mexican American and Other Hispanic&quot;</span> <span class="m">4</span> <span class="s">&quot;Other Race&quot;</span>
+    label values CRace race3
+    tab CRace C1PF7A<span class="p">,</span> <span class="kp">missing</span>
+    tab CRace C1PF1<span class="p">,</span> <span class="kp">missing</span>
+    <span class="o">*</span>Checked with browse 
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h3 id="sex">Sex<a class="headerlink" href="#sex" title="Permanent link"></a></h3>
+<h4 id="wave-1_5">Wave 1<a class="headerlink" href="#wave-1_5" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear 
+    tab A1PRSEX<span class="p">,</span> <span class="kp">missing</span>
+    recode A1PRSEX <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">1</span><span class="p">),</span> gen<span class="p">(</span>ASex<span class="p">)</span>
+    label define sex <span class="m">0</span> <span class="s">&quot;Male&quot;</span> <span class="m">1</span> <span class="s">&quot;Female&quot;</span>
+    label values ASex sex
+    tab A1PRSEX ASex<span class="p">,</span> <span class="kp">missing</span>
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_5">Wave 2<a class="headerlink" href="#wave-2_5" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+    tab B1PRSEX<span class="p">,</span> <span class="kp">missing</span>
+    recode B1PRSEX <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">1</span><span class="p">),</span> gen<span class="p">(</span>bSex<span class="p">)</span>
+    label define sex2 <span class="m">0</span> <span class="s">&quot;Male&quot;</span> <span class="m">1</span> <span class="s">&quot;Female&quot;</span>
+    label values bSex sex2
+    tab B1PRSEX bSex<span class="p">,</span> <span class="kp">missing</span>
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_5">Wave 3<a class="headerlink" href="#wave-3_5" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear 
+    tab C1PRSEX<span class="p">,</span> <span class="kp">missing</span>
+    recode C1PRSEX <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">1</span><span class="p">),</span> gen<span class="p">(</span>CSex<span class="p">)</span>
+    label define sex3 <span class="m">0</span> <span class="s">&quot;Male&quot;</span> <span class="m">1</span> <span class="s">&quot;Female&quot;</span>
+    label values CSex sex3
+    tab C1PRSEX CSex<span class="p">,</span> <span class="kp">missing</span>
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h3 id="religiosity">Religiosity<a class="headerlink" href="#religiosity" title="Permanent link"></a></h3>
+<h4 id="wave-1_6">Wave 1<a class="headerlink" href="#wave-1_6" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check coding on all religious variables 
+    foreach var <span class="kr">in</span> A1SR2A A1SR2D A1SR2F A1SR2G A1SR2H A1SR2I <span class="p">{</span>
+        codebook `var<span class="s">&#39;</span>
+<span class="s">    }</span>
+
+<span class="s">    * Need to be reverse coded so 4 = very and 1 = not at all</span>
+<span class="s">    * Create local to act as a counter for generated religious vars. </span>
+<span class="s">    local period = 1    </span>
+<span class="s">    * Write for loop - reverse code each religious variable</span>
+<span class="s">    * Define value labels to be ```s</span>
+<span class="s">    used religious variable recodes </span>
+<span class="s">    label define relVals 1 &quot;Not at all&quot; 2 &quot;Not very&quot; 3 &quot;Somewhat&quot; 4 &quot;Very&quot;</span>
+<span class="s">    foreach var of varlist A1SR2A A1SR2D A1SR2F A1SR2G A1SR2H A1SR2I {</span>
+<span class="s">        recode `var&#39;</span> <span class="p">(</span><span class="m">4</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">3</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>aRelig`period<span class="s">&#39;)</span>
+<span class="s">        label values aRelig`period&#39;</span> relVals
+        tab <span class="sb">`var&#39; aRelig`</span>period<span class="s">&#39;, missing</span>
+<span class="s">        local period=`period&#39;</span><span class="m">+1</span>
+    <span class="p">}</span>
+
+    <span class="o">*</span> Create Religious Index by summing all vars. 
+
+    <span class="o">*</span> To match with indices from other waves<span class="o">:</span> <span class="p">(</span><span class="m">1</span><span class="p">)</span> impute mean value of completed items <span class="kr">for</span> missing items
+    <span class="o">*</span> <span class="p">(</span><span class="m">2</span><span class="p">)</span> Code cases missing more than half of the items as <span class="kp">missing</span>
+
+    <span class="o">*</span> Check missing patterns
+    <span class="o">*</span> Create global <span class="kt">list</span> of religious variables 
+    global bRelVars <span class="s">&quot;A1SR2A A1SR2D A1SR2F A1SR2G A1SR2H A1SR2I&quot;</span>
+    <span class="o">*</span> Investigate missing data patterns on bRelVars
+    mdesc <span class="o">$</span>bRelVars
+    mvpatterns <span class="o">$</span>bRelVars
+    <span class="o">*</span> Create newvar <span class="o">=</span> number of missing values on bRelVars
+    egen MissbRelVars<span class="o">=</span>rmiss2<span class="p">(</span><span class="o">$</span>bRelVars<span class="p">)</span>
+    tab MissbRelVars<span class="p">,</span> <span class="kp">missing</span>
+
+    notes<span class="o">:</span> Religious <span class="o">-</span> Most missing on item <span class="m">2</span> <span class="p">(</span>Importance of religion <span class="kr">in</span> life<span class="p">)</span><span class="m">.</span> <span class="m">37</span> cases.
+    notes<span class="o">:</span> Religious <span class="o">-</span> <span class="m">18</span> cases missing on item <span class="m">5</span> prefer people of the same religion
+    notes<span class="o">:</span> Religious <span class="o">-</span> <span class="m">14</span> missing on item <span class="m">6</span> marriage... all others <span class="m">12</span> or fewer cases per pattern.
+
+    <span class="kp">save</span><span class="p">,</span><span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_6">Wave 2<a class="headerlink" href="#wave-2_6" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    sum B1SRELID<span class="p">,</span> detail
+    hist B1SRELID
+    rename B1SRELID bReligId
+    notes bReligId<span class="o">:</span> For an item with a missing value<span class="p">,</span> the mean value of completed items is imputed.
+    notes bReligId<span class="o">:</span> The scales are computed <span class="kr">for</span> cases that have valid values <span class="kr">for</span> at least half of the items on the particular scale. Scale scores are not calculated <span class="kr">for</span> cases with fewer than half of the items on the scales<span class="p">,</span> and coded as “<span class="m">98</span>” <span class="kr">for</span> “NOT CALCULATED <span class="p">(</span>Due to missing data<span class="p">)</span><span class="m">.</span>”
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_6">Wave 3<a class="headerlink" href="#wave-3_6" title="Permanent link"></a></h4>
+<p>//Spirituality</p>
+<h4 id="wave-1_7">Wave 1<a class="headerlink" href="#wave-1_7" title="Permanent link"></a></h4>
+<h4 id="wave-2_7">Wave 2<a class="headerlink" href="#wave-2_7" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+    tab B1SSPIRI<span class="p">,</span> <span class="kp">missing</span>
+    hist B1SSPIRI
+    rename B1SSPIRI bSpirit
+    notes bSpirit<span class="o">:</span> Same as bReligId
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_7">Wave 3<a class="headerlink" href="#wave-3_7" title="Permanent link"></a></h4>
+<p>//Marital Status </p>
+<h4 id="wave-1_8">Wave 1<a class="headerlink" href="#wave-1_8" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear
+    tab A1PB17<span class="p">,</span> <span class="kp">missing</span>
+    rename A1PB17 aMarital 
+
+    <span class="o">*</span> Create dummy <span class="kr">for</span> married<span class="o">/</span>not married 
+    recode aMarital <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>aMarried<span class="p">)</span>
+    label variable aMarried <span class="s">&quot;Married/Not married&quot;</span>
+    label define married <span class="m">0</span> <span class="s">&quot;Not married&quot;</span> <span class="m">1</span> <span class="s">&quot;Married&quot;</span>
+    label values aMarried married
+    tab aMarital aMarried<span class="p">,</span> missing  
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_8">Wave 2<a class="headerlink" href="#wave-2_8" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+    tab B1PB19<span class="p">,</span> <span class="kp">missing</span>
+    rename B1PB19 bMarital
+
+    <span class="o">*</span> Create dummy <span class="kr">for</span> married<span class="o">/</span>not married 
+    recode bMarital <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>bMarried<span class="p">)</span>
+    label variable bMarried <span class="s">&quot;Married/Not married&quot;</span>
+    label define married <span class="m">0</span> <span class="s">&quot;Not married&quot;</span> <span class="m">1</span> <span class="s">&quot;Married&quot;</span>
+    label values bMarried married
+    tab bMarital bMarried<span class="p">,</span> missing  
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_8">Wave 3<a class="headerlink" href="#wave-3_8" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear
+    tab C1PB19<span class="p">,</span> <span class="kp">missing</span>
+    rename C1PB19 cMarital 
+
+    <span class="o">*</span> Create dummy <span class="kr">for</span> married<span class="o">/</span>not married  
+    recode cMarital <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span><span class="o">/</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>cMarried<span class="p">)</span>
+    label variable cMarried <span class="s">&quot;Married/Not married&quot;</span>
+    label define married <span class="m">0</span> <span class="s">&quot;Not married&quot;</span> <span class="m">1</span> <span class="s">&quot;Married&quot;</span>
+    label values cMarried married
+    tab cMarital cMarried<span class="p">,</span> missing  
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<p>//Childhood SES </p>
+<h4 id="wave-1_9">Wave 1<a class="headerlink" href="#wave-1_9" title="Permanent link"></a></h4>
+<h4 id="wave-2_9">Wave 2<a class="headerlink" href="#wave-2_9" title="Permanent link"></a></h4>
+<h4 id="wave-3_9">Wave 3<a class="headerlink" href="#wave-3_9" title="Permanent link"></a></h4>
+<p>//Health insurance </p>
+<h4 id="wave-1_10">Wave 1<a class="headerlink" href="#wave-1_10" title="Permanent link"></a></h4>
+<h5 id="currently-covered-by-health-insurance">Currently covered by health insurance<a class="headerlink" href="#currently-covered-by-health-insurance" title="Permanent link"></a></h5>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear
+
+    <span class="o">*</span> Check response patterns on health insurance variables 
+    egen pattern3 <span class="o">=</span> concat<span class="p">(</span>A1SC1<span class="o">*</span><span class="p">)</span>
+        tab pattern3<span class="p">,</span> missing 
+
+    <span class="o">*</span> Generate new variable equal to <span class="m">1</span> <span class="kr">if</span> yes to any A1SC1<span class="o">*</span>
+    generate aHlthIns <span class="o">=</span> <span class="m">0</span>
+        replace aHlthIns <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> A1SC1A <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1B <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1C <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1D <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1E <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1F <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1G <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> A1SC1H <span class="o">==</span> <span class="m">1</span> 
+        replace aHlthIns <span class="o">=</span> <span class="m">.</span> <span class="kr">if</span> A1SC1A <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1B <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1C <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1D <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1E <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1F <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1G <span class="o">==</span> <span class="m">.</span> <span class="o">&amp;</span> A1SC1H <span class="o">==</span> <span class="m">.</span> 
+    label define hlthInVals <span class="m">0</span> <span class="s">&quot;Uninsured&quot;</span> <span class="m">1</span> <span class="s">&quot;Insured&quot;</span>
+    label values aHlthIns hlthInVals
+    tab aHlthIns<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">*</span> Check aHlthIns <span class="kr">for</span> errors.
+
+    <span class="o">*</span> Need to know the number of observations with a combination of <span class="m">.</span> and <span class="m">2</span> on A1SC1<span class="o">*</span>
+    <span class="o">*</span> Define a global called aHlthInsVars with all health insurance variables
+    global aHlthInsVars A1SC1A A1SC1B A1SC1C A1SC1D A1SC1E A1SC1F A1SC1G A1SC1H
+    display <span class="s">&quot;$aHlthInsVars&quot;</span>
+
+    <span class="o">*</span> <span class="m">649</span> cases coded as no insurance<span class="p">,</span> <span class="m">578</span> cases with <span class="m">2</span>s across all insurance variables.
+    <span class="o">*</span> <span class="m">71</span> cases should have some combination of <span class="m">.</span> and <span class="m">2</span>s across all insurance variables.
+    <span class="o">*</span> Generate new variable <span class="o">=</span> <span class="m">0</span> <span class="kr">if</span> aHlthIns <span class="o">=</span> <span class="m">0</span> <span class="p">(</span>no insurance<span class="p">)</span>
+    generate chk1 <span class="o">=</span> aHlthIns <span class="kr">if</span> aHlthIns <span class="o">==</span> <span class="m">0</span>
+    tab chk1 aHlthIns<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">*</span> Set chk1 <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> some combination of <span class="m">.</span> and <span class="m">2</span> across all insurance variables
+    <span class="o">*</span> Loop replace statements over all insurance variables. Chk1 equal to <span class="m">1</span> <span class="kr">if</span> any combination of <span class="m">.</span> and <span class="m">2</span> across all insurance vars. 
+    foreach i of global aHlthInsVars <span class="p">{</span>
+        foreach j of global aHlthInsVars <span class="p">{</span>
+                replace chk1 <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> <span class="sb">`i&#39; == . &amp; `</span>j<span class="s">&#39;</span><span class="err"> == 2 </span>
+        <span class="p">}</span> 
+    <span class="p">}</span> 
+
+    <span class="o">*</span> Set chk1 <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> respondent answered <span class="s">&quot;yes&quot;</span> to having any type of insurance 
+    replace chk1 <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> aHlthIns <span class="o">==</span> <span class="m">1</span>
+
+    label define chk1Vals <span class="m">0</span> <span class="s">&quot;Uninsured&quot;</span> <span class="m">1</span> <span class="s">&quot;Insured&quot;</span> <span class="m">2</span> <span class="s">&quot;Combination of missing and No on insurance vars&quot;</span>
+    label values chk1 chk1Vals
+
+    tab chk1 aHlthIns<span class="p">,</span> <span class="kp">missing</span>
+    <span class="o">*</span> YES<span class="o">!!</span> <span class="m">71</span> cases identified with some combination of <span class="m">.</span> and <span class="m">2</span> <span class="o">+</span> <span class="m">578</span> <span class="p">(</span>all nos<span class="p">)</span> <span class="o">=</span> total uninsured on aHlthIns
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_10">Wave 2<a class="headerlink" href="#wave-2_10" title="Permanent link"></a></h4>
+<h5 id="currently-covered-by-health-insurance_1">Currently covered by health insurance<a class="headerlink" href="#currently-covered-by-health-insurance_1" title="Permanent link"></a></h5>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+    tab B1SC1<span class="p">,</span> <span class="kp">missing</span>
+    recode B1SC1 <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>bHlthIns<span class="p">)</span>
+    label variable bHlthIns <span class="s">&quot;Currently covered by health insurance&quot;</span>
+    label values bHlthIns hlthInVals
+    tab bHlthIns B1SC1<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">//</span>Type of health insurance coverage 
+    generate bHlthIns1 <span class="o">=</span> <span class="m">.</span>
+        replace bHlthIns1 <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> B1SC1 <span class="o">==</span> <span class="m">2</span>
+        replace bHlthIns1 <span class="o">=</span> <span class="m">3</span> <span class="kr">if</span> B1SC3F <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3G <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3H <span class="o">==</span> <span class="m">1</span>
+        replace bHlthIns1 <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> B1SC3A <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3B <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3C <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3D <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3E <span class="o">==</span> <span class="m">1</span>
+    label define hlthIn <span class="m">1</span> <span class="s">&quot;No Insurance&quot;</span> <span class="m">2</span> <span class="s">&quot;Private&quot;</span> <span class="m">3</span> <span class="s">&quot;Public&quot;</span>
+    label values bHlthIns1 hlthIn
+    tab bHlthIns1<span class="p">,</span> <span class="kp">missing</span>
+    notes bHlthIns1<span class="o">:</span> Private trumps public <span class="kr">if</span> responded yes to both 
+
+    <span class="o">*</span> Create variable to identify patterns across bHlthIns1 and other insurance variables 
+    egen pattern1 <span class="o">=</span> concat<span class="p">(</span>bHlthIns1 B1SC1 B1SC3<span class="o">*</span><span class="p">)</span> 
+        tab pattern1 
+
+    generate bHlthIns2 <span class="o">=</span> <span class="m">.</span>
+        replace bHlthIns2 <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> B1SC1 <span class="o">==</span> <span class="m">2</span>
+        replace bHlthIns2 <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> B1SC3A <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3B <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3C <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3D <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3E <span class="o">==</span> <span class="m">1</span>
+        replace bHlthIns2 <span class="o">=</span> <span class="m">3</span> <span class="kr">if</span> B1SC3F <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3G <span class="o">==</span> <span class="m">1</span> <span class="o">|</span> B1SC3H <span class="o">==</span> <span class="m">1</span>
+    <span class="o">*</span>label define hlthIn <span class="m">1</span> <span class="s">&quot;No Insurance&quot;</span> <span class="m">2</span> <span class="s">&quot;Private&quot;</span> <span class="m">3</span> <span class="s">&quot;Public&quot;</span>
+    label values bHlthIns2 hlthIn
+    tab bHlthIns2<span class="p">,</span> <span class="kp">missing</span>
+    notes bHlthIns2<span class="o">:</span> Public trumps private <span class="kr">if</span> responded yes to both 
+
+    <span class="o">*</span> Create variable to identify patterns across bHlthIns1 and other insurance variables 
+    egen pattern2 <span class="o">=</span> concat<span class="p">(</span>bHlthIns2 B1SC1 B1SC3<span class="o">*</span><span class="p">)</span> 
+        tab pattern2
+
+    tab bHlthIns1 bHlthIns2<span class="p">,</span> <span class="kp">missing</span>
+    notes<span class="o">:</span> Health insurance there are <span class="m">882</span> respondents who report having both public and private health insurance 
+    notes<span class="o">:</span> Health insurance there are <span class="m">70</span> respondents who report not having any insurance currently <span class="o">&amp;</span> having public or private insurance 
+    tab bHlthIns1 B1SC1<span class="p">,</span> <span class="kp">missing</span>
+    tab bHlthIns2 B1SC1<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">*</span> Series of variables to check <span class="kr">for</span> mistakes 
+    generate error1 <span class="o">=</span> <span class="m">.</span> 
+        replace error1 <span class="o">=</span> <span class="m">1</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> B1SC1 <span class="o">==</span> <span class="m">2</span> 
+        notes error1<span class="o">:</span> <span class="m">3</span> errors picked up <span class="o">-</span> coded as having private insurance because of spouse. Okay.
+        replace error1 <span class="o">=</span> <span class="m">2</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC1 <span class="o">==</span> <span class="m">2</span> 
+        notes error1<span class="o">:</span> <span class="m">61</span> observations stated they had no health insurance but reported having public health insurance. Okay. 
+        replace error1 <span class="o">=</span> <span class="m">3</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> B1SC3F <span class="o">==</span> <span class="m">1</span> 
+        replace error1 <span class="o">=</span> <span class="m">4</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> B1SC3G <span class="o">==</span> <span class="m">1</span> 
+        replace error1 <span class="o">=</span> <span class="m">5</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">2</span> <span class="o">&amp;</span> B1SC3H <span class="o">==</span> <span class="m">1</span> 
+        replace error1 <span class="o">=</span> <span class="m">6</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3A <span class="o">==</span> <span class="m">1</span>   
+        replace error1 <span class="o">=</span> <span class="m">7</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3B <span class="o">==</span> <span class="m">1</span>
+        replace error1 <span class="o">=</span> <span class="m">8</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3C <span class="o">==</span> <span class="m">1</span>
+        replace error1 <span class="o">=</span> <span class="m">9</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3D <span class="o">==</span> <span class="m">1</span>
+        replace error1 <span class="o">=</span> <span class="m">10</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3E <span class="o">==</span> <span class="m">1</span>
+        replace error1 <span class="o">=</span> <span class="m">11</span> <span class="kr">if</span> bHlthIns <span class="o">==</span> <span class="m">3</span> <span class="o">&amp;</span> B1SC3E <span class="o">==</span> <span class="m">1</span>
+    tab error1<span class="p">,</span> <span class="kp">missing</span>
+    notes error1<span class="o">:</span> <span class="m">03</span><span class="o">/</span><span class="m">03</span><span class="o">/</span><span class="m">21</span> Error var <span class="kr">for</span> no<span class="o">/</span>pub<span class="o">/</span>priv health insurance. Don<span class="s">&#39;</span><span class="err">t worry about for now. Going to use B1SC1 unless advised otherwise. </span>
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_10">Wave 3<a class="headerlink" href="#wave-3_10" title="Permanent link"></a></h4>
+<h4 id="currently-covered-by-health-insurance_2">Currently covered by health insurance<a class="headerlink" href="#currently-covered-by-health-insurance_2" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear
+    tab C1SC1<span class="p">,</span> <span class="kp">missing</span>
+    recode C1SC1 <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>cHlthIns<span class="p">)</span>
+    label variable cHlthIns <span class="s">&quot;Currently covered by health insurance&quot;</span>
+    label values cHlthIns hlthInVals
+    tab cHlthIns C1SC1<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<p>//Types of healthcare providers seen </p>
+<h4 id="wave-1_11">Wave 1<a class="headerlink" href="#wave-1_11" title="Permanent link"></a></h4>
+<h4 id="wave-2_11">Wave 2<a class="headerlink" href="#wave-2_11" title="Permanent link"></a></h4>
+<h4 id="wave-3_11">Wave 3<a class="headerlink" href="#wave-3_11" title="Permanent link"></a></h4>
+<h2 id="cam-variables">CAM Variables<a class="headerlink" href="#cam-variables" title="Permanent link"></a></h2>
+<p>*CAM associated with each var # across all waves
+    *cam1   Acupuncture
+    *cam2   Biofeedback
+    *cam3   Chiropractic
+    *cam4   Energy healing
+    *cam5   Exercise/movement therapy
+    *cam6   Herbal therapy
+    *cam7   High-dose mega-vitaminsused 
+    *cam8   Homeopathy 
+    *cam9   Hypnosis
+    *cam10  Imagery techniques
+    *cam11  Massage therapy
+    *cam12  Spiritual practices 
+    *cam13  Meditation
+    *cam14  Special diets
+    *cam15  Spiritual healing
+    *cam16  Other non-traditional therapy </p>
+<p>*Only at Wave 1
+    *cam20  Alt drugs used</p>
+<p>*Only at Waves 2 and 3
+    *cam17  Phys/Occupational therapy
+    *cam18  Physician prescribed diet freq
+    *cam19  Weight control diet freq</p>
+<h3 id="cam-co-occurrence-indices">CAM Co-Occurrence Indices<a class="headerlink" href="#cam-co-occurrence-indices" title="Permanent link"></a></h3>
+<h4 id="wave-1_12">Wave 1<a class="headerlink" href="#wave-1_12" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check coding and distribution of all cam variables 
+        foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G <span class="o">///</span>
+            A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P <span class="p">{</span>
+            fre `var<span class="s">&#39;</span>
+<span class="s">        }</span>
+
+<span class="s">    * Write loop to dummy all CAM vars 0=never 1= used in the last year </span>
+<span class="s">        *Create new variable that denotes wave and cam var #. </span>
+<span class="s">        *Create local to act as a counter for generated acam vars. </span>
+<span class="s">        local period=1  </span>
+<span class="s">        foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///</span>
+<span class="s">            A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M A1SA39N A1SA39O A1SA39P {</span>
+<span class="s">            recode `var&#39;</span> <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>acam`period<span class="s">&#39;)</span>
+<span class="s">            tab `var&#39;</span> acam`period<span class="s">&#39;, missing</span>
+<span class="s">            local period=`period&#39;</span><span class="m">+1</span>
+        <span class="p">}</span>
+
+    <span class="o">*</span> Dummy A1SALTER <span class="p">(</span>only <span class="kr">in</span> wave <span class="m">1</span><span class="p">)</span>
+    notes A1SALTER<span class="o">:</span> only appears at Wave <span class="m">1.</span> See SAQ question A40 
+    notes A1SALTER<span class="o">:</span> used sedatives<span class="p">,</span> tranquilizers<span class="p">,</span> amphetamines<span class="p">,</span> analgesics<span class="p">,</span> 
+    notes A1SALTER<span class="o">:</span> prozac<span class="p">,</span> inhalants<span class="p">,</span> marijuana or hashish<span class="p">,</span> cocaine or crack<span class="p">,</span> 
+    notes A1SALTER<span class="o">:</span> LSD or other hallucinogens<span class="p">,</span> or heroin on their own or <span class="kr">in</span> a 
+    notes A1SALTER<span class="o">:</span> other than prescribed by a doctor. 
+        recode A1SALTER <span class="o">///</span>
+            <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">///</span>
+            <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="o">///</span>
+            <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> <span class="o">///</span>
+            gen<span class="p">(</span>acam20<span class="p">)</span>
+        tab A1SALTER acam20<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">*</span> Check missing value patterns on CAM dummies
+        <span class="o">*</span> Create local <span class="kt">list</span> of cams
+        global acams <span class="s">&quot;acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16&quot;</span>
+        <span class="o">*</span> Investigate missing data patterns on bcams
+        mdesc <span class="o">$</span>acams
+        mvpatterns <span class="o">$</span>acams
+        <span class="o">*</span> Create newvar <span class="o">=</span> number of missing values on bcams 
+        egen MissACams<span class="o">=</span>rmiss2<span class="p">(</span><span class="o">$</span>acams<span class="p">)</span>
+        tab MissACams<span class="p">,</span> <span class="kp">missing</span>
+
+<span class="o">//</span>MISSING VALUES<span class="o">:</span> CAMS AND IVS 
+    <span class="o">*</span> Relationship between missing values on CAMs and income 
+        scatter MissACams A1SHHTOT
+        notes MissACams<span class="o">:</span> scatter with income<span class="o">-</span> slightly more missing values on lower end of income distribution.
+        <span class="o">*</span> Check distribution of missing values on CAMs <span class="kr">for</span> obs making less than<span class="o">/</span>equal to <span class="m">100000</span><span class="p">,</span> and obs making more than <span class="m">100000</span>
+        tab MissACams <span class="kr">if</span> A1SHHTOT <span class="o">&lt;=</span> <span class="m">100000</span>
+        tab MissACams <span class="kr">if</span> A1SHHTOT <span class="o">&gt;</span> <span class="m">100000</span>
+        notes MissACams<span class="o">:</span> <span class="m">95.74</span><span class="o">% of obs reporting inc&lt;=100000 complete cases on CAMs</span>
+<span class="o">        notes MissACams: 64.1%</span> of obs reporting inc<span class="o">&gt;</span><span class="m">100000</span> complete cases on CAMs
+        notes MissACams<span class="o">:</span> <span class="m">32.92</span>% of obs reporting inc<span class="o">&gt;</span><span class="m">100000</span> missing on all <span class="m">16</span> CAMs 
+
+        <span class="o">*</span> Create new categorical income variable with <span class="m">25000</span> increments to check distribution of missing values on CAMs 
+        recode A1SHHTOT <span class="p">(</span><span class="m">0</span><span class="o">/</span><span class="m">25000</span>        <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">25500</span><span class="o">/</span><span class="m">50000</span>    <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">50500</span><span class="o">/</span><span class="m">75000</span>    <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">75500</span><span class="o">/</span><span class="m">100000</span>   <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">100500</span><span class="o">/</span><span class="m">125000</span>  <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">125500</span><span class="o">/</span><span class="m">150000</span>  <span class="o">=</span> <span class="m">6</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">150500</span><span class="o">/</span><span class="m">175000</span>  <span class="o">=</span> <span class="m">7</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">175500</span><span class="o">/</span><span class="m">200000</span>  <span class="o">=</span> <span class="m">8</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">200500</span><span class="o">/</span><span class="m">225000</span>  <span class="o">=</span> <span class="m">9</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">225500</span><span class="o">/</span><span class="m">250000</span>  <span class="o">=</span> <span class="m">10</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">250500</span><span class="o">/</span><span class="m">275000</span>  <span class="o">=</span> <span class="m">11</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">275500</span><span class="o">/</span><span class="m">300000</span>  <span class="o">=</span> <span class="m">12</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> <span class="o">///</span>
+                        gen<span class="p">(</span>aIncCat<span class="p">)</span>
+        label define inccat <span class="m">1</span> <span class="s">&quot;0/25000&quot;</span> <span class="o">///</span>
+                            <span class="m">2</span> <span class="s">&quot;25500/50000&quot;</span> <span class="o">///</span>
+                            <span class="m">3</span> <span class="s">&quot;50500/75000&quot;</span> <span class="o">///</span>
+                            <span class="m">4</span> <span class="s">&quot;75500/100000&quot;</span> <span class="o">///</span>
+                            <span class="m">5</span> <span class="s">&quot;100500/125000&quot;</span> <span class="o">///</span>
+                            <span class="m">6</span> <span class="s">&quot;125500/150000&quot;</span> <span class="o">///</span>
+                            <span class="m">7</span> <span class="s">&quot;150500/175000&quot;</span> <span class="o">///</span>
+                            <span class="m">8</span> <span class="s">&quot;175500/200000&quot;</span> <span class="o">///</span>
+                            <span class="m">9</span> <span class="s">&quot;200500/225000&quot;</span> <span class="o">///</span>
+                            <span class="m">10</span> <span class="s">&quot;225500/250000&quot;</span> <span class="o">///</span>
+                            <span class="m">11</span> <span class="s">&quot;250500/275000&quot;</span> <span class="o">///</span>
+                            <span class="m">12</span> <span class="s">&quot;275500/300000&quot;</span>
+        label values aIncCat inccat
+        tab A1SHHTOT aIncCat<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> Missing on at least one CAM by continuous income variable 
+        scatter OnlyMissACams A1SHHTOT
+
+        <span class="o">*</span> Create new variable<span class="p">,</span> value <span class="o">=</span> to number of missing values<span class="p">,</span> excluding cases missing on <span class="m">0</span> CAMs
+        gen OnlyMissACams <span class="o">=</span> MissACams <span class="kr">if</span> MissACams <span class="o">!=</span> <span class="m">0</span>
+
+        <span class="o">*</span> Check that above code ran correctly
+        tab MissACams OnlyMissACams<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> View distribution of missing values by income categories<span class="p">,</span> increments of <span class="m">25000</span><span class="p">,</span> <span class="kr">for</span> all values missing on at least one CAM
+        tab OnlyMissACams aIncCat
+        tab OnlyMissACams aIncCat<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> Visualize distribution of missing values by <span class="m">25000</span> income increments
+        histogram OnlyMissACams<span class="p">,</span> discrete <span class="kp">by</span><span class="p">(</span>aIncCat<span class="p">)</span> freq
+
+        notes<span class="o">:</span> There are <span class="m">260</span> observations missing at least one CAM with a nonmissing income value. 
+        notes<span class="o">:</span> <span class="m">790</span> obs missing on all <span class="m">16</span> CAMs and missing on the income variable. 
+        notes<span class="o">:</span> <span class="m">192</span> obs missing on income with no missing CAMs.
+
+    <span class="o">*</span> Relationship between missing values on CAMs and Education 
+
+    <span class="o">*</span>Create count variable <span class="p">(</span>sum of CAMs<span class="p">)</span> 
+        egen aCamCo1 <span class="o">=</span> rowtotal<span class="p">(</span>acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 <span class="o">///</span>
+            acam11 acam12 acam13 acam14 acam15 acam16<span class="p">),</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> Examine new count variable 
+        tab aCamCo1<span class="p">,</span> <span class="kp">missing</span>
+        hist aCamCo1
+
+        <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-2_12">Wave 2<a class="headerlink" href="#wave-2_12" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear
+
+    <span class="o">*</span>Display coding and distribution of all cam variables 
+        foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I <span class="o">///</span>
+            B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S <span class="p">{</span>
+            fre `var<span class="s">&#39; </span>
+<span class="s">        }</span>
+
+<span class="s">    *Write loop to dummy all CAM vars 0=never 1=```s</span>
+<span class="s">    used in the last year </span>
+<span class="s">        *Create new variable that denotes wave and cam var #. </span>
+<span class="s">        *Create local to act as a counter for generated acam vars. </span>
+<span class="s">        local period=1  </span>
+<span class="s">        foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///</span>
+<span class="s">            B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {</span>
+<span class="s">            recode `var&#39;</span> <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">4</span><span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>bcam`period<span class="s">&#39;)</span>
+<span class="s">            tab `var&#39;</span> bcam`period<span class="s">&#39;, missing</span>
+<span class="s">            local period=`period&#39;</span><span class="m">+1</span>
+        <span class="p">}</span>
+
+    <span class="o">*</span> Check missing patterns
+        <span class="o">*</span> Create local <span class="kt">list</span> of cams
+        global bcams <span class="s">&quot;bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16&quot;</span>
+        <span class="o">*</span> Investigate missing data patterns on bcams
+        mdesc <span class="o">$</span>bcams
+        mvpatterns <span class="o">$</span>bcams
+        <span class="o">*</span> Create newvar <span class="o">=</span> number of missing values on bcams 
+        egen MissBCams<span class="o">=</span>rmiss2<span class="p">(</span><span class="o">$</span>bcams<span class="p">)</span>
+        tab MissBCams<span class="p">,</span> <span class="kp">missing</span>
+
+<span class="o">//</span>MISSING VALUES<span class="o">:</span> CAMS AND IVS  
+    <span class="o">*</span> Relationship between income and missing values on CAMs 
+
+        <span class="o">*</span> Create new variable<span class="p">,</span> value <span class="o">=</span> to number of missing values<span class="p">,</span> excluding cases missing on <span class="m">0</span> CAMs
+        gen OnlyMissBCams <span class="o">=</span> MissBCams <span class="kr">if</span> MissBCams <span class="o">!=</span> <span class="m">0</span>
+
+        <span class="o">*</span> Check that above code ran correctly
+        tab MissBCams OnlyMissBCams<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> Scatter <span class="o">-</span> <span class="c1"># of missing values by income </span>
+        scatter OnlyMissBCams B1STINC1
+        notes OnlyMissBCams<span class="o">:</span> scatter with continuous income <span class="o">-</span> more missing values on low end of income distribution.
+        hist B1STINC1
+        notes OnlyMissBCams<span class="o">:</span> more obs on low end of income distribution anyways... check percentages. 
+
+        <span class="o">*</span> Create new variable <span class="o">-</span> categorical income variable<span class="p">,</span> <span class="m">25000</span> increments.
+        recode B1STINC1 <span class="p">(</span><span class="m">0</span><span class="o">/</span><span class="m">25000</span>        <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">25500</span><span class="o">/</span><span class="m">50000</span>    <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">50500</span><span class="o">/</span><span class="m">75000</span>    <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">75500</span><span class="o">/</span><span class="m">100000</span>   <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">100500</span><span class="o">/</span><span class="m">125000</span>  <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">125500</span><span class="o">/</span><span class="m">150000</span>  <span class="o">=</span> <span class="m">6</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">150500</span><span class="o">/</span><span class="m">175000</span>  <span class="o">=</span> <span class="m">7</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">175500</span><span class="o">/</span><span class="m">200000</span>  <span class="o">=</span> <span class="m">8</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">200500</span><span class="o">/</span><span class="m">225000</span>  <span class="o">=</span> <span class="m">9</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">225500</span><span class="o">/</span><span class="m">250000</span>  <span class="o">=</span> <span class="m">10</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">250500</span><span class="o">/</span><span class="m">275000</span>  <span class="o">=</span> <span class="m">11</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">275500</span><span class="o">/</span><span class="m">300000</span>  <span class="o">=</span> <span class="m">12</span><span class="p">)</span> <span class="o">///</span>
+                        <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> <span class="o">///</span>
+                        gen<span class="p">(</span>bIncCat<span class="p">)</span>
+        label define inccat <span class="m">1</span> <span class="s">&quot;0/25000&quot;</span> <span class="o">///</span>
+                            <span class="m">2</span> <span class="s">&quot;25500/50000&quot;</span> <span class="o">///</span>
+                            <span class="m">3</span> <span class="s">&quot;50500/75000&quot;</span> <span class="o">///</span>
+                            <span class="m">4</span> <span class="s">&quot;75500/100000&quot;</span> <span class="o">///</span>
+                            <span class="m">5</span> <span class="s">&quot;100500/125000&quot;</span> <span class="o">///</span>
+                            <span class="m">6</span> <span class="s">&quot;125500/150000&quot;</span> <span class="o">///</span>
+                            <span class="m">7</span> <span class="s">&quot;150500/175000&quot;</span> <span class="o">///</span>
+                            <span class="m">8</span> <span class="s">&quot;175500/200000&quot;</span> <span class="o">///</span>
+                            <span class="m">9</span> <span class="s">&quot;200500/225000&quot;</span> <span class="o">///</span>
+                            <span class="m">10</span> <span class="s">&quot;225500/250000&quot;</span> <span class="o">///</span>
+                            <span class="m">11</span> <span class="s">&quot;250500/275000&quot;</span> <span class="o">///</span>
+                            <span class="m">12</span> <span class="s">&quot;275500/300000&quot;</span>
+        label values bIncCat inccat
+        tab B1STINC1 bIncCat<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> View distribution of missing values by income categories<span class="p">,</span> increments of <span class="m">25000</span><span class="p">,</span> <span class="kr">for</span> all values missing on at least one CAM
+        tab OnlyMissBCams 
+
+        tab OnlyMissBCams bIncCat<span class="p">,</span> <span class="kp">missing</span>
+
+        <span class="o">*</span> Visualize distribution of missing values by <span class="m">25000</span> income increments
+        histogram OnlyMissBCams<span class="p">,</span> discrete <span class="kp">by</span><span class="p">(</span>bIncCat<span class="p">)</span> freq
+
+        <span class="o">*</span> Should exclude cases that are missing due to attrition. 
+        tab B1STATUS MissBCams<span class="p">,</span> <span class="kp">missing</span>
+        notes<span class="o">:</span> <span class="m">2145</span> obs of the <span class="m">3096</span> obs missing on all CAMs <span class="p">(</span><span class="m">69</span><span class="o">%) did not complete MIDUS2 phone or questionnaire </span>
+<span class="o">        notes: 922 obs of the 3096 obs missing on all CAMS (29.7%</span><span class="p">)</span> only completed the phone interview
+        notes<span class="o">:</span> <span class="m">29</span> obs of the <span class="m">3096</span> obs missing on all CAMs completed both the phone interview and questionnaire
+
+
+    <span class="o">*</span>Create co<span class="o">-</span>occurrence index <span class="m">1</span> 
+        egen bCamCo <span class="o">=</span> rowtotal<span class="p">(</span><span class="o">$</span>bcams<span class="p">)</span> <span class="kr">if</span> MissBCams<span class="o">&lt;=</span><span class="m">8</span>
+        notes bCamCo<span class="o">:</span> missing <span class="o">=</span> <span class="m">0</span> <span class="kr">for</span> obs missing on half or fewer bcams
+        notes bCamCo<span class="o">:</span> obs missing on more than half bcams coded as <span class="kp">missing</span>
+        <span class="o">*</span> Expect <span class="m">3</span><span class="p">,</span><span class="m">130</span> missing values
+        tab bCamCo<span class="p">,</span> missing 
+        hist bCamCo
+        sum bCamCo<span class="p">,</span> detail
+
+    <span class="o">*</span>Create co<span class="o">-</span>occurrence index <span class="m">2</span> 
+    <span class="o">*</span><span class="m">2019-11-20</span> cam17<span class="m">-19</span> not coded yet. Leave out <span class="kr">for</span> now
+    <span class="o">*</span>   egen bcamco2 <span class="o">=</span> rowtotal<span class="p">(</span>bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 <span class="o">///</span>
+    <span class="o">*</span>       bcam14 bcam15 bcam16 bcam17 bcam18 bcam19<span class="p">),</span> <span class="kp">missing</span>
+
+        <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_12">Wave 3<a class="headerlink" href="#wave-3_12" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear
+
+<span class="o">*</span>Display coding and distribution of all cam variables 
+    foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J <span class="o">///</span>
+        C1SA52K C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P <span class="p">{</span>
+        fre `var<span class="s">&#39; </span>
+<span class="s">    }</span>
+
+<span class="s">*Write loop to dummy all CAM vars 0=never 1=```s</span>
+<span class="s">    used in the last year </span>
+<span class="s">    *Create new variable that denotes wave and cam var #. </span>
+<span class="s">    *Create local to act as a counter for generated acam vars. </span>
+<span class="s">    local period=1  </span>
+<span class="s">    foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J ///</span>
+<span class="s">        C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {</span>
+<span class="s">        recode `var&#39;</span> <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">4</span><span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>ccam`period<span class="s">&#39;)</span>
+<span class="s">        tab `var&#39;</span> ccam`period<span class="s">&#39;, missing</span>
+<span class="s">        local period=`period&#39;</span><span class="m">+1</span>
+    <span class="p">}</span>
+
+<span class="o">*</span>Create co<span class="o">-</span>occurrence index <span class="m">1</span> 
+    egen ccamco1 <span class="o">=</span> rowtotal<span class="p">(</span>ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 <span class="o">///</span>
+        ccam14 ccam15 ccam16<span class="p">),</span> <span class="kp">missing</span>
+
+<span class="o">*</span>Create co<span class="o">-</span>occurrence index <span class="m">2</span> 
+<span class="o">*</span><span class="m">2019-11-20</span> cam17<span class="m">-19</span> not coded yet. Leave out <span class="kr">for</span> now
+<span class="o">*</span>   egen ccamco2 <span class="o">=</span> rowtotal<span class="p">(</span>ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 <span class="o">///</span>
+<span class="o">*</span>       ccam14 ccam15 ccam16 ccam17 ccam18 ccam19<span class="p">),</span> <span class="kp">missing</span>
+
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h3 id="cam-index-with-frequency-variables">CAM Index - with frequency variables<a class="headerlink" href="#cam-index-with-frequency-variables" title="Permanent link"></a></h3>
+<ul>
+<li>Above co-occurrence index uses dummy indicators. </li>
+<li>Create new index for waves 2 and 3 that use the original ordinal frequency indicators </li>
+</ul>
+<h4 id="wave-2_13">Wave 2<a class="headerlink" href="#wave-2_13" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+    <span class="o">*</span> Check frequency <span class="kr">for</span> each CAM
+    foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I <span class="o">///</span>
+        B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S <span class="p">{</span>
+        fre `var<span class="s">&#39; </span>
+<span class="s">    }</span>
+
+<span class="s">    * Reverse code all CAMs so that 0 = Never and 4 = A lot</span>
+<span class="s">    local period=1   </span>
+<span class="s">    foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///</span>
+<span class="s">        B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {</span>
+<span class="s">        recode `var&#39;</span> <span class="p">(</span><span class="m">1</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="p">(</span><span class="m">2</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">(</span><span class="m">3</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="p">(</span><span class="m">4</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">(</span><span class="m">5</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">(</span><span class="m">.</span> <span class="o">=</span> <span class="m">.</span><span class="p">),</span> gen<span class="p">(</span>bCamFreq`period<span class="s">&#39;)</span>
+<span class="s">        tab `var&#39;</span> bCamFreq`period<span class="s">&#39;, missing</span>
+<span class="s">        local period=`period&#39;</span><span class="m">+1</span>
+    <span class="p">}</span>
+
+    <span class="o">*</span> Sum values 
+    egen bCamFreqInd <span class="o">=</span> rowtotal<span class="p">(</span>bCamFreq1 bCamFreq2 bCamFreq3 bCamFreq4 bCamFreq5 bCamFreq6 bCamFreq7 bCamFreq8 bCamFreq9 bCamFreq10 bCamFreq11 bCamFreq12 bCamFreq13 <span class="o">///</span>
+        bCamFreq14 bCamFreq15 bCamFreq16<span class="p">),</span> <span class="kp">missing</span>
+    hist bCamFreqInd
+    sum bCamFreqInd<span class="p">,</span> detail
+    graph box bCamFreqInd
+    tab bCamFreqInd<span class="p">,</span> <span class="kp">missing</span>
+
+    <span class="o">*</span> Check that bCamFreqInd coded correctly
+    <span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h3 id="cam-lca">CAM LCA<a class="headerlink" href="#cam-lca" title="Permanent link"></a></h3>
+<ul>
+<li>Insert call for LCA do-file. </li>
+</ul>
+<h3 id="cam-mean-indices">CAM Mean Indices<a class="headerlink" href="#cam-mean-indices" title="Permanent link"></a></h3>
+<h4 id="wave-1_13">Wave 1<a class="headerlink" href="#wave-1_13" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS1.dta<span class="p">,</span> clear
+
+<span class="o">*</span>Create new var that is the average across all CAMs 
+    egen acamme1 <span class="o">=</span> rowmean<span class="p">(</span>acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 <span class="o">///</span>
+        acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16<span class="p">)</span>
+<span class="o">*</span>Check that egen ran correctly 
+    capture assert acamme1 <span class="o">==</span> <span class="p">(</span>acam1 <span class="o">+</span> acam2 <span class="o">+</span> acam3 <span class="o">+</span> acam4 <span class="o">+</span> acam5 <span class="o">+</span> acam6 <span class="o">+</span> acam7 <span class="o">+</span> <span class="o">///</span>
+        acam8 <span class="o">+</span> acam9 <span class="o">+</span> acam10 <span class="o">+</span> acam11 <span class="o">+</span> acam12 <span class="o">+</span> acam13 <span class="o">+</span> acam14 <span class="o">+</span> acam15 <span class="o">+</span> acam16<span class="p">)</span><span class="o">/</span><span class="m">16</span>
+    <span class="o">*</span><span class="m">252</span> false<span class="o">-</span> missing on one or more cams. 
+
+<span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="waves-2">Waves 2<a class="headerlink" href="#waves-2" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS2.dta<span class="p">,</span> clear 
+
+<span class="o">*</span>Create new var that is the average across CAMs <span class="m">1-16</span>
+    egen bcamme1 <span class="o">=</span> rowmean<span class="p">(</span>bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 <span class="o">///</span>
+        bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16<span class="p">)</span>
+
+<span class="o">*</span>Create new var that is the average across CAMs <span class="m">1-19</span> <span class="p">(</span>included at Waves <span class="m">2</span> and <span class="m">3</span><span class="p">)</span>
+<span class="o">*</span><span class="m">2019-11-20</span> cam17<span class="m">-19</span> not coded yet. Leave out <span class="kr">for</span> now
+<span class="o">*</span>   egen bcamme2 <span class="o">=</span> rowmean<span class="p">(</span>bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 <span class="o">///</span>
+<span class="o">*</span>       bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15 bcam16 bcam17 bcam18 bcam19<span class="p">)</span>
+
+<span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h4 id="wave-3_13">Wave 3<a class="headerlink" href="#wave-3_13" title="Permanent link"></a></h4>
+<div class="highlight"><pre>    use MIDUS3.dta<span class="p">,</span> clear 
+
+<span class="o">*</span>Create new var that is the average across CAMs <span class="m">1-16</span>
+    egen ccamme1 <span class="o">=</span> rowmean<span class="p">(</span>ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 <span class="o">///</span>
+        ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16<span class="p">)</span>
+
+<span class="o">*</span>Create new var that is the average across CAMs <span class="m">1-19</span> <span class="p">(</span>included at Waves <span class="m">2</span> and <span class="m">3</span><span class="p">)</span> 
+<span class="o">*</span><span class="m">2019-11-20</span> cam17<span class="m">-19</span> not coded yet. Leave out <span class="kr">for</span> now
+<span class="o">*</span>   egen ccamme2 <span class="o">=</span> rowmean<span class="p">(</span>ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 <span class="o">///</span>
+<span class="o">*</span>       ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15 ccam16 ccam17 ccam18 ccam19<span class="p">)</span>
+
+<span class="kp">save</span><span class="p">,</span> <span class="kp">replace</span>
+</pre></div>
+
+<h2 id="thl-variables">THL Variables<a class="headerlink" href="#thl-variables" title="Permanent link"></a></h2>
+<p>//Alcohol </p>
+<h4 id="wave-1_14">Wave 1<a class="headerlink" href="#wave-1_14" title="Permanent link"></a></h4>
+<pre><code>use MIDUS1.dta, clear
+</code></pre>
+<h4 id="wave-2_14">Wave 2<a class="headerlink" href="#wave-2_14" title="Permanent link"></a></h4>
+<pre><code>use MIDUS2.dta, clear
+</code></pre>
+<h4 id="wave-3_14">Wave 3<a class="headerlink" href="#wave-3_14" title="Permanent link"></a></h4>
+<pre><code>use MIDUS3.dta, clear
+</code></pre></article></body></html>

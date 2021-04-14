@@ -1,0 +1,598 @@
+---
+title: "Committee Meeting 12-11"
+author: "Hannah Andrews"
+date: "12/8/2020"
+output:
+html_document: default
+pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
+setwd(dir)
+
+# Load Libraries ####
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(ztable)
+library(naniar)
+library(pastecs)
+
+# Load all MIDUS data into the global environment ####
+load(file = "MIDUS1_recode.rda")
+load(file = "MIDUS2_recode.rda")
+load(file = "MIDUS3_recode.rda")
+MIDUS3_recode
+
+options(scipen=100)
+options(digits=2)
+options(tibble.print_max = Inf)
+```
+
+A little guidance for the following...
+
+Dataset: Midlife in the United States (MIDUS). There are three waves, denoted MIDUS1, MIDUS2, and MIDUS3.
+
+Variables: 
+DV: Use of completementary and alternative medicine (CAM). There are dummies for each of 15 CAM modalities indicating any use in the past year, and a summed index that represents the number of CAMs used in the past year. TBD: Latent classes (LCA) and factors. I spent about a week on LCA and have some output we can look over, but it became clear I would need more time to come up with a class structure I was confident in. 
+
+IVs: Income, education, gender, and race.
+
+This document is organized into three sections: single variable distributions (CAM dummies, CAM summed index, income, education, gender, and race), bivariate distributions (CAM summed index by each IV), and missing case patterns. 
+
+# Variable Distributions
+
+## Complementary and Alternative Medicines (CAMs)
+
+## CAM Dummies: Have you used any of the following CAMs in the past year?
+
+### MIDUS 1 Indiviudal CAMs
+
+```{r, echo = FALSE}
+camslist <- c("aCamEverAcupuncture", "aCamEverBiofeedback", "aCamEverChiropractor", 
+                "aCamEverEnergy", "aCamEverMoveTherapy", "aCamEverHerbTherapy", 
+                "aCamEverMegaVitamins", "aCamEverHomeopathy", "aCamEverHypnosis", 
+                "aCamEverImageTech", "aCamEverMassage", "aCamEverPray", 
+                "aCamEverMeditate", "aCamEverSpecialDiet", "aCamEverSpiritHeal")
+describe(MIDUS1_recode[camslist])
+```
+
+### MIDUS 2 Individual CAMs
+
+```{r, echo = FALSE}
+camslist <- c("bCamEverAcupuncture", "bCamEverBiofeedback", "bCamEverChiropractor", 
+                "bCamEverEnergy", "bCamEverMoveTherapy", "bCamEverHerbTherapy", 
+                "bCamEverMegaVitamins", "bCamEverHomeopathy", "bCamEverHypnosis", 
+                "bCamEverImageTech", "bCamEverMassage", "bCamEverPray", 
+                "bCamEverMeditate", "bCamEverSpecialDiet", "bCamEverSpiritHeal")
+describe(MIDUS2_recode[camslist])
+```
+
+### MIDUS 3 Individual CAMs
+
+```{r, echo = FALSE}
+camslist <- c("cCamEverAcupuncture", "cCamEverBiofeedback", "cCamEverChiropractor", 
+                "cCamEverEnergy", "cCamEverMoveTherapy", "cCamEverHerbTherapy", 
+                "cCamEverMegaVitamins", "cCamEverHomeopathy", "cCamEverHypnosis", 
+                "cCamEverImageTech", "cCamEverMassage", "cCamEverPray", 
+                "cCamEverMeditate", "cCamEverSpecialDiet", "cCamEverSpiritHeal")
+describe(MIDUS3_recode[camslist])
+```
+
+### MIDUS 1 CAM Summed Index 
+
+```{r, echo = FALSE}
+  summary(MIDUS1_recode$aCamSum)
+  stat.desc(MIDUS1_recode$aCamSum, basic = F)
+  boxplot(MIDUS1_recode$aCamSum, horizontal = TRUE, main="Number of CAMs used in the past year")
+  M1aCamSum <- MIDUS1_recode$aCamSum
+  hist(M1aCamSum, main = "Number of CAMs used in the past year",breaks=seq(0,32,1))
+  M1CamSumPlot <- ggplot(data = MIDUS1_recode, aes(x = aCamSum)) + 
+                      geom_density() # Create density plot
+  M1CamSumPlot
+#
+```
+
+### MIDUS 2 CAM Summed Index
+
+```{r, echo = FALSE}
+  summary(MIDUS2_recode$bCamSum)
+  stat.desc(MIDUS2_recode$bCamSum, basic = F)
+  boxplot(MIDUS2_recode$bCamSum, horizontal = TRUE, main="Number of CAMs used in the past year")
+  M2bCamSum <- MIDUS2_recode$bCamSum
+  hist(M2bCamSum, main = "Number of CAMs used in the past year",breaks=seq(0,32,1))
+  M2CamSumPlot <- ggplot(data = MIDUS2_recode, aes(x = bCamSum)) + 
+                      geom_density() # Create density plot
+  M2CamSumPlot
+#
+```
+
+### MIDUS 3 CAM Summed Index
+
+```{r, echo = FALSE}
+  describe(MIDUS3_recode$cCamSum)
+  stat.desc(MIDUS3_recode$cCamSum, basic = F)
+  boxplot(MIDUS3_recode$cCamSum, horizontal = TRUE, main="Number of CAMs used in the past year")
+  M3cCamSum <- MIDUS3_recode$cCamSum
+  hist(M3cCamSum, main = "Number of CAMs used in the past year",breaks=seq(0,32,1))
+  M3CamSumPlot <- ggplot(data = MIDUS3_recode, aes(x = cCamSum)) + 
+                      geom_density() # Create density plot
+  M3CamSumPlot
+#
+```
+
+## Income 
+
+### MIDUS 1 Household Income 
+
+```{r, echo = FALSE}
+  summary(MIDUS1_recode$aHHIncome)
+  stat.desc(MIDUS1_recode$aHHIncome, basic = F)
+  boxplot(MIDUS1_recode$aHHIncome, horizontal = TRUE, main="Household Income")
+  M1hhincome <- MIDUS1_recode$aHHIncome
+  hist(M1hhincome, main = "Household Income",breaks=seq(0, 300000, 1000))
+  M1HHIncomePlot <- ggplot(data = MIDUS1_recode, aes(x = aHHIncome)) + 
+                      geom_density() # Create density plot
+  M1HHIncomePlot
+#
+```
+
+### MIDUS 2 Household Income 
+
+```{r, echo = FALSE}
+  summary(MIDUS2_recode$bHHIncome)
+  stat.desc(MIDUS2_recode$bHHIncome, basic = F)
+  boxplot(MIDUS2_recode$bHHIncome, horizontal = TRUE, main="Household Income")
+  M2hhincome <- MIDUS2_recode$bHHIncome
+  hist(M2hhincome, main = "Household Income",breaks=seq(0, 300000, 1000))
+  M2HHIncomePlot <- ggplot(data = MIDUS2_recode, aes(x = bHHIncome)) + 
+                      geom_density() # Create density plot
+  M2HHIncomePlot
+#
+```
+
+### MIDUS 3 Household Income 
+
+```{r, echo = FALSE}
+  summary(MIDUS3_recode$cHHIncome)
+  stat.desc(MIDUS3_recode$cHHIncome, basic = F)
+  boxplot(MIDUS3_recode$cHHIncome, horizontal = TRUE, main="Household Income")
+  M3hhincome <- MIDUS3_recode$cHHIncome
+  hist(M3hhincome, main = "Household Income",breaks=seq(0, 300000, 1000))
+  M3HHIncomePlot <- ggplot(data = MIDUS3_recode, aes(x = cHHIncome)) + 
+                      geom_density() # Create density plot
+  M3HHIncomePlot
+#  
+```
+
+## Education 
+
+### MIDUS 1 Education 
+
+```{r, echo = FALSE}
+  table(MIDUS1_recode$aEducation, useNA = "always")  
+M1EducationProportions <- MIDUS1_recode %>% 
+  drop_na(aEducation) %>% 
+  ggplot(aes(x = aEducation)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M1EducationProportions
+#
+```
+
+### MIDUS 2 Education 
+
+```{r, echo = FALSE}
+  table(MIDUS2_recode$bEducation, useNA = "always")  
+M2EducationProportions <- MIDUS2_recode %>% 
+  drop_na(bEducation) %>% 
+  ggplot(aes(x = bEducation)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M2EducationProportions
+#
+```
+
+### MIDUS 3 Education 
+
+```{r, echo = FALSE}
+  table(MIDUS3_recode$cEducation, useNA = "always")  
+M3EducationProportions <- MIDUS3_recode %>% 
+  drop_na(cEducation) %>% 
+  ggplot(aes(x = cEducation)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Education") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M3EducationProportions
+#
+```
+
+## Gender 
+
+### MIDUS 1 Gender
+
+```{r, echo = FALSE}
+describe(MIDUS1_recode$aGender)
+```
+
+### MIDUS 2 Gender 
+
+``` {r, echo = FALSE}
+describe(MIDUS2_recode$bGender)
+```
+
+### MIDUS 3 Gender 
+
+```{r, echo = FALSE}
+describe(MIDUS3_recode$cGender)
+```
+
+## Race and Ethnicity
+
+### MIDUS 1 Race and Ethnicity
+
+```{r, echo = FALSE}
+# summary(MIDUS1$A1SS7)
+table(MIDUS1_recode$aRace, useNA = "always") 
+M1RaceProportions <- MIDUS1_recode %>% 
+  drop_na(aRace) %>% 
+  ggplot(aes(x = aRace)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Race and Ethnicity") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M1RaceProportions
+#
+```
+
+### MIDUS 2 Race and Ethnicity
+
+```{r, echo = FALSE}
+table(MIDUS2_recode$bRace, useNA = "always") 
+M2RaceProportions <- MIDUS2_recode %>% 
+  drop_na(bRace) %>% 
+  ggplot(aes(x = bRace)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Race and Ethnicity") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M2RaceProportions
+#
+```
+
+### MIDUS 3 Race and Ethnicity
+
+```{r, echo = FALSE}
+table(MIDUS3_recode$cRace, useNA = "always") 
+M3RaceProportions <- MIDUS3_recode %>% 
+  drop_na(cRace) %>% 
+  ggplot(aes(x = cRace)) +
+  geom_bar(fill = "lightblue", aes(y = (..count..)/sum(..count..))) +
+  xlab("Race and Ethnicity") +
+  scale_y_continuous(labels = scales::percent, name = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  M3RaceProportions
+#
+```
+# Bivariate Distributions 
+
+## Income and CAMs
+
+### MIDUS 1
+```{r, echo = FALSE}
+ggplot(MIDUS1_recode, aes(x = aHHIncome, y = aCamSum)) +
+  geom_point()
+mosaic::cor.test(MIDUS1_recode$aHHIncome, MIDUS1_recode$aCamSum)
+#
+```
+
+### MIDUS 2 
+
+```{r, echo = FALSE}
+ggplot(MIDUS2_recode, aes(x = bHHIncome, y = bCamSum)) +
+  geom_point()
+mosaic::cor.test(MIDUS2_recode$bHHIncome, MIDUS2_recode$bCamSum)
+#
+```
+
+### MIDUS 3
+
+```{r, echo = FALSE}
+ggplot(MIDUS3_recode, aes(x = cHHIncome, y = cCamSum)) +
+  geom_point()
+mosaic::cor.test(MIDUS3_recode$cHHIncome, MIDUS3_recode$cCamSum)
+#
+```
+
+## Education and CAMs
+
+### MIDUS 1 
+
+```{r, echo = FALSE}
+ggplot(MIDUS1_recode, aes(aCamSum, color = aEducation)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS1_recode, aes(x = aCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~aEducation)
+histogram(~ MIDUS1_recode$aCamSum | MIDUS1_recode$aEducation, 
+          data = MIDUS1_recode,
+          xlab = "Education",
+          main = "CAM Sum by Education", 
+          breaks = seq(0, 32, 1))
+#table(MIDUS1_recode$aCamSum, MIDUS1_recode$aEducation)
+```
+
+### MIDUS 2 
+
+```{r, echo = FALSE}
+ggplot(MIDUS2_recode, aes(bCamSum, color = bEducation)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS2_recode, aes(x = bCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~bEducation)
+histogram(~ MIDUS2_recode$bCamSum | MIDUS2_recode$bEducation, 
+          data = MIDUS2_recode,
+          xlab = "Education",
+          main = "CAM Sum by Education", 
+          breaks = seq(0, 32, 1))
+#table(MIDUS2_recode$bCamSum, MIDUS2_recode$bEducation)
+```
+
+### MIDUS 3
+
+```{r, echo = FALSE}
+ggplot(MIDUS3_recode, aes(cCamSum, color = cEducation)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS3_recode, aes(x = cCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~cEducation)
+histogram(~ MIDUS3_recode$cCamSum | MIDUS3_recode$cEducation, 
+          data = MIDUS3_recode,
+          xlab = "Education",
+          main = "CAM Sum by Education", 
+          breaks = seq(0, 32, 1))
+#table(MIDUS3_recode$cCamSum, MIDUS3_recode$cEducation)
+```
+
+## Gender and CAM Summed Index
+
+### MIDUS 1 
+
+```{r, echo = FALSE}
+table(MIDUS1_recode$aCamSum,MIDUS1_recode$aGender)
+ggplot(MIDUS1_recode, aes(aCamSum, color = aGender)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS1_recode, aes(x = aCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~aGender) +
+  ggtitle("Summed CAM Index by Gender") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+### MIDUS 2
+
+```{r, echo = FALSE}
+table(MIDUS2_recode$bCamSum,MIDUS2_recode$bGender)
+ggplot(MIDUS2_recode, aes(bCamSum, color = bGender)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS2_recode, aes(x = bCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~bGender) +
+  ggtitle("Summed CAM Index by Gender") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+### MIDUS 3
+
+```{r, echo = FALSE}
+table(MIDUS3_recode$cCamSum,MIDUS3_recode$cGender)
+ggplot(MIDUS3_recode, aes(cCamSum, color = cGender)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS3_recode, aes(x = cCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~cGender) +
+  ggtitle("Summed CAM Index by Gender") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+## Race and CAM Summed Index
+
+### MIDUS 1
+
+```{r, echo = FALSE}
+table(MIDUS1_recode$aCamSum,MIDUS1_recode$aRace)
+ggplot(MIDUS1_recode, aes(aCamSum, color = aRace)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS1_recode, aes(x = aCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~aRace) +
+  ggtitle("Summed CAM Index by Race") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+### MIDUS 2
+
+```{r, echo = FALSE}
+table(MIDUS2_recode$bCamSum,MIDUS2_recode$bRace)
+ggplot(MIDUS2_recode, aes(bCamSum, color = bRace)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS2_recode, aes(x = bCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~bRace) +
+  ggtitle("Summed CAM Index by Race") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+### MIDUS 3
+
+```{r, echo = FALSE}
+table(MIDUS3_recode$cCamSum,MIDUS3_recode$cRace)
+ggplot(MIDUS3_recode, aes(cCamSum, color = cRace)) +
+  geom_freqpoly(binwidth = 1)
+ggplot(MIDUS3_recode, aes(x = cCamSum)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(~cRace) +
+  ggtitle("Summed CAM Index by Race") +
+  xlab("Number of CAMs used in the last year")
+#
+```
+
+# Missing Cases
+
+## MIDUS 1
+
+### Table: Total and percent missing on each variable
+
+```{r, echo = FALSE}
+varlist <- c("aEducation", "aHHIncome", "aGender", "aRace", "aCamSum", "aCamEverAcupuncture", "aCamEverBiofeedback", "aCamEverChiropractor", "aCamEverEnergy", "aCamEverMoveTherapy", "aCamEverHerbTherapy", "aCamEverMegaVitamins", "aCamEverHomeopathy", "aCamEverHypnosis", "aCamEverImageTech", "aCamEverMassage", "aCamEverPray", "aCamEverMeditate", "aCamEverSpecialDiet", "aCamEverSpiritHeal", "aCamEverOtherHeal")
+M1_miss <- MIDUS1_recode[varlist]
+miss_var_summary(M1_miss)
+#
+```
+
+### Missing summary for each observation
+
+```{r, echo = FALSE}
+vis_miss(M1_miss)
+#
+```
+
+## Missing pattern intersections all variables 
+
+```{r, echo = FALSE}
+gg_miss_upset(M1_miss,
+              nsets = n_var_miss(M1_miss))
+#
+```
+
+### Missing pattern intersections for all CAMs
+
+```{r, echo = FALSE}
+varlist <- c("aCamSum", "aCamEverAcupuncture", "aCamEverBiofeedback", "aCamEverChiropractor", "aCamEverEnergy", "aCamEverMoveTherapy", "aCamEverHerbTherapy", "aCamEverMegaVitamins", "aCamEverHomeopathy", "aCamEverHypnosis", "aCamEverImageTech", "aCamEverMassage", "aCamEverPray", "aCamEverMeditate", "aCamEverSpecialDiet", "aCamEverSpiritHeal", "aCamEverOtherHeal")
+M1_cammiss <- MIDUS1_recode[varlist]
+gg_miss_upset(M1_cammiss,
+              nsets = n_var_miss(M1_cammiss))
+#
+```
+
+### Missing patterns by summed index and all social variables 
+
+```{r, echo = FALSE}
+varlist <- c("aCamSum", "aEducation", "aHHIncome", "aGender", "aRace")
+M1_camIvsmiss <- MIDUS1_recode[varlist]
+gg_miss_upset(M1_camIvsmiss, 
+              nsets = n_var_miss(M1_camIvsmiss))
+#
+```
+
+## MIDUS 2
+
+### Table: Total and percent missing on each variable
+
+```{r, echo = FALSE}
+varlist <- c("bEducation", "bHHIncome", "bGender", "bRace", "bCamSum", "bCamEverAcupuncture", "bCamEverBiofeedback", "bCamEverChiropractor", "bCamEverEnergy", "bCamEverMoveTherapy", "bCamEverHerbTherapy", "bCamEverMegaVitamins", "bCamEverHomeopathy", "bCamEverHypnosis", "bCamEverImageTech", "bCamEverMassage", "bCamEverPray", "bCamEverMeditate", "bCamEverSpecialDiet", "bCamEverSpiritHeal", "bCamEverOtherHeal")
+M2_miss <- MIDUS2_recode[varlist]
+miss_var_summary(M2_miss)
+#
+```
+
+### Missing summary for each observation
+
+```{r, echo = FALSE}
+vis_miss(M2_miss)
+#
+```
+
+## Missing pattern intersections all variables 
+
+```{r, echo = FALSE}
+gg_miss_upset(M2_miss,
+              nsets = n_var_miss(M2_miss))
+#
+```
+
+### Missing pattern intersections for all CAMs
+
+```{r, echo = FALSE}
+varlist <- c("bCamSum", "bCamEverAcupuncture", "bCamEverBiofeedback", "bCamEverChiropractor", "bCamEverEnergy", "bCamEverMoveTherapy", "bCamEverHerbTherapy", "bCamEverMegaVitamins", "bCamEverHomeopathy", "bCamEverHypnosis", "bCamEverImageTech", "bCamEverMassage", "bCamEverPray", "bCamEverMeditate", "bCamEverSpecialDiet", "bCamEverSpiritHeal", "bCamEverOtherHeal")
+M2_cammiss <- MIDUS2_recode[varlist]
+gg_miss_upset(M2_cammiss,
+              nsets = n_var_miss(M2_cammiss))
+#
+```
+
+### Missing patterns by summed index and all social variables 
+
+```{r, echo = FALSE}
+varlist <- c("bCamSum", "bEducation", "bHHIncome", "bGender", "bRace")
+M2_camIvsmiss <- MIDUS2_recode[varlist]
+gg_miss_upset(M2_camIvsmiss, 
+              nsets = n_var_miss(M2_camIvsmiss))
+#
+```
+
+## MIDUS 3
+
+### Table: Total and percent missing on each variable
+
+```{r, echo = FALSE}
+varlist <- c("cEducation", "cHHIncome", "cGender", "cRace", "cCamSum", "cCamEverAcupuncture", "cCamEverBiofeedback", "cCamEverChiropractor", "cCamEverEnergy", "cCamEverMoveTherapy", "cCamEverHerbTherapy", "cCamEverMegaVitamins", "cCamEverHomeopathy", "cCamEverHypnosis", "cCamEverImageTech", "cCamEverMassage", "cCamEverPray", "cCamEverMeditate", "cCamEverSpecialDiet", "cCamEverSpiritHeal", "cCamEverOtherHeal")
+M3_miss <- MIDUS3_recode[varlist]
+miss_var_summary(M3_miss)
+#
+```
+
+### Missing summary for each observation
+
+```{r, echo = FALSE}
+vis_miss(M3_miss)
+#
+```
+
+## Missing pattern intersections all variables 
+
+```{r, echo = FALSE}
+gg_miss_upset(M3_miss,
+              nsets = n_var_miss(M3_miss))
+#
+```
+
+### Missing pattern intersections for all CAMs
+
+```{r, echo = FALSE}
+varlist <- c("cCamSum", "cCamEverAcupuncture", "cCamEverBiofeedback", "cCamEverChiropractor", "cCamEverEnergy", "cCamEverMoveTherapy", "cCamEverHerbTherapy", "cCamEverMegaVitamins", "cCamEverHomeopathy", "cCamEverHypnosis", "cCamEverImageTech", "cCamEverMassage", "cCamEverPray", "cCamEverMeditate", "cCamEverSpecialDiet", "cCamEverSpiritHeal", "cCamEverOtherHeal")
+M3_cammiss <- MIDUS3_recode[varlist]
+gg_miss_upset(M3_cammiss,
+              nsets = n_var_miss(M3_cammiss))
+#
+```
+
+### Missing patterns by summed index and all social variables 
+
+```{r, echo = FALSE}
+varlist <- c("cCamSum", "cEducation", "cHHIncome", "cGender", "cRace")
+M3_camIvsmiss <- MIDUS3_recode[varlist]
+gg_miss_upset(M3_camIvsmiss, 
+              nsets = n_var_miss(M3_camIvsmiss))
+#
+```

@@ -118,8 +118,8 @@ setwd(dir)
            aCamEverSpecialDiet = A1SA39N,
            aCamEverSpiritHeal = A1SA39O,
            aCamEverOtherHeal = A1SA39P) 
-
-# Convert CAMs back into factors.
+  
+# Convert CAMs back into factors. 
   camslist <- c("aCamEverAcupuncture", "aCamEverBiofeedback", "aCamEverChiropractor", 
                 "aCamEverEnergy", "aCamEverMoveTherapy", "aCamEverHerbTherapy", 
                 "aCamEverMegaVitamins", "aCamEverHomeopathy", "aCamEverHypnosis", 
@@ -130,6 +130,33 @@ setwd(dir)
   for(i in camslist) {
     levels(MIDUS1_recode[[i]]) <- c("No", "Yes")  
   }
+  
+# MIDUS 1 Recode Number of chronic conditions ####
+  describe(MIDUS1$A1SCHRON)
+  summary(MIDUS1$A1SCHRON)
+  MIDUS1 %>% 
+    ggplot( aes(x = factor(1), y = A1SCHRON)) +
+    geom_boxplot() 
+  M1chronSum <- MIDUS1$A1SCHRON
+  hist(M1chronSum)
+  MIDUS1_recode <- MIDUS1_recode %>% 
+    rename (aChronicSum = A1SCHRON)
+  
+# MIDUS 1 Recode Any chronic conditions ####
+  describe(MIDUS1$A1SCHROX)
+  MIDUS1_recode <- MIDUS1_recode %>% 
+    rename(aChronicAny = A1SCHROX)
+
+# MIDUS 1 Recode BMI ####
+  describe(MIDUS1$A1SBMI)
+  summary(MIDUS1$A1SBMI)
+  MIDUS1 %>% 
+    ggplot( aes(x = factor(1), y = A1SBMI)) +
+    geom_boxplot() 
+  M1bmi <- MIDUS1$A1SBMI
+  hist(M1bmi)
+  MIDUS1_recode <- MIDUS1_recode %>% 
+    rename (aBmi = A1SBMI)
   
 # MIDUS 2 Recodes: education, gender, health locus of control, income, cam dummies, summed CAM index #### 
   MIDUS2_recode <- MIDUS2 %>% 
@@ -152,7 +179,7 @@ setwd(dir)
       mutate_at(bcams_list, ordinal_dummy) %>%  # dummy all bcams, ever used CAM = 1, Never = 0
       rowwise() %>%
       mutate(ignore = all(is.na(across(starts_with("B1SA56"))))) %>%
-      mutate(bCam_sum = if_else(ignore, NA_real_, rowSums(across(starts_with("B1SA56")), na.rm = TRUE))) %>% 
+      mutate(bCamSum = if_else(ignore, NA_real_, rowSums(across(starts_with("B1SA56")), na.rm = TRUE))) %>% 
       dplyr::select(-ignore) %>% 
       rename(bCamEverAcupuncture = B1SA56A,  # rename all variables 
            bCamEverBiofeedback = B1SA56B,
@@ -206,7 +233,7 @@ MIDUS2_recode$bRace <- factor(x = MIDUS2_recode$bRace,
 MIDUS2_recode[15:25,] %>% select(B1PF7A, B1PF1, bRace)
 table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
 
-# MIDUS 2 Sleep Recode: Sleep difficulties 
+# MIDUS 2 Sleep Recode: Sleep difficulties ####
   # Check missing patterns
   sleep_vars <- c("B1SA61A", "B1SA61B", "B1SA61C")
   MIDUS2_sleep <- MIDUS2[sleep_vars] # subset that includes the subjective sleep vars 
@@ -219,13 +246,55 @@ table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
   MIDUS2_recode$bSleepDifficulty <- rowMeans(MIDUS2_recode[,c("B1SA61A", "B1SA61B", "B1SA61C")])
   describe(MIDUS2_recode$bSleepDifficulty)
   
-# MIDUS 2 Sleep Duration 
-  MIDUS2_recode <- MIDUS2 %>% 
+# MIDUS 2 Sleep Duration ####
+  MIDUS2_recode <- MIDUS2_recode %>% 
     rename(bSleepDuration = B4SSQ_S3)
 
-# MIDUS 2 Pittsburgh Sleep Quality Index 
+# MIDUS 2 Pittsburgh Sleep Quality Index####
+  # 7 components: Sleep latency, sleep duration, sleep efficiency, sleep disturbance,
+  # daytime dysfunction, use of sleeping meds, subjective sleep quality 
   describe(MIDUS2$B4SSQ_GS)
   summary(MIDUS2$B4SSQ_GS)
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    rename(bSleepPittIndex = B4SSQ_GS)
+
+# MIDUS 2 Recode Sum of Chronic Conditions ####
+  describe(MIDUS2$B1SCHRON)
+  summary(MIDUS2$B1SCHRON)
+  MIDUS2 %>% 
+    ggplot( aes(x = factor(1), y = B1SCHRON)) +
+    geom_boxplot() 
+  M2chronSum <- MIDUS2$B1SCHRON
+  hist(M2chronSum)
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    rename (bChronicSum = B1SCHRON)
+  
+# MIDUS 2 Recode Having any chronic conditions ####
+  describe(MIDUS2$B1SCHROX)
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    rename (bChronicAny = B1SCHROX)
+  
+# MIDUS 2 Recode BMI - Biomarker Study ####
+  describe(MIDUS2$B4PBMI)
+  summary(MIDUS2$B4PBMI)
+  MIDUS2 %>% 
+    ggplot( aes(x = factor(1), y = B4PBMI)) +
+    geom_boxplot() 
+  M2BioBmi <- MIDUS2$B4PBMI
+  hist(M2BioBmi)
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    rename (bBioBmi = B4PBMI)
+
+# MIDUS 2 Recode BMI - Survey Study ####
+  describe(MIDUS2$B1SBMI)
+  summary(MIDUS2$B1SBMI)
+  MIDUS2 %>% 
+    ggplot( aes(x = factor(1), y = B1SBMI)) +
+    geom_boxplot() 
+  M2Bmi <- MIDUS2$B1SBMI
+  hist(M2Bmi)
+  MIDUS2_recode <- MIDUS2_recode %>% 
+    rename (bBmi = B1SBMI)
   
 # MIDUS 3 Recodes education, gender, health locus of control, income, cam dummies, summed CAM index ####
   MIDUS3_recode <- MIDUS3 %>% 
@@ -248,7 +317,7 @@ table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
       mutate_at(ccams_list, ordinal_dummy) %>% # dummy ccams, ever used CAM = 1, Never = 0 
       rowwise() %>%
       mutate(ignore = all(is.na(across(starts_with("C1SA52"))))) %>%
-      mutate(cCam_sum = if_else(ignore, NA_real_, rowSums(across(starts_with("C1SA52")), na.rm = TRUE))) %>% 
+      mutate(cCamSum = if_else(ignore, NA_real_, rowSums(across(starts_with("C1SA52")), na.rm = TRUE))) %>% 
       dplyr::select(-ignore) %>% 
       rename(cCamEverAcupuncture = C1SA52A, # rename all variables 
            cCamEverBiofeedback = C1SA52B,
@@ -302,7 +371,7 @@ table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
   MIDUS3_recode[15:25,] %>% select(C1PF7A, C1PF1, cRace)
   table(MIDUS3_recode$cRace, MIDUS3_recode$C1PF7A)
 
-# MIDUS 3 Sleep Recode: Sleep difficulties 
+# MIDUS 3 Sleep Recode: Sleep difficulties ####
   # Check missing patterns
   sleep_vars <- c("C1SA57A", "C1SA57B", "C1SA57C")
   MIDUS3_sleep <- MIDUS3[sleep_vars] # subset that includes the subjective sleep vars
@@ -315,11 +384,38 @@ table(MIDUS2_recode$bRace, MIDUS2_recode$B1PF7A)
   MIDUS3_recode$cSleepDifficulty <- rowMeans(MIDUS3_recode[,c("C1SA57A", "C1SA57B", "C1SA57C")])
   describe(MIDUS3_recode$cSleepDifficulty)
   
+# MIDUS 3 Recode Sum of Chronic Conditions ####
+  describe(MIDUS3$C1SCHRON)
+  summary(MIDUS3$C1SCHRON)
+  MIDUS3 %>% 
+    ggplot( aes(x = factor(1), y = C1SCHRON)) +
+    geom_boxplot() 
+  M3chronSum <- MIDUS3$C1SCHRON
+  hist(M3chronSum)
+  MIDUS3_recode <- MIDUS3_recode %>% 
+    rename (cChronicSum = C1SCHRON)
 
+
+# MIDUS 3 Recode having any chronic conditions ####
+  describe(MIDUS3$C1SCHROX)
+  MIDUS3_recode <- MIDUS3_recode %>% 
+    rename (cChronicAny = C1SCHROX)
+
+# MIDUS 3 Recode BMI ####
+  describe(MIDUS3$C1SBMI)
+  summary(MIDUS3$C1SBMI)
+  MIDUS3 %>% 
+    ggplot( aes(x = factor(1), y = C1SBMI)) +
+    geom_boxplot() 
+  M3bmi <- MIDUS3$C1SBMI
+  hist(M3bmi)
+  MIDUS3_recode <- MIDUS3_recode %>% 
+    rename (cBmi = C1SBMI)
+  
 # Save files ####
-save(MIDUS1_recode, file = "MIDUS1_Recodes.RDS")
-save(MIDUS2_recode, file = "MIDUS2_Recodes.RDS")
-save(MIDUS3_recode, file = "MIDUS3_Recodes.RDS")
+save(MIDUS1_recode, file = "MIDUS1_recode.rda")
+save(MIDUS2_recode, file = "MIDUS2_recode.rda")
+save(MIDUS3_recode, file = "MIDUS3_recode.rda")
 
 # Export data to Stata ####
 require(foreign)
