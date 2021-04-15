@@ -56,6 +56,8 @@ set maxvar 32767
 				A1SA9AA A1SA9BB A1SA9CC A1SCHRON A1SCHROX A1SBMI
 	save 		MIDUS1\DS0001\MIDUS1A.dta, replace 
 
+	describe, s 
+
 * DS002: Daily diary data 
 	use 	 	MIDUS1\DS0002\03725-0001-Data, clear
 	sort 		M2ID
@@ -98,47 +100,53 @@ set maxvar 32767
 
 	restore
 
+	* For now (04/15/21) do not merge daily diary data. 
+
+	save 		MIDUS1\DS0002\MIDUS1D.dta, replace 
 
 *DS004: Twin Screener Data
-*	use			MIDUS1\DS0004\02760-0004-Data.dta, clear 
-*	sort		M2ID
-*	describe, s
-*	quietly do 	MIDUS1\DS0004\02760-0004-Supplemental_syntax.do
-*	save 		MIDUS1\DS0004\MIDUS1B.dta, replace 
+	use			MIDUS1\DS0004\02760-0004-Data.dta, clear 
+	sort		M2ID
+	describe, s
+	quietly do 	MIDUS1\DS0004\02760-0004-Supplemental_syntax.do
+	keep 		M2ID SAMPLMAJ M2FAMNUM ZYGCAT
+	save 		MIDUS1\DS0004\MIDUS1B.dta, replace
+	describe, s 
 
 *DS005: Coded text data 
-*	use 		MIDUS1\DS0005\02760-0005-Data.dta, clear
-*	sort 		M2ID
-*	describe, s
-*	quietly do	MIDUS1\DS0005\02760-0005-Supplemental_syntax.do 
-*	save		MIDUS1\DS0005\MIDUS1C.dta, replace
+	use 		MIDUS1\DS0005\02760-0005-Data.dta, clear
+	sort 		M2ID
+	describe, s
+	quietly do	MIDUS1\DS0005\02760-0005-Supplemental_syntax.do 
+	keep 		M2ID A1SA39PA A1SA39PB A1SA39PC A1SA39PD
+	save		MIDUS1\DS0005\MIDUS1C.dta, replace
+	describe, s
 
 //Merge MIDUS1B and MIDUS1C to MIDUS1A, save as MIDUS1
-//Check Merge
-	//MIDUS1A obs = 7,108 vars = 2,098
-	//MIDUS1B obs = 1,914 vars = 90 
-	//MIDUS1C obs = 3,950 vars = 82 
+//Check Merge - (04/15/21)
+	//MIDUS1A - Survey 			obs = 7,108 vars = 135
+	//MIDUS1B - Twin Screener 	obs = 1,914 vars = 4 
+	//MIDUS1C - Coded Text 		obs = 3,950 vars = 5 
 	
 *Merge MIDUS1B (using) to MIDUS1A (master), save as MIDUS1 	
-*	use 		MIDUS1\DS0001\MIDUS1A.dta
-*	merge 		1:1 M2ID using MIDUS1\DS0004\MIDUS1B.dta
-*	describe, s
-*	rename 		_merge merge1
-*	label var 	merge1 "Merge MIDUS1B (using) to MIDUS1A (master)"
-*	save		MIDUS1\MIDUS1.dta, replace 
+	use 		MIDUS1\DS0001\MIDUS1A.dta
+	merge 		1:1 M2ID using MIDUS1\DS0004\MIDUS1B.dta
+	describe, s
+	rename 		_merge merge1
+	label var 	merge1 "Merge MIDUS1B (using) to MIDUS1A (master)"
+	save		MIDUS1\MIDUS1.dta, replace 
 
 *Merge MIDUS1C (using) to MIDUS1 (master), save as MIDUS1 in data cleaning folder
-*	use 		MIDUS1\MIDUS1.dta, clear	
-*	merge 		1:1 M2ID using MIDUS1\DS0005\MIDUS1C.dta
-*	describe, s
-*	rename 		_merge merge2
-*	label var 	merge2 "Merge MIDUS1C (using) to product of A+B (master)"
-*	save		data-cleaning\MIDUS1.dta, replace 
+	use 		MIDUS1\MIDUS1.dta, clear	
+	merge 		1:1 M2ID using MIDUS1\DS0005\MIDUS1C.dta
+	describe, s
+	rename 		_merge merge2
+	label var 	merge2 "Merge MIDUS1C (using) to product of A+B (master)"
+	save		data-cleaning\MIDUS1.dta, replace 
+
+* 04/15/21 Insert break statement to check merge ran correctly... 
 
 
-
-
-	clear 
 ********************************************************************************
 //MIDUS 2 (ICPSR 04652) 
 ********************************************************************************
