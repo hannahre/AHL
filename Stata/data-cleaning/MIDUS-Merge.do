@@ -1,4 +1,4 @@
-local dir "C:\Users\hanna\git\AHL\Stata"
+local dir "C:\Users\hanna\Documents\git\AHL\Stata"
 cd `dir'
 capture log close 
 log using MIDUS-merge.txt, replace text
@@ -56,6 +56,49 @@ set maxvar 32767
 				A1SA9AA A1SA9BB A1SA9CC A1SCHRON A1SCHROX A1SBMI
 	save 		MIDUS1\DS0001\MIDUS1A.dta, replace 
 
+* DS002: Daily diary data 
+	use 	 	MIDUS1\DS0002\03725-0001-Data, clear
+	sort 		M2ID
+	describe, s
+	quietly do 	MIDUS1\DS0002\03725-0001-Supplemental_syntax.do 
+	keep 		M2ID A2DB8 A2DB9 A2DDAY
+
+	* Dairy data is long form. Reshape to wide. Create new variables for each interview day representing cig and alc consumption per day (8 days).
+	reshape wide A2DB8 A2DB9, i(M2ID) j(A2DDAY)
+
+	* Create new variable that represents average cigarette consumption over 8 days. 
+	
+	* First, check missing data patterns- will I need to impute values? 
+	preserve
+	
+	* Create global list of religious variables 
+	global aCigVars "A2DB81 A2DB82 A2DB83 A2DB84 A2DB85 A2DB86 A2DB87 A2DB88"
+	* Investigate missing data patterns on aCigVars
+	mdesc $aCigVars
+	mvpatterns $aCigVars
+	* Create newvar = number of missing values on aCigVars
+	egen MissaCigVars=rmiss2($aCigVars)
+	tab MissaCigVars, missing
+	
+	* 62% missing on day 1. 75% to 78% missing on days 2 through 8. 
+	* Can't use. 
+
+	* Check missing values on alcohol variables. 
+
+	* Create global list of religious variables 
+	global aAlcVars "A2DB91 A2DB92 A2DB93 A2DB94 A2DB95 A2DB96 A2DB97 A2DB98"
+	* Investigate missing data patterns on aCigVars
+	mdesc $aAlcVars
+	mvpatterns $aAlcVars
+	* Create newvar = number of missing values on aCigVars
+	egen MissaAlcVars=rmiss2($aAlcVars)
+	tab MissaAlcVars, missing
+
+	* 21.48% missing on day 1. 36-39% missing on days 2 through 8. 
+
+	restore
+
+
 *DS004: Twin Screener Data
 *	use			MIDUS1\DS0004\02760-0004-Data.dta, clear 
 *	sort		M2ID
@@ -93,13 +136,8 @@ set maxvar 32767
 *	save		data-cleaning\MIDUS1.dta, replace 
 
 
-* Daily diary 
-	use 	 	MIDUS1\DS0002\03725-0001-Data, clear
-	sort 		M2ID
-	describe, s
-	quietly do 	MIDUS1\DS0002\03725-0001-Supplemental_syntax.do 
-	keep M2ID A2DB8 A2DB9
-	
+
+
 	clear 
 ********************************************************************************
 //MIDUS 2 (ICPSR 04652) 
