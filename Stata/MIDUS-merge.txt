@@ -1,8 +1,8 @@
-----------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  C:\Users\hanna\git\AHL\Stata\MIDUS-merge.txt
+       log:  C:\Users\hanna\Documents\git\AHL\Stata\MIDUS-merge.txt
   log type:  text
- opened on:  25 Mar 2021, 11:03:52
+ opened on:  21 Apr 2021, 12:57:09
 
 . 
 . version 13 
@@ -55,8 +55,512 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS1\DS0001\02760-0001-Supplemental_syntax.do 
 
+.         keep            M2ID M2FAMNUM SAMPLMAJ A1STATUS A1PRSEX A1PAGE_M2 A1SS7 A1PB17 A1PA5 A1PAN
+> HED ///
+>                                 A1PDEPAF A1PDEPRE A1PANXIE A1PPANIC A1SR1 A1SR1A A1SR2A ///
+>                                 A1SR2B A1SR2C A1SR2D A1SR2E A1SR2F A1SR2G A1SR2H ///
+>                                 A1SR2I A1SR4 A1SR3 A1SR8 A1SR5 A1SR6 A1SHLOCS ///
+>                                 A1SHLOCO A1SC1A A1SC1B A1SC1C A1SC1D A1SC1E A1SC1F ///
+>                                 A1SC1G A1SC1H A1SUSEMD A1SA37A A1SA37B A1SA37C A1SA37D ///
+>                                 A1SUSEMH A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F ///
+>                                 A1SA39G A1SA39H A1SA39I A1SA39J A1SA39K A1SA39L A1SA39M ///
+>                                 A1SA39N A1SA39O A1SA39P A1SA18 A1SA19 A1SVIGOR A1SA20 ///
+>                                 A1SA21 A1SMODER A1PA41 A1PA40 A1PA42 A1PA43 A1PA45 ///
+>                                 A1PA53 A1PA53A A1PA54 A1PA54A A1PA55 A1PA56 A1SJ8 ///
+>                                 A1SJ9 A1SHHTOT A1SJ11 A1SJ12 A1SJ7 A1SJ14 A1SJ15 ///
+>                                 A1SI14 A1SJCDA A1POCC A1PIND A1POCMJ A1PINMJ A1PTSEI ///
+>                                 A1PB31 A1POCCS A1PINDS A1POCSMJ A1PINSMJ A1PTSEIS A1PB1 ///
+>                                 A1PB27 A1PA4 A1SA9A A1SA9B A1SA9C A1SA9D A1SA9E ///
+>                                 A1SA9F A1SA9G A1SA9H A1SA9I A1SA9J A1SA9K A1SA9L ///
+>                                 A1SA9M A1SA9N A1SA9O A1SA9P A1SA9Q A1SA9R A1SA9S ///
+>                                 A1SA9T A1SA9U A1SA9V A1SA9W A1SA9X A1SA9Y A1SA9Z ///
+>                                 A1SA9AA A1SA9BB A1SA9CC A1SCHRON A1SCHROX A1SBMI
+
 .         save            MIDUS1\DS0001\MIDUS1A.dta, replace 
 file MIDUS1\DS0001\MIDUS1A.dta saved
+
+. 
+.         describe, s 
+
+Contains data from MIDUS1\DS0001\MIDUS1A.dta
+  obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
+                                                Main, Siblings and Twin Data
+ vars:           135                          21 Apr 2021 12:57
+ size:     2,175,048                          
+Sorted by:  M2ID
+
+. 
+. * DS002: Daily diary data 
+.         use             MIDUS1\DS0002\03725-0001-Data, clear
+(Midlife in the United States (MIDUS 1) National Study of Daily Experiences (NSDE)
+
+.         sort            M2ID
+
+.         describe, s
+
+Contains data from MIDUS1\DS0002\03725-0001-Data.dta
+  obs:        10,488                          Midlife in the United States (MIDUS 1) National
+                                                Study of Daily Experiences (NSDE
+ vars:           333                          19 Oct 2017 10:36
+ size:     8,600,160                          
+Sorted by:  M2ID
+
+.         quietly do      MIDUS1\DS0002\03725-0001-Supplemental_syntax.do 
+
+.         keep            M2ID A2DB8 A2DB9 A2DDAY
+
+. 
+.         * Dairy data is long form. Reshape to wide. Create new variables for each interview day re
+> presenting cig and alc consumption per day (8 days).
+.         reshape wide A2DB8 A2DB9, i(M2ID) j(A2DDAY)
+(note: j = 1 2 3 4 5 6 7 8)
+
+Data                               long   ->   wide
+-----------------------------------------------------------------------------
+Number of obs.                    10488   ->    1499
+Number of variables                   4   ->      17
+j variable (8 values)            A2DDAY   ->   (dropped)
+xij variables:
+                                  A2DB8   ->   A2DB81 A2DB82 ... A2DB88
+                                  A2DB9   ->   A2DB91 A2DB92 ... A2DB98
+-----------------------------------------------------------------------------
+
+. 
+.         * Create new variable that represents average cigarette consumption over 8 days. 
+.         
+.         * First, check missing data patterns- will I need to impute values? 
+.         preserve
+
+.         
+.         * Create global list of religious variables 
+.         global aCigVars "A2DB81 A2DB82 A2DB83 A2DB84 A2DB85 A2DB86 A2DB87 A2DB88"
+
+.         * Investigate missing data patterns on aCigVars
+.         mdesc $aCigVars
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+         A2DB81 |         939          1,499          62.64
+         A2DB82 |       1,138          1,499          75.92
+         A2DB83 |       1,158          1,499          77.25
+         A2DB84 |       1,174          1,499          78.32
+         A2DB85 |       1,176          1,499          78.45
+         A2DB86 |       1,177          1,499          78.52
+         A2DB87 |       1,168          1,499          77.92
+         A2DB88 |       1,163          1,499          77.59
+----------------+-----------------------------------------------
+
+.         mvpatterns $aCigVars
+Variable     | type     obs   mv   variable label
+-------------+-----------------------------------
+A2DB81       | int      560  939   1 A2DB8
+A2DB82       | int      361 1138   2 A2DB8
+A2DB83       | int      341 1158   3 A2DB8
+A2DB84       | int      325 1174   4 A2DB8
+A2DB85       | int      323 1176   5 A2DB8
+A2DB86       | int      322 1177   6 A2DB8
+A2DB87       | int      331 1168   7 A2DB8
+A2DB88       | int      336 1163   8 A2DB8
+-------------------------------------------------
+
+Patterns of missing values
+
+  +------------------------+
+  | _pattern   _mv   _freq |
+  |------------------------|
+  | ........     8     875 |
+  | +.......     7     135 |
+  | ++++++++     0     129 |
+  | ++......     6      25 |
+  | ++.+++++     1      20 |
+  |------------------------|
+  | ++++.+++     1      17 |
+  | +++++.++     1      16 |
+  | ++++++.+     1      12 |
+  | +..+++++     2      12 |
+  | +++++++.     1      11 |
+  |------------------------|
+  | +++.....     5      11 |
+  | +++.++++     1       9 |
+  | +.++++++     1       9 |
+  | +.+.++++     2       8 |
+  | +.+.....     6       8 |
+  |------------------------|
+  | .+......     7       7 |
+  | +++.+++.     2       6 |
+  | +++..+++     2       6 |
+  | +++++...     3       6 |
+  | ++.++.++     2       4 |
+  |------------------------|
+  | +.++++.+     2       4 |
+  | +.++.+++     2       4 |
+  | .+++.+++     2       4 |
+  | ..+.....     7       4 |
+  | ....+...     7       4 |
+  |------------------------|
+  | .....+..     7       4 |
+  | .+++++++     1       3 |
+  | +++++.+.     2       3 |
+  | ++++..++     2       3 |
+  | ++.+.+++     2       3 |
+  |------------------------|
+  | ++++...+     3       3 |
+  | +..++++.     3       3 |
+  | ++++....     4       3 |
+  | +.+....+     5       3 |
+  | +....+..     6       3 |
+  |------------------------|
+  | +......+     6       3 |
+  | .++.....     6       3 |
+  | ......+.     7       3 |
+  | .......+     7       3 |
+  | ++++++..     2       2 |
+  |------------------------|
+  | +++++..+     2       2 |
+  | ++++.++.     2       2 |
+  | +++.+.++     2       2 |
+  | ++.++++.     2       2 |
+  | ++..++++     2       2 |
+  |------------------------|
+  | +.+++.++     2       2 |
+  | .+++++.+     2       2 |
+  | .++++.++     2       2 |
+  | ++++.+..     3       2 |
+  | +++..+.+     3       2 |
+  |------------------------|
+  | ++.++..+     3       2 |
+  | ++.+..++     3       2 |
+  | ++..+.++     3       2 |
+  | +.+.+++.     3       2 |
+  | +..+.+++     3       2 |
+  |------------------------|
+  | +...++++     3       2 |
+  | ...+++++     3       2 |
+  | +++.+...     4       2 |
+  | +++..+..     4       2 |
+  | +++...+.     4       2 |
+  |------------------------|
+  | ++.+...+     4       2 |
+  | +.+++...     4       2 |
+  | +.+.+..+     4       2 |
+  | +...+.++     4       2 |
+  | ++....+.     5       2 |
+  |------------------------|
+  | ...+....     7       2 |
+  | ++++.+.+     2       1 |
+  | +++.++.+     2       1 |
+  | .++.++++     2       1 |
+  | .+.+++++     2       1 |
+  |------------------------|
+  | ..++++++     2       1 |
+  | +++.++..     3       1 |
+  | +++..++.     3       1 |
+  | ++.++.+.     3       1 |
+  | ++.+.++.     3       1 |
+  |------------------------|
+  | ++..+++.     3       1 |
+  | +.++++..     3       1 |
+  | +.+++.+.     3       1 |
+  | +.+++..+     3       1 |
+  | +.++.++.     3       1 |
+  |------------------------|
+  | +.++.+.+     3       1 |
+  | +.+.++.+     3       1 |
+  | +.+.+.++     3       1 |
+  | +.+..+++     3       1 |
+  | +..++.++     3       1 |
+  |------------------------|
+  | .++++.+.     3       1 |
+  | .+++..++     3       1 |
+  | .+.+++.+     3       1 |
+  | .+.++.++     3       1 |
+  | ..++++.+     3       1 |
+  |------------------------|
+  | +++....+     4       1 |
+  | ++..+..+     4       1 |
+  | ++...++.     4       1 |
+  | +.+.++..     4       1 |
+  | +..+++..     4       1 |
+  |------------------------|
+  | +..++..+     4       1 |
+  | +..+.++.     4       1 |
+  | +..+.+.+     4       1 |
+  | +...++.+     4       1 |
+  | +....+++     4       1 |
+  |------------------------|
+  | .+.+++..     4       1 |
+  | ..++..++     4       1 |
+  | ..+..+++     4       1 |
+  | ++.+....     5       1 |
+  | ++...+..     5       1 |
+  |------------------------|
+  | +.+.+...     5       1 |
+  | +...+..+     5       1 |
+  | +....++.     5       1 |
+  | +....+.+     5       1 |
+  | +.....++     5       1 |
+  |------------------------|
+  | .+++....     5       1 |
+  | .+..+.+.     5       1 |
+  | ..+...++     5       1 |
+  | ...+++..     5       1 |
+  | +...+...     6       1 |
+  |------------------------|
+  | +.....+.     6       1 |
+  | ..++....     6       1 |
+  | ..+...+.     6       1 |
+  | ....++..     6       1 |
+  | ....+.+.     6       1 |
+  |------------------------|
+  | .....+.+     6       1 |
+  | ......++     6       1 |
+  +------------------------+
+
+.         * Create newvar = number of missing values on aCigVars
+.         egen MissaCigVars=rmiss2($aCigVars)
+
+.         tab MissaCigVars, missing
+
+MissaCigVar |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        129        8.61        8.61
+          1 |         97        6.47       15.08
+          2 |         80        5.34       20.41
+          3 |         49        3.27       23.68
+          4 |         30        2.00       25.68
+          5 |         27        1.80       27.48
+          6 |         50        3.34       30.82
+          7 |        162       10.81       41.63
+          8 |        875       58.37      100.00
+------------+-----------------------------------
+      Total |      1,499      100.00
+
+.         
+.         * 62% missing on day 1. 75% to 78% missing on days 2 through 8. 
+.         * Can't use. 
+. 
+.         * Check missing values on alcohol variables. 
+. 
+.         * Create global list of religious variables 
+.         global aAlcVars "A2DB91 A2DB92 A2DB93 A2DB94 A2DB95 A2DB96 A2DB97 A2DB98"
+
+.         * Investigate missing data patterns on aCigVars
+.         mdesc $aAlcVars
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+         A2DB91 |         322          1,499          21.48
+         A2DB92 |         541          1,499          36.09
+         A2DB93 |         558          1,499          37.22
+         A2DB94 |         572          1,499          38.16
+         A2DB95 |         581          1,499          38.76
+         A2DB96 |         595          1,499          39.69
+         A2DB97 |         555          1,499          37.02
+         A2DB98 |         556          1,499          37.09
+----------------+-----------------------------------------------
+
+.         mvpatterns $aAlcVars
+Variable     | type     obs   mv   variable label
+-------------+-----------------------------------
+A2DB91       | float   1177  322   1 A2DB9
+A2DB92       | float    958  541   2 A2DB9
+A2DB93       | float    941  558   3 A2DB9
+A2DB94       | float    927  572   4 A2DB9
+A2DB95       | float    918  581   5 A2DB9
+A2DB96       | float    904  595   6 A2DB9
+A2DB97       | float    944  555   7 A2DB9
+A2DB98       | float    943  556   8 A2DB9
+-------------------------------------------------
+
+Patterns of missing values
+
+  +------------------------+
+  | _pattern   _mv   _freq |
+  |------------------------|
+  | ++++++++     0     480 |
+  | ........     8     283 |
+  | +.......     7      78 |
+  | +++++.++     1      51 |
+  | ++.+++++     1      44 |
+  |------------------------|
+  | +++++++.     1      42 |
+  | +++.++++     1      40 |
+  | ++++.+++     1      37 |
+  | ++++++.+     1      35 |
+  | +.++++++     1      33 |
+  |------------------------|
+  | +..+++++     2      24 |
+  | ++......     6      19 |
+  | +++.....     5      14 |
+  | ++++..++     2      12 |
+  | +++..+++     2      12 |
+  |------------------------|
+  | .+++++++     1      10 |
+  | +.+++.++     2      10 |
+  | +.+.++++     2       9 |
+  | +++++.+.     2       8 |
+  | +...++++     3       8 |
+  |------------------------|
+  | +++++..+     2       6 |
+  | +++.+++.     2       6 |
+  | ++.+++.+     2       6 |
+  | ++.++.++     2       6 |
+  | +.++++.+     2       6 |
+  |------------------------|
+  | ++++...+     3       6 |
+  | +..++++.     3       6 |
+  | +.+.....     6       6 |
+  | ++++++..     2       5 |
+  | ++++.++.     2       5 |
+  |------------------------|
+  | ++++.+.+     2       5 |
+  | +++.++.+     2       5 |
+  | +.+++++.     2       5 |
+  | +.++.+++     2       5 |
+  | +++++...     3       5 |
+  |------------------------|
+  | ++...+++     3       5 |
+  | ++++....     4       5 |
+  | +++.+.++     2       4 |
+  | ++.++++.     2       4 |
+  | ++.+.+++     2       4 |
+  |------------------------|
+  | .+++.+++     2       4 |
+  | ++++.+..     3       4 |
+  | ++.+..++     3       4 |
+  | +.+++..+     3       4 |
+  | +++.+...     4       4 |
+  |------------------------|
+  | ++..++++     2       3 |
+  | +++.++..     3       3 |
+  | +++.+..+     3       3 |
+  | +++..++.     3       3 |
+  | +++..+.+     3       3 |
+  |------------------------|
+  | ++..+.++     3       3 |
+  | +.++.++.     3       3 |
+  | +.+.+++.     3       3 |
+  | +.+..+++     3       3 |
+  | +...+.++     4       3 |
+  |------------------------|
+  | ..++++++     2       2 |
+  | ++++..+.     3       2 |
+  | ++.++..+     3       2 |
+  | ++..++.+     3       2 |
+  | +.+.+.++     3       2 |
+  |------------------------|
+  | +..++.++     3       2 |
+  | +..+.+++     3       2 |
+  | .+++..++     3       2 |
+  | .+.++.++     3       2 |
+  | +++..+..     4       2 |
+  |------------------------|
+  | ++.+...+     4       2 |
+  | ++...++.     4       2 |
+  | +.+++...     4       2 |
+  | +.++..+.     4       2 |
+  | +.+...++     4       2 |
+  |------------------------|
+  | +...++.+     4       2 |
+  | ++.+....     5       2 |
+  | ++.....+     5       2 |
+  | +.+....+     5       2 |
+  | +...+...     6       2 |
+  |------------------------|
+  | +......+     6       2 |
+  | .+......     7       2 |
+  | ..+.....     7       2 |
+  | ...+....     7       2 |
+  | .++++.++     2       1 |
+  |------------------------|
+  | .+.+++++     2       1 |
+  | +++...++     3       1 |
+  | ++.+++..     3       1 |
+  | ++.++.+.     3       1 |
+  | ++.+.++.     3       1 |
+  |------------------------|
+  | ++..+++.     3       1 |
+  | +.++++..     3       1 |
+  | +.+++.+.     3       1 |
+  | +.++..++     3       1 |
+  | +..+++.+     3       1 |
+  |------------------------|
+  | .++..+++     3       1 |
+  | .+..++++     3       1 |
+  | ..+++++.     3       1 |
+  | +++...+.     4       1 |
+  | +++....+     4       1 |
+  |------------------------|
+  | ++.+..+.     4       1 |
+  | ++...+.+     4       1 |
+  | ++....++     4       1 |
+  | +.++...+     4       1 |
+  | +.+.+..+     4       1 |
+  |------------------------|
+  | +.+..++.     4       1 |
+  | +.+..+.+     4       1 |
+  | +..++..+     4       1 |
+  | +..+.+.+     4       1 |
+  | +..+..++     4       1 |
+  |------------------------|
+  | +....+++     4       1 |
+  | .+...+++     4       1 |
+  | ++...+..     5       1 |
+  | ++....+.     5       1 |
+  | +.++....     5       1 |
+  |------------------------|
+  | +.+.+...     5       1 |
+  | +.+...+.     5       1 |
+  | +..+.+..     5       1 |
+  | +...+..+     5       1 |
+  | +....++.     5       1 |
+  |------------------------|
+  | +....+.+     5       1 |
+  | +.....++     5       1 |
+  | .+.++...     5       1 |
+  | ...++.+.     5       1 |
+  | +....+..     6       1 |
+  |------------------------|
+  | +.....+.     6       1 |
+  | .++.....     6       1 |
+  | .+...+..     6       1 |
+  | .+....+.     6       1 |
+  | .....+..     7       1 |
+  |------------------------|
+  | .......+     7       1 |
+  +------------------------+
+
+.         * Create newvar = number of missing values on aCigVars
+.         egen MissaAlcVars=rmiss2($aAlcVars)
+
+.         tab MissaAlcVars, missing
+
+MissaAlcVar |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        480       32.02       32.02
+          1 |        292       19.48       51.50
+          2 |        158       10.54       62.04
+          3 |         94        6.27       68.31
+          4 |         40        2.67       70.98
+          5 |         32        2.13       73.12
+          6 |         34        2.27       75.38
+          7 |         86        5.74       81.12
+          8 |        283       18.88      100.00
+------------+-----------------------------------
+      Total |      1,499      100.00
+
+. 
+.         * 21.48% missing on day 1. 36-39% missing on days 2 through 8. 
+. 
+.         restore
+
+. 
+.         * For now (04/15/21) do not merge daily diary data. 
+. 
+.         save            MIDUS1\DS0002\MIDUS1D.dta, replace 
+file MIDUS1\DS0002\MIDUS1D.dta saved
 
 . 
 . *DS004: Twin Screener Data
@@ -76,8 +580,19 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS1\DS0004\02760-0004-Supplemental_syntax.do
 
-.         save            MIDUS1\DS0004\MIDUS1B.dta, replace 
+.         keep            M2ID ZYGCAT
+
+.         save            MIDUS1\DS0004\MIDUS1B.dta, replace
 file MIDUS1\DS0004\MIDUS1B.dta saved
+
+.         describe, s  
+
+Contains data from MIDUS1\DS0004\MIDUS1B.dta
+  obs:         1,914                          Midlife in the United States (MIDUS 1), 1995-1996,
+                                                Twin Screener Data
+ vars:             2                          21 Apr 2021 12:57
+ size:        11,484                          
+Sorted by:  M2ID
 
 . 
 . *DS005: Coded text data 
@@ -97,23 +612,32 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS1\DS0005\02760-0005-Supplemental_syntax.do 
 
+.         keep            M2ID A1SA39PA A1SA39PB A1SA39PC A1SA39PD
+
 .         save            MIDUS1\DS0005\MIDUS1C.dta, replace
 file MIDUS1\DS0005\MIDUS1C.dta saved
 
+.         describe, s
+
+Contains data from MIDUS1\DS0005\MIDUS1C.dta
+  obs:         3,950                          Midlife in the United States (MIDUS 1), 1995-1996,
+                                                Coded Text Data
+ vars:             5                          21 Apr 2021 12:57
+ size:        47,400                          
+Sorted by:  M2ID
+
 . 
 . //Merge MIDUS1B and MIDUS1C to MIDUS1A, save as MIDUS1
-. //Check Merge
-.         //MIDUS1A obs = 7,108 vars = 2,098
-.         //MIDUS1B obs = 1,914 vars = 90 
-.         //MIDUS1C obs = 3,950 vars = 82 
+. //Check Merge - (04/15/21)
+.         //MIDUS1A - Survey                      obs = 7,108 vars = 135
+.         //MIDUS1B - Twin Screener       obs = 1,914 vars = 2 
+.         //MIDUS1C - Coded Text          obs = 3,950 vars = 5 
 .         
 . *Merge MIDUS1B (using) to MIDUS1A (master), save as MIDUS1      
 .         use             MIDUS1\DS0001\MIDUS1A.dta
 (Midlife in the United States (MIDUS 1), 1995-1996, Main, Siblings and Twin Data)
 
 .         merge           1:1 M2ID using MIDUS1\DS0004\MIDUS1B.dta
-(label SAMPLMAJ already defined)
-(label ZYGCAT already defined)
 
     Result                           # of obs.
     -----------------------------------------
@@ -129,8 +653,8 @@ file MIDUS1\DS0005\MIDUS1C.dta saved
 Contains data from MIDUS1\DS0001\MIDUS1A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:         2,185                          25 Mar 2021 11:03
- size:    51,682,268                          
+ vars:           137                          21 Apr 2021 12:57
+ size:     2,196,372                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -162,8 +686,8 @@ file MIDUS1\MIDUS1.dta saved
 Contains data from MIDUS1\MIDUS1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:         2,267                          25 Mar 2021 11:03
- size:    52,840,872                          
+ vars:           142                          21 Apr 2021 12:57
+ size:     2,260,344                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -175,8 +699,9 @@ Sorted by:  M2ID
 file data-cleaning\MIDUS1.dta saved
 
 . 
-.         clear 
-
+. * 04/15/21 Insert break statement to check merge ran correctly... 
+. 
+. 
 . ********************************************************************************
 . //MIDUS 2 (ICPSR 04652) 
 . ********************************************************************************
@@ -206,6 +731,52 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS2\DS0001\04652-0001-Supplemental_syntax.do 
 
+.         keep            M2ID M2FAMNUM SAMPLMAJ B1STATUS B1PRSEX B1PAGE_M2 ///
+>                         B1PF8_A B1PF1 B1PF3 B1PF7A B1PB19 B1PA2 B1PANHED B1PDEPAF ///
+>                                 B1PDEPRE B1PANXIE B1PPANIC B1SN1A B1SN1AX B1SN2A ///
+>                                 B1SN2B B1SN2C B1SN2D B1SN2E B1SN2F B1SN2G ///
+>                                 B1SN2H B1SN2I B1SSPIRI B1SRELID B1SN3D B1SN3A ///
+>                                 B1SN3B B1SN3C B1SRELPR B1SN3E B1SN4 B1SN6 ///
+>                                 B1SN7 B1SN8A B1SN8B B1SN8C B1SN8D B1SRELSU ///
+>                                 B1SN9A B1SN9B B1SN9C B1SN9D B1SN9E B1SN9F ///
+>                                 B1SN9G B1SN9H B1SRELCA B1SRELCB B1SN10A B1SN10B ///
+>                                 B1SN10C B1SN10D B1SN10E B1SSPRTE B1SN11A B1SN11B ///
+>                                 B1SN11C B1SN11D B1SN11E B1SN11F B1SN11G B1SN11H ///
+>                                 B1SN11I B1SMNDFU B1SHLOCS B1SHLOCO B1SC1 B1SC3A ///
+>                                 B1SC3B B1SC3C B1SC3D B1SC3E B1SC3F B1SC3G ///
+>                                 B1SC3H B1SA52 B1SUSEMD B1SA54A B1SA54B B1SA54C ///
+>                                 B1SA54D B1SUSEMH B1SA56A B1SA56B B1SA56C B1SA56D ///
+>                                 B1SA56F B1SA56G B1SA56H B1SA56I B1SA56J B1SA56K ///
+>                                 B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S ///
+>                                 B1SA30A B1SA30B B1SA30C B1SA30D B1SA30E B1SA30F ///
+>                                 B1SA31A B1SA31B B1SA31C B1SA31D B1SA31E B1SA31F ///
+>                                 B1SA32A B1SA32B B1SA32C B1SA32D B1SA32E B1SA32F ///
+>                                 B1SA57A B1SA57B B1SA58A B1SA58B B1SA59A B1SA59B ///
+>                                 B1SA60 B1SA61A B1SA61B B1SA61C B1SA61D B1PA37 ///
+>                                 B1PA38A B1PA38B B1PA39 B1PA41 B1PA54 B1PA54A ///
+>                                 B1PA55 B1PA50 B1PA51 B1PA51A B1PA52 B1PA53 ///
+>                                 B1SG8A B1SG8B B1SG8C B1SRINC1 B1SG9A B1SG9B ///
+>                                 B1SG9C B1SSINC1 B1STINC1 B1SEARN1 B1SPNSN1 B1SSEC1 ///
+>                                 B1SG12 B1SG7 B1SG23 B1SG24A B1SF13 B1SJCDA ///
+>                                 B1POCC B1PIND B1POCMAJ B1PINDMJ B1PTSEI B1PB37 ///
+>                                 B1POCCS B1PINDS B1PSOCMJ B1PSINMJ B1PTSEIS ///
+>                                 B1PB1 B1PB33 B1PA1 B1SA11A B1SA11B B1SA11C  ///
+>                                 B1SA11D B1SA11E B1SA11F B1SA11G B1SA11H B1SA11I  ///
+>                                 B1SA11J B1SA11K B1SA11L B1SA11M B1SA11N B1SA11O  ///
+>                                 B1SA11P B1SA11Q B1SA11R B1SA11S B1SA11T B1SA11U  ///
+>                                 B1SA11V B1SA11W B1SA11X B1SA11Y B1SA11Z B1SA11AA  ///
+>                                 B1SA11BB B1SA11CC B1SCHRON B1SCHROX B1SBMI 
+
+.         describe,       s
+
+Contains data from MIDUS2\DS0001\04652-0001-Data.dta
+  obs:         4,963                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Aggregate Data
+ vars:           210                          18 Oct 2017 16:22
+ size:     2,332,610                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
 .         save            MIDUS2\DS0001\MIDUS2A.dta, replace 
 file MIDUS2\DS0001\MIDUS2A.dta saved
 
@@ -216,7 +787,9 @@ file MIDUS2\DS0001\MIDUS2A.dta saved
 
 .         sort            M2ID
 
-.         describe, s
+.         quietly do      MIDUS2\DS0002\04652-0002-Supplemental_syntax.do
+
+.         describe,       s
 
 Contains data from MIDUS2\DS0002\04652-0002-Data.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
@@ -224,8 +797,7 @@ Contains data from MIDUS2\DS0002\04652-0002-Data.dta
  vars:            12                          18 Oct 2017 16:22
  size:       184,808                          
 Sorted by:  M2ID
-
-.         quietly do      MIDUS2\DS0002\04652-0002-Supplemental_syntax.do
+     Note:  dataset has changed since last saved
 
 .         save            MIDUS2\DS0002\MIDUS2B.dta, replace 
 file MIDUS2\DS0002\MIDUS2B.dta saved
@@ -237,7 +809,7 @@ file MIDUS2\DS0002\MIDUS2B.dta saved
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS2\DS0003\04652-0003-Data.dta
   obs:         2,257                          Midlife in the United States (MIDUS 2), 2004-2006,
@@ -256,7 +828,7 @@ file MIDUS2\DS0003\MIDUS2C.dta saved
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS2\DS0004\04652-0004-Data.dta
   obs:         4,963                          Midlife in the United States (MIDUS 2), 2004-2006,
@@ -267,16 +839,28 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS2\DS0004\04652-0004-Supplemental_syntax.do
 
+.         keep            M2ID B1SA56SAO B1SA56SBO
+
+.         describe,       s
+
+Contains data from MIDUS2\DS0004\04652-0004-Data.dta
+  obs:         4,963                          Midlife in the United States (MIDUS 2), 2004-2006,
+                                                M2_P1_Coded Text Data
+ vars:             3                          18 Oct 2017 16:23
+ size:        39,704                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
 .         save            MIDUS2\DS0004\MIDUS2D.dta, replace 
 file MIDUS2\DS0004\MIDUS2D.dta saved
 
 . 
 . //Merge MIDUS2B MIDUS2C MIDUS2D to MIDUS2A, save as MIDUS2
 . //Check Merge
-.         //MIDUS2A obs = 4,963 vars = 2,279
+.         //MIDUS2A obs = 4,963 vars = 210
 .         //MIDUS2B obs = 7,108 vars = 12
 .         //MIDUS2C obs = 2,257 vars = 11
-.         //MIDUS2D obs = 4,963 vars = 142
+.         //MIDUS2D obs = 4,963 vars = 3
 .         
 . *Merge MIDUS2B (using) to MIDUS2A (master), save as MIDUS2      
 .         use             MIDUS2\DS0001\MIDUS2A.dta
@@ -300,8 +884,8 @@ file MIDUS2\DS0004\MIDUS2D.dta saved
 Contains data from MIDUS2\DS0001\MIDUS2A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,289                          25 Mar 2021 11:03
- size:    35,625,296                          
+ vars:           220                          21 Apr 2021 12:57
+ size:     3,475,812                          
 Sorted by:  
      Note:  dataset has changed since last saved
 
@@ -334,8 +918,8 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,299                          25 Mar 2021 11:03
- size:    35,888,292                          
+ vars:           230                          21 Apr 2021 12:57
+ size:     3,738,808                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -352,9 +936,6 @@ file MIDUS2\MIDUS2P1.dta saved
 (Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
 
 .         merge           1:1 M2ID using MIDUS2\DS0004\MIDUS2D.dta
-(label SAMPLMAJ already defined)
-(label B1PAGE_M2 already defined)
-(label B1PGENDER already defined)
 
     Result                           # of obs.
     -----------------------------------------
@@ -370,8 +951,8 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         2,437                          25 Mar 2021 11:03
- size:    37,842,992                          
+ vars:           233                          21 Apr 2021 12:57
+ size:     3,774,348                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -388,9 +969,9 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          25 Mar 2021 11:03
- vars:         2,437                          
- size:    37,871,424                          
+  obs:         7,108                          21 Apr 2021 12:57
+ vars:           233                          
+ size:     3,802,780                          
 Sorted by:  M2ID  
 
 .         
@@ -427,13 +1008,25 @@ Sorted by:  M2ID
 .         drop            if SAMPLMAJ==13
 (201 observations deleted)
 
-.         describe, s
+.         keep            M2ID B4QCESD B4QPS_PS B4H25 B4HMETMW B4SSQ_S3  ///
+>                                 B4H26 B4H26A B4H33 B4H34 B4H35 B4H36 B4H37   ///
+>                                 B4H16 B4H17AF B4H17AT B4H17BF B4H17BT B4H17CF  ///
+>                                 B4H17CT B4H18AF B4H18AT B4H18BF B4H18BT B4H18CF  ///
+>                                 B4H18CT B4H19 B4H20 B4H21 B4H22 B4H23A B4H23B  ///
+>                                 B4H23C B4H23D B4H24 B4HSYMX B4HSYMN B4PBMI B4P1GS  ///
+>                                 B4P1GD B4BLDL B4BCHOL B4BHDL B4BTRIGL B4BDHEA  ///
+>                                 B4BDHEAS B4BCRP B4BIL6 B4BMSDIL6 B4BSIL6R B4BHA1C  ///
+>                                 B4BGLUC B4BINSLN B4BIGF1 B4BCORTL B4BNECL B4BCLCRE  ///
+>                                 B4BSCL3A B4BSCL42 B4BEPIN B4BEPI12 B4BEPCRE B4BNECL  ///
+>                                 B4BNOREP B4BNE12 B4BNOCRE B4BDOPA B4BDOCRE B4BDOP12 B4SSQ_GS
+
+.         describe,       s
 
 Contains data from MIDUS2-Biomarker\DS0001\29282-0001-Data.dta
   obs:         1,054                          Midlife in the United States (MIDUS 2): Biomarker
                                                 Project, 2004-2009, Aggregated
- vars:         3,228                          29 Oct 2018 16:04
- size:    10,950,006                          
+ vars:            69                          29 Oct 2018 16:04
+ size:       278,256                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -469,16 +1062,13 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 . 
 . //Merge MIDUS2BIOA (using) to MIDUS2P1 (master). Save as MIDUS2 in data-cleaning folder. 
 . //Check Merge   
-.         //MIDUS2BIOA obs = 1,054 vars = 3,228
-.         //MIDUS2P1       obs = 7,108 vars = 2,437
+.         //MIDUS2BIOA obs = 1,054 vars = 69
+.         //MIDUS2P1       obs = 7,108 vars = 133
 .         
 .         use             MIDUS2\MIDUS2P1.dta, clear
 (Midlife in the United States (MIDUS 2), 2004-2006, M2_P1_Aggregate Data)
 
 .         merge           1:1 M2ID using MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta
-(label SAMPLMAJ already defined)
-(label B1PAGE_M2 already defined)
-(label B1PRSEX already defined)
 
     Result                           # of obs.
     -----------------------------------------
@@ -494,8 +1084,8 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:         5,661                          25 Mar 2021 11:03
- size:   111,595,600                          
+ vars:           302                          21 Apr 2021 12:57
+ size:     5,629,536                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -512,9 +1102,9 @@ file data-cleaning\MIDUS2.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          25 Mar 2021 11:03
- vars:         5,661                          
- size:   111,624,032                          
+  obs:         7,108                          21 Apr 2021 12:57
+ vars:           302                          
+ size:     5,657,968                          
 Sorted by:  M2ID  
 
 . 
@@ -535,7 +1125,7 @@ Sorted by:  M2ID
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS3\DS0001\36346-0001-Data.dta
   obs:         3,294                          Midlife in the United States (MIDUS 3), 2013-2014,
@@ -545,6 +1135,52 @@ Contains data from MIDUS3\DS0001\36346-0001-Data.dta
 Sorted by:  M2ID
 
 .         quietly do      MIDUS3\DS0001\36346-0001-Supplemental_syntax.do 
+
+.         keep            M2ID M2FAMNUM SAMPLMAJ C1STATUS C1PRSEX  ///
+>                                 C1PF8A1 C1PF1 C1PF3 C1PF7A C1PB19 C1PB32A C1PA2 C1PANHED  ///
+>                                 C1PDEPAF C1PDEPRE C1PANXIE C1PPANIC C1SN1A C1SN2A  ///
+>                                 C1SN2B C1SN2C C1SN2D C1SN2E C1SN2F C1SN2G C1SN2H  ///
+>                                 C1SN2I C1SSPIRI C1SRELID C1SN3D C1SN3A C1SN3B  ///
+>                                 C1SN3C C1SRELPR C1SN3E C1SN4 C1SN7 C1SN8 C1SN9A  ///
+>                                 C1SN9B C1SN9C C1SN9D C1SRELSU C1SN10A C1SN10B C1SN10C  ///
+>                                 C1SN10D C1SN10E C1SN10F C1SN10G C1SN10H C1SRELCA  ///
+>                                 C1SRELCB C1SN11A C1SN11B C1SN11C C1SN11D C1SN11E  ///
+>                                 C1SSPRTE C1SN12A C1SN12B C1SN12C C1SN12D C1SN12E  ///
+>                                 C1SN12F C1SN12G C1SN12H C1SN12I C1SMNDFU C1SHLOCS  ///
+>                                 C1SHLOCO C1SC1 C1SC3A C1SC3B C1SC3C C1SC3D C1SC3E  ///
+>                                 C1SC3F C1SC3G C1SC3H C1SA48 C1SUSEMD C1SA50A C1SA50B  ///
+>                                 C1SA50C C1SA50D C1SUSEMH C1SA52A C1SA52B C1SA52C  ///
+>                                 C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J  ///
+>                                 C1SA52K C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R  ///
+>                                 C1SA52S C1SA26A C1SA26B C1SA26C C1SA26D C1SA26E  ///
+>                                 C1SA26F C1SA27A C1SA27B C1SA27C C1SA27D C1SA27E  ///
+>                                 C1SA27F C1SA28A C1SA28B C1SA28C C1SA28D C1SA28E  ///
+>                                 C1SA28F C1SA53A C1SA53B C1SA54A C1SA54B C1SA55A  ///
+>                                 C1SA55B C1SA56 C1SA57A C1SA57B C1SA57C C1SA57D  ///
+>                                 C1PA37 C1PA38A C1PA38B C1PA39 C1PA41 C1PA54 C1PA54A  ///
+>                                 C1PA55 C1PA50 C1PA51 C1PA51A C1PA52 C1PA53 C1SG11A  ///
+>                                 C1SG11B C1SG11C C1SRINC C1SG14A C1SG14B C1SG14C  ///
+>                                 C1SSINC C1STINC C1SEARN C1SPNSN C1SSEC C1SG21 C1SG9  ///
+>                                 C1SG59 C1SG59B C1SF24 C1SJCDA C1POCC C1PIND C1POCMAJ ///
+>                                 C1PINDMJ C1PB37 C1POCCS C1PINDS C1PSOCMJ C1PSINMJ C1PB1  ///
+>                                 C1PB33 C1PWGHT1 C1PWGHT2 C1PWGHT3 C1PWGHT4 C1PWGHT5  ///
+>                                 C1PWGHT6 C1PWGHT7 C1PWGHT8 C1PWGHT10 C1PWGHT9 C1PA1  ///
+>                                 C1SA11A C1SA11B C1SA11C C1SA11D C1SA11E C1SA11F  ///
+>                                 C1SA11G C1SA11H C1SA11I C1SA11J C1SA11K C1SA11L  ///
+>                                 C1SA11M C1SA11N C1SA11O C1SA11P C1SA11Q C1SA11R  ///
+>                                 C1SA11S C1SA11T C1SA11U C1SA11V C1SA11W C1SA11X  ///
+>                                 C1SA11Y C1SA11Z C1SA11AA C1SA11BB C1SA11CC C1SCHRON C1SCHROX ///
+>                                 C1SBMI 
+
+.         describe,       s
+
+Contains data from MIDUS3\DS0001\36346-0001-Data.dta
+  obs:         3,294                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Aggregate Data
+ vars:           217                          17 Apr 2019 09:09
+ size:     1,844,640                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
 
 .         save            MIDUS3\DS0001\MIDUS3A.dta, replace 
 file MIDUS3\DS0001\MIDUS3A.dta saved
@@ -556,7 +1192,7 @@ file MIDUS3\DS0001\MIDUS3A.dta saved
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS3\DS0002\36346-0002-Data.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
@@ -577,7 +1213,7 @@ file MIDUS3\DS0002\MIDUS3B.dta saved
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS3\DS0003\36346-0003-Data.dta
   obs:         3,137                          Midlife in the United States (MIDUS 3), 2013-2014,
@@ -588,15 +1224,27 @@ Sorted by:  M2ID
 
 .         quietly do      MIDUS3\DS0003\36346-0003-Supplemental_syntax.do
 
+.         keep            M2ID C1SA52SA C1SA52SB
+
+.         describe,       s
+
+Contains data from MIDUS3\DS0003\36346-0003-Data.dta
+  obs:         3,137                          Midlife in the United States (MIDUS 3), 2013-2014,
+                                                Coded Text Data
+ vars:             3                          19 Apr 2019 15:19
+ size:        25,096                          
+Sorted by:  M2ID
+     Note:  dataset has changed since last saved
+
 .         save            MIDUS3\DS0003\MIDUS3C.dta, replace
 file MIDUS3\DS0003\MIDUS3C.dta saved
 
 . 
 . //Merge MIDUS3B and MIDUS3C to MIDUS3A, save as MIDUS 3
 . //Check Merge
-.         //MIDUS3A obs = 3,294 vars = 2,613
+.         //MIDUS3A obs = 3,294 vars = 217
 .         //MIDUS3B obs = 7,108 vars = 6
-.         //MIDUS3C obs = 3,137 vars = 183 
+.         //MIDUS3C obs = 3,137 vars = 3 
 . 
 . *Merge MIDUS3B (using) to MIDUS3A (master), save as MIDUS3P1    
 .         use             MIDUS3\DS0001\MIDUS3A.dta
@@ -619,8 +1267,8 @@ file MIDUS3\DS0003\MIDUS3C.dta saved
 Contains data from MIDUS3\DS0001\MIDUS3A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:         2,617                          25 Mar 2021 11:03
- size:    42,633,784                          
+ vars:           221                          21 Apr 2021 12:57
+ size:     4,030,236                          
 Sorted by:  
      Note:  dataset has changed since last saved
 
@@ -637,8 +1285,6 @@ file MIDUS3\MIDUS3P1.dta saved
 (Midlife in the United States (MIDUS 3), 2013-2014, Aggregate Data)
 
 .         merge           1:1 M2ID using MIDUS3\DS0003\MIDUS3C.dta
-(label SAMPLMAJ already defined)
-(label C1PRSEX already defined)
 
     Result                           # of obs.
     -----------------------------------------
@@ -654,8 +1300,8 @@ file MIDUS3\MIDUS3P1.dta saved
 Contains data from MIDUS3\MIDUS3P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:         2,797                          25 Mar 2021 11:03
- size:    45,185,556                          
+ vars:           224                          21 Apr 2021 12:57
+ size:     4,065,776                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -672,9 +1318,9 @@ file MIDUS3\MIDUS3P1.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 3), 2013-2014, Aggregate
                                                 Data
-  obs:         7,108                          25 Mar 2021 11:03
- vars:         2,797                          
- size:    45,213,988                          
+  obs:         7,108                          21 Apr 2021 12:57
+ vars:           224                          
+ size:     4,094,208                          
 Sorted by:  M2ID  
 
 .         
@@ -693,7 +1339,7 @@ Sorted by:  M2ID
 
 .         sort            M2ID
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS3-Mortality\DS0001\37237-0001-Data.dta
   obs:         1,382                          Midlife in the United States (MIDUS 3): Mortality
@@ -708,7 +1354,7 @@ Sorted by:  M2ID
 .         drop            if SAMPLMAJ==13
 (80 observations deleted)
 
-.         describe, s
+.         describe,       s
 
 Contains data from MIDUS3-Mortality\DS0001\37237-0001-Data.dta
   obs:         1,302                          Midlife in the United States (MIDUS 3): Mortality
@@ -747,8 +1393,8 @@ file MIDUS3-Mortality\DS0001\MIDUS3MORT.dta saved
 Contains data from MIDUS3\MIDUS3P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:         2,805                          25 Mar 2021 11:03
- size:    45,356,148                          
+ vars:           232                          21 Apr 2021 12:57
+ size:     4,236,368                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -765,9 +1411,9 @@ file data-cleaning\MIDUS3.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 3), 2013-2014, Aggregate
                                                 Data
-  obs:         7,108                          25 Mar 2021 11:04
- vars:         2,805                          
- size:    45,384,580                          
+  obs:         7,108                          21 Apr 2021 12:57
+ vars:           232                          
+ size:     4,264,800                          
 Sorted by:  M2ID  
 
 .         
