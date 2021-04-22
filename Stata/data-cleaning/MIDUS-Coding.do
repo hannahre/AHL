@@ -1,8 +1,8 @@
 
-# PART 2: Coding Variables 
+* PART 2: Coding Variables 
 
 
-local dir "C:\Users\hanna\git\AHL\Stata\data-cleaning"
+local dir "C:\Users\hanna\Documents\git\AHL\Stata\data-cleaning"
 cd `dir'
 *capture log close 
 *log using MIDUS-recodes.txt, replace text
@@ -14,19 +14,19 @@ set more off
 set maxvar 32767
 
 
-Coding set up: Code for each variable is shown together across waves (e.g. alcohol
+*Coding set up: Code for each variable is shown together across waves (e.g. alcohol
 	*coding for all waves is displayed together). 
 	
-Variable naming conventions: 
+*Variable naming conventions: 
 	*Waves: each variable starts with a letter denoting the wave it belongs to 
 	*	a=wave 1, b=wave2, 3=wave3
 	
 
-## Socieconomic Variables  
+** Socieconomic Variables  
 
-### Income 
+*** Income 
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 	* Check coding, skew, and kurtosis
@@ -42,7 +42,7 @@ Variable naming conventions:
 	save, replace 
 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear 
 	* Check coding, skew, kurtosis
@@ -58,7 +58,7 @@ Variable naming conventions:
 	save, replace 
 
 
-#### Wave 3 
+**** Wave 3 
 
 	use MIDUS3.dta, clear 
 	* Check coding, skewness, and kurtosis
@@ -74,13 +74,13 @@ Variable naming conventions:
 	save, replace 
 
 
-### Education 
+*** Education 
 
-Note on coding: "some graduate school" categorized with graduate/professional degree
+*Note on coding: "some graduate school" categorized with graduate/professional degree
 	
 	notes: Education variables "some graduate school" categorized with graduate/professional degree
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear
 	tab A1PB1
@@ -93,7 +93,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 2 
+**** Wave 2 
 
 	use MIDUS2.dta, clear
 	tab B1PB1, missing
@@ -106,7 +106,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace 
 
 
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear 
 	tab C1PB1,missing
@@ -119,14 +119,14 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace 
 
 
-## Health Locus of Control 
+** Health Locus of Control 
 
-### Self
+*** Self
 
-#### Wave 1
+**** Wave 1
 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear
 	tab B1SHLOCS, missing
@@ -136,28 +136,28 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	rename B1SHLOCS bHLOCS
 	save, replace
 
-#### Wave 3
+**** Wave 3
 
 
-## Controls  
+** Controls  
 
-### Age
+*** Age
 
-#### Wave 1
+**** Wave 1
  
 	use MIDUS1.dta, clear
 	sum A1PRAGE_2019, detail
 	rename A1PRAGE_2019 AAge
 	save, replace
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear
 	sum B1PAGE_M2, detail
 	rename B1PAGE_M2 bAge 
 	save, replace 
 
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear 
 	sum C1PRAGE, detail
@@ -165,9 +165,9 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-### Race/Ethnicity
+*** Race/Ethnicity
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 	tab A1SS7, missing
@@ -178,7 +178,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 2
+**** Wave 2
  
 	use MIDUS2.dta, clear
 	tab B1PF1, missing
@@ -200,7 +200,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace 
 
 
-#### Wave 3
+**** Wave 3
  
 	use MIDUS3.dta, clear
 	tab C1PF1, missing
@@ -221,9 +221,9 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	*Checked with browse 
 	save, replace
 
-### Sex
+*** Sex
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 	tab A1PRSEX, missing
@@ -234,7 +234,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear 
 	tab B1PRSEX, missing
@@ -245,7 +245,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear 
 	tab C1PRSEX, missing
@@ -256,9 +256,9 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-### Religiosity
+*** Religiosity
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 	* Check coding on all religious variables 
@@ -302,7 +302,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save,replace
 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear
   	sum B1SRELID, detail
@@ -313,13 +313,13 @@ Note on coding: "some graduate school" categorized with graduate/professional de
   	save, replace
 
 
-#### Wave 3
+**** Wave 3
 
 //Spirituality
 
-#### Wave 1
+**** Wave 1
 	
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear 
 	tab B1SSPIRI, missing
@@ -329,11 +329,11 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 3
+**** Wave 3
 
 //Marital Status 
 	
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear
 	tab A1PB17, missing
@@ -349,7 +349,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear 
 	tab B1PB19, missing
@@ -365,7 +365,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear
 	tab C1PB19, missing
@@ -383,16 +383,16 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 
 //Childhood SES 
 
-#### Wave 1
+**** Wave 1
 	
-#### Wave 2
+**** Wave 2
 	
-#### Wave 3
+**** Wave 3
 
 //Health insurance 
 
-#### Wave 1
-##### Currently covered by health insurance 
+**** Wave 1
+***** Currently covered by health insurance 
 
 	use MIDUS1.dta, clear
 
@@ -441,8 +441,8 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 2
-##### Currently covered by health insurance 
+**** Wave 2
+***** Currently covered by health insurance 
 
 	use MIDUS2.dta, clear
 	tab B1SC1, missing
@@ -505,8 +505,8 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-#### Wave 3
-#### Currently covered by health insurance 
+**** Wave 3
+**** Currently covered by health insurance 
 
 	use MIDUS3.dta, clear
 	tab C1SC1, missing
@@ -520,16 +520,16 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 
 //Types of healthcare providers seen 
 	
-#### Wave 1
+**** Wave 1
 	
-#### Wave 2
+**** Wave 2
 	
-#### Wave 3
+**** Wave 3
 
 
-## CAM Variables 
+** CAM Variables 
 
-*CAM associated with each var # across all waves
+*CAM associated with each var * across all waves
 	*cam1	Acupuncture
 	*cam2	Biofeedback
 	*cam3	Chiropractic
@@ -555,9 +555,9 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	*cam18	Physician prescribed diet freq
 	*cam19 	Weight control diet freq
 		
-### CAM Co-Occurrence Indices  
+*** CAM Co-Occurrence Indices  
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 	* Check coding and distribution of all cam variables 
@@ -567,7 +567,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		}
 			
 	* Write loop to dummy all CAM vars 0=never 1= used in the last year 
-		*Create new variable that denotes wave and cam var #. 
+		*Create new variable that denotes wave and cam var *. 
 		*Create local to act as a counter for generated acam vars. 
 		local period=1	
 		foreach var of varlist A1SA39A A1SA39B A1SA39C A1SA39D A1SA39E A1SA39F A1SA39G ///
@@ -661,10 +661,34 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		notes: 192 obs missing on income with no missing CAMs.
 
 	* Relationship between missing values on CAMs and Education 
+
+// CAM16 - other nontraditional therapy. Fill in with coded text data. 
+	tab1 A1SA39PA A1SA39PB A1SA39PC A1SA39PD
+
+	foreach var of varlist A1SA39PA A1SA39PB A1SA39PC A1SA39PD {
+		tab `var' acam16, missing
+	}
 		
-	*Create count variable (sum of CAMs) 
+	* Check missing value patterns on CAMs without CAM16
+	* Create local list of cams
+	global acams "acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15"
+	* Investigate missing data patterns on bcams
+	mdesc $acams if A1STATUS == 2
+	notes: less than 1% missing on each CAM for respondents who completed both phone and SAQ
+	mdesc $acams if A1STATUS == 1
+	notes: only included in SAQ; all obs missing on CAMs that only completed the phone interview
+	mvpatterns $acams if A1STATUS == 2
+	* Create newvar = number of missing values on bcams 
+	egen MissACams=rmiss2($acams) if A1STATUS == 2
+	tab MissACams
+	notes: 97.33% of SAQ sample are complete cases.
+
+// Multiple imputation for respondents missing on less than half of all CAMs.  
+
+	*Create count variable (sum of CAMs)
+	* Removing CAM16 because it is fill in the blank. 
 		egen aCamCo1 = rowtotal(acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 ///
-			acam11 acam12 acam13 acam14 acam15 acam16), missing
+			acam11 acam12 acam13 acam14 acam15), missing
 
 		* Examine new count variable 
 		tab aCamCo1, missing
@@ -673,7 +697,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		save, replace
 
 	
-#### Wave 2 
+**** Wave 2 
 
 	use MIDUS2.dta, clear
 
@@ -684,7 +708,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		}
 
 	*Write loop to dummy all CAM vars 0=never 1= used in the last year 
-		*Create new variable that denotes wave and cam var #. 
+		*Create new variable that denotes wave and cam var *. 
 		*Create local to act as a counter for generated acam vars. 
 		local period=1	
 		foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
@@ -713,7 +737,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		* Check that above code ran correctly
 		tab MissBCams OnlyMissBCams, missing
 
-		* Scatter - # of missing values by income 
+		* Scatter - * of missing values by income 
 		scatter OnlyMissBCams B1STINC1
 		notes OnlyMissBCams: scatter with continuous income - more missing values on low end of income distribution.
 		hist B1STINC1
@@ -763,6 +787,30 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		notes: 922 obs of the 3096 obs missing on all CAMS (29.7%) only completed the phone interview
 		notes: 29 obs of the 3096 obs missing on all CAMs completed both the phone interview and questionnaire
 
+// CAM16 - other nontraditional therapy. Fill in with coded text data. 
+	tab1 B1SA56SAO B1SA56SBO
+
+	foreach var of varlist B1SA56SAO B1SA56SBO {
+		tab `var' bcam16, missing
+	}
+		
+	* Check missing value patterns on CAMs without CAM16
+	* Create local list of cams
+	global bcams "bcam1 bcam2 bcam3 bcam4 bcam5 bcam6 bcam7 bcam8 bcam9 bcam10 bcam11 bcam12 bcam13 bcam14 bcam15"
+	* Investigate missing data patterns on bcams
+	mdesc $bcams if B1STATUS == 2
+	notes: about 1.5-2% of SAQ&phone cases missing on any given CAM
+	mdesc $bcams if B1STATUS == 1
+	notes: all phone only cases missing on all CAMs
+	mvpatterns $bcams if B1STATUS == 2
+	* Create newvar = number of missing values on bcams 
+	egen Missbcams=rmiss2($bcams) if B1STATUS == 2
+	tab Missbcams
+	notes: 94.7% of all cases complete. 
+	* How many biomarker respondents are complete cases on CAMs. 
+	tab MissBCams B4ZSITE, missing
+	
+
 
 	*Create co-occurrence index 1 
 		egen bCamCo = rowtotal($bcams) if MissBCams<=8
@@ -781,7 +829,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		save, replace
 
 		
-#### Wave 3 
+**** Wave 3 
 
 	use MIDUS3.dta, clear
 
@@ -792,11 +840,11 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	}
 
 *Write loop to dummy all CAM vars 0=never 1= used in the last year 
-	*Create new variable that denotes wave and cam var #. 
+	*Create new variable that denotes wave and cam var *. 
 	*Create local to act as a counter for generated acam vars. 
 	local period=1	
-	foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J ///
-		C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
+	foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J C1SA52K ///
+	C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S {
 		recode `var' (1/4= 1) (5 = 0) (. = .), gen(ccam`period')
 		tab `var' ccam`period', missing
 		local period=`period'+1
@@ -812,6 +860,28 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 		* Create newvar = number of missing values on bcams 
 		egen MissCCams=rmiss2($ccams)
 		tab MissCCams, missing
+
+// CAM16 - other nontraditional therapy. Fill in with coded text data. 
+	tab1 C1SA52SA C1SA52SB
+
+	foreach var of varlist C1SA52SA C1SA52SB {
+		tab `var' ccam16, missing
+	}
+		
+	* Check missing value patterns on CAMs without CAM16
+	* Create local list of cams
+	global ccams "ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ccam14 ccam15"
+	* Investigate missing data patterns on ccams
+	mdesc $ccams if C1STATUS > 2 & C1STATUS != .
+	notes: 
+	mdesc $ccams if C1STATUS <= 2 & C1STATUS != .
+	notes: 
+	mvpatterns $ccams if C1STATUS 
+	* Create newvar = number of missing values on ccams 
+	egen Missccams=rmiss2($ccams) if C1STATUS > 2 & C1STATUS != .
+	tab Missccams
+	notes:  
+
 *Create co-occurrence index 1 
 	egen ccamco1 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
 		ccam14 ccam15 ccam16), missing
@@ -824,12 +894,12 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-### CAM Index - with frequency variables 
+*** CAM Index - with frequency variables 
 
 * Above co-occurrence index uses dummy indicators. 
 * Create new index for waves 2 and 3 that use the original ordinal frequency indicators 
 
-#### Wave 2 
+**** Wave 2 
 
 	use MIDUS2.dta, clear 
 	* Check frequency for each CAM
@@ -859,15 +929,15 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 	save, replace
 
 
-### CAM LCA 
+*** CAM LCA 
 
 
 * Insert call for LCA do-file. 
 
 
-###CAM Mean Indices  
+***CAM Mean Indices  
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear
 
@@ -882,7 +952,7 @@ Note on coding: "some graduate school" categorized with graduate/professional de
 save, replace
 
 	
-#### Waves 2
+**** Waves 2
 
 	use MIDUS2.dta, clear 
 
@@ -898,7 +968,7 @@ save, replace
 save, replace
 
 		
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear 
 
@@ -914,19 +984,19 @@ save, replace
 save, replace
 
 
-## THL Variables 
+** THL Variables 
 
 //Alcohol 
 
-#### Wave 1
+**** Wave 1
 
 	use MIDUS1.dta, clear 
 
-#### Wave 2
+**** Wave 2
 
 	use MIDUS2.dta, clear
 
-#### Wave 3
+**** Wave 3
 
 	use MIDUS3.dta, clear 	
 
