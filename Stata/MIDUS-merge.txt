@@ -1,8 +1,8 @@
----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  C:\Users\hanna\Documents\git\AHL\Stata\MIDUS-merge.txt
   log type:  text
- opened on:  21 Apr 2021, 12:57:09
+ opened on:  21 Apr 2021, 13:38:33
 
 . 
 . version 13 
@@ -19,7 +19,7 @@
 . 
 . //Project: Dissertation AHL 
 . //Created by: Hannah Andrews
-. //Date: 07/23/18
+. //Date Created: 07/23/18
 . //Task: All data cleaning tasks. 
 .         //Part 1: Merge data within each wave 
 .         //Part 2: Coding variables 
@@ -85,7 +85,7 @@ file MIDUS1\DS0001\MIDUS1A.dta saved
 Contains data from MIDUS1\DS0001\MIDUS1A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:           135                          21 Apr 2021 12:57
+ vars:           135                          21 Apr 2021 13:38
  size:     2,175,048                          
 Sorted by:  M2ID
 
@@ -590,7 +590,7 @@ file MIDUS1\DS0004\MIDUS1B.dta saved
 Contains data from MIDUS1\DS0004\MIDUS1B.dta
   obs:         1,914                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Twin Screener Data
- vars:             2                          21 Apr 2021 12:57
+ vars:             2                          21 Apr 2021 13:38
  size:        11,484                          
 Sorted by:  M2ID
 
@@ -622,7 +622,7 @@ file MIDUS1\DS0005\MIDUS1C.dta saved
 Contains data from MIDUS1\DS0005\MIDUS1C.dta
   obs:         3,950                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Coded Text Data
- vars:             5                          21 Apr 2021 12:57
+ vars:             5                          21 Apr 2021 13:38
  size:        47,400                          
 Sorted by:  M2ID
 
@@ -653,7 +653,7 @@ Sorted by:  M2ID
 Contains data from MIDUS1\DS0001\MIDUS1A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:           137                          21 Apr 2021 12:57
+ vars:           137                          21 Apr 2021 13:38
  size:     2,196,372                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -686,7 +686,7 @@ file MIDUS1\MIDUS1.dta saved
 Contains data from MIDUS1\MIDUS1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 1), 1995-1996,
                                                 Main, Siblings and Twin Data
- vars:           142                          21 Apr 2021 12:57
+ vars:           142                          21 Apr 2021 13:38
  size:     2,260,344                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -884,7 +884,7 @@ file MIDUS2\DS0004\MIDUS2D.dta saved
 Contains data from MIDUS2\DS0001\MIDUS2A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:           220                          21 Apr 2021 12:57
+ vars:           220                          21 Apr 2021 13:38
  size:     3,475,812                          
 Sorted by:  
      Note:  dataset has changed since last saved
@@ -918,7 +918,7 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:           230                          21 Apr 2021 12:57
+ vars:           230                          21 Apr 2021 13:38
  size:     3,738,808                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -951,7 +951,7 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:           233                          21 Apr 2021 12:57
+ vars:           233                          21 Apr 2021 13:38
  size:     3,774,348                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -969,7 +969,7 @@ file MIDUS2\MIDUS2P1.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          21 Apr 2021 12:57
+  obs:         7,108                          21 Apr 2021 13:38
  vars:           233                          
  size:     3,802,780                          
 Sorted by:  M2ID  
@@ -1008,7 +1008,7 @@ Sorted by:  M2ID
 .         drop            if SAMPLMAJ==13
 (201 observations deleted)
 
-.         keep            M2ID B4QCESD B4QPS_PS B4H25 B4HMETMW B4SSQ_S3  ///
+.         keep            M2ID B4ZSITE B4QCESD B4QPS_PS B4H25 B4HMETMW B4SSQ_S3  ///
 >                                 B4H26 B4H26A B4H33 B4H34 B4H35 B4H36 B4H37   ///
 >                                 B4H16 B4H17AF B4H17AT B4H17BF B4H17BT B4H17CF  ///
 >                                 B4H17CT B4H18AF B4H18AT B4H18BF B4H18BT B4H18CF  ///
@@ -1025,8 +1025,8 @@ Sorted by:  M2ID
 Contains data from MIDUS2-Biomarker\DS0001\29282-0001-Data.dta
   obs:         1,054                          Midlife in the United States (MIDUS 2): Biomarker
                                                 Project, 2004-2009, Aggregated
- vars:            69                          29 Oct 2018 16:04
- size:       278,256                          
+ vars:            70                          29 Oct 2018 16:04
+ size:       280,364                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -1062,7 +1062,7 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 . 
 . //Merge MIDUS2BIOA (using) to MIDUS2P1 (master). Save as MIDUS2 in data-cleaning folder. 
 . //Check Merge   
-.         //MIDUS2BIOA obs = 1,054 vars = 69
+.         //MIDUS2BIOA obs = 1,054 vars = 70
 .         //MIDUS2P1       obs = 7,108 vars = 133
 .         
 .         use             MIDUS2\MIDUS2P1.dta, clear
@@ -1084,8 +1084,8 @@ file MIDUS2-Biomarker\DS0001\MIDUS2BIOA.dta saved
 Contains data from MIDUS2\MIDUS2P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
- vars:           302                          21 Apr 2021 12:57
- size:     5,629,536                          
+ vars:           303                          21 Apr 2021 13:38
+ size:     5,643,752                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
 
@@ -1102,9 +1102,9 @@ file data-cleaning\MIDUS2.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 2), 2004-2006,
                                                 M2_P1_Aggregate Data
-  obs:         7,108                          21 Apr 2021 12:57
- vars:           302                          
- size:     5,657,968                          
+  obs:         7,108                          21 Apr 2021 13:38
+ vars:           303                          
+ size:     5,672,184                          
 Sorted by:  M2ID  
 
 . 
@@ -1267,7 +1267,7 @@ file MIDUS3\DS0003\MIDUS3C.dta saved
 Contains data from MIDUS3\DS0001\MIDUS3A.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:           221                          21 Apr 2021 12:57
+ vars:           221                          21 Apr 2021 13:38
  size:     4,030,236                          
 Sorted by:  
      Note:  dataset has changed since last saved
@@ -1300,7 +1300,7 @@ file MIDUS3\MIDUS3P1.dta saved
 Contains data from MIDUS3\MIDUS3P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:           224                          21 Apr 2021 12:57
+ vars:           224                          21 Apr 2021 13:38
  size:     4,065,776                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -1318,7 +1318,7 @@ file MIDUS3\MIDUS3P1.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 3), 2013-2014, Aggregate
                                                 Data
-  obs:         7,108                          21 Apr 2021 12:57
+  obs:         7,108                          21 Apr 2021 13:38
  vars:           224                          
  size:     4,094,208                          
 Sorted by:  M2ID  
@@ -1393,7 +1393,7 @@ file MIDUS3-Mortality\DS0001\MIDUS3MORT.dta saved
 Contains data from MIDUS3\MIDUS3P1.dta
   obs:         7,108                          Midlife in the United States (MIDUS 3), 2013-2014,
                                                 Aggregate Data
- vars:           232                          21 Apr 2021 12:57
+ vars:           232                          21 Apr 2021 13:38
  size:     4,236,368                          
 Sorted by:  M2ID
      Note:  dataset has changed since last saved
@@ -1411,7 +1411,7 @@ file data-cleaning\MIDUS3.dta saved
 Contains data                                 Midlife in the United States
                                                 (MIDUS 3), 2013-2014, Aggregate
                                                 Data
-  obs:         7,108                          21 Apr 2021 12:57
+  obs:         7,108                          21 Apr 2021 13:38
  vars:           232                          
  size:     4,264,800                          
 Sorted by:  M2ID  

@@ -274,7 +274,7 @@ set maxvar 32767
 	*201 observations from the milwaukee sample (not included in the main sample 
 		*but were part of the biomarker project. 
 	drop 		if SAMPLMAJ==13
-	keep		M2ID B4QCESD B4QPS_PS B4H25 B4HMETMW B4SSQ_S3  ///
+	keep		M2ID B4ZSITE B4QCESD B4QPS_PS B4H25 B4HMETMW B4SSQ_S3  ///
 				B4H26 B4H26A B4H33 B4H34 B4H35 B4H36 B4H37   ///
 				B4H16 B4H17AF B4H17AT B4H17BF B4H17BT B4H17CF  ///
 				B4H17CT B4H18AF B4H18AT B4H18BF B4H18BT B4H18CF  ///
@@ -314,7 +314,7 @@ set maxvar 32767
 
 //Merge MIDUS2BIOA (using) to MIDUS2P1 (master). Save as MIDUS2 in data-cleaning folder. 
 //Check Merge	
-	//MIDUS2BIOA obs = 1,054 vars = 69
+	//MIDUS2BIOA obs = 1,054 vars = 70
 	//MIDUS2P1	 obs = 7,108 vars = 133
 	
 	use 		MIDUS2\MIDUS2P1.dta, clear
