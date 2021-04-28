@@ -683,6 +683,50 @@ set maxvar 32767
 	tab MissACams
 	notes: 97.33% of SAQ sample are complete cases.
 
+	* Cross-reference CAM16 reponses with appropriate CAMs
+	* First of four coded text variables. 
+	tab A1SA39PA
+
+	* Write program to cross-reference cam16 responses and other cams, and reassign values correctly.
+	capture program drop othercam
+	program define othercam
+		list M2ID `1' `2' if `3'
+		replace `1' = 1 if `3'
+		list M2ID `1' `2' if `3'
+	end
+	* Run othercam program on reiki responses
+	othercam acam4 A1SA39PA "A1SA39PA == 1"
+	* Run othercam program on prayer/church
+	othercam acam12 A1SA39PA "A1SA39PA == 3"
+	* Run othercam program on exercise/movement therapy 
+	othercam acam5 A1SA39PA "A1SA39PA == 4"
+	* Special diet
+	othercam acam14 A1SA39PA "A1SA39PA == 5"
+	* Vitamins 
+	othercam acam7 A1SA39PA "A1SA39PA == 6"
+	notes A1SA39PA: 12 = muscle related therapy. No clear alignment with another CAM. No changes. 
+	* Meditation techniques
+	othercam acam13 A1SA39PA "A1SA39PA == 14"
+	notes A1SA39PA: 17 = other, 18 = artwork, 19 = bone related therapy, 21 = positive mindset. No clear alignment with other CAMs. No changes made. 
+
+	tab A1SA39PB
+	* Prayer/church 
+	othercam acam12 A1SA39PB "A1SA39PB == 3"
+	* Exercise/movement related therapy
+	othercam acam5 A1SA39PB "A1SA39PB == 4"
+	* Meditation techniques
+	othercam acam13 A1SA39PB "A1SA39PB == 14"
+	notes A1SA39PB: 17 = other, 18 = artwork, 19 = bone related therapy, 21 = positive mindset. No clear alignment with other CAMs. No changes made. 
+
+	tab1 A1SA39PC 
+	notes A1SA39PC: only 1 observation reported other. No changes made. 
+
+	tab A1SA39PD
+	* Only one observation. 
+	* Meditation techniques
+	othercam acam13 A1SA39PD "A1SA39PD == 14"
+
+
 // Multiple imputation for respondents missing on less than half of all CAMs.  
 
 	*Create count variable (sum of CAMs)
@@ -810,7 +854,44 @@ set maxvar 32767
 	* How many biomarker respondents are complete cases on CAMs. 
 	tab MissBCams B4ZSITE, missing
 	
+	* Many observations gave responses to the "other CAM used" question that matched previously listed CAMs.
+	* For example, writing in meditation under "other" even though it was an option. 
+	* Whether observations also answered "yes" to the appropriate CAM varies. 
+	* Write program to cross-reference cam16 responses and other cams, and assign "yes" responses to one of the 15 main CAMs if appropriate.
+	capture program drop othercam
+	program define othercam
+		list M2ID `1' `2' if `3'
+		replace `1' = 1 if `3'
+		list M2ID `1' `2' if `3'
+	end
 
+	* There are two "other cam" variables that contain written responses. Presumably some observations listed more than one. 
+	tab B1SA56SAO
+	* Acupressure 
+	othercam bcam1 B1SA56SAO "B1SA56SAO == 110"
+	* Diet 
+	othercam bcam14 B1SA56SAO "B1SA56SAO == 114"
+	* Exercise 
+	othercam bcam5 B1SA56SAO "B1SA56SAO == 116"
+	* Herbal Therapy 
+	othercam bcam6 B1SA56SAO "B1SA56SAO == 117"
+	* Prayer/spiritual practices
+	othercam bcam12 B1SA56SAO "B1SA56SAO == 120"
+	* Spiritual healing by others 
+	othercam bcam15 B1SA56SAO "B1SA56SAO == 121"
+	* Reiki (energy healing)
+	othercam bcam4 B1SA56SAO "B1SA56SAO == 122"
+	* Relaxation/meditation 
+	othercam bcam13 B1SA56SAO "B1SA56SAO == 123"
+	* No other suitable CAM to assign 1 to: aromatherapy, cranial therapy, cranialsacral, cardic rehab,
+	* magnetics, taking supplements, self made program, others. 
+
+	tab B1SA56SBO
+	* Energy healing
+	othercam bcam4 B1SA56SBO "B1SA56SBO == 115"
+	* Exercise
+	othercam bcam5 B1SA56SBO "B1SA56SBO == 116"
+	* Did not reassign "taking supplments" observations, though this could potentially fall under taking vitamins. 
 
 	*Create co-occurrence index 1 
 		egen bCamCo = rowtotal($bcams) if MissBCams<=8
@@ -863,10 +944,6 @@ set maxvar 32767
 
 // CAM16 - other nontraditional therapy. Fill in with coded text data. 
 	tab1 C1SA52SA C1SA52SB
-
-	foreach var of varlist C1SA52SA C1SA52SB {
-		tab `var' ccam16, missing
-	}
 		
 	* Check missing value patterns on CAMs without CAM16
 	* Create local list of cams
@@ -880,7 +957,16 @@ set maxvar 32767
 	* Create newvar = number of missing values on ccams 
 	egen Missccams=rmiss2($ccams) if C1STATUS > 2 & C1STATUS != .
 	tab Missccams
-	notes:  
+	
+	* Write program to cross-reference cam16 responses and other cams, and assign "yes" responses to one of the 15 main CAMs if appropriate.
+	capture program drop othercam
+	program define othercam
+		list M2ID `1' `2' if `3'
+		replace `1' = 1 if `3'
+		list M2ID `1' `2' if `3'
+	end
+
+	tab C1SA52SA 
 
 *Create co-occurrence index 1 
 	egen ccamco1 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
