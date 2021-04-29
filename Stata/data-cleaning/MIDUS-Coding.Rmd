@@ -1,0 +1,17 @@
+---
+title: "MIDUS-Measurement"
+author: "Hannah Andrews"
+date: "4/28/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE, message=FALSE}
+library(Statamarkdown)
+stataexe <- "C:/Program Files/Stata17/StataBE-64.exe"
+knitr::opts_chunk$set(engine.path=(stata=stataexe))
+```
+
+

@@ -576,24 +576,11 @@ set maxvar 32767
 			tab `var' acam`period', missing
 			local period=`period'+1
 		}
-		
-	* Dummy A1SALTER (only in wave 1)
-	notes A1SALTER: only appears at Wave 1. See SAQ question A40 
-	notes A1SALTER: used sedatives, tranquilizers, amphetamines, analgesics, 
-	notes A1SALTER: prozac, inhalants, marijuana or hashish, cocaine or crack, 
-	notes A1SALTER: LSD or other hallucinogens, or heroin on their own or in a 
-	notes A1SALTER: other than prescribed by a doctor. 
-		recode A1SALTER ///
-			(1 = 1) ///
-			(2 = 0) ///
-			(. = .), ///
-			gen(acam20)
-		tab A1SALTER acam20, missing
 
 	* Check missing value patterns on CAM dummies
 		* Create local list of cams
 		global acams "acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 acam16"
-		* Investigate missing data patterns on bcams
+		* Investigate missing data patterns on acams
 		mdesc $acams
 		mvpatterns $acams
 		* Create newvar = number of missing values on bcams 
@@ -679,8 +666,8 @@ set maxvar 32767
 	notes: only included in SAQ; all obs missing on CAMs that only completed the phone interview
 	mvpatterns $acams if A1STATUS == 2
 	* Create newvar = number of missing values on bcams 
-	egen MissACams=rmiss2($acams) if A1STATUS == 2
-	tab MissACams
+	egen MissACams2=rmiss2($acams) if A1STATUS == 2
+	tab MissACams2
 	notes: 97.33% of SAQ sample are complete cases.
 
 	* Cross-reference CAM16 reponses with appropriate CAMs
@@ -756,11 +743,13 @@ set maxvar 32767
 		*Create local to act as a counter for generated acam vars. 
 		local period=1	
 		foreach var of varlist B1SA56A B1SA56B B1SA56C B1SA56D B1SA56F B1SA56G B1SA56H B1SA56I ///
-			B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S {
+			B1SA56J B1SA56K B1SA56L B1SA56M B1SA56N B1SA56Q B1SA56R B1SA56S B1SA56E B1SA56O B1SA56P {
 			recode `var' (1/4= 1) (5 = 0) (. = .), gen(bcam`period')
 			tab `var' bcam`period', missing
 			local period=`period'+1
 		}
+
+	tab1 bcam17 bcam18 bcam19
 
 	* Check missing patterns
 		* Create local list of cams
@@ -876,7 +865,7 @@ set maxvar 32767
 	* Herbal Therapy 
 	othercam bcam6 B1SA56SAO "B1SA56SAO == 117"
 	* Prayer/spiritual practices
-	othercam bcam12 B1SA56SAO "B1SA56SAO == 120"
+	othercam bcam12 B1SA56SAO pppack"B1SA56SAO == 120"
 	* Spiritual healing by others 
 	othercam bcam15 B1SA56SAO "B1SA56SAO == 121"
 	* Reiki (energy healing)
@@ -925,12 +914,13 @@ set maxvar 32767
 	*Create local to act as a counter for generated acam vars. 
 	local period=1	
 	foreach var of varlist C1SA52A C1SA52B C1SA52C C1SA52D C1SA52F C1SA52G C1SA52H C1SA52I C1SA52J C1SA52K ///
-	C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S {
+	C1SA52L C1SA52M C1SA52N C1SA52Q C1SA52R C1SA52S C1SA52E C1SA52O C1SA52P {
 		recode `var' (1/4= 1) (5 = 0) (. = .), gen(ccam`period')
 		tab `var' ccam`period', missing
 		local period=`period'+1
 	}
 
+	tab1 ccam17 ccam18 ccam19
 
 	* Check missing patterns
 		* Create local list of cams
@@ -967,6 +957,28 @@ set maxvar 32767
 	end
 
 	tab C1SA52SA 
+	* Spiriual practice/ reiki - assign yes on energy healing 
+	othercam ccam4 C1SA52SA "C1SA52SA == 1"
+	* Prayer/church 
+	othercam ccam12 C1SA52SA "C1SA52SA == 3"
+	* Exercise or movement therapy
+	othercam ccam5 C1SA52SA "C1SA52SA == 4"
+	* Special diet 
+	othercam ccam14 C1SA52SA "C1SA52SA == 5"
+	* Vitamins 
+	othercam ccam7 C1SA52SA "C1SA52SA == 6"
+	* herbal therapy 
+	othercam ccam6 C1SA52SA "C1SA52SA == 8"
+	* No suitable main CAMs to assign yes to: essential oil, music/television, muscle related therapy,  
+	* other, artwork, bone related therapy, positive mindset. 
+
+	tab C1SA52SB
+	* Exercise or movement therapy 
+	othercam ccam5 C1SA52SB "C1SA52SB == 4"
+	* Herbal therapy 
+	othercam ccam6 C1SA52SB "C1SA52SB == 8"
+	* Acupressure 
+	othercam ccam1 C1SA52SB "C1SA52SB == 22" 
 
 *Create co-occurrence index 1 
 	egen ccamco1 = rowtotal(ccam1 ccam2 ccam3 ccam4 ccam5 ccam6 ccam7 ccam8 ccam9 ccam10 ccam11 ccam12 ccam13 ///
