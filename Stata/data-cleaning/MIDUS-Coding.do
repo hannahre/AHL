@@ -1,17 +1,14 @@
 
-* PART 2: Coding Variables 
-
 
 local dir "C:\Users\hanna\Documents\git\AHL\Stata\data-cleaning"
 cd `dir'
 *capture log close 
 *log using MIDUS-recodes.txt, replace text
 
-version 13 
+*version 13 
 clear all 
 set linesize 100
 set more off 
-set maxvar 32767
 
 
 *Coding set up: Code for each variable is shown together across waves (e.g. alcohol
@@ -270,8 +267,7 @@ set maxvar 32767
 	* Create local to act as a counter for generated religious vars. 
 	local period = 1	
 	* Write for loop - reverse code each religious variable
-	* Define value labels to be 
-	used religious variable recodes 
+	* Define value labels to be used religious variable recodes 
 	label define relVals 1 "Not at all" 2 "Not very" 3 "Somewhat" 4 "Very"
 	foreach var of varlist A1SR2A A1SR2D A1SR2F A1SR2G A1SR2H A1SR2I {
 		recode `var' (4 = 1) (3 = 2) (2 = 3) (1 = 4) (. = .), gen(aRelig`period')
@@ -626,7 +622,7 @@ set maxvar 32767
 							11 "250500/275000" ///
 							12 "275500/300000"
 		label values aIncCat inccat
-		tab A1SHHTOT aIncCat, missing
+		*tab A1SHHTOT aIncCat, missing
 
 		* Create new variable, value = to number of missing values, excluding cases missing on 0 CAMs
 		gen OnlyMissACams = MissACams if MissACams != 0
@@ -804,7 +800,7 @@ set maxvar 32767
 							11 "250500/275000" ///
 							12 "275500/300000"
 		label values bIncCat inccat
-		tab B1STINC1 bIncCat, missing
+		*tab B1STINC1 bIncCat, missing
 
 		* View distribution of missing values by income categories, increments of 25000, for all values missing on at least one CAM
 		tab OnlyMissBCams 
@@ -865,7 +861,7 @@ set maxvar 32767
 	* Herbal Therapy 
 	othercam bcam6 B1SA56SAO "B1SA56SAO == 117"
 	* Prayer/spiritual practices
-	othercam bcam12 B1SA56SAO pppack"B1SA56SAO == 120"
+	othercam bcam12 B1SA56SAO "B1SA56SAO == 120"
 	* Spiritual healing by others 
 	othercam bcam15 B1SA56SAO "B1SA56SAO == 121"
 	* Reiki (energy healing)

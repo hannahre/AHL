@@ -1,0 +1,55 @@
+---
+title: "Factor Analysis"
+author: "Hannah Andrews"
+date: "4/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(haven)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+```
+
+
+
+```{r, echo=FALSE}
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], 
+                                                           as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- df %>% rename(NewName = Values1, 
+                       NewName2 = Values2, 
+                       NewName3 = Values3)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
