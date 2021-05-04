@@ -39,17 +39,62 @@ str(acams)
 head(acams)
 
 # Rename columns 
-acams <- df %>% rename(NewName = Values1, 
-                       NewName2 = Values2, 
-                       NewName3 = Values3)
+acams <- acams %>% rename(aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
 ```
 
-## Including Plots
+```{r, echo=FALSE}
+library(polycor)
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Remove attributes from acams data - created in Stata (labels and data notes). They're producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+str(acams)
+# Create correlation matrix 
+het.mat <- hetcor(acams)$cor
+het.mat
+cor.plot(het.mat, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", show.legend = TRUE, xlas = 2)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r, echo=FALSE}
+# Run first factor analysis
+fa.1 <- factanal(covmat = het.mat, factors = 2, rotation = "varimax")
+fa.1
+# Run with psych package
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+
+# Test for correlation adequacy using Bartlett's 
+cortest.bartlett(het.mat, n = 6157) # produces Bartlett's test of spherecity (you want this to be significant)
+
+# Test for sampling adequacy using KMO - Kaiser-Meyer-Olkin measure of sampling adequacy of factor analytic data matrices.
+# MSAi cutoffs: >.9 marvelous, .8s mertitourious, .7s middiling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+KMO(het.mat) 
+ 
+
+fa.2 <- fa(r = het.mat, nfactors = 2, n.obs = nrow(acams), rotate = "varimax")
+fa.2
+
+# Factor analysis of the data 
+
+```

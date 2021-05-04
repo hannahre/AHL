@@ -877,7 +877,10 @@ set more off
 	* Exercise
 	othercam bcam5 B1SA56SBO "B1SA56SBO == 116"
 	* Did not reassign "taking supplments" observations, though this could potentially fall under taking vitamins. 
-
+	
+// Diet CAMS 
+	
+	
 	*Create co-occurrence index 1 
 		egen bCamCo = rowtotal($bcams) if MissBCams<=8
 		notes bCamCo: missing = 0 for obs missing on half or fewer bcams
