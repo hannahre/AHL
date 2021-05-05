@@ -8,7 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(foreign)
-library(haven)
 library(expss)
 library(Hmisc)
 library(dplyr)
@@ -20,13 +19,20 @@ library(lattice)
 library(ggplot2)
 library(scales)
 library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
 ```
 
 
 
 ```{r, echo=FALSE}
 # Read in stata file for MIDUS 1
-path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1-complete.dta")
 M1 <- read_dta(path)
 acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
@@ -61,8 +67,6 @@ str(acams)
 ```
 
 ```{r, echo=FALSE}
-library(polycor)
-
 # Remove attributes from acams data - created in Stata (labels and data notes). They're producing an error with bart_spher.
 acams <- remove_attributes(acams, "label")
 acams <- remove_attributes(acams, "notes")
@@ -76,19 +80,16 @@ cor.plot(het.mat, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", sho
 
 ```{r, echo=FALSE}
 # Run first factor analysis
-fa.1 <- factanal(covmat = het.mat, factors = 2, rotation = "varimax")
-fa.1
+#fa.1 <- factanal(covmat = het.mat, factors = 2, rotation = "varimax")
+#fa.1
 # Run with psych package
-library(psych)
-library(REdaS)
-library(haven)
-library(labelled)
+
 
 # Test for correlation adequacy using Bartlett's 
 cortest.bartlett(het.mat, n = 6157) # produces Bartlett's test of spherecity (you want this to be significant)
 
 # Test for sampling adequacy using KMO - Kaiser-Meyer-Olkin measure of sampling adequacy of factor analytic data matrices.
-# MSAi cutoffs: >.9 marvelous, .8s mertitourious, .7s middiling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+# MSAi cutoffs: >.9 marvelous, .8s mertitourious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
 KMO(het.mat) 
  
 
@@ -97,4 +98,72 @@ fa.2
 
 # Factor analysis of the data 
 
+```
+
+```{r, echo=FALSE}
+# EFA following https://www.youtube.com/watch?v=C5RJvMaHJNo&ab_channel=StatisticsofDOOM
+# Channel: Statistics of DOOM by Lecturer: Dr. Erin M. Buchanan
+
+# Screen data 
+nrow(acams)
+# n = 5326
+
+# Check min and max scores by running summary 
+summary(acams)
+
+# Additivity - make sure nothing is correlated at 1. 
+# don't want any 1s on the off diagonal.
+symnum(het.mat)
+```
+# Test for correlation adequacy 
+I will test for correlation adequacy using Bartlett's Sphericity test. This test tests the hypothesis that correlations between variables are greater than would be expected by chance. The null hypothesis states that all off diagonal are 0. If the null hypothesis is rejected there is correlation adequacy. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat, n = nrow(acams))
+```
+I reject the null hypothesis. The CAM items are adequately correlated. 
+
+# Test for sampling adequacy 
+I will test for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test.MSA refers to the overall measure of sampling adequacy. MSAi refer to the measure of sampling adequacy for each item. MSA is a measure of the proportion of variance among variables that might be common variance. The lower the proportion of variance that is common the more suited the data are for factor analysis.  
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat)
+```
+Items that may be a concern with regard to sampling adequacy: prayer or other spiritual practices, relaxation or meditation, and spiritual healing. Overall MSA indicates sampling adequacy. 
+
+# Determining the number of factors
+First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
+```{r, echo = FALSE}
+acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+str(acams)
+acams2 <- acams + 1
+str(acams2)
+nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+```
+I received many warning messages stating "A cell entry of 0 was replaced with correct =  0.5.  Check your data!" This has to do with continuity when computing a tetrachoric correlation matrix. I added 1 to all values in the dataframe to check that the issue was not the 0/1 values. The results were the same. 
+
+From Statistics of DOOM notes: 
+i.	The dark line is set at one, which is part of the Kaiser criterion. This method is an older rule of thumb that is not well supported anymore.  You would look at the number of eigenvalues that are greater than 1 (or .70 in new literature).  This rule tends to overestimate the number of factors/components needed.
+ii.	The red dotted line is the random data set used to test this analysis. Your data is randomly reordered to see how many factors are better than chance. 
+iii.	The blue line and triangles are your eigenvalues from the real dataset. 
+iv.	You want to look at where the blue and red lines cross. 
+
+The parallel analysis suggests 7 factors (far too many). This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
+
+Note: Scree plots are a visual depiction of the eigenvalues. Look for the large drop off to figure out how many factors to use.
+
+# Kaiser Criterion 
+```{r, echo = FALSE}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(nofactors$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(nofactors$fa.values > .7)
+```
+New kaiser criterion rule (eigenvalues greater than 0.7) suggests 2 factors. 
+# Simple Structure with a two factor model 
+Run a factor analysis on a two factor model using oblique rotation (factors are allowed to correlate when rotated) and maximum likelihood estimation. 
+```{r, echo = FALSE}
+round1 <- fa(r = het.mat, nfactors = 2, rotate = "oblimin", fm = "ml")
+round1
 ```
