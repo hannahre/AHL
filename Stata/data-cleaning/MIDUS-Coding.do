@@ -1097,3 +1097,89 @@ save, replace
 
 	use MIDUS3.dta, clear 	
 
+//Smoking 
+
+**** Wave 1
+	use MIDUS1.dta, clear 
+	tab A1PA40 A1PA43, missing
+	* Create new variable with 3 categories: nonsmoker, current smoker, and exsmoker. 
+	generate aSmoke = .
+		replace aSmoke = 1 if A1PA40 == 2
+		replace aSmoke = 1 if A1PA43 == 2
+		replace aSmoke = 2 if A1PA43 == 1 
+		replace aSmoke = 3 if A1PA40 == 1 & A1PA43 == 2
+	tab aSmoke, missing
+	* Check recode 
+	tab aSmoke A1PA40, missing 
+	tab aSmoke A1PA43, missing
+	
+	save, replace 
+		
+	
+// Delimit sample to cases not missing on variables in model. 
+	mark nomiss
+	markout nomiss aHlthIns aMarried ASex ARace aRelig6 aRelig5 aRelig4 aRelig3 aRelig2 aRelig1 lnAHhInc AEduc A1SBMI A1SCHRON A1SHLOCO A1SHLOCS AAge A1PA4 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15
+	tab nomiss
+	
+	notes: n = 5326 when including health insurance, marital status, religious vars, sex, race, income, educ, bmi, chronic conditions, LOC vars, age, subjective health, and cams.
+		
+	mark nomiss2
+	markout nomiss2 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15
+	tab nomiss2
+	
+	notes: 6157 complete cases on CAMs
+	
+	mark nomiss3
+	markout nomiss3 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 lnAHhInc AEduc ASex
+	tab nomiss3
+	
+	notes: n = 5799 with CAMs, income, education, and gender 
+
+	mark nomiss4
+	markout nomiss4 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 lnAHhInc AEduc ASex aMarried ARace AAge
+	tab nomiss4
+
+	notes:n = 5712 when adding marital status, race, and age. Only lose 87 cases. 
+	
+	mark nomiss5
+	markout nomiss5 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 lnAHhInc AEduc ASex aMarried ARace AAge aHlthIns A1SHLOCO A1SHLOCS
+	tab nomiss5
+
+	notes: n = 5629 when adding health insurance and health locus of control. 
+	
+	mark nomiss6
+	markout nomiss6 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15 lnAHhInc AEduc ASex aMarried ARace AAge aHlthIns A1SHLOCO A1SHLOCS A1SBMI A1SCHRON A1PA4
+	tab nomiss6
+	
+	notes: n = 5408 when adding health outcomes. 
+	notes: retain 76% of original cases (7108)
+	notes: with religous variables retain about 75% of cases. 
+	
+	keep if nomiss == 1
+	save MIDUS1-complete.dta, replace
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
