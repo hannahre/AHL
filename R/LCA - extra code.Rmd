@@ -1,0 +1,35 @@
+---
+title: "Extra code - LCA"
+author: "Hannah Andrews"
+date: "5/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE}
+f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1
+
+
+MIDUS1.lc2 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
+           data = as.data.frame(MIDUS1_recode), 
+           nclass = 2,
+           nrep = 10)
+
+
+MIDUS1.lc3 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
+            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
+            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
+            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
+           data = as.data.frame(MIDUS1_recode), 
+           nclass = 3,
+           nrep = 10)
+```

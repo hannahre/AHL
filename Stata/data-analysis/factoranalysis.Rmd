@@ -5,6 +5,8 @@ date: "4/30/2021"
 output: html_document
 ---
 
+Sample: There are 6157 complete cases on CAM variables at Wave 1. 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(foreign)
@@ -26,13 +28,16 @@ library(haven)
 library(labelled)
 library(mice)
 library(GPArotation)
+library(foreach)
+library(doParallel)
 ```
 
 
 
-```{r, echo=FALSE}
+```{r, echo = FALSE, results = 'hide'}
+# Read in MIDUS1 data and subset to complete cases on CAMs
 # Read in stata file for MIDUS 1
-path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1-complete.dta")
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
@@ -66,50 +71,30 @@ acams=acams[complete.cases(acams),]
 str(acams)
 ```
 
-```{r, echo=FALSE}
-# Remove attributes from acams data - created in Stata (labels and data notes). They're producing an error with bart_spher.
-acams <- remove_attributes(acams, "label")
-acams <- remove_attributes(acams, "notes")
-str(acams)
+```{r, echo=FALSE, results = 'hide'}
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+# acams <- remove_attributes(acams, "label")
+# acams <- remove_attributes(acams, "notes")
+# str(acams)
+```
+Create and plot the tetrachoric correlation matrix for all CAMs. 
+```{r, echo = FALSE}
 # Create correlation matrix 
 het.mat <- hetcor(acams)$cor
-het.mat
 cor.plot(het.mat, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", show.legend = TRUE, xlas = 2)
 ```
 
-
-```{r, echo=FALSE}
-# Run first factor analysis
-#fa.1 <- factanal(covmat = het.mat, factors = 2, rotation = "varimax")
-#fa.1
-# Run with psych package
-
-
-# Test for correlation adequacy using Bartlett's 
-cortest.bartlett(het.mat, n = 6157) # produces Bartlett's test of spherecity (you want this to be significant)
-
-# Test for sampling adequacy using KMO - Kaiser-Meyer-Olkin measure of sampling adequacy of factor analytic data matrices.
-# MSAi cutoffs: >.9 marvelous, .8s mertitourious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
-KMO(het.mat) 
- 
-
-fa.2 <- fa(r = het.mat, nfactors = 2, n.obs = nrow(acams), rotate = "varimax")
-fa.2
-
-# Factor analysis of the data 
-
-```
-
+Check that items are not perfectly correlated with each other. 
 ```{r, echo=FALSE}
 # EFA following https://www.youtube.com/watch?v=C5RJvMaHJNo&ab_channel=StatisticsofDOOM
 # Channel: Statistics of DOOM by Lecturer: Dr. Erin M. Buchanan
 
 # Screen data 
-nrow(acams)
+# nrow(acams)
 # n = 5326
 
 # Check min and max scores by running summary 
-summary(acams)
+# summary(acams)
 
 # Additivity - make sure nothing is correlated at 1. 
 # don't want any 1s on the off diagonal.
@@ -134,11 +119,13 @@ Items that may be a concern with regard to sampling adequacy: prayer or other sp
 
 # Determining the number of factors
 First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
-```{r, echo = FALSE}
+```{r, echo = FALSE, message=FALSE, results='hide'}
 acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
 str(acams)
 acams2 <- acams + 1
 str(acams2)
+```
+```{r, echo = FALSE, message = FALSE}
 nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
 ```
 I received many warning messages stating "A cell entry of 0 was replaced with correct =  0.5.  Check your data!" This has to do with continuity when computing a tetrachoric correlation matrix. I added 1 to all values in the dataframe to check that the issue was not the 0/1 values. The results were the same. 
@@ -149,21 +136,314 @@ ii.	The red dotted line is the random data set used to test this analysis. Your 
 iii.	The blue line and triangles are your eigenvalues from the real dataset. 
 iv.	You want to look at where the blue and red lines cross. 
 
-The parallel analysis suggests 7 factors (far too many). This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
+The parallel analysis suggests 6 factors. This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
 
 Note: Scree plots are a visual depiction of the eigenvalues. Look for the large drop off to figure out how many factors to use.
 
 # Kaiser Criterion 
-```{r, echo = FALSE}
+```{r}
 # older kaiser criterion, number of eigenvalues greater than 1 
 sum(nofactors$fa.values > 1.0)
 # new kaiser criterion, number of eigenvalues greater than 0.7
 sum(nofactors$fa.values > .7)
 ```
 New kaiser criterion rule (eigenvalues greater than 0.7) suggests 2 factors. 
-# Simple Structure with a two factor model 
-Run a factor analysis on a two factor model using oblique rotation (factors are allowed to correlate when rotated) and maximum likelihood estimation. 
+
+# 2-6 Factor Models with all CAM variables 
+All models run using oblique rotation (factors are allowed to correlate when rotated) and maximum likelihood estimation. 
+
+## Factor loadings: 2 Factor model with all CAM variables 
 ```{r, echo = FALSE}
-round1 <- fa(r = het.mat, nfactors = 2, rotate = "oblimin", fm = "ml")
-round1
+allvar_2 <- fa(r = het.mat, nfactors = 2, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_2$loadings
 ```
+All items only load onto one factor. 
+
+Ml1 includes spiritual healing and prayer.
+All other items load onto ML2. 
+
+ML2 accounts for 40% of the variance. ML1 accounts for 12% of the variance. Cumulatively this factor model accounts for 52% of the variance. 
+
+The factors are correlated (r = 0.51).
+
+## Factor Loadings: 3 Factor model all CAM variables 
+
+```{r, echo = FALSE}
+allvar_3 <- fa(r = het.mat, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_3$loadings
+```
+Prayer loads onto two factors (ML1 and ML2). 
+ML1: prayer, biofeedback, hypnosis, imagery techniques, meditation
+ML2: prayer and spiritual healing 
+ML3: special diet, acupuncture, chiropractice, energy healing, exercise/movement, herbal, vitamins, homeopathy, and massage
+
+## Factor Loadings: 4 Factor model all CAM variables 
+
+```{r, echo = FALSE}
+allvar_4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_4$loadings
+```
+
+Energy healing loads on three factors. 
+Prayer loads on two factors. 
+ML1: prayer, energy healing, spirit healing
+ML2: energy healing, biofeedback, hypnosis, imagery techniques, meditation 
+ML3: prayer 
+ML4: Acupuncture, Chiropractic, Exercise, Herbal, Vitamins, Homeopathy, Massage, Special Diet
+
+## Factor Loadings: 5 Factor model all CAM variables 
+
+```{r, echo = FALSE}
+allvar_5 <- fa(r = het.mat, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_5$loadings
+```
+Diet doesn't load on any factors 
+Prayer loads on two factors. 
+Energy healing loads on three factors. 
+
+ML1: Prayer
+ML2: Exercise and massage
+ML3: Energy, Biofeedback, Hypnosis, ImageryTech, RelaxMeditate
+ML4: prayer, energy, spiritual healing 
+ML5: Acupuncture, Chiropractic, Herbal, Vitamins, Homeopathy
+
+## Factor Loadings: 6 Factor model all CAM variables 
+```{r, echo = FALSE}
+allvar_6 <- fa(r = het.mat, nfactors = 6, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_6$loadings
+```
+Energy healing loads on 3 factors. 
+Prayer and exercise are only items to load on their factors. 
+
+## Diagrams of factor loadings 
+```{r, echo = FALSE}
+fa.diagram(allvar_2, cut = .299, sort = TRUE)
+fa.diagram(allvar_3, cut = .299, sort = TRUE)
+fa.diagram(allvar_4, cut = .299, sort = TRUE)
+fa.diagram(allvar_5, cut = .299, sort = TRUE)
+fa.diagram(allvar_6, cut = .299, sort = TRUE)
+```
+
+## Compare model fit for 2, 3, 4, and 5 factor models including all variables 
+```{r, echo=FALSE}
+efa <- function(df,   #correlation matrix  
+                k) {      #number of factors
+  foreach(i=2:k, .packages="psych") %dopar% fa(df, 
+                                               nfactors=i,
+                                               n.obs=6157,
+                                               rotate="oblimin",
+                                               fm="ml"
+  )
+}
+
+# Creates a table that compares the models. 
+compare_models <- function(model) {
+  table_efa <- data.frame(Model=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, RMSEA_lower_bound=0, RMSEA_upper_bound=0, RMSEA_confidence=0, CFI=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_efa [i,1] <- paste("Model", i)
+    table_efa [i,2] <- model[[i]]$TLI
+    table_efa [i,3] <- model[[i]]$BIC
+    table_efa [i,4] <- model[[i]]$rms
+    table_efa [i,5:8] <- model[[i]]$RMSEA
+    table_efa [i, 9] <- 1 - ((model[[i]]$STATISTIC-model[[i]]$dof)/(model[[i]]$null.chisq-model[[i]]$null.dof))
+  }
+  return(table_efa)
+}
+
+test <- efa(het.mat, 6)
+model_fit_all_vars <- compare_models(test)
+rownames(model_fit_all_vars) <- c('2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
+model_fit_all_vars
+```
+
+
+```{r, echo = FALSE, results = 'hide'}
+# Get CFI
+#finalmodel <- round1 
+#1 - ((finalmodel$STATISTIC-finalmodel$dof)/(finalmodel$null.chisq-finalmodel$null.dof))
+```
+
+
+
+
+## Reliability 
+```{r, echo = FALSE}
+ML2 <- c(1:11, 13, 14)
+ML1 <- c(12, 15)
+psych::alpha(acams[, ML2])
+```
+Raw alpha for ML2 is 0.68. This is acceptable. 
+```{r, echo = FALSE}
+psych::alpha(acams[, ML1])
+```
+Raw alpha for ML1 if 0.29. This is unacceptable. 
+
+It's notable that the items that load onto factor ML1 both failed the KMO test for sampling adequacy.
+
+
+
+# Run factor model without prayer and spiritual healing 
+```{r, echo = FALSE, results = 'hide'}
+# Remove aPrayer and aSpiritHeal from acams
+acams13 <- subset(acams, select = -c(aPrayer, aSpiritHeal))
+acams13
+# Create correlation matrix 
+het.mat13 <- hetcor(acams13)$cor
+cor.plot(het.mat13, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", show.legend = TRUE, xlas = 2)
+```
+
+
+## Test for correlation adequacy 
+
+Bartlett's test for sphericity. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat13, n = nrow(acams))
+```
+Items are adequately correlated. 
+
+## Test for sampling adequacy 
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat13)
+```
+All variables meet requirements for sampling adequacy. 
+
+## Determining number of factors 
+
+### Parallel Analysis 
+```{r, echo = FALSE, message=FALSE, results='hide'}
+acams13[] <- lapply(acams13, function(x) as.numeric(as.character(x)))
+str(acams13)
+#acams2 <- acams + 1
+#str(acams2)
+```
+```{r, echo = FALSE, message = FALSE}
+nofactors2 <- fa.parallel(acams13, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+```
+The parallel analysis suggests 5 factors. There is a drop off on the scree plot after 4. 
+
+### Kaiser Criterion 
+```{r}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(nofactors2$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(nofactors2$fa.values > .7)
+```
+The Kaiser criterion suggests there is only 1 factor. The Kaiser criterion tends to over estimate factors. Doesn't seem good that it's only estimating 1. 
+
+## Factor Loadings: 3 factor model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+exprayheal_3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_3$loadings
+```
+
+Energy healing loads on two factors. 
+
+## Factor Loadings: 4 factor model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+exprayheal_4 <- fa(r = het.mat13, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_4$loadings
+```
+Massage and energy heal load on two factors. 
+
+## Factor loadings: 5 factor model excluding prayer and spiritual healing
+```{r, echo = FALSE}
+exprayheal_5 <- fa(r = het.mat13, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_5$loadings
+```
+Exercise/movement and energy healing load on two factors 
+
+## Compare model fit for 3, 4, and 5 factor models excluding prayer and spiritual healing
+```{r, echo=FALSE}
+efa <- function(df,   #correlation matrix  
+                k) {      #number of factors
+  foreach(i=3:k, .packages="psych") %dopar% fa(df, 
+                                               nfactors=i,
+                                               n.obs=6157,
+                                               rotate="oblimin",
+                                               fm="ml"
+  )
+}
+
+# Creates a table that compares the models. 
+compare_models <- function(model) {
+  table_efa <- data.frame(Model=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, RMSEA_lower_bound=0, RMSEA_upper_bound=0, RMSEA_confidence=0, CFI=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_efa [i,1] <- paste("Model", i)
+    table_efa [i,2] <- model[[i]]$TLI
+    table_efa [i,3] <- model[[i]]$BIC
+    table_efa [i,4] <- model[[i]]$rms
+    table_efa [i,5:8] <- model[[i]]$RMSEA
+    table_efa [i, 9] <- 1 - ((model[[i]]$STATISTIC-model[[i]]$dof)/(model[[i]]$null.chisq-model[[i]]$null.dof))
+  }
+  return(table_efa)
+}
+
+test <- efa(het.mat13, 5)
+model_fit_exprayheal <- compare_models(test)
+rownames(model_fit_exprayheal) <- c('3 Factor Model', '4 Factor Model', '5 Factor Model')
+model_fit_exprayheal
+```
+
+
+## Four factor model dropping prayer, spiritual healing, biofeedback, and hypnosis. 
+```{r, echo = FALSE, results = 'hide'}
+# Remove aPrayer and aSpiritHeal from acams
+acams11 <- subset(acams, select = -c(aPrayer, aSpiritHeal, aBiofeedback, aHypnosis))
+acams11
+# Create correlation matrix 
+het.mat3 <- hetcor(acams11)$cor
+```
+
+```{r, echo = FALSE}
+# Run four factor model without prayer, spiritual healing, biofeedback, or hypnosis.
+round3 <- fa(r = het.mat3, nfactors = 4, n.obs=nrow(acams11), rotate = "oblimin", fm = "ml")
+round3
+```
+
+### Factor Loadings 
+All items now load on a factor. All items only load onto one factor (great!). Energy healing is now loading onto the same factor as acupuncture, herbal therapy, vitamins, and homeopathy. I am not sure why an item would change factors after dropping items that did not load. 
+
+### Model fit 
+
+#### Goodness of fit statistics
+TLI equals 0.985 - great! 
+The comparitive fit index (CFI) equals
+```{r, echo = FALSE}
+# Get CFI
+finalmodel <- round3 
+1 - ((finalmodel$STATISTIC-finalmodel$dof)/(finalmodel$null.chisq-finalmodel$null.dof))
+```
+
+Also great!
+
+#### Residual fit statistics 
+(RMSR) is  0.01, indicating excellent fit. RMSEA is 0.019, indicating excellent fit. 
+
+### Reliability Assessment 
+```{r, echo = FALSE}
+factor1 <- c(1, 3, 5:7)
+factor2 <- c(8, 10)
+factor3 <- c(2, 9)
+factor4 <- c(4, 11)
+```
+```{r, echo = FALSE}
+psych::alpha(acams11[ , factor1])
+```
+Raw alpha for factor 1 (acupuncture, energy healing, herbal, vitamins, and homeopathy) is 0.59 . 
+
+```{r, echo = FALSE}
+psych::alpha(acams11[ , factor2])
+```
+Raw alpha for factor 2 (imagery techniques and meditation) is 0.48 . 
+```{r, echo = FALSE}
+psych::alpha(acams11[ , factor3])
+```
+Raw alpha for factor 3 ( chiropractic and massage) is 0.40 . 
+
+```{r, echo = FALSE }
+psych::alpha(acams11[ , factor4])
+```
+Raw alpha for factor 4 (exercise and diet) is 0.40 . 

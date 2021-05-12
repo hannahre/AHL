@@ -24,12 +24,35 @@ library(scales)
 library(ggthemes)
 library(LCA)
 library(poLCA)
+library(haven)
 
 # Load all MIDUS data into the global environment ####
-load(file = "MIDUS1.rda")
-load(file = "MIDUS2.rda")
-load(file = "MIDUS3.rda")
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acamslca <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
 
+# Rename columns 
+acamslca <- acamslca %>% rename(aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+
+acamslca <- acamslca + 1
+head (acamslca)
 ```
 # MIDUS 1
 
@@ -48,10 +71,9 @@ acl <- function(df,   #a data.frame with your data
   )
 }
 
-f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-           aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-           aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-           aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1
+f <- cbind(aAcupuncture, aBiofeedback, aChiropractic, aEnergyHeal, aExerciseMove, aHerbal, 
+           aVitamins, aHomeopathy, aHypnosis, aImageryTech, aMassage, aPrayer, 
+           aRelaxMeditate, aSpecialDiet, aSpiritHeal) ~ 1
 
 # Creates a table that compares the models. 
 compare_classes_acl <- function(model) {
@@ -71,32 +93,9 @@ compare_classes_acl <- function(model) {
   return(table_LCA)
 }
 
-test <- acl(MIDUS1_recode, 10, f)
+test <- acl(acamslca, 6, f)
 compare_classes_acl(test)
 ```
 
 
-```{r, echo = FALSE}
-f <- cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1
 
-
-MIDUS1.lc2 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
-           data = as.data.frame(MIDUS1_recode), 
-           nclass = 2,
-           nrep = 10)
-
-
-MIDUS1.lc3 <- poLCA(cbind(aCamEverBiofeedback, aCamEverChiropractor, aCamEverEnergy, aCamEverMoveTherapy,
-            aCamEverHerbTherapy, aCamEverMegaVitamins, aCamEverHomeopathy, aCamEverHypnosis,
-            aCamEverImageTech, aCamEverMassage, aCamEverPray, aCamEverMeditate,
-            aCamEverSpecialDiet, aCamEverSpiritHeal) ~ 1, 
-           data = as.data.frame(MIDUS1_recode), 
-           nclass = 3,
-           nrep = 10)
-```
