@@ -1,0 +1,102 @@
+---
+title: "LCA- exclude prayer and spiritual healing"
+author: "Hannah Andrews"
+date: "5/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dir <- "C:/Users/hanna/Documents/git/AHL/R"
+setwd(dir)
+
+# Load Libraries ####
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(LCA)
+library(poLCA)
+library(haven)
+```
+
+```{r, echo = FALSE, results='hide'}
+# Load all MIDUS data into the global environment ####
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14")
+acamslca <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Rename columns 
+acamslca <- acamslca %>% rename(aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14)
+
+acamslca <- acamslca + 1
+head(M1[acamsList])
+head (acamslca)
+```
+# MIDUS 1
+
+```{r, echo = FALSE}
+# Different example: https://statistics.ohlsen-web.de/latent-class-analysis-polca/
+# Code below: https://stackoverflow.com/questions/48793923/finding-the-best-lca-model-in-polca-r-package
+library(poLCA)
+library(foreach)
+library(doParallel)
+
+acl <- function(df,   #a data.frame with your data 
+                k,       #the maximum number of classes to fit
+                formula) {  
+  foreach(i=1:k, .packages="poLCA") %dopar% poLCA(formula, df, nclass=i, 
+                                                  nrep = 100
+  )
+}
+
+f <- cbind(aAcupuncture, aBiofeedback, aChiropractic, aEnergyHeal, aExerciseMove, aHerbal, 
+           aVitamins, aHomeopathy, aHypnosis, aImageryTech, aMassage, 
+           aRelaxMeditate, aSpecialDiet) ~ 1
+
+# Creates a table that compares the models. 
+compare_classes_acl <- function(model) {
+  entropy<-function (p) sum(-p*log(p)) #to assess the quality of classification
+  table_LCA <- data.frame(Model=0, AIC=0, BIC=0, MaxLogLikelihood=0, LikelihoodRatio=0, Entropy=0, PropInSmallestClass=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_LCA [i,1] <- paste("Model", i)
+    table_LCA [i,2] <- model[[i]]$aic
+    table_LCA [i,3] <- model[[i]]$bic
+    table_LCA [i,4] <- model[[i]]$llik
+    table_LCA [i,5] <- model[[i]]$Gsq
+    error_prior <- entropy(model[[i]]$P)
+    error_post <- mean(apply(model[[i]]$posterior,1, entropy),na.rm = TRUE)
+    table_LCA [i,6] <- round(((error_prior-error_post) / error_prior),3)
+    table_LCA [i,7] <- min(model[[i]]$P)*100
+  }
+  return(table_LCA)
+}
+
+test <- acl(acamslca, 6, f)
+compare_classes_acl(test)
+```
+
+
+
