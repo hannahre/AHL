@@ -30,6 +30,9 @@ library(mice)
 library(GPArotation)
 library(foreach)
 library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
 ```
 
 
@@ -43,14 +46,19 @@ acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7",
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
 acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
 
-acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], 
-                                                           as.factor) # convert all columns to factors
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+
+str(acams)
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
 
 str(acams) 
 head(acams)
 
 # Rename columns 
-acams <- acams %>% rename(aAcupuncture = acam1, 
+acams <- dplyr::rename(acams, 
+                          aAcupuncture = acam1, 
                           aBiofeedback = acam2,
                           aChiropractic = acam3,
                           aEnergyHeal = acam4,
@@ -71,12 +79,54 @@ acams=acams[complete.cases(acams),]
 str(acams)
 ```
 
-```{r, echo=FALSE, results = 'hide'}
-# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
-# acams <- remove_attributes(acams, "label")
-# acams <- remove_attributes(acams, "notes")
-# str(acams)
+# Describe Data 
+## Table: Frequencies and percentages on each variable 
+```{r, echo = FALSE}
+#apply(acams[, 1:15], 2 , questionr::freq)
+freq_dframer <- function(data){
+   quest_out   <- apply(data, 2, questionr::freq)
+      templist <- list()
+       for (i in 1:length(names(quest_out))) {
+       temp <- data.frame(Item = rep(names(quest_out[i]), nrow(quest_out[[i]])),
+                      Category = row.names(quest_out[[i]]),
+                      quest_out[[i]])
+       templist[[i]] <- temp
+  }
+      freqs <- dplyr::bind_rows(templist) 
+      row.names(freqs) <- NULL
+      names(freqs)[3:5] <- c("Frequency", "Percent", "Pcnt_of_nonMissing") 
+      freqs$Item <- factor(freqs$Item, levels = unique(freqs$Item))
+   freqs
+}
+freqout <- freq_dframer(acams)
+freqout
 ```
+## Visualization of frequencies
+```{r, echo = FALSE}
+ggplot(freqout, aes(x = Category, y = Frequency)) +
+  geom_col() +
+  facet_wrap(. ~ Item, nrow = 5 )
+```
+# Number of CAM treatments used in the past 12 months 
+```{r, echo = FALSE}
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[,1:15])
+
+# Convert column to a factor 
+totalCams <- as.factor(totalCams)
+
+# Relative frequencies 
+prop.table(table(totalCams))
+
+# Counts and percentages, relative and cumulative 
+tb <- fdt_cat(totalCams)
+tb
+
+# create a histogram of total CAMs used 
+hist(as.numeric(totalCams))
+```
+
+# Correlation matrix 
 Create and plot the tetrachoric correlation matrix for all CAMs. 
 ```{r, echo = FALSE}
 # Create correlation matrix 
@@ -120,10 +170,11 @@ Items that may be a concern with regard to sampling adequacy: prayer or other sp
 # Determining the number of factors
 First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
 ```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams to numerics for parallel analysis
 acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
 str(acams)
-acams2 <- acams + 1
-str(acams2)
+#acams2 <- acams + 1
+#str(acams2)
 ```
 ```{r, echo = FALSE, message = FALSE}
 nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
@@ -165,6 +216,35 @@ All other items load onto ML2.
 ML2 accounts for 40% of the variance. ML1 accounts for 12% of the variance. Cumulatively this factor model accounts for 52% of the variance. 
 
 The factors are correlated (r = 0.51).
+
+### Testing out bar chart display of factor loadings 
+```{r, echo = FALSE, results='hide'}
+
+biplot.psych(allvar_2)
+
+summary(allvar_2$loadings)
+test_loadings <- allvar_2$loadings
+
+df <- data.frame(matrix(as.numeric(test_loadings), attributes(test_loadings)$dim, dimnames = attributes(test_loadings)$dimnames))
+df
+
+loadings.m <- melt(df, 
+                   measure=c("ML2", "ML1"), 
+                   variable.name="Factor", value.name="Loading")
+#For each test, plot the loading as length and fill color of a bar
+# note that the length will be the absolute value of the loading but the 
+# fill color will be the signed value, more on this below
+ggplot(loadings.m, aes(Test, abs(Loading), fill=Loading)) + 
+  facet_wrap(~ Factor, nrow=1) + #place the factors in separate facets
+  geom_bar(stat="identity") + #make the bars
+  coord_flip() + #flip the axes so the test names can be horizontal  
+  #define the fill color gradient: blue=positive, red=negative
+  scale_fill_gradient2(name = "Loading", 
+                       high = "blue", mid = "white", low = "red", 
+                       midpoint=0, guide=F) +
+  ylab("Loading Strength") + #improve y-axis label
+  theme_bw(base_size=10) #use a black-and0white theme with set font size
+```
 
 ## Factor Loadings: 3 Factor model all CAM variables 
 
@@ -286,12 +366,19 @@ It's notable that the items that load onto factor ML1 both failed the KMO test f
 ```{r, echo = FALSE, results = 'hide'}
 # Remove aPrayer and aSpiritHeal from acams
 acams13 <- subset(acams, select = -c(aPrayer, aSpiritHeal))
-acams13
+str(acams13)
+# convert all columns to factors. This is important for the tetrachoric correlations. They are much smaller when run as numeric. 
+# Checked against tetrachoric matrix produced by Stata; they are the same when hetcor is run on factors in R.
+# Will have to convert back to numeric for parallel analysis. 
+acams13[sapply(acams13, is.numeric)] <- lapply(acams13[sapply(acams13, is.numeric)], as.factor)
+str(acams13)
 # Create correlation matrix 
 het.mat13 <- hetcor(acams13)$cor
-cor.plot(het.mat13, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", show.legend = TRUE, xlas = 2)
 ```
-
+## Tetrachoric correlations (excluding prayer and spiritual healing)
+```{r, echo = FALSE}
+cor.plot(het.mat13, numbers=T, upper=FALSE, main = "Tetrachoric Correlations excluding prayer and spiritual healing ", show.legend = TRUE, xlas = 2)
+```
 
 ## Test for correlation adequacy 
 
@@ -314,28 +401,30 @@ All variables meet requirements for sampling adequacy.
 
 ### Parallel Analysis 
 ```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams13 to numeric for parallel analysis
 acams13[] <- lapply(acams13, function(x) as.numeric(as.character(x)))
 str(acams13)
 #acams2 <- acams + 1
 #str(acams2)
+
 ```
 ```{r, echo = FALSE, message = FALSE}
-nofactors2 <- fa.parallel(acams13, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+nofactors13 <- fa.parallel(acams13, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots excluding prayer and spiritual healing", cor = "tet")
 ```
 The parallel analysis suggests 5 factors. There is a drop off on the scree plot after 4. 
 
 ### Kaiser Criterion 
 ```{r}
 # older kaiser criterion, number of eigenvalues greater than 1 
-sum(nofactors2$fa.values > 1.0)
+sum(nofactors13$fa.values > 1.0)
 # new kaiser criterion, number of eigenvalues greater than 0.7
-sum(nofactors2$fa.values > .7)
+sum(nofactors13$fa.values > .7)
 ```
 The Kaiser criterion suggests there is only 1 factor. The Kaiser criterion tends to over estimate factors. Doesn't seem good that it's only estimating 1. 
 
 ## Factor Loadings: 3 factor model excluding prayer and spiritual healing 
 ```{r, echo = FALSE}
-exprayheal_3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_3 <- fa(r = het.mat13, nfactors = 3, n.obs=6157, rotate = "oblimin", fm = "ml")
 exprayheal_3$loadings
 ```
 
@@ -343,7 +432,7 @@ Energy healing loads on two factors.
 
 ## Factor Loadings: 4 factor model excluding prayer and spiritual healing 
 ```{r, echo = FALSE}
-exprayheal_4 <- fa(r = het.mat13, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_4 <- fa(r = het.mat13, nfactors = 4, n.obs=6157, rotate = "oblimin", fm = "ml")
 exprayheal_4$loadings
 ```
 Massage and energy heal load on two factors. 

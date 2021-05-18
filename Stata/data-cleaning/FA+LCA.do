@@ -25,6 +25,7 @@ rename (acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam
 	
 * Create polychoric correlation matrix with cams1-15 
 	polychoric acupuncture biofeed chiro energy exercise herbal vitamin homeopathy hypno imagery massage prayer meditate diet spiritheal
+	tetrachoric acupuncture biofeed chiro energy exercise herbal vitamin homeopathy hypno imagery massage prayer meditate diet spiritheal
 * Display number of cases included with listwise deletion 
 	display r(sum_w)
 * Create global that sets N equal to the number of cases with listwise deletion 
