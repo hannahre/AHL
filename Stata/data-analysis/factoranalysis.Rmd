@@ -103,6 +103,7 @@ freqout
 ```
 ## Visualization of frequencies
 ```{r, echo = FALSE}
+# Relative frequencies 
 ggplot(freqout, aes(x = Category, y = Frequency)) +
   geom_col() +
   facet_wrap(. ~ Item, nrow = 5 )
@@ -220,8 +221,6 @@ The factors are correlated (r = 0.51).
 ### Testing out bar chart display of factor loadings 
 ```{r, echo = FALSE, results='hide'}
 
-biplot.psych(allvar_2)
-
 summary(allvar_2$loadings)
 test_loadings <- allvar_2$loadings
 
@@ -308,7 +307,7 @@ fa.diagram(allvar_6, cut = .299, sort = TRUE)
 ```{r, echo=FALSE}
 efa <- function(df,   #correlation matrix  
                 k) {      #number of factors
-  foreach(i=2:k, .packages="psych") %dopar% fa(df, 
+  foreach(i=1:k, .packages="psych") %dopar% fa(df, 
                                                nfactors=i,
                                                n.obs=6157,
                                                rotate="oblimin",
@@ -332,7 +331,7 @@ compare_models <- function(model) {
 
 test <- efa(het.mat, 6)
 model_fit_all_vars <- compare_models(test)
-rownames(model_fit_all_vars) <- c('2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
+rownames(model_fit_all_vars) <- c('1 Factor Mode', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
 model_fit_all_vars
 ```
 
@@ -422,6 +421,12 @@ sum(nofactors13$fa.values > .7)
 ```
 The Kaiser criterion suggests there is only 1 factor. The Kaiser criterion tends to over estimate factors. Doesn't seem good that it's only estimating 1. 
 
+## Factor Loadings: 1 factor model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+exprayheal_1 <- fa(r = het.mat13, nfactors = 1, n.obs=6157, rotate = "oblimin", fm = "ml")
+exprayheal_1$loadings
+```
+
 ## Factor Loadings: 3 factor model excluding prayer and spiritual healing 
 ```{r, echo = FALSE}
 exprayheal_3 <- fa(r = het.mat13, nfactors = 3, n.obs=6157, rotate = "oblimin", fm = "ml")
@@ -448,7 +453,7 @@ Exercise/movement and energy healing load on two factors
 ```{r, echo=FALSE}
 efa <- function(df,   #correlation matrix  
                 k) {      #number of factors
-  foreach(i=3:k, .packages="psych") %dopar% fa(df, 
+  foreach(i=1:k, .packages="psych") %dopar% fa(df, 
                                                nfactors=i,
                                                n.obs=6157,
                                                rotate="oblimin",
@@ -472,10 +477,9 @@ compare_models <- function(model) {
 
 test <- efa(het.mat13, 5)
 model_fit_exprayheal <- compare_models(test)
-rownames(model_fit_exprayheal) <- c('3 Factor Model', '4 Factor Model', '5 Factor Model')
+rownames(model_fit_exprayheal) <- c('1 Factor Model', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model')
 model_fit_exprayheal
 ```
-
 
 ## Four factor model dropping prayer, spiritual healing, biofeedback, and hypnosis. 
 ```{r, echo = FALSE, results = 'hide'}
