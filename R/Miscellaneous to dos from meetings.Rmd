@@ -1,0 +1,208 @@
+---
+title: "Miscellaneous to dos from meetings"
+author: "Hannah Andrews"
+date: "6/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
+library(foreach)
+library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
+library(fdth)
+library(lavaan)
+```
+
+# Meeting 6/3/21
+
+## Spiritual healing and prayer crosstabs
+
+Check overlap between spiritual healing and prayer. If all those who practice spiritual healing also pray, that may be the cause of the low MSAi's from the KMO test. All the variance in spiritual healing would be common with prayer.
+
+0 = No, 1 = Yes
+
+```{r, echo = FALSE}
+table_SpiritPray <- table(acams$aSpiritHeal, acams$aPrayer)
+table_SpiritPray
+prop.table(table_SpiritPray)
+```
+Nearly 70% respond no to both. 26% of those who prayer do not use spiritual healing. Among those who use spiritual healing, less than 1% do not use prayer compared to 3% who do use prayer. 
+
+
+Run crosstabs on all variables that load on more than one factor with variables loading on the same factors.  
+
+## Energy Healing
+Energy healing loads on three factors in the four, five, and six factor models with all variables are included. 
+Energy healing loads on two and five factor models when prayer and spiritual healing are excluded.  
+
+### Energy healing and prayer 
+All CAMs: loads with prayer in four factor model and five factor model 
+
+```{r, echo=FALSE}
+table_EnergyPray <- table(acams$aEnergyHeal, acams$aPrayer)
+table_EnergyPray
+
+prop.table(table_EnergyPray)
+```
+70% of the sample does not use energy healing or prayer. About 1% use both. 28% use prayer but not energy healing. Less than 1% use energy healing but not prayer. 
+
+### Energy healing and spiritual healing
+```{r, echo=FALSE}
+table_EnergySpirit <- table(acams$aEnergyHeal, acams$aSpiritHeal)
+table_EnergySpirit
+
+prop.table(table_EnergySpirit)
+```
+95% of the sample does not use spiritual or energy healing. Less than 1% use both. 1% use energy healing but not spiritual healing. 2.7% use spiritual healing but not energy healing. 
+
+
+### Energy healing and imagery techniques
+```{r, echo=FALSE}
+table_EnergyImag <- table(acams$aEnergyHeal, acams$aImageryTech)
+table_EnergyImag
+
+prop.table(table_EnergyImag)
+```
+96% of the sample does not use energy healing or imagery techniques. Less than 1% use both. Less than 1% use energy healing but not imagery. 2.2% use imagery but not energy healing. 
+
+### Energy healing and hypnosis
+```{r, echo=FALSE}
+table_EnergyHypno <- table(acams$aEnergyHeal, acams$aHypnosis)
+table_EnergyHypno
+
+prop.table(table_EnergyHypno)
+```
+97.5% use neither energy healing or hypnosis. Less than 1% use both. 1.3% use energy healing but not hypnosis. About 1% use hypnosis but not energy healing. 
+
+### Energy healing and meditation
+```{r, echo=FALSE}
+table_EnergyMed <- table(acams$aEnergyHeal, acams$aRelaxMeditate)
+table_EnergyMed
+
+prop.table(table_EnergyMed)
+```
+86% of the sample use neither meditation or energy healing. 1.3% use both. 12% use meditation but not energy healing. Less than 1% use energy healing but not meditation. 
+
+### Energy healing and biofeedback
+```{r, echo=FALSE}
+table_EnergyBio <- table(acams$aEnergyHeal, acams$aBiofeedback)
+table_EnergyBio
+
+prop.table(table_EnergyBio)
+```
+98% use neither. Less than 1% use both. 1.3% use energy healing but not hypnosis. Less than 1% use hypnosis but not energy healing. 
+
+### Energy healing and special diet
+```{r, echo=FALSE}
+table_EnergyDiet <- table(acams$aEnergyHeal, acams$aSpecialDiet)
+table_EnergyDiet
+
+prop.table(table_EnergyDiet)
+```
+88% use neither. Less than 1% use both. 10% use a special diet not but energy healing. Less than 1% use energy healing but not a special diet. 
+
+### Energy healing and massage
+```{r, echo=FALSE}
+table_EnergyMassage <- table(acams$aEnergyHeal, acams$aMassage)
+table_EnergyMassage
+
+prop.table(table_EnergyMassage)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aMassage, data=acams, shade = TRUE)
+```
+91% use neither. Less than 1% use both. About 8% use massage but not energy healing. Less than 1% use energy healing but not massage. 
+
+### Energy healing and homeopathy
+```{r, echo=FALSE}
+table_EnergyHomeo <- table(acams$aEnergyHeal, acams$aHomeopathy)
+table_EnergyHomeo
+
+prop.table(table_EnergyHomeo)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aHomeopathy, data=acams, color = TRUE)
+```
+97% use neither. Less than 1% use both. About 2% use homeopathy but not energy healing. Less than 1% use energy healing but not homeopathy. 
+
+### Energy healing and vitamins
+```{r, echo=FALSE}
+table_EnergyVitamin <- table(acams$aEnergyHeal, acams$aVitamins)
+table_EnergyVitamin
+
+prop.table(table_EnergyVitamin)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aVitamins, data=acams, color = TRUE)
+```
+94% use neither. Less than 1% use both. 4% use vitamins but not energy healing. 1% use energy healing but not vitamins. 
+
+### Energy healing and herbal
+```{r, echo=FALSE}
+table_EnergyHerb <- table(acams$aEnergyHeal, acams$aHerbal)
+table_EnergyHerb
+
+prop.table(table_EnergyHerb)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aHerbal, data=acams, color = TRUE)
+```
+94% use neither. Less than 1% use both. Less than 1% use energy healing but not herbal therapy. 4% use herbal therapy but not energy healing. 
+
+### Energy healing and Exercise/Movement
+```{r, echo=FALSE}
+table_EnergyExercise <- table(acams$aEnergyHeal, acams$aExerciseMove)
+table_EnergyExercise
+
+prop.table(table_EnergyExercise)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aExerciseMove, data=acams, color=TRUE)
+```
+82% use neither. 1% use both. 16% use exercise or movement therapy but not energy healing. Less than 1% use energy healing but not exercise or movement therapy. 
+
+### Energy healing and chiropractic
+```{r, echo=FALSE}
+table_EnergyChiro <- table(acams$aEnergyHeal, acams$aChiropractic)
+table_EnergyChiro
+
+prop.table(table_EnergyChiro)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aChiropractic, data=acams, color=TRUE)
+```
+87% use neither. Less than 1% use both. 11% use chiropractic care but not energy healing. About 1% use energy healing but not chiropractic care. 
+
+### Energy healing and acupuncture
+```{r, echo=FALSE}
+table_EnergyAcupuncture <- table(acams$aEnergyHeal, acams$aAcupuncture)
+table_EnergyAcupuncture
+
+prop.table(table_EnergyAcupuncture)
+
+par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aAcupuncture, data=acams, color = TRUE)
+```
+97.5% use neither. Less than 1% use both. Less than 1% use acupuncture but not energy healing. 1.3% use energy healing but not acupuncture. 

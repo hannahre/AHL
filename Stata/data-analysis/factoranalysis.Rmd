@@ -33,6 +33,8 @@ library(doParallel)
 library(questionr)
 library(gridExtra)
 library(DAKS)
+library(fdth)
+library(lavaan)
 ```
 
 
@@ -51,6 +53,10 @@ acams <- remove_attributes(acams, "label")
 acams <- remove_attributes(acams, "notes")
 
 str(acams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[,1:15])
+
 acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
 
 str(acams) 
@@ -110,8 +116,6 @@ ggplot(freqout, aes(x = Category, y = Frequency)) +
 ```
 # Number of CAM treatments used in the past 12 months 
 ```{r, echo = FALSE}
-# Create column that is the sum of CAMs used 
-totalCams <- rowSums(acams[,1:15])
 
 # Convert column to a factor 
 totalCams <- as.factor(totalCams)
@@ -178,7 +182,10 @@ str(acams)
 #str(acams2)
 ```
 ```{r, echo = FALSE, message = FALSE}
-nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+#nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+#nofactors
+# Ran with both the acams data and the tetrachoric correlation matrix obtained from hetcor to be sure the analysis is the same. Eigenvalues are the same in both parallel analyses. 
+nofactors <- fa.parallel(het.mat, n.obs = 6157, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat")
 ```
 I received many warning messages stating "A cell entry of 0 was replaced with correct =  0.5.  Check your data!" This has to do with continuity when computing a tetrachoric correlation matrix. I added 1 to all values in the dataframe to check that the issue was not the 0/1 values. The results were the same. 
 
@@ -201,8 +208,47 @@ sum(nofactors$fa.values > .7)
 ```
 New kaiser criterion rule (eigenvalues greater than 0.7) suggests 2 factors. 
 
-# 2-6 Factor Models with all CAM variables 
+After readings Ayers and Kronenfeld (2010), I will test the old CAM domains posted by the National Center for Complementary and Alternative Medicine (NCCAM), now the National Center for Complementary and Integrative Medicine (NCCIM). Then I will test the domains found by Ayers and Kronenfeld (2010). Finally, I will test the NCCIM's current CAM domains before performing exploratory factor analysis on the MIDUS data. 
+
+# Old NCCAM Domains 
+NCCAM domains: 
+- Mind-Body Treatments: hypnosis, meditation, guided imagery, relaxation, deep breathing, pray for self, others pray, prayer groups, healing rituals, biofeedback 
+- Alternative Medical Systems: Acupuncture, ayurveda, folk medicine, naturopathy, homeopathy
+- Manipulative Treatments: Chiropractic, massage
+- Biologically based practices: herbs, vitamins. 
+```{r, echo = FALSE}
+# Specify the model
+NCCAM.model <- 'mindBody =~ aHypnosis + aRelaxMeditate + aImageryTech + aPrayer + aSpiritHeal + aBiofeedback
+                alternativeSystems =~ aAcupuncture + aHomeopathy + aExerciseMove 
+                manipulativeTreatments =~ aChiropractic + aMassage
+                biologicalBased =~ aVitamins + aHerbal + a SpecialDiet
+                energyHealing =~ aEnergyHeal'
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+
+# Fit the model 
+fit <- cfa(NCCAM.model, data = acams, ordered = TRUE)
+
+# display summary output
+summary(fit, fit.measures = TRUE)
+```
+
+# 1-6 Factor Models with all CAM variables 
 All models run using oblique rotation (factors are allowed to correlate when rotated) and maximum likelihood estimation. 
+
+## Factor loadings: 1 Factor Model with all CAM variables
+```{r, echo = FALSE}
+allvar_1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+allvar_1$loadings
+```
+### Reliability: 1 Factor Model
+```{r, echo = FALSE}
+ML1 <- c(1:15)
+allvar1_ML1 <- psych::alpha(acams[, ML1])
+allvar1_ML1$total
+```
+Raw alpha is 0.695 - Acceptable? 
 
 ## Factor loadings: 2 Factor model with all CAM variables 
 ```{r, echo = FALSE}
@@ -218,32 +264,19 @@ ML2 accounts for 40% of the variance. ML1 accounts for 12% of the variance. Cumu
 
 The factors are correlated (r = 0.51).
 
-### Testing out bar chart display of factor loadings 
-```{r, echo = FALSE, results='hide'}
-
-summary(allvar_2$loadings)
-test_loadings <- allvar_2$loadings
-
-df <- data.frame(matrix(as.numeric(test_loadings), attributes(test_loadings)$dim, dimnames = attributes(test_loadings)$dimnames))
-df
-
-loadings.m <- melt(df, 
-                   measure=c("ML2", "ML1"), 
-                   variable.name="Factor", value.name="Loading")
-#For each test, plot the loading as length and fill color of a bar
-# note that the length will be the absolute value of the loading but the 
-# fill color will be the signed value, more on this below
-ggplot(loadings.m, aes(Test, abs(Loading), fill=Loading)) + 
-  facet_wrap(~ Factor, nrow=1) + #place the factors in separate facets
-  geom_bar(stat="identity") + #make the bars
-  coord_flip() + #flip the axes so the test names can be horizontal  
-  #define the fill color gradient: blue=positive, red=negative
-  scale_fill_gradient2(name = "Loading", 
-                       high = "blue", mid = "white", low = "red", 
-                       midpoint=0, guide=F) +
-  ylab("Loading Strength") + #improve y-axis label
-  theme_bw(base_size=10) #use a black-and0white theme with set font size
+### Reliability: 2 Factor Model
+```{r, echo = FALSE}
+ML1 <- c(12, 15)
+ML2 <- c(1:11, 13:14)
+allvar2_ML1 <- psych::alpha(acams[, ML1])
+allvar2_ML1$total
 ```
+Raw alpha for ML1 (prayer and spiritual healing) is very low, 0.29
+```{r, echo = FALSE}
+allvar2_ML2 <- psych::alpha(acams[, ML2])
+allvar2_ML2$total
+```
+Raw alpha for ML2 (all except prayer and spiritual healing) is acceptable(?), 0.68.
 
 ## Factor Loadings: 3 Factor model all CAM variables 
 
@@ -303,7 +336,7 @@ fa.diagram(allvar_5, cut = .299, sort = TRUE)
 fa.diagram(allvar_6, cut = .299, sort = TRUE)
 ```
 
-## Compare model fit for 2, 3, 4, and 5 factor models including all variables 
+## Compare model fit for 1, 2, 3, 4, 5, 6 factor models including all variables 
 ```{r, echo=FALSE}
 efa <- function(df,   #correlation matrix  
                 k) {      #number of factors
@@ -341,25 +374,6 @@ model_fit_all_vars
 #finalmodel <- round1 
 #1 - ((finalmodel$STATISTIC-finalmodel$dof)/(finalmodel$null.chisq-finalmodel$null.dof))
 ```
-
-
-
-
-## Reliability 
-```{r, echo = FALSE}
-ML2 <- c(1:11, 13, 14)
-ML1 <- c(12, 15)
-psych::alpha(acams[, ML2])
-```
-Raw alpha for ML2 is 0.68. This is acceptable. 
-```{r, echo = FALSE}
-psych::alpha(acams[, ML1])
-```
-Raw alpha for ML1 if 0.29. This is unacceptable. 
-
-It's notable that the items that load onto factor ML1 both failed the KMO test for sampling adequacy.
-
-
 
 # Run factor model without prayer and spiritual healing 
 ```{r, echo = FALSE, results = 'hide'}
@@ -405,7 +419,6 @@ acams13[] <- lapply(acams13, function(x) as.numeric(as.character(x)))
 str(acams13)
 #acams2 <- acams + 1
 #str(acams2)
-
 ```
 ```{r, echo = FALSE, message = FALSE}
 nofactors13 <- fa.parallel(acams13, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots excluding prayer and spiritual healing", cor = "tet")
@@ -426,6 +439,13 @@ The Kaiser criterion suggests there is only 1 factor. The Kaiser criterion tends
 exprayheal_1 <- fa(r = het.mat13, nfactors = 1, n.obs=6157, rotate = "oblimin", fm = "ml")
 exprayheal_1$loadings
 ```
+### Reliability: 1 Factor Model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+ML1 <- c(1:13)
+exprayheal1_ML1 <- psych::alpha(acams13[, ML1])
+exprayheal1_ML1$total
+```
+Removing prayer and spiritual healing does not improve the reliability at all. Raw alpha is almost exactly the same, 0.68. Lowers reliability slightly (from 0.695). 
 
 ## Factor Loadings: 3 factor model excluding prayer and spiritual healing 
 ```{r, echo = FALSE}
@@ -434,6 +454,25 @@ exprayheal_3$loadings
 ```
 
 Energy healing loads on two factors. 
+
+### Reliability: 3 Factor Model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+ML3 <- c(1, 6:8, 13)
+ML1 <- c(2, 9:10, 12)
+ML2 <- c(3, 5, 11)
+exprayheal3_ML3 <- psych::alpha(acams13[, ML3])
+exprayheal3_ML3$total
+```
+
+```{r, echo = FALSE}
+exprayheal3_ML1 <- psych::alpha(acams13[, ML1])
+exprayheal3_ML1$total
+```
+
+```{r, echo = FALSE}
+exprayheal3_ML2 <- psych::alpha(acams13[, ML2])
+exprayheal3_ML2$total
+```
 
 ## Factor Loadings: 4 factor model excluding prayer and spiritual healing 
 ```{r, echo = FALSE}

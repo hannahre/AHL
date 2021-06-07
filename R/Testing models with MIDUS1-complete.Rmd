@@ -1,0 +1,106 @@
+---
+title: "Factor Analysis with the MIDUS1-complete data"
+author: "Hannah Andrews"
+date: "5/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
+library(foreach)
+library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
+library(fdth)
+library(lavaan)
+```
+
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+```{r, echo = FALSE, results='hide'}
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1-complete.dta")
+M1.complete <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acams.complete <- M1.complete[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams.complete <- remove_attributes(acams.complete, "label")
+acams.complete <- remove_attributes(acams.complete, "notes")
+
+str(acams.complete)
+
+acams.complete[sapply(acams.complete, is.numeric)] <- lapply(acams.complete[sapply(acams.complete, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams.complete) 
+head(acams.complete)
+
+# Rename columns 
+acams.complete <- dplyr::rename(acams.complete, 
+                       aAcupuncture = acam1, 
+                       aBiofeedback = acam2,
+                       aChiropractic = acam3,
+                       aEnergyHeal = acam4,
+                       aExerciseMove = acam5,
+                       aHerbal = acam6,
+                       aVitamins = acam7,
+                       aHomeopathy = acam8,
+                       aHypnosis = acam9,
+                       aImageryTech = acam10,
+                       aMassage = acam11,
+                       aPrayer = acam12,
+                       aRelaxMeditate = acam13,
+                       aSpecialDiet = acam14,
+                       aSpiritHeal = acam15)
+head(acams.complete)
+```
+
+```{r, echo = FALSE}
+het.mat.complete <- hetcor(acams.complete)$cor
+cor.plot(het.mat.complete, numbers=T, upper=FALSE, main = "Tetrachoric Correlations using MIDUS1-complete ", show.legend = TRUE, xlas = 2)
+```
+Recreate four factor model dropping prayer and spiritual healing
+```{r, echo = FALSE, results = 'hide'}
+# Remove aPrayer and aSpiritHeal from acams
+acams.complete13 <- subset(acams.complete, select = -c(aPrayer, aSpiritHeal))
+str(acams.complete13)
+
+# Already factors, ignore lines below 
+# convert all columns to factors. This is important for the tetrachoric correlations. They are much smaller when run as numeric. 
+# Checked against tetrachoric matrix produced by Stata; they are the same when hetcor is run on factors in R.
+# Will have to convert back to numeric for parallel analysis. 
+# acams13[sapply(acams13, is.numeric)] <- lapply(acams13[sapply(acams13, is.numeric)], as.factor)
+# str(acams13)
+```
+Tetrachoric correlation matrix 
+```{r, echo = FALSE}
+# Create correlation matrix 
+het.mat.complete13 <- hetcor(acams.complete13)$cor
+cor.plot(het.mat.complete13, numbers=T, upper=FALSE, main = "Tetrachoric Correlations using MIDUS1-complete excluding prayer and spiritual healing", show.legend = TRUE, xlas = 2)
+```
+
+Run four factor model 
+```{r, echo = FALSE}
+exprayheal.complete4 <- fa(r = het.mat.complete13, nfactors = 4, n.obs=5326, rotate = "oblimin", fm = "ml")
+exprayheal.complete4$loadings
+```
