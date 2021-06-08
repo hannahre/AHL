@@ -35,6 +35,52 @@ library(fdth)
 library(lavaan)
 ```
 
+```{r, echo = FALSE, results = 'hide'}
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+
+str(acams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[,1:15])
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- dplyr::rename(acams, 
+                          aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
+```
+
 # Meeting 6/3/21
 
 ## Spiritual healing and prayer crosstabs
@@ -44,9 +90,9 @@ Check overlap between spiritual healing and prayer. If all those who practice sp
 0 = No, 1 = Yes
 
 ```{r, echo = FALSE}
-table_SpiritPray <- table(acams$aSpiritHeal, acams$aPrayer)
-table_SpiritPray
-prop.table(table_SpiritPray)
+crosstab(acams$aSpiritHeal, acams$aPrayer, prop.t = TRUE, plot = FALSE)
+
+mosaicplot(aPrayer~aSpiritHeal, data=acams, shade = TRUE)
 ```
 Nearly 70% respond no to both. 26% of those who prayer do not use spiritual healing. Among those who use spiritual healing, less than 1% do not use prayer compared to 3% who do use prayer. 
 
@@ -65,6 +111,8 @@ table_EnergyPray <- table(acams$aEnergyHeal, acams$aPrayer)
 table_EnergyPray
 
 prop.table(table_EnergyPray)
+
+mosaicplot(aEnergyHeal~aPrayer, data=acams, shade = TRUE)
 ```
 70% of the sample does not use energy healing or prayer. About 1% use both. 28% use prayer but not energy healing. Less than 1% use energy healing but not prayer. 
 
@@ -74,6 +122,8 @@ table_EnergySpirit <- table(acams$aEnergyHeal, acams$aSpiritHeal)
 table_EnergySpirit
 
 prop.table(table_EnergySpirit)
+
+mosaicplot(aEnergyHeal~aSpiritHeal, data=acams, shade = TRUE)
 ```
 95% of the sample does not use spiritual or energy healing. Less than 1% use both. 1% use energy healing but not spiritual healing. 2.7% use spiritual healing but not energy healing. 
 
@@ -84,6 +134,8 @@ table_EnergyImag <- table(acams$aEnergyHeal, acams$aImageryTech)
 table_EnergyImag
 
 prop.table(table_EnergyImag)
+
+mosaicplot(aEnergyHeal~aImageryTech, data=acams, shade = TRUE)
 ```
 96% of the sample does not use energy healing or imagery techniques. Less than 1% use both. Less than 1% use energy healing but not imagery. 2.2% use imagery but not energy healing. 
 
@@ -93,6 +145,8 @@ table_EnergyHypno <- table(acams$aEnergyHeal, acams$aHypnosis)
 table_EnergyHypno
 
 prop.table(table_EnergyHypno)
+
+mosaicplot(aEnergyHeal~aHypnosis, data=acams, shade = TRUE)
 ```
 97.5% use neither energy healing or hypnosis. Less than 1% use both. 1.3% use energy healing but not hypnosis. About 1% use hypnosis but not energy healing. 
 
@@ -102,6 +156,8 @@ table_EnergyMed <- table(acams$aEnergyHeal, acams$aRelaxMeditate)
 table_EnergyMed
 
 prop.table(table_EnergyMed)
+
+mosaicplot(aEnergyHeal~aRelaxMeditate, data=acams, shade = TRUE)
 ```
 86% of the sample use neither meditation or energy healing. 1.3% use both. 12% use meditation but not energy healing. Less than 1% use energy healing but not meditation. 
 
@@ -111,6 +167,9 @@ table_EnergyBio <- table(acams$aEnergyHeal, acams$aBiofeedback)
 table_EnergyBio
 
 prop.table(table_EnergyBio)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aBiofeedback, data=acams, shade = TRUE)
 ```
 98% use neither. Less than 1% use both. 1.3% use energy healing but not hypnosis. Less than 1% use hypnosis but not energy healing. 
 
@@ -120,6 +179,9 @@ table_EnergyDiet <- table(acams$aEnergyHeal, acams$aSpecialDiet)
 table_EnergyDiet
 
 prop.table(table_EnergyDiet)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aSpecialDiet, data=acams, shade = TRUE)
 ```
 88% use neither. Less than 1% use both. 10% use a special diet not but energy healing. Less than 1% use energy healing but not a special diet. 
 
@@ -130,7 +192,7 @@ table_EnergyMassage
 
 prop.table(table_EnergyMassage)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
 mosaicplot(aEnergyHeal~aMassage, data=acams, shade = TRUE)
 ```
 91% use neither. Less than 1% use both. About 8% use massage but not energy healing. Less than 1% use energy healing but not massage. 
@@ -142,8 +204,8 @@ table_EnergyHomeo
 
 prop.table(table_EnergyHomeo)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
-mosaicplot(aEnergyHeal~aHomeopathy, data=acams, color = TRUE)
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aHomeopathy, data=acams, shade = TRUE)
 ```
 97% use neither. Less than 1% use both. About 2% use homeopathy but not energy healing. Less than 1% use energy healing but not homeopathy. 
 
@@ -166,8 +228,8 @@ table_EnergyHerb
 
 prop.table(table_EnergyHerb)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
-mosaicplot(aEnergyHeal~aHerbal, data=acams, color = TRUE)
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aHerbal, data=acams, shade = TRUE)
 ```
 94% use neither. Less than 1% use both. Less than 1% use energy healing but not herbal therapy. 4% use herbal therapy but not energy healing. 
 
@@ -178,8 +240,8 @@ table_EnergyExercise
 
 prop.table(table_EnergyExercise)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
-mosaicplot(aEnergyHeal~aExerciseMove, data=acams, color=TRUE)
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aExerciseMove, data=acams, shade=TRUE)
 ```
 82% use neither. 1% use both. 16% use exercise or movement therapy but not energy healing. Less than 1% use energy healing but not exercise or movement therapy. 
 
@@ -190,8 +252,8 @@ table_EnergyChiro
 
 prop.table(table_EnergyChiro)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
-mosaicplot(aEnergyHeal~aChiropractic, data=acams, color=TRUE)
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aChiropractic, data=acams, shade=TRUE)
 ```
 87% use neither. Less than 1% use both. 11% use chiropractic care but not energy healing. About 1% use energy healing but not chiropractic care. 
 
@@ -202,7 +264,124 @@ table_EnergyAcupuncture
 
 prop.table(table_EnergyAcupuncture)
 
-par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
-mosaicplot(aEnergyHeal~aAcupuncture, data=acams, color = TRUE)
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aEnergyHeal~aAcupuncture, data=acams, shade = TRUE)
 ```
 97.5% use neither. Less than 1% use both. Less than 1% use acupuncture but not energy healing. 1.3% use energy healing but not acupuncture. 
+
+## Massage 
+Drop spiritual healing and prayer: Loads on two factors in the four factor model 
+
+### Massage and Exercise/Movement
+```{r, echo=FALSE}
+table_MassageExercise <- table(acams$aMassage, acams$aExerciseMove)
+table_MassageExercise
+
+prop.table(table_MassageExercise)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aMassage~aExerciseMove, data=acams, shade = TRUE)
+```
+79% of the sample use neither. 5% use both. 13% use exercise or movement therapy but not massage. 4% use massage but not exercise or movement therapy. 
+### Massage and Chiropractic
+```{r, echo=FALSE}
+table_MassageChiro <- table(acams$aMassage, acams$aChiropractic)
+table_MassageChiro
+
+prop.table(table_MassageChiro)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aMassage~aChiropractic, data=acams, shade = TRUE)
+```
+83% use neither. 3% use both. 9% use chiropractic care but not massage. 5% use massage but not chiropractic care. 
+
+## Acupuncture
+Drop prayer and spiritual healing: loads on two factors in the 5 factor model. 
+
+### Acupuncture and Vitamins
+```{r, echo=FALSE}
+table_AcupunctureVitamins <- table(acams$aAcupuncture, acams$aVitamins)
+table_AcupunctureVitamins
+
+prop.table(table_AcupunctureVitamins)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aAcupuncture~aVitamins, data=acams, shade = TRUE)
+```
+84% use neither. Less than 1% use both. 4% use vitamins but not acupuncture. Less than 1% use acupuncture but not vitamins. 
+
+### Acupuncture and Herbal 
+```{r, echo=FALSE}
+table_AcupunctureHerbal <- table(acams$aAcupuncture, acams$aHerbal)
+table_AcupunctureHerbal
+
+prop.table(table_AcupunctureHerbal)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aAcupuncture~aHerbal, data=acams, shade = TRUE)
+```
+94% use neither. Less than 1% use both. 4% use herbal therapy but not acupuncture. Less than 1% use acupuncture but not herbal therapy. 
+
+### Acupuncture and Homeopathy
+```{r, echo=FALSE}
+table_AcupunctureHomeo <- table(acams$aAcupuncture, acams$aHomeopathy)
+table_AcupunctureHomeo
+
+prop.table(table_AcupunctureHomeo)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aAcupuncture~aHomeopathy, data=acams, shade = TRUE)
+```
+97% use neither. Less than 1% use both. 2% use homeopathy but not acupuncture. Less than 1% use acupuncture but not homeopathy. 
+
+
+### Acupuncture and Special Diet 
+```{r, echo=FALSE}
+table_AcupunctureDiet <- table(acams$aAcupuncture, acams$aSpecialDiet)
+table_AcupunctureDiet
+
+prop.table(table_AcupunctureDiet)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aAcupuncture~aSpecialDiet, data=acams, shade = TRUE)
+```
+88% use neither. Less than 1% use both. 10% use a special diet but not acupuncture. Less than 1% use acupuncture but not a special diet. 
+
+### Acupuncture and Exercise Movement Therapy 
+```{r, echo=FALSE}
+table_AcupunctureExercise <- table(acams$aAcupuncture, acams$aExerciseMove)
+table_AcupunctureExercise
+
+prop.table(table_AcupunctureExercise)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aAcupuncture~aExerciseMove, data=acams, shade = TRUE)
+```
+82% use neither. Less than 1% use both. 17% use exercise or movement therapy but not acupuncture. Less than 1% use acupuncture but not exercise or movement therapy. 
+
+## Exercise or Movement Therapy 
+Drop spiritual healing and prayer: loads on two factors in the five factor model. 
+
+### Exercise and Chiropractic 
+```{r, echo=FALSE}
+table_ExerciseChiro <- table(acams$aExerciseMove, acams$aChiropractic)
+table_ExerciseChiro
+
+prop.table(table_ExerciseChiro)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aExerciseMove~aChiropractic, data=acams, shade = TRUE)
+```
+74% use neither. Less than 4% use both. 8% use chiropractic care but not exercise or movement therapy. 14% use chiropractic care but not exercise or movement therapy. 
+
+### Exercise and Massage 
+```{r, echo=FALSE}
+table_ExerciseMassage <- table(acams$aExerciseMove, acams$aMassage)
+table_ExerciseMassage
+
+prop.table(table_ExerciseMassage)
+
+#par(mfrow=c(1,2)) # display the plots in 1 row and 2 columns
+mosaicplot(aExerciseMove~aMassage, data=acams, shade = TRUE)
+```
+78.9% use neither. 4.8% use both. 3.6% use massage but not exercise or movement therapy. 12.7% use exercise or movement therapy but not massage. 

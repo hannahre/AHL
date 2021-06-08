@@ -218,20 +218,19 @@ NCCAM domains:
 - Biologically based practices: herbs, vitamins. 
 ```{r, echo = FALSE}
 # Specify the model
-NCCAM.model <- 'mindBody =~ aHypnosis + aRelaxMeditate + aImageryTech + aPrayer + aSpiritHeal + aBiofeedback
-                alternativeSystems =~ aAcupuncture + aHomeopathy + aExerciseMove 
-                manipulativeTreatments =~ aChiropractic + aMassage
-                biologicalBased =~ aVitamins + aHerbal + a SpecialDiet
-                energyHealing =~ aEnergyHeal'
+#NCCAM.model <- 'mindBody =~ aHypnosis + aRelaxMeditate + aImageryTech + aPrayer + aSpiritHeal + aBiofeedback
+#                alternativeSystems =~ aAcupuncture + aHomeopathy + aExerciseMove 
+#                manipulativeTreatments =~ aChiropractic + aMassage
+#                biologicalBased =~ aVitamins + aHerbal + a SpecialDiet'
 
-acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+#acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
 
 
 # Fit the model 
-fit <- cfa(NCCAM.model, data = acams, ordered = TRUE)
+#fit <- cfa(NCCAM.model, data = acams, ordered = TRUE)
 
 # display summary output
-summary(fit, fit.measures = TRUE)
+#summary(fit, fit.measures = TRUE)
 ```
 
 # 1-6 Factor Models with all CAM variables 
@@ -373,6 +372,30 @@ model_fit_all_vars
 # Get CFI
 #finalmodel <- round1 
 #1 - ((finalmodel$STATISTIC-finalmodel$dof)/(finalmodel$null.chisq-finalmodel$null.dof))
+```
+# Different rotations, all CAMs
+
+## 1 Factor model, Varimax rotation 
+```{r, echo = FALSE}
+allvar_varimax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "varimax", fm = "ml")
+allvar_varimax1$loadings
+```
+## Four factor, varimax rotation
+```{r, echo = FALSE}
+allvar_varimax4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "varimax", fm = "ml")
+allvar_varimax4$loadings
+```
+## Four factor, promax rotation
+```{r, echo = FALSE}
+allvar_promax4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "promax", fm = "ml")
+allvar_promax4$loadings
+```
+
+# Principal components factor analysis 
+## Four factor with varimax
+```{r, echo = false}
+allvar_PCApromax4 <- principal(r = het.mat, nfactors = 4, rotate="varimax",n.obs=nrow(acams))
+allvar_PCApromax4$loadings
 ```
 
 # Run factor model without prayer and spiritual healing 
@@ -578,4 +601,6 @@ Raw alpha for factor 3 ( chiropractic and massage) is 0.40 .
 ```{r, echo = FALSE }
 psych::alpha(acams11[ , factor4])
 ```
-Raw alpha for factor 4 (exercise and diet) is 0.40 . 
+Raw alpha for factor 4 (exercise and diet) is 0.40 .
+
+ 
