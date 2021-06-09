@@ -391,12 +391,32 @@ allvar_promax4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "pro
 allvar_promax4$loadings
 ```
 
-# Principal components factor analysis 
+## Three factor, promax rotation 
+```{r, echo = FALSE}
+allvar_promax3 <- fa(r = het.mat, nfactors = 3, n.obs=nrow(acams), rotate = "promax", fm = "ml")
+allvar_promax3$loadings
+allvar_promax3
+```
+# Principal Axis Factoring Method 
+## Four factor with promax (oblique rotation) 
+```{r, echo = FALSE}
+allvar_PApromax4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "promax", fm = "pa")
+allvar_PApromax4
+```
+## Four factor with oblimin (oblique rotation)
+```{r, echo = FALSE}
+allvar_PAoblimin4 <- fa(r = het.mat, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", fm = "pa")
+allvar_PAoblimin4
+```
+
+# Principal components factor analysis
 ## Four factor with varimax
 ```{r, echo = false}
 allvar_PCApromax4 <- principal(r = het.mat, nfactors = 4, rotate="varimax",n.obs=nrow(acams))
-allvar_PCApromax4$loadings
+allvar_PCApromax4
 ```
+
+
 
 # Run factor model without prayer and spiritual healing 
 ```{r, echo = FALSE, results = 'hide'}
@@ -542,8 +562,107 @@ model_fit_exprayheal <- compare_models(test)
 rownames(model_fit_exprayheal) <- c('1 Factor Model', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model')
 model_fit_exprayheal
 ```
+# Principal Axis Factoring excluding Prayer and Spiritual Healing
+## Three factor model, oblimin rotation 
+```{r, echo = FALSE}
+exprayheal_PAoblimin3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "pa")
+exprayheal_PAoblimin3
+exprayheal_PAoblimin3$loadings
+```
+## Three factor model, promax rotation 
+```{r, echo = FALSE}
+exprayheal_PApromax3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "pa")
+exprayheal_PApromax3
+exprayheal_PApromax3$loadings
+```
+# Minimum residual factoring method excluding Prayer and Spiritual Healing
+## Three factor model, oblimin rotation 
+```{r, echo = FALSE}
+exprayheal_MINRESoblimin3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "minres")
+exprayheal_MINRESoblimin3
+exprayheal_MINRESoblimin3$loadings
+```
+## Three factor model, promax rotation 
+```{r, echo = FALSE}
+exprayheal_MINRESpromax3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "minres")
+exprayheal_MINRESpromax3
+exprayheal_MINRESpromax3$loadings
+```
 
-## Four factor model dropping prayer, spiritual healing, biofeedback, and hypnosis. 
+## Three factor model, promax rotation 
+```{r, echo = FALSE}
+exprayheal_MINRESpromax3 <- fa(r = het.mat13, nfactors = 3, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "minres")
+exprayheal_MINRESpromax3
+exprayheal_MINRESpromax3$loadings
+```
+# Exclude prayer, spiritual healing, and energy healing 
+## Tetrachoric correlation matrix
+```{r, echo = FALSE, results= 'hide'}
+acams12 <- subset(acams, select = -c(aPrayer, aSpiritHeal, aEnergyHeal))
+acams12
+# Converts all columns to factor 
+acams12[sapply(acams12, is.numeric)] <- lapply(acams12[sapply(acams12, is.numeric)], as.factor) # convert all columns to factors
+# Create correlation matrix 
+het.mat12 <- hetcor(acams12)$cor
+```
+```{r, echo = FALSE}
+cor.plot(het.mat12, numbers=T, upper=FALSE, main = "Tetrachoric Correlations excluding pray, spirit, energy", show.legend = TRUE, xlas = 2)
+```
+## Bartlett's Test of Spherecity
+I will test for correlation adequacy using Bartlett's Sphericity test. This test tests the hypothesis that correlations between variables are greater than would be expected by chance. The null hypothesis states that all off diagonal are 0. If the null hypothesis is rejected there is correlation adequacy. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat12, n = nrow(acams))
+```
+# KMO Test for sampling adequacy 
+I will test for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test.MSA refers to the overall measure of sampling adequacy. MSAi refer to the measure of sampling adequacy for each item. MSA is a measure of the proportion of variance among variables that might be common variance. The lower the proportion of variance that is common the more suited the data are for factor analysis.  
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat12)
+```
+Great.  
+
+## Parallel Analysis 
+### Maximum Likelihood
+First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
+```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams to numerics for parallel analysis
+#acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+#str(acams)
+#acams2 <- acams + 1
+#str(acams2)
+```
+```{r, echo = FALSE, message = FALSE}
+#nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+#nofactors
+# Ran with both the acams data and the tetrachoric correlation matrix obtained from hetcor to be sure the analysis is the same. Eigenvalues are the same in both parallel analyses. 
+acams12_nofactors <- fa.parallel(het.mat12, n.obs = 6157, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat12, maximum likelihood")
+```
+
+From Statistics of DOOM notes: 
+i.	The dark line is set at one, which is part of the Kaiser criterion. This method is an older rule of thumb that is not well supported anymore.  You would look at the number of eigenvalues that are greater than 1 (or .70 in new literature).  This rule tends to overestimate the number of factors/components needed.
+ii.	The red dotted line is the random data set used to test this analysis. Your data is randomly reordered to see how many factors are better than chance. 
+iii.	The blue line and triangles are your eigenvalues from the real dataset. 
+iv.	You want to look at where the blue and red lines cross. 
+
+The parallel analysis suggests 5 factors. This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
+
+Note: Scree plots are a visual depiction of the eigenvalues. Look for the large drop off to figure out how many factors to use.
+
+# Kaiser Criterion 
+```{r}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(nofactors$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(nofactors$fa.values > .7)
+```
+
+## Maximum likelihood 
+### Three factor 
+
+
+# Four factor model dropping prayer, spiritual healing, biofeedback, and hypnosis. 
 ```{r, echo = FALSE, results = 'hide'}
 # Remove aPrayer and aSpiritHeal from acams
 acams11 <- subset(acams, select = -c(aPrayer, aSpiritHeal, aBiofeedback, aHypnosis))
