@@ -876,12 +876,82 @@ acams12_modelcomparison [5, 10] <- kr20(acams12[, c("aAcupuncture", "aBiofeedbac
 acams12_modelcomparison [5, 11] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aHomeopathy", "aSpecialDiet", "aVitamins")])
 acams12_modelcomparison [5, 12] <- kr20(acams12[, c("aSpecialDiet", "aExerciseMove")])
 acams12_modelcomparison [5, 13] <- kr20(acams12[, c("aMassage", "aAcupuncture", "aChiropractic")])
-acams12_modelcomparison
 ```
 ### Oblique rotation: promax
+```{r, echo = FALSE}
+# Run model 
+acams12_MLpromax4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "Promax", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [6,1] <- "Four Factor, Maximum Likelihood, Promax"
+acams12_modelcomparison [6,2] <- acams12_MLpromax4$TLI
+acams12_modelcomparison [6,3] <- 1 - ((acams12_MLpromax4$STATISTIC-acams12_MLpromax4$dof)/(acams12_MLpromax4$null.chisq-acams12_MLpromax4$null.dof))
+acams12_modelcomparison [6,4] <- acams12_MLpromax4$BIC
+acams12_modelcomparison [6,5:8] <- acams12_MLpromax4$RMSEA
+acams12_modelcomparison [6,9] <- acams12_MLpromax4$rms
+# Review factors loadings 
+acams12_MLpromax4$loadings
+fa.diagram(acams12_MLpromax4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [6, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE}
+# Reliability
+acams12_modelcomparison [6, 10] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [6, 11] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [6, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [6, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
 ### Oblique rotation: oblimin
+```{r, echo = FALSE}
+# Run model 
+acams12_MLoblimin4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [7,1] <- "Four Factor, Maximum Likelihood, Oblimin"
+acams12_modelcomparison [7,2] <- acams12_MLoblimin4$TLI
+acams12_modelcomparison [7,3] <- 1 - ((acams12_MLoblimin4$STATISTIC-acams12_MLoblimin4$dof)/(acams12_MLoblimin4$null.chisq-acams12_MLoblimin4$null.dof))
+acams12_modelcomparison [7,4] <- acams12_MLoblimin4$BIC
+acams12_modelcomparison [7,5:8] <- acams12_MLoblimin4$RMSEA
+acams12_modelcomparison [7,9] <- acams12_MLoblimin4$rms
+# Review factors loadings 
+acams12_MLoblimin4$loadings
+fa.diagram(acams12_MLoblimin4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [7, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE}
+# Reliability
+acams12_modelcomparison [7, 10] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [7, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [7, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [7, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
 ### Oblique rotation: cluster
-
+```{r, echo = FALSE}
+# Run model 
+acams12_MLcluster4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [8,1] <- "Four Factor, Maximum Likelihood, Cluster"
+acams12_modelcomparison [8,2] <- acams12_MLcluster4$TLI
+acams12_modelcomparison [8,3] <- 1 - ((acams12_MLcluster4$STATISTIC-acams12_MLcluster4$dof)/(acams12_MLcluster4$null.chisq-acams12_MLcluster4$null.dof))
+acams12_modelcomparison [8,4] <- acams12_MLcluster4$BIC
+acams12_modelcomparison [8,5:8] <- acams12_MLcluster4$RMSEA
+acams12_modelcomparison [8,9] <- acams12_MLcluster4$rms
+# Review factors loadings 
+acams12_MLcluster4$loadings
+fa.diagram(acams12_MLcluster4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [8, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE}
+# Reliability
+acams12_modelcomparison [8, 10] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [8, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [8, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [8, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
 # Four factor model dropping prayer, spiritual healing, biofeedback, and hypnosis. 
 ```{r, echo = FALSE, results = 'hide'}
 # Remove aPrayer and aSpiritHeal from acams
