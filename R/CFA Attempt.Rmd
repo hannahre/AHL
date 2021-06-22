@@ -1,0 +1,33 @@
+---
+title: "CFA Attempt"
+author: "Hannah Andrews"
+date: "6/21/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Old NCCAM Domains 
+NCCAM domains: 
+- Mind-Body Treatments: hypnosis, meditation, guided imagery, relaxation, deep breathing, pray for self, others pray, prayer groups, healing rituals, biofeedback 
+- Alternative Medical Systems: Acupuncture, ayurveda, folk medicine, naturopathy, homeopathy
+- Manipulative Treatments: Chiropractic, massage
+- Biologically based practices: herbs, vitamins. 
+```{r, echo = FALSE}
+# Specify the model
+#NCCAM.model <- 'mindBody =~ aHypnosis + aRelaxMeditate + aImageryTech + aPrayer + aSpiritHeal + aBiofeedback
+#                alternativeSystems =~ aAcupuncture + aHomeopathy + aExerciseMove 
+#                manipulativeTreatments =~ aChiropractic + aMassage
+#                biologicalBased =~ aVitamins + aHerbal + a SpecialDiet'
+
+#acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+
+# Fit the model 
+#fit <- cfa(NCCAM.model, data = acams, ordered = TRUE)
+
+# display summary output
+#summary(fit, fit.measures = TRUE)
+```
