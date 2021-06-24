@@ -86,7 +86,7 @@ acl <- function(df,   #a data.frame with your data
 
 
 
-
+################################################################################
 # Appears to work... 
 # SERIOUSLY APPEARS TO WORK! :D Produces lists 
 test_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
@@ -132,12 +132,29 @@ sapply(df.test.with.rownames2, class)
 
 # Round numeric values to four decimal places
 df.test.round <- modify_if(df.test.with.rownames2, ~is.numeric(.), ~round(., 4))
+################################################################################
+
+################################################################################
+foreach (i=1:6) %:%
+  foreach(j=c("ml", "minres", "pa")) %:%
+  foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
+    model_i_j_k<- fa(r = het.mat, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 100, fm = j)
+    model_i_j_k.diagram <- fa.diagram(model_i_j_k, cut = .299, sort = TRUE, main = paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation))
+    return(model_i_j_k.diagram)
+  }
+################################################################################
 
 
 
 
 
 
+# Run factor model to obtain loadings 
+acams15_MLVarimax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+# Print factor loadings 
+acams15_MLVarimax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MLVarimax1, cut = .299, sort = TRUE, main = "All CAMs, Maximum Likelihood, Varimax Rotation")
 
 
 
@@ -194,6 +211,56 @@ factor_results <- function(data, rotate, fm, n.obs, nfactors, max.iter = 100) {
   return(fit_list)
 }
 
+# Solution from R lab 06 22 21 
+# function to store factor results. At the time I was use manually inputting the fit statistics from each solution using indexing manually (copy paste). This was meant to reduce the number of changed inputs with each new model. I replace this with the nested loop code above.  
+# Function: factor_results
+# Goal: Run factor model and report fit and reliability statistics to model comparison dataframe 
+# Inputs 
+# data: correlation matrix
+# rotate: rotation method 
+# fm: factoring method 
+# n.obs: number of observations 
+# nfactors: number of factors
+# max.iter: maximum # of iterations 
+
+factor_results <- function(data, rotate, fm, n.obs, nfactors, max.iter = 100) {
+  factor_model <- fa(r = data, nfactors = nfactors, n.obs=n.obs, rotate = rotate, max.iter = max.iter, fm = fm)
+  fit_list <- list(Model = paste0(nfactors, " Factor, ", fm, ", ", rotate), 
+                   TLI = factor_model$TLI, 
+                   CFI = 1 - ((factor_model$STATISTIC-factor_model$dof)/(factor_model$null.chisq-factor_model$null.dof)),
+                   BIC = factor_model$BIC,
+                   RMSEA = factor_model$RMSEA[1],
+                   RMSR = factor_model$rms)
+  return(fit_list)
+}
+
+# test the function
+acams13_model1 <- factor_results(data = het.mat13, rotate = "varimax", fm = "ml", n.obs = nrow(acams), nfactors = 2)
+factor_model$loadings
+# Check for reliability here - break code chunk here 
+# Add reliability values here 
+acams13_model[["reliabilityF1"]] <- kr20(acams13[, c("aEnergyHeal", "aExerciseMove", "aImageryTech", "aMassage", "aSpecialDiet", "aBiofeedback", "aHypnosis", "aRelaxMeditate")])
+
+# Test with another data set 
+acams13_model2 <- factor_results(data = het.mat13, rotate = "promax", fm = "ml", n.obs = nrow(acams), nfactors = 2)
+# add reliability
+acams13_model2[["reliabilityF1"]] <- kr20(acams13[, c("aEnergyHeal", "aExerciseMove", "aImageryTech", "aMassage", "aSpecialDiet", "aBiofeedback", "aHypnosis", "aRelaxMeditate")])
+model_list <- list(acams13_model, acams13_model2)
+
+# Bind lists 
+model_comparison <- dplyr::bind_rows(model_list)
+
+
+
+
+
+
+
+
+
+
+
+
 test_model_comparison <- compare_models()
 
 test <- efa(het.mat, 6, nrow(acams), )
@@ -210,4 +277,36 @@ model_fit_all_vars
 # fm: factoring method 
 # n.obs: number of observations 
 # nfactors: number of factors
-# max.iter: maximum # of iterations 
+# max.iter: maximum # of iterations
+
+## Compare model fit for 1, 2, 3, 4, 5, 6 factor models including all variables 
+```{r, echo=FALSE}
+efa <- function(df,   #correlation matrix  
+                k) {      #number of factors
+  foreach(i=1:k, .packages="psych") %dopar% fa(df, 
+                                               nfactors=i,
+                                               n.obs=6157,
+                                               rotate="oblimin",
+                                               fm="ml"
+  )
+}
+
+# Creates a table that compares the models. 
+compare_models <- function(model) {
+  table_efa <- data.frame(Model=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, RMSEA_lower_bound=0, RMSEA_upper_bound=0, RMSEA_confidence=0, CFI=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_efa [i,1] <- paste("Model", i)
+    table_efa [i,2] <- model[[i]]$TLI
+    table_efa [i,3] <- model[[i]]$BIC
+    table_efa [i,4] <- model[[i]]$rms
+    table_efa [i,5:8] <- model[[i]]$RMSEA
+    table_efa [i, 9] <- 1 - ((model[[i]]$STATISTIC-model[[i]]$dof)/(model[[i]]$null.chisq-model[[i]]$null.dof))
+  }
+  return(table_efa)
+}
+
+test <- efa(het.mat, 6)
+model_fit_all_vars <- compare_models(test)
+rownames(model_fit_all_vars) <- c('1 Factor Mode1', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
+model_fit_all_vars
+```
