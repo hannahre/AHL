@@ -250,48 +250,222 @@ factor_results <- function(data, rotate, fm, n.obs, nfactors, max.iter = 100) {
 ##### Orthogonal rotation: Varimax 
 ```{r, echo = FALSE}
 # Create list of fit statistics 
-acams15_MLVarimax1_list <- factor_results(data = het.mat, rotate = "varimax", fm = "ml", n.obs = nrow(acams), nfactors = 1)
+list_acams15_MLVarimax1 <- factor_results(data = het.mat, rotate = "varimax", fm = "ml", n.obs = nrow(acams), nfactors = 1)
 
 # Run factor model to obtain loadings 
 acams15_MLVarimax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
 # Print factor loadings 
 acams15_MLVarimax1$loadings
 # Print diagram showing factor loadings 
-fa.diagram(acams15_MLVarimax1, cut = .299, sort = TRUE)
+fa.diagram(acams15_MLVarimax1, cut = .299, sort = TRUE, main = "All CAMs, Maximum Likelihood, Varimax Rotation")
 ```
 
 ```{r, echo = FALSE}
 # Reliability: Add reliability values 
-acams15_MLVarimax1_list[["reliabilityF1"]] <- kr20(acams)
+list_acams15_MLVarimax1[["reliabilityF1"]] <- kr20(acams)
 ```
 
-
-## Factor loadings: 1 Factor Model with all CAM variables
+##### Oblique rotation: promax
 ```{r, echo = FALSE}
-allvar_1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
-allvar_1$loadings
+# Create list of fit statistics 
+list_acams15_MLPromax1 <- factor_results(data = het.mat, rotate = "promax", fm = "ml", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MLPromax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "ml")
+# Print factor loadings 
+acams15_MLPromax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MLPromax1, cut = .299, sort = TRUE, main = "All CAMs, Maximum Likelihood, Promax rotation")
 ```
-### Reliability: 1 Factor Model
+
 ```{r, echo = FALSE}
-ML1 <- c(1:15)
-allvar1_ML1 <- psych::alpha(acams[, ML1])
-allvar1_ML1$total
+# Reliability: Add reliability values 
+list_acams15_MLPromax1[["reliabilityF1"]] <- kr20(acams)
 ```
-Raw alpha is 0.695 - Acceptable? 
 
-## Factor loadings: 2 Factor model with all CAM variables 
+##### Oblique Rotation: oblimin 
 ```{r, echo = FALSE}
-allvar_2 <- fa(r = het.mat, nfactors = 2, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
-allvar_2$loadings
+# Create list of fit statistics 
+list_acams15_MLOblimin1 <- factor_results(data = het.mat, rotate = "oblimin", fm = "ml", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MLOblimin1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+# Print factor loadings 
+acams15_MLOblimin1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MLOblimin1, cut = .299, sort = TRUE, main = "All CAMs, Maximum Likelihood, Oblimin rotation")
 ```
-All items only load onto one factor. 
 
-Ml1 includes spiritual healing and prayer.
-All other items load onto ML2. 
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MLOblimin1[["reliabilityF1"]] <- kr20(acams)
+```
+##### Oblique rotation: cluster
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_MLCluster1 <- factor_results(data = het.mat, rotate = "cluster", fm = "ml", n.obs = nrow(acams), nfactors = 1)
 
-ML2 accounts for 40% of the variance. ML1 accounts for 12% of the variance. Cumulatively this factor model accounts for 52% of the variance. 
+# Run factor model to obtain loadings 
+acams15_MLCluster1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+# Print factor loadings 
+acams15_MLCluster1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MLCluster1, cut = .299, sort = TRUE, main = "All CAMs, Maximum likelihood, cluster rotation")
+```
 
-The factors are correlated (r = 0.51).
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MLCluster1[["reliabilityF1"]] <- kr20(acams)
+```
+
+#### Principal Axis 
+##### Orthogonal rotation: Varimax 
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_PAVarimax1 <- factor_results(data = het.mat, rotate = "varimax", fm = "pa", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_PAVarimax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "pa")
+# Print factor loadings 
+acams15_PAVarimax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_PAVarimax1, cut = .299, sort = TRUE, main = "All CAMs, Principal Axis, Varimax rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_PAVarimax1[["reliabilityF1"]] <- kr20(acams)
+```
+##### Oblique rotation: promax
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_PAPromax1 <- factor_results(data = het.mat, rotate = "promax", fm = "pa", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_PAPromax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "pa")
+# Print factor loadings 
+acams15_PAPromax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_PAPromax1, cut = .299, sort = TRUE, main = "All CAMs, Principal Axis, Promax rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_PAPromax1[["reliabilityF1"]] <- kr20(acams)
+```
+
+##### Oblique rotation: oblimin 
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_PAOblimin1 <- factor_results(data = het.mat, rotate = "oblimin", fm = "pa", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_PAOblimin1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "pa")
+# Print factor loadings 
+acams15_PAOblimin1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_PAOblimin1, cut = .299, sort = TRUE, main = "All CAMs, Principal Axis, Oblimin rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_PAOblimin1[["reliabilityF1"]] <- kr20(acams)
+```
+##### Oblique rotation: cluster
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_PACluster1 <- factor_results(data = het.mat, rotate = "cluster", fm = "pa", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_PACluster1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "pa")
+# Print factor loadings 
+acams15_PACluster1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_PACluster1, cut = .299, sort = TRUE, main = "All CAMs, Principal Axis, cluster rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_PACluster1[["reliabilityF1"]] <- kr20(acams)
+```
+#### Minimum Residual 
+##### Orthogonal Rotation: Varimax 
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_MRVarimax1 <- factor_results(data = het.mat, rotate = "varimax", fm = "minres", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MRVarimax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "minres")
+# Print factor loadings 
+acams15_MRVarimax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MRVarimax1, cut = .299, sort = TRUE, main = "All CAMs, Minimum Residual, varimax rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MRVarimax1[["reliabilityF1"]] <- kr20(acams)
+```
+
+##### Oblique Rotation: promax
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_MRPromax1 <- factor_results(data = het.mat, rotate = "promax", fm = "minres", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MRPromax1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "minres")
+# Print factor loadings 
+acams15_MRPromax1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MRPromax1, cut = .299, sort = TRUE, main = "All CAMs, Minimum Residual, promax rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MRPromax1[["reliabilityF1"]] <- kr20(acams)
+```
+
+##### Oblique Rotation: Oblimin
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_MROblimin1 <- factor_results(data = het.mat, rotate = "oblimin", fm = "minres", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MROblimin1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "minres")
+# Print factor loadings 
+acams15_MROblimin1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MROblimin1, cut = .299, sort = TRUE, main = "All CAMs, Minimum Residual, oblimin rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MROblimin1[["reliabilityF1"]] <- kr20(acams)
+```
+
+##### Oblique Rotation: cluster
+```{r, echo = FALSE}
+# Create list of fit statistics 
+list_acams15_MRCluster1 <- factor_results(data = het.mat, rotate = "cluster", fm = "minres", n.obs = nrow(acams), nfactors = 1)
+
+# Run factor model to obtain loadings 
+acams15_MRCluster1 <- fa(r = het.mat, nfactors = 1, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "minres")
+# Print factor loadings 
+acams15_MRCluster1$loadings
+# Print diagram showing factor loadings 
+fa.diagram(acams15_MRCluster1, cut = .299, sort = TRUE, main = "All CAMs, Minimum Residual, cluster rotation")
+```
+
+```{r, echo = FALSE}
+# Reliability: Add reliability values 
+list_acams15_MRCluster1[["reliabilityF1"]] <- kr20(acams)
+```
+
+
+## 2 Factor Models
+```{r, echo = FALSE}
+
+```
 
 ### Reliability: 2 Factor Model
 ```{r, echo = FALSE}
@@ -393,7 +567,7 @@ compare_models <- function(model) {
 
 test <- efa(het.mat, 6)
 model_fit_all_vars <- compare_models(test)
-rownames(model_fit_all_vars) <- c('1 Factor Mode', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
+rownames(model_fit_all_vars) <- c('1 Factor Mode1', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
 model_fit_all_vars
 ```
 

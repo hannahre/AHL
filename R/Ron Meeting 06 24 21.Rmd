@@ -1,0 +1,585 @@
+---
+title: "Ron Meeting 06/24/21"
+author: "Hannah Andrews"
+date: "06/23/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+Sample: There are 6157 complete cases on CAM variables at Wave 1. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
+library(foreach)
+library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
+library(fdth)
+library(lavaan)
+library(validateR)
+```
+
+
+
+```{r, echo = FALSE, results = 'hide'}
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+
+str(acams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[,1:15])
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- dplyr::rename(acams, 
+                          aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
+```
+
+# CAM Descriptives 
+## Frequencies and percentages on each variable 
+```{r, echo = FALSE}
+#apply(acams[, 1:15], 2 , questionr::freq)
+freq_dframer <- function(data){
+   quest_out   <- apply(data, 2, questionr::freq)
+      templist <- list()
+       for (i in 1:length(names(quest_out))) {
+       temp <- data.frame(Item = rep(names(quest_out[i]), nrow(quest_out[[i]])),
+                      Category = row.names(quest_out[[i]]),
+                      quest_out[[i]])
+       templist[[i]] <- temp
+  }
+      freqs <- dplyr::bind_rows(templist) 
+      row.names(freqs) <- NULL
+      names(freqs)[3:5] <- c("Frequency", "Percent", "Pcnt_of_nonMissing") 
+      freqs$Item <- factor(freqs$Item, levels = unique(freqs$Item))
+   freqs
+}
+freqout <- freq_dframer(acams)
+freqout
+```
+## Visualization of frequencies
+```{r, echo = FALSE}
+# Relative frequencies 
+ggplot(freqout, aes(x = Category, y = Frequency)) +
+  geom_col() +
+  facet_wrap(. ~ Item, nrow = 5 )
+```
+## Number of CAM treatments used in the past 12 months 
+```{r, echo = FALSE}
+
+# Convert column to a factor 
+totalCams <- as.factor(totalCams)
+
+# Relative frequencies 
+prop.table(table(totalCams))
+
+# Counts and percentages, relative and cumulative 
+tb <- fdt_cat(totalCams)
+tb
+
+# create a histogram of total CAMs used 
+# hist(as.numeric(totalCams))
+```
+
+# Analayses including all 15 CAMs 
+## Correlation matrix 
+Create and plot the tetrachoric correlation matrix for all CAMs. 
+```{r, echo = FALSE}
+# Create correlation matrix 
+het.mat <- hetcor(acams)$cor
+cor.plot(het.mat, numbers=T, upper=FALSE, main = "Tetrachoric Correlations", show.legend = TRUE, xlas = 2)
+```
+
+Check that items are not perfectly correlated with each other. 
+```{r, echo=FALSE}
+# EFA following https://www.youtube.com/watch?v=C5RJvMaHJNo&ab_channel=StatisticsofDOOM
+# Channel: Statistics of DOOM by Lecturer: Dr. Erin M. Buchanan
+
+# Screen data 
+# nrow(acams)
+# n = 5326
+
+# Check min and max scores by running summary 
+# summary(acams)
+
+# Additivity - make sure nothing is correlated at 1. 
+# don't want any 1s on the off diagonal.
+symnum(het.mat)
+```
+## Test for correlation adequacy 
+I will test for correlation adequacy using Bartlett's Sphericity test. This test tests the hypothesis that correlations between variables are greater than would be expected by chance. The null hypothesis states that all off diagonal are 0. If the null hypothesis is rejected there is correlation adequacy. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat, n = nrow(acams))
+```
+I reject the null hypothesis. The CAM items are adequately correlated. 
+
+## Test for sampling adequacy 
+I will test for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test.MSA refers to the overall measure of sampling adequacy. MSAi refer to the measure of sampling adequacy for each item. MSA is a measure of the proportion of variance among variables that might be common variance. The lower the proportion of variance that is common the more suited the data are for factor analysis.  
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat)
+```
+Items that may be a concern with regard to sampling adequacy: prayer or other spiritual practices, relaxation or meditation, and spiritual healing. Overall MSA indicates sampling adequacy. 
+
+## Determining the number of factors
+First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
+```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams to numerics for parallel analysis
+acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+str(acams)
+#acams2 <- acams + 1
+#str(acams2)
+```
+Parallel analysis completed using maximum likelihood factoring method. 
+```{r, echo = FALSE, message = FALSE}
+#nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+#nofactors
+# Ran with both the acams data and the tetrachoric correlation matrix obtained from hetcor to be sure the analysis is the same. Eigenvalues are the same in both parallel analyses. 
+nofactors <- fa.parallel(het.mat, n.obs = 6157, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat")
+```
+I received many warning messages stating "A cell entry of 0 was replaced with correct =  0.5.  Check your data!" This has to do with continuity when computing a tetrachoric correlation matrix. I added 1 to all values in the dataframe to check that the issue was not the 0/1 values. The results were the same. 
+
+From Statistics of DOOM notes: 
+i.	The dark line is set at one, which is part of the Kaiser criterion. This method is an older rule of thumb that is not well supported anymore.  You would look at the number of eigenvalues that are greater than 1 (or .70 in new literature).  This rule tends to overestimate the number of factors/components needed.
+ii.	The red dotted line is the random data set used to test this analysis. Your data is randomly reordered to see how many factors are better than chance. 
+iii.	The blue line and triangles are your eigenvalues from the real dataset. 
+iv.	You want to look at where the blue and red lines cross. 
+
+The parallel analysis suggests 6 factors. This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
+
+Note: Scree plots are a visual depiction of the eigenvalues. Look for the large drop off to figure out how many factors to use.
+
+## Kaiser Criterion 
+```{r}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(nofactors$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(nofactors$fa.values > .7)
+```
+New kaiser criterion rule (eigenvalues greater than 0.7) suggests 2 factors. 
+
+After readings Ayers and Kronenfeld (2010), I will test the old CAM domains posted by the National Center for Complementary and Alternative Medicine (NCCAM), now the National Center for Complementary and Integrative Medicine (NCCIM). Then I will test the domains found by Ayers and Kronenfeld (2010). Finally, I will test the NCCIM's current CAM domains before performing exploratory factor analysis on the MIDUS data. 
+
+# Compare model fit for 1, 2, 3, 4, 5, 6 factor models including all CAMs 
+Factor method: Maximum likelihood 
+Rotation method: Oblique
+```{r, echo=FALSE}
+efa <- function(df,   #correlation matrix  
+                k) {      #number of factors
+  foreach(i=1:k, .packages="psych") %dopar% fa(df, 
+                                               nfactors=i,
+                                               n.obs=6157,
+                                               rotate="oblimin",
+                                               fm="ml"
+  )
+}
+
+# Creates a table that compares the models. 
+compare_models <- function(model) {
+  table_efa <- data.frame(Model=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, CFI=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_efa [i,1] <- paste("Model", i)
+    table_efa [i,2] <- model[[i]]$TLI
+    table_efa [i,3] <- model[[i]]$BIC
+    table_efa [i,4] <- model[[i]]$rms
+    table_efa [i,5] <- model[[i]]$RMSEA[1]
+    table_efa [i,6] <- 1 - ((model[[i]]$STATISTIC-model[[i]]$dof)/(model[[i]]$null.chisq-model[[i]]$null.dof))
+  }
+  return(table_efa)
+}
+
+test <- efa(het.mat, 6)
+model_fit_all_vars <- compare_models(test)
+rownames(model_fit_all_vars) <- c('1 Factor Mode1', '2 Factor Model', '3 Factor Model', '4 Factor Model', '5 Factor Model', '6 Factor Model')
+model_fit_all_vars
+```
+
+# Models excluding prayer, spiritual healing, and energy healing 
+## Tetrachoric correlation matrix
+```{r, echo = FALSE, results= 'hide'}
+acams12 <- subset(acams, select = -c(aPrayer, aSpiritHeal, aEnergyHeal))
+acams12
+# Converts all columns to factor 
+acams12[sapply(acams12, is.numeric)] <- lapply(acams12[sapply(acams12, is.numeric)], as.factor) # convert all columns to factors
+# Create correlation matrix 
+het.mat12 <- hetcor(acams12)$cor
+```
+```{r, echo = FALSE}
+cor.plot(het.mat12, numbers=T, upper=FALSE, main = "Tetrachoric Correlations excluding pray, spirit, energy", show.legend = TRUE, xlas = 2)
+```
+## Bartlett's Test of Spherecity
+I will test for correlation adequacy using Bartlett's Sphericity test. This test tests the hypothesis that correlations between variables are greater than would be expected by chance. The null hypothesis states that all off diagonal are 0. If the null hypothesis is rejected there is correlation adequacy. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat12, n = nrow(acams))
+```
+## KMO Test for sampling adequacy 
+I will test for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test.MSA refers to the overall measure of sampling adequacy. MSAi refer to the measure of sampling adequacy for each item. MSA is a measure of the proportion of variance among variables that might be common variance. The lower the proportion of variance that is common the more suited the data are for factor analysis.  
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat12)
+```
+Great.  
+
+## Parallel Analysis 
+### Maximum Likelihood
+First, I will run a parallel analysis. From RDocumentation: "``Parallel" analyis is a technique that compares the scree of factors of the observed data with that of a random data matrix of the same size as the original."  
+```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams to numerics for parallel analysis
+#acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+#str(acams)
+#acams2 <- acams + 1
+#str(acams2)
+```
+```{r, echo = FALSE, message = FALSE}
+#nofactors <- fa.parallel(acams, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots", cor = "tet")
+#nofactors
+# Ran with both the acams data and the tetrachoric correlation matrix obtained from hetcor to be sure the analysis is the same. Eigenvalues are the same in both parallel analyses. 
+acams12_parallelMl <- fa.parallel(het.mat12, n.obs = 6157, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat12, maximum likelihood")
+```
+
+### Principal axis 
+```{r, echo = FALSE}
+acams12_parallelPa <- fa.parallel(het.mat12, n.obs = 6157, fm = "pa", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat12, principal axis")
+```
+### Minimum Residual
+```{r, echo = FALSE}
+acams12_parallelMinRes <- fa.parallel(het.mat12, n.obs = 6157, fm = "minres", fa = "fa", main = "Parallel Analysis Scree Plots- hetmat12, minimum residual")
+```
+From Statistics of DOOM notes: 
+i.	The dark line is set at one, which is part of the Kaiser criterion. This method is an older rule of thumb that is not well supported anymore.  You would look at the number of eigenvalues that are greater than 1 (or .70 in new literature).  This rule tends to overestimate the number of factors/components needed.
+ii.	The red dotted line is the random data set used to test this analysis. Your data is randomly reordered to see how many factors are better than chance. 
+iii.	The blue line and triangles are your eigenvalues from the real dataset. 
+iv.	You want to look at where the blue and red lines cross. 
+
+The parallel analysis suggests 5 factors. This is where the lines cross. Looking at the scree plot, none of the drop offs appear to be very large. Seems like there are maybe 2 factors. 
+
+Note: Scree plots are a visual depiction of the eigenvalues. Look for the large drop off to figure out how many factors to use.
+
+## Kaiser Criterion 
+Old Kaiser Criterion
+```{r}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(acams12_parallelMl$fa.values > 1.0)
+```
+New Kaiser Criterion
+```{r, echo = FALSE}
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(acams12_parallelMl$fa.values > .7)
+```
+
+## Create table for model comparisons of all models excluding prayer, spiritual healing, and energy 
+Factor alphas input in order from factor loadings matrix. For example, if ML3 is the first column of factors presented in the factor loadings table when called, the alpha will be input under reliabilityF1. 
+Reliability calculated using Kuder-Richardson Formula 20 (KR-20), a measure for testing the reliability of binary items. If an item loads equally on multiple factors, I include it in the reliability calculation for all factors it loads on. In notes, I refer to factors in order of reliability columns. For example, "Massage loads onto factors 1 and 2" refers to reliabilityF1 and reliabilityF2.  
+(Code chunk here, does not appear in html output.)
+```{r, echo = FALSE}
+acams12_modelcomparison <- data.frame(Model = character(0), TLI = numeric(0), CFI = numeric(0), BIC = numeric(0), RMSEA = numeric(0), RMSEA_lower_bound = numeric(0), RMSEA_upper_bound = numeric(0), RMSEA_confidence = numeric(0), RMSR = numeric(0), reliabilityF1 = numeric(0), reliabilityF2 = numeric(0), reliabilityF3 = numeric(0), reliabilityF4 = numeric(0), reliabilityF5 = numeric(0), notes = character(0))   #empty data.frame to prealocate memory.
+```
+
+## Maximum likelihood, Three factor 
+### Orthogonal rotation: Varimax
+```{r, echo = FALSE, results='hide'}
+# Run model 
+acams12_MlVarimax3 <- fa(r = het.mat12, nfactors = 3, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [1,1] <- "Three Factor, Maximum Likelihood, Varimax"
+acams12_modelcomparison [1,2] <- acams12_MlVarimax3$TLI
+acams12_modelcomparison [1,3] <- 1 - ((acams12_MlVarimax3$STATISTIC-acams12_MlVarimax3$dof)/(acams12_MlVarimax3$null.chisq-acams12_MlVarimax3$null.dof))
+acams12_modelcomparison [1,4] <- acams12_MlVarimax3$BIC
+acams12_modelcomparison [1,5:8] <- acams12_MlVarimax3$RMSEA
+acams12_modelcomparison [1,9] <- acams12_MlVarimax3$rms
+# Review factors loadings 
+acams12_MlVarimax3$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_MlVarimax3, cut = .299, sort = TRUE)
+```
+Massage and special diet load equally onto multiple factors. When calculating alphas, I include them for all factors they load onto.
+```{r, echo = FALSE, results='hide'}
+acams12_modelcomparison [1, 15] <- "Massage loads on all three factors fairly equally. Special diet loads on factors 1 and 3."
+```
+```{r, echo = FALSE, results= 'hide'}
+# Convert acams12 columns to numeric for reliability calculations 
+acams12[] <- lapply(acams12, function(x) as.numeric(as.character(x)))
+str(acams12)
+```
+```{r, echo = FALSE, results='hide'}
+acams12_modelcomparison [1, 10] <- kr20(acams12[, c("aAcupuncture", "aChiropractic", "aHerbal", "aVitamins", "aHomeopathy", "aMassage", "aSpecialDiet")])
+acams12_modelcomparison [1, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis","aImageryTech", "aMassage", "aRelaxMeditate")])
+acams12_modelcomparison [1, 12] <- kr20(acams12[, c("aExerciseMove", "aMassage", "aSpecialDiet")])
+```
+### Oblique rotation: promax 
+```{r, echo = FALSE, results = 'hide'}
+# Run model
+acams12_MlPromax3 <- fa(r = het.mat12, nfactors = 3, n.obs=nrow(acams), rotate = "Promax", max.iter = 100, fm = "ml")
+# Input fit statistics to model comparison table
+acams12_modelcomparison [2,1] <- "Three Factor, Maximum Likelihood, Promax"
+acams12_modelcomparison [2,2] <- acams12_MlPromax3$TLI
+acams12_modelcomparison [2,3] <- 1 - ((acams12_MlPromax3$STATISTIC-acams12_MlPromax3$dof)/(acams12_MlPromax3$null.chisq-acams12_MlPromax3$null.dof))
+acams12_modelcomparison [2,4] <- acams12_MlPromax3$BIC
+acams12_modelcomparison [2,5:8] <- acams12_MlPromax3$RMSEA
+acams12_modelcomparison [2,9] <- acams12_MlPromax3$rms
+# Review factor loadings
+acams12_MlPromax3$loadings
+```
+```{r, echo=FALSE}
+fa.diagram(acams12_MlPromax3, cut = .299, sort = TRUE)
+```
+Special diet does not load on any factors. 
+Massage loads equally on two factors.
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [2, 15] <- "Special diet does not load on any factors. Massage loads on factors 1 and 3."
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [2, 10] <- kr20(acams12[, c("aAcupuncture", "aChiropractic", "aHerbal", "aVitamins", "aHomeopathy", "aMassage")])
+acams12_modelcomparison [2, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis","aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [2, 12] <- kr20(acams12[, c("aExerciseMove", "aMassage")])
+```
+
+### Oblique rotation: oblimin
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_Mloblimin3 <- fa(r = het.mat12, nfactors = 3, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+
+# Input fit statistics to model comparison table
+acams12_modelcomparison [3,1] <- "Three Factor, Maximum Likelihood, oblimin"
+acams12_modelcomparison [3,2] <- acams12_Mloblimin3$TLI
+acams12_modelcomparison [3,3] <- 1 - ((acams12_Mloblimin3$STATISTIC-acams12_Mloblimin3$dof)/(acams12_Mloblimin3$null.chisq-acams12_Mloblimin3$null.dof))
+acams12_modelcomparison [3,4] <- acams12_Mloblimin3$BIC
+acams12_modelcomparison [3,5:8] <- acams12_Mloblimin3$RMSEA
+acams12_modelcomparison [3,9] <- acams12_Mloblimin3$rms
+
+# Review factor loadings
+acams12_Mloblimin3$loadings
+```
+```{r, echo=FALSE}
+fa.diagram(acams12_Mloblimin3, cut = .299, sort = TRUE)
+```
+Massage loads fairly equally on factors 1 and 3. Special diet does not load on any factors. 
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [3, 15] <- "Massage loads fairly equally on factors 1 and 3. Special diet does not load on any factors."
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [3, 10] <- kr20(acams12[, c("aAcupuncture", "aChiropractic", "aHerbal", "aVitamins", "aHomeopathy", "aMassage")])
+acams12_modelcomparison [3, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis","aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [3, 12] <- kr20(acams12[, c("aExerciseMove", "aMassage")])
+```
+### Oblique rotation: cluster
+```{r, echo = FALSE, results= 'hide'}
+# Run model
+acams12_Mlcluster3 <- fa(r = het.mat12, nfactors = 3, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+
+# Input fit statistics to model comparison table
+acams12_modelcomparison [4,1] <- "Three Factor, Maximum Likelihood, cluster"
+acams12_modelcomparison [4,2] <- acams12_Mlcluster3$TLI
+acams12_modelcomparison [4,3] <- 1 - ((acams12_Mlcluster3$STATISTIC-acams12_Mlcluster3$dof)/(acams12_Mlcluster3$null.chisq-acams12_Mlcluster3$null.dof))
+acams12_modelcomparison [4,4] <- acams12_Mlcluster3$BIC
+acams12_modelcomparison [4,5:8] <- acams12_Mlcluster3$RMSEA
+acams12_modelcomparison [4,9] <- acams12_Mlcluster3$rms
+
+# Review factor loadings
+acams12_Mlcluster3$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_Mlcluster3, cut = .299, sort = TRUE)
+```
+All items load on one factor. Special diet is questionable - less than .1 difference factor loading between factors 1 and 3. About .12 difference in loadings on factors 1 and 3 for massage.  
+
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [4, 15] <- "All items load on one factor. Special diet is questionable - less than .1 difference factor loading between factors 1 and 2. About .12 difference in loadings on factors 1 and 3 for massage."
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [4, 10] <- kr20(acams12[, c("aAcupuncture", "aChiropractic", "aHerbal", "aVitamins", "aHomeopathy")])
+acams12_modelcomparison [4, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis","aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [4, 12] <- kr20(acams12[, c("aExerciseMove", "aMassage", "aSpecialDiet")])
+```
+## Principal Axis, Three factor 
+### Orthogonal rotation: varimax
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_PAVarimax3 <- fa(r = het.mat12, nfactors = 3, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "pa")
+
+# Review factor loadings
+acams12_PAVarimax3$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_PAVarimax3, cut = .299, sort = TRUE)
+```
+Principal axis factoring produces an ultra-Heywood case. Warning message states factor scorings are probably incorrect. None of the principal axis solution are included in the table. They have been left out of the results here as well. 
+
+## Minimum Residual, Three Factors
+Minimum residual solutions produce error message warning about ultra-Heywood case. Not included in model comparisons table or in the results here.
+
+## Maximum Likelihood, Four Factor 
+### Orthogonal rotation: Varimax
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_MLvarimax4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [5,1] <- "Four Factor, Maximum Likelihood, Varimax"
+acams12_modelcomparison [5,2] <- acams12_MLvarimax4$TLI
+acams12_modelcomparison [5,3] <- 1 - ((acams12_MLvarimax4$STATISTIC-acams12_MLvarimax4$dof)/(acams12_MLvarimax4$null.chisq-acams12_MLvarimax4$null.dof))
+acams12_modelcomparison [5,4] <- acams12_MLvarimax4$BIC
+acams12_modelcomparison [5,5:8] <- acams12_MLvarimax4$RMSEA
+acams12_modelcomparison [5,9] <- acams12_MLvarimax4$rms
+# Review factors loadings 
+acams12_MLvarimax4$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_MLvarimax4, cut = .299, sort = TRUE)
+```
+Acupuncture loads on 1, 2, 4. Special diet loads on 2, 3. 
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [5, 15] <- "Acupuncture loads on 1, 2, 4. Special diet loads on 2, 3."
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [5, 10] <- kr20(acams12[, c("aAcupuncture", "aBiofeedback", "aImageryTech", "aHypnosis", "aRelaxMeditate")])
+acams12_modelcomparison [5, 11] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aHomeopathy", "aSpecialDiet", "aVitamins")])
+acams12_modelcomparison [5, 12] <- kr20(acams12[, c("aSpecialDiet", "aExerciseMove")])
+acams12_modelcomparison [5, 13] <- kr20(acams12[, c("aMassage", "aAcupuncture", "aChiropractic")])
+```
+### Oblique rotation: promax
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_MLpromax4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "Promax", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [6,1] <- "Four Factor, Maximum Likelihood, Promax"
+acams12_modelcomparison [6,2] <- acams12_MLpromax4$TLI
+acams12_modelcomparison [6,3] <- 1 - ((acams12_MLpromax4$STATISTIC-acams12_MLpromax4$dof)/(acams12_MLpromax4$null.chisq-acams12_MLpromax4$null.dof))
+acams12_modelcomparison [6,4] <- acams12_MLpromax4$BIC
+acams12_modelcomparison [6,5:8] <- acams12_MLpromax4$RMSEA
+acams12_modelcomparison [6,9] <- acams12_MLpromax4$rms
+# Review factors loadings 
+acams12_MLpromax4$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_MLpromax4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [6, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [6, 10] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [6, 11] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [6, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [6, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
+### Oblique rotation: oblimin
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_MLoblimin4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [7,1] <- "Four Factor, Maximum Likelihood, Oblimin"
+acams12_modelcomparison [7,2] <- acams12_MLoblimin4$TLI
+acams12_modelcomparison [7,3] <- 1 - ((acams12_MLoblimin4$STATISTIC-acams12_MLoblimin4$dof)/(acams12_MLoblimin4$null.chisq-acams12_MLoblimin4$null.dof))
+acams12_modelcomparison [7,4] <- acams12_MLoblimin4$BIC
+acams12_modelcomparison [7,5:8] <- acams12_MLoblimin4$RMSEA
+acams12_modelcomparison [7,9] <- acams12_MLoblimin4$rms
+# Review factors loadings 
+acams12_MLoblimin4$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_MLoblimin4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [7, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [7, 10] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [7, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [7, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [7, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
+### Oblique rotation: cluster
+```{r, echo = FALSE, results= 'hide'}
+# Run model 
+acams12_MLcluster4 <- fa(r = het.mat12, nfactors = 4, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+# Input fit statistics for model comparisons table
+acams12_modelcomparison [8,1] <- "Four Factor, Maximum Likelihood, Cluster"
+acams12_modelcomparison [8,2] <- acams12_MLcluster4$TLI
+acams12_modelcomparison [8,3] <- 1 - ((acams12_MLcluster4$STATISTIC-acams12_MLcluster4$dof)/(acams12_MLcluster4$null.chisq-acams12_MLcluster4$null.dof))
+acams12_modelcomparison [8,4] <- acams12_MLcluster4$BIC
+acams12_modelcomparison [8,5:8] <- acams12_MLcluster4$RMSEA
+acams12_modelcomparison [8,9] <- acams12_MLcluster4$rms
+# Review factors loadings 
+acams12_MLcluster4$loadings
+```
+```{r, echo = FALSE}
+fa.diagram(acams12_MLcluster4, cut = .299, sort = TRUE)
+```
+```{r, echo = FALSE, results = 'hide'}
+acams12_modelcomparison [8, 15] <- "Exercise only loads on one factor, factor 3"
+```
+```{r, echo = FALSE, results= 'hide'}
+# Reliability
+acams12_modelcomparison [8, 10] <- kr20(acams12[, c("aAcupuncture", "aHerbal", "aVitamins", "aHomeopathy", "aSpecialDiet")])
+acams12_modelcomparison [8, 11] <- kr20(acams12[, c("aBiofeedback", "aHypnosis", "aImageryTech", "aRelaxMeditate")])
+acams12_modelcomparison [8, 12] <- kr20(acams12[, c("aExerciseMove")])
+acams12_modelcomparison [8, 13] <- kr20(acams12[, c("aChiropractic", "aMassage")])
+```
+## Model fit comparison: Three and four factor models excluding prayer, spiritual healing, and energy healing 
+```{r, echo = FALSE}
+acams12_modelcomparison
+```

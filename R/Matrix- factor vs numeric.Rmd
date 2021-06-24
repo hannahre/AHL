@@ -1,0 +1,153 @@
+---
+title: "FA - testing running tetrachoric correlations as numeric vs factor"
+author: "Hannah Andrews"
+date: "5/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Run factor model without prayer and spiritual healing, numeric tetrachoric matrix 
+```{r, echo = FALSE, results = 'hide'}
+# Remove aPrayer and aSpiritHeal from acams
+acams13 <- subset(acams, select = -c(aPrayer, aSpiritHeal))
+str(acams13)
+# convert all columns to factors. This is important for the tetrachoric correlations. They are much smaller when run as numeric. 
+# Checked against tetrachoric matrix produced by Stata; they are the same when hetcor is run on factors in R.
+# Will have to convert back to numeric for parallel analysis. 
+#acams13[sapply(acams13, is.numeric)] <- lapply(acams13[sapply(acams13, is.numeric)], as.factor)
+#str(acams13)
+# Create correlation matrix 
+str(acams)
+het.mat_numeric <- hetcor(acams)$cor
+het.mat_numeric
+```
+## Tetrachoric correlations (excluding prayer and spiritual healing)
+```{r, echo = FALSE}
+cor.plot(het.mat_numeric, numbers=T, upper=FALSE, main = "Tetrachoric Correlations excluding prayer and spiritual healing ", show.legend = TRUE, xlas = 2)
+```
+
+## Test for correlation adequacy 
+
+Bartlett's test for sphericity. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat_numeric, n = nrow(acams))
+```
+Items are adequately correlated. 
+
+## Test for sampling adequacy 
+
+MSA cutoffs: >.9 marvelous, .8s meritorious, .7s middling, .6s mediocre, .5s miserable, less than .5 is unacceptable.
+```{r, echo=FALSE}
+KMO(het.mat_numeric)
+```
+All variables meet requirements for sampling adequacy. 
+
+## Determining number of factors 
+
+### Parallel Analysis 
+```{r, echo = FALSE, message=FALSE, results='hide'}
+# Convert acams13 to numeric for parallel analysis
+#acams13[] <- lapply(acams13, function(x) as.numeric(as.character(x)))
+#str(acams13)
+#acams2 <- acams + 1
+#str(acams2)
+
+```
+```{r, echo = FALSE, message = FALSE}
+nofactors13 <- fa.parallel(acams13, fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plots excluding prayer and spiritual healing", cor = "tet")
+```
+The parallel analysis suggests 5 factors. There is a drop off on the scree plot after 4. 
+
+### Kaiser Criterion 
+```{r}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(nofactors13$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(nofactors13$fa.values > .7)
+```
+The Kaiser criterion suggests there is only 1 factor. The Kaiser criterion tends to over estimate factors. Doesn't seem good that it's only estimating 1. 
+
+## Factor Loadings: 3 factor model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+exprayheal_3 <- fa(r = het.mat_numeric, nfactors = 3, n.obs=6157, rotate = "oblimin", fm = "ml")
+exprayheal_3$loadings
+```
+
+Energy healing loads on two factors. 
+
+## Factor Loadings: 4 factor model excluding prayer and spiritual healing 
+```{r, echo = FALSE}
+exprayheal_4 <- fa(r = het.mat_numeric, nfactors = 4, n.obs=6157, rotate = "oblimin", fm = "ml")
+exprayheal_4$loadings
+```
+Massage and energy heal load on two factors. 
+
+## Factor loadings: 5 factor model excluding prayer and spiritual healing
+```{r, echo = FALSE}
+exprayheal_5 <- fa(r = het.mat_numeric, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", fm = "ml")
+exprayheal_5$loadings
+```
+Exercise/movement and energy healing load on two factors 
+
+## Compare model fit for 3, 4, and 5 factor models excluding prayer and spiritual healing
+```{r, echo=FALSE}
+efa <- function(df,   #correlation matrix  
+                k) {      #number of factors
+  foreach(i=3:k, .packages="psych") %dopar% fa(df, 
+                                               nfactors=i,
+                                               n.obs=6157,
+                                               rotate="oblimin",
+                                               fm="ml"
+  )
+}
+
+# Creates a table that compares the models. 
+compare_models <- function(model) {
+  table_efa <- data.frame(Model=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, RMSEA_lower_bound=0, RMSEA_upper_bound=0, RMSEA_confidence=0, CFI=0)   #empty data.frame to prealocate memory. 
+  for(i in 1:length(model)){
+    table_efa [i,1] <- paste("Model", i)
+    table_efa [i,2] <- model[[i]]$TLI
+    table_efa [i,3] <- model[[i]]$BIC
+    table_efa [i,4] <- model[[i]]$rms
+    table_efa [i,5:8] <- model[[i]]$RMSEA
+    table_efa [i, 9] <- 1 - ((model[[i]]$STATISTIC-model[[i]]$dof)/(model[[i]]$null.chisq-model[[i]]$null.dof))
+  }
+  return(table_efa)
+}
+
+test <- efa(het.mat_numeric, 5)
+model_fit_exprayheal_num <- compare_models(test)
+rownames(model_fit_exprayheal_num) <- c('3 Factor Model', '4 Factor Model', '5 Factor Model')
+model_fit_exprayheal_num
+```
+
+### Testing out bar chart display of factor loadings 
+```{r, echo = FALSE, results='hide'}
+
+summary(allvar_2$loadings)
+test_loadings <- allvar_2$loadings
+
+df <- data.frame(matrix(as.numeric(test_loadings), attributes(test_loadings)$dim, dimnames = attributes(test_loadings)$dimnames))
+df
+
+loadings.m <- melt(df, 
+                   measure=c("ML2", "ML1"), 
+                   variable.name="Factor", value.name="Loading")
+#For each test, plot the loading as length and fill color of a bar
+# note that the length will be the absolute value of the loading but the 
+# fill color will be the signed value, more on this below
+ggplot(loadings.m, aes(Test, abs(Loading), fill=Loading)) + 
+  facet_wrap(~ Factor, nrow=1) + #place the factors in separate facets
+  geom_bar(stat="identity") + #make the bars
+  coord_flip() + #flip the axes so the test names can be horizontal  
+  #define the fill color gradient: blue=positive, red=negative
+  scale_fill_gradient2(name = "Loading", 
+                       high = "blue", mid = "white", low = "red", 
+                       midpoint=0, guide=F) +
+  ylab("Loading Strength") + #improve y-axis label
+  theme_bw(base_size=10) #use a black-and0white theme with set font size
+```
