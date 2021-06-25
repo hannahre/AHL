@@ -50,7 +50,10 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+acams.sex <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15", "ASex")
 acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+acams_and_sex <- M1[acams.sex]
 
 # Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
 acams <- remove_attributes(acams, "label")
@@ -270,6 +273,12 @@ acams15_df <- modify_if(acams15_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```{r, echo = FALSE}
 acams15_df
 ```
+```{r, echo = FALSE}
+# Maximum likelihood models tend to perform better, subset to just those. 
+acams15_ml_models <- filter(acams15_df, FactorMethod == "ml")
+view(acams15_ml_models)
+```
+
 ## Factor loadings: All Models
 ```{r, echo = FALSE}
 foreach (i=1:6) %:%
@@ -351,12 +360,16 @@ Removing prayer and spiritual healing does not improve the reliability at all. R
 
 ##Fit Statistics: All models
 ```{r, echo = FALSE, results='hide'}
+test <- fa(r = het.mat13, nfactors = 1, n.obs=nrow(acams), rotate = "oblimin", max.iter = 1000, fm = "ml")
+test
+
+
 # Create empty data frame to be filled with fit statistics 
 acams13_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
 # Create counter to be used in the loop to input statistics into successive rows
 counter <- 1
 # Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
-acams13_efa_fit <- foreach (i=1:6) %:%
+acams13_efa_fit <- foreach (i=1:5) %:%
   foreach(j=c("ml", "minres")) %:%
     foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
       model_i_j_k<- fa(r = het.mat13, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
@@ -420,9 +433,9 @@ acams13_df <- modify_if(acams13_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```{r, echo = FALSE}
 acams13_df
 ```
-## Factor loadings: 3 through 6 factor models
+## Factor loadings: 3 through 5 factor models
 ```{r, echo = FALSE}
-foreach (i=3:6) %:%
+foreach (i=3:5) %:%
   foreach(j=c("ml", "minres")) %:%
   foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
     model_i_j_k<- fa(r = het.mat13, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 100, fm = j)
@@ -488,7 +501,7 @@ acams12_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=
 # Create counter to be used in the loop to input statistics into successive rows
 counter <- 1
 # Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
-acams12_efa_fit <- foreach (i=1:6) %:%
+acams12_efa_fit <- foreach (i=2:5) %:%
   foreach(j=c("ml", "minres",  "pa")) %:%
     foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
       model_i_j_k<- fa(r = het.mat12, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
@@ -595,7 +608,7 @@ acams11_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=
 counter <- 1
 # Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
 acams11_efa_fit <- foreach (i=3:5) %:%
-  foreach(j=c("ml", "minres", "pa")) %:%
+  foreach(j=c("ml", "minres")) %:%
     foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
       model_i_j_k<- fa(r = het.mat11, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
       acams11_fit_table_efa [counter,"Model"] <- paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation)
@@ -644,10 +657,46 @@ acams11_df
 ## Factor loadings: 3 through 5 factor models 
 ```{r, echo = FALSE}
 foreach (i=3:5) %:%
-  foreach(j=c("ml", "minres", "pa")) %:%
+  foreach(j=c("ml", "minres")) %:%
   foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
     model_i_j_k<- fa(r = het.mat11, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 100, fm = j)
     model_i_j_k.diagram <- fa.diagram(model_i_j_k, cut = .299, sort = TRUE, main = paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation))
     return(model_i_j_k.diagram)
   }
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# From meeting with Terrence, 06/25/21
+
+# Excluding prayer, spiritual healing, chiro and special diet
+acams.test <- subset(acams, select = -c(aPrayer, aSpiritHeal, aChiropractic, aSpecialDiet))
+acams.test
+# Create correlation matrix 
+het.mat.test <- hetcor(acams.test)$cor
+acams.test[] <- lapply(acams.test, function(x) as.numeric(as.character(x)))
+
+# Run factor model
+test2 <- fa(r = het.mat.test, nfactors = 1, n.obs = nrow(acams), rotate = "varimax", fm = "ml")
+test2
+kr20(acams.test)
+acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+kr20(acams)
+
+# Excluding prayer/spiritual, and all items with fewer than 100 yes cases
+acams.test2 <- subset(acams, select = -c(aPrayer, aSpiritHeal, aAcupuncture, aBiofeedback, aEnergyHeal, aHypnosis))
+acams.test2
+# Create correlation matrix 
+het.mat.test2 <- hetcor(acams.test2)$cor
+
+test3 <- fa(r = het.mat.test2, nfactors = 1, n.obs = nrow(acams), rotate = "varimax", fm = "ml")
+test3
+
+test3.cfi <- 1 - ((test3$STATISTIC-test3$dof)/(test3$null.chisq-test3$null.dof))
+test3.cfi
+
+acams.test2[] <- lapply(acams.test2, function(x) as.numeric(as.character(x))) # convert to numeric 
+kr20(acams.test2) 
+
+test3$loadings
+
 ```
