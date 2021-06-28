@@ -1,0 +1,92 @@
+---
+title: "Cross-sectional Analyses"
+author: "Hannah Andrews"
+date: "6/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# To begin, load the libraries in Hannah's Factor Analysis script:
+library(foreign)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
+library(foreach)
+library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
+library(fdth)
+library(lavaan)
+library(corrplot)
+```
+
+# Reading in data
+```{r}
+# Assign file path for Wave 1 of MIDUS Stata data file
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+# Read in stata file 
+M1 <- read_dta(path)
+
+dim(M1)
+# There are 7108 cases and 180 variables in M1 
+
+# Create vector that includes variables to be included in cross-sectional analyses 
+my.vars <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+             "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", 
+             "acam15", "aHlthIns", "aMarried", "ASex", "ARace", "aRelig6", "aRelig5", 
+             "aRelig4", "aRelig3", "aRelig2", "aRelig1", "lnAHhInc", "AEduc", 
+             "A1SHLOCO", "A1SHLOCS", "AAge")
+
+# Subset M1 to only include variables that will be included in the cross-sectional analyses
+M1 <- M1[,my.vars] # Subset MIDUS1 - only include CAMs.
+
+
+dim(M1)
+# Contains 7108 cases, 30 variables
+
+str(M1)
+
+# Rename CAMs
+M1 <- dplyr::rename(M1, 
+                       aAcupuncture = acam1, 
+                       aBiofeedback = acam2,
+                       aChiropractic = acam3,
+                       aEnergyHeal = acam4,
+                       aExerciseMove = acam5,
+                       aHerbal = acam6,
+                       aVitamins = acam7,
+                       aHomeopathy = acam8,
+                       aHypnosis = acam9,
+                       aImageryTech = acam10,
+                       aMassage = acam11,
+                       aPrayer = acam12,
+                       aRelaxMeditate = acam13,
+                       aSpecialDiet = acam14,
+                       aSpiritHeal = acam15)
+
+head(M1)
+
+# Keep only complete cases
+M1.complete <- M1[complete.cases(M1),]
+dim(M1.complete)
+# 5536 complete cases on all variables 
+```
+# Missing values on each variable 
+
