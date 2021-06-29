@@ -50,10 +50,8 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
-acams.sex <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
-               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15", "ASex")
+
 acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
-acams_and_sex <- M1[acams.sex]
 
 # Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
 acams <- remove_attributes(acams, "label")
@@ -701,4 +699,5 @@ test3$loadings
 
 ```
 06/25/21 Conclusions from meeting with Terrence 
-There does not appear to be an underlying latent factor motivating all of these behaviors. Why- fit statistics and low reliability even with all items included. 
+There does not appear to be an underlying latent factor motivating all of these behaviors. Why- fit statistics and low reliability even with all items included.
+

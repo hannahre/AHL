@@ -1,0 +1,214 @@
+---
+title: "Measurement Chapter"
+author: "Hannah Andrews"
+date: "6/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(expss)
+library(Hmisc)
+library(dplyr)
+library(summarytools)
+library(magrittr)
+library(tidyverse)
+library(mosaic)
+library(lattice)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(polycor)
+library(psych)
+library(REdaS)
+library(haven)
+library(labelled)
+library(mice)
+library(GPArotation)
+library(foreach)
+library(doParallel)
+library(questionr)
+library(gridExtra)
+library(DAKS)
+library(fdth)
+library(lavaan)
+library(validateR)
+library(corrplot)
+library(knitr)
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# This chunk reads in the Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+
+acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+
+str(acams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[,1:15])
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- dplyr::rename(acams, 
+                          aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
+```
+```{r, echo = FALSE, results='hide'}
+# this chunk converts the tibble produced in the previous chunk to a matrix. 
+# Code was written by Ron. See Andrews.Hannah.FacAn.Ron.script 
+
+# What type of numbers do we have in the tibble "acams"? Let's see.
+### Let's construct a matrix version of acams:
+acams.matrix <- as.matrix(acams)
+dim(acams.matrix)
+head(acams.matrix)
+acams.matrix <- as.numeric(acams.matrix)
+dim(acams) # is: 6157 rows by 15 columns
+6157 * 15 # is: 92,355
+length(acams.matrix) # also 92,355
+acams.matrix <- matrix(acams.matrix, ncol = 15)
+dim(acams.matrix)
+colnames(acams.matrix) <- names(acams)
+head(acams.matrix)
+head(acams) # They look the same.
+
+# Now look at the numbers in acams.matrix:
+table(as.vector(acams.matrix))
+# All numbers are binary (0, 1)
+colSums(acams.matrix)
+sort(colSums(acams.matrix))
+```
+```{r, echo = FALSE, results = 'hide'}
+# this code chunk sets up the frequencies visualization
+
+### Write the program that Hannah used ("freq_dframer")
+
+freq_dframer <- function(data){
+  quest_out   <- apply(data, 2, questionr::freq)
+  templist <- list()
+  for (i in 1:length(names(quest_out))) {
+    temp <- data.frame(Item = rep(names(quest_out[i]), nrow(quest_out[[i]])),
+                       Category = row.names(quest_out[[i]]),
+                       quest_out[[i]])
+    templist[[i]] <- temp
+  }
+  freqs <- dplyr::bind_rows(templist) 
+  row.names(freqs) <- NULL
+  names(freqs)[3:5] <- c("Frequency", "Percent", "Pcnt_of_nonMissing") 
+  freqs$Item <- factor(freqs$Item, levels = unique(freqs$Item))
+  freqs
+}
+freqout <- freq_dframer(acams)
+
+# Check with my matrix version:
+freqout$Frequency[seq(2, 30, 2)]
+colSums(acams.matrix)
+sum(freqout$Frequency[seq(2, 30, 2)] != colSums(acams.matrix)) # They are the same.
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk creates a table that reports frequency and percent of respondents who have used each CAM in the last 12 months.
+
+# Subset yes rows from the frequency table above
+freqout.is1 <- freqout[seq(2, 30, 2),]
+# Subset frequency and percent columns 
+freq.vars <- c("Frequency", "Percent")
+freqs <- freqout.is1[freq.vars]
+# Assign rownames 
+row.names(freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage", "Prayer",
+                  "Relaxiation Techniques", "Special Diet", "Spiritual Healing")
+# Order rows by frequency
+ordered.freqs <- arrange(freqs, Frequency)
+```
+
+# Data Description 
+Data presented in this chapter come from Wave 1 of the Midlife in the United States (MIDUS). These data were collected between 1995 and 1996. Only cases with no missing values on the complementary and alternative medicine (CAM) items are included in analyses (*N* = 6157). 
+
+## Measures Description  
+Descriptive statistics for each CAM item are presented in Table 1. Biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer (29.9%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%).
+
+```{r, echo = FALSE}
+# Print table of frequencies
+kable(ordered.freqs, caption = "Descriptive Statistics for CAM Use in the Last 12 Months")
+```
+
+# Factor Analysis
+
+In this section, I will present exploratory factor analysis results. While data screening 
+
+```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
+# Create correlation matrix 
+het.mat <- hetcor(acams)$cor
+# Rename columns for correlation matrix visualization 
+colnames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery", "Massage", "Prayer",
+                  "Relaxiation", "Special Diet", "Spiritual Healing")
+rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage", "Prayer",
+                  "Relaxiation Techniques", "Special Diet", "Spiritual Healing")
+```
+
+```{r, echo = FALSE}
+# How many correlations greater than .299
+length(het.mat[het.mat>.299])
+length(het.mat[het.mat<.3])
+# Percent of correlations greater than .299
+length(het.mat[het.mat>.299])/length(het.mat)
+```
+
+```{r, echo=FALSE}
+# Visualize correlation matrix
+cor.plot(het.mat, numbers=T, upper=FALSE, show.legend = TRUE, cex.axis = .7, xlas = 2)
+```
+```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
+corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, number.cex = .5, lower.col = "black")
+corrplot(het.mat, is.corr=FALSE, method="square", order="hclust", tl.cex = .75, tl.col = "black", cl.pos = "r", cl.align.text = "l")
+```
+
+## Factor solutions including all CAM items 
+
+
+### Goodness of Fit 
+### Reliability 
+## Models excluding prayer and spiritual healing 
+## Models excluding items with fewer than 100 cases 
+
