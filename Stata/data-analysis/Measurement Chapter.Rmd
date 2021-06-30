@@ -171,7 +171,7 @@ kable(ordered.freqs, caption = "Descriptive Statistics for CAM Use in the Last 1
 
 # Factor Analysis
 
-In this section, I will present exploratory factor analysis results. While data screening 
+In this section, I will present exploratory factor analysis results. While data screening revealed that the data are factorable, I did not find a factor solution that fit the the data. First, I ran factor models on all CAM items. Next, I ran factor models on all CAM items excluding prayer and spiritual healing. Then, in addition to prayer and spiritual healing I excluded all CAMs with fewer than 100 cases reporting use in the last year (biofeedback, hypnosis, acupuncture, and energy healing). Alternative factoring and rotation methods did not produce a well fitting factor solution. Fit statistics for models not presented in this chapter can be found in Appendix (insert letter). 
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
 # Create correlation matrix 
@@ -195,13 +195,14 @@ length(het.mat[het.mat<.3])
 length(het.mat[het.mat>.299])/length(het.mat)
 ```
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, results='hide'}
 # Visualize correlation matrix
-cor.plot(het.mat, numbers=T, upper=FALSE, show.legend = TRUE, cex.axis = .7, xlas = 2)
+#cor.plot(het.mat, numbers=T, upper=FALSE, show.legend = TRUE, cex.axis = .7, xlas = 2)
 ```
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
-corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, number.cex = .5, lower.col = "black")
-corrplot(het.mat, is.corr=FALSE, method="square", order="hclust", tl.cex = .75, tl.col = "black", cl.pos = "r", cl.align.text = "l")
+corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, number.cex = .5, lower.col = "black", order = "hclust")
+#corrplot(het.mat, is.corr=FALSE, method="square", order="hclust", tl.cex = .75, tl.col = "black", cl.pos = "r", cl.align.text = "l")
 ```
 
 ## Factor solutions including all CAM items 
