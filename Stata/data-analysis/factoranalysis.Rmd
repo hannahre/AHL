@@ -3,8 +3,8 @@ title: "Factor Analysis"
 author: "Hannah Andrews"
 date: "4/30/2021"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 Sample: There are 6157 complete cases on CAM variables at Wave 1. 
@@ -39,6 +39,7 @@ library(fdth)
 library(lavaan)
 library(validateR)
 library(corrplot)
+library(knitr)
 ```
 
 
@@ -269,7 +270,7 @@ sapply(acams15_df_rownames2, class)
 acams15_df <- modify_if(acams15_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```
 ```{r, echo = FALSE}
-acams15_df
+kable(acams15_df, caption = "Fit Statistics for 1-6 Factor Models")
 ```
 ```{r, echo = FALSE}
 # Maximum likelihood models tend to perform better, subset to just those. 
@@ -429,7 +430,7 @@ acams13_df <- modify_if(acams13_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```
 
 ```{r, echo = FALSE}
-acams13_df
+kable(acams13_df, caption = "Fit Statistics for 1-5 Factor Models Excluding Prayer and Spiritual Healing")
 ```
 ## Factor loadings: 3 through 5 factor models
 ```{r, echo = FALSE}
@@ -543,7 +544,7 @@ sapply(acams12_df_rownames2, class)
 acams12_df <- modify_if(acams12_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```
 ```{r, echo = FALSE}
-acams12_df
+kable(acams12_df, caption = "Fit Statistics for 1-5 Factor Models Excluding Prayer, Spiritual Healing, and Energy Healing")
 ```
 ## Factor loadings: Three through 5 factor models 
 ```{r, echo = FALSE}
@@ -605,7 +606,7 @@ acams11_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=
 # Create counter to be used in the loop to input statistics into successive rows
 counter <- 1
 # Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
-acams11_efa_fit <- foreach (i=3:5) %:%
+acams11_efa_fit <- foreach (i=1:4) %:%
   foreach(j=c("ml", "minres")) %:%
     foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
       model_i_j_k<- fa(r = het.mat11, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
@@ -649,7 +650,7 @@ sapply(acams11_df_rownames2, class)
 acams11_df <- modify_if(acams11_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```
 ```{r, echo = FALSE}
-acams11_df
+kable(acams11_df, caption = "Fit Statistics for 1-4 Factor Models Excluding Prayer, Spiritual Healing, Biofeedback, and Hypnosis")
 ```
 
 ## Factor loadings: 3 through 5 factor models 

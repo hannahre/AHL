@@ -5,6 +5,14 @@ date: "6/28/2021"
 output:
   pdf_document: default
   html_document: default
+header-includes:
+  - \usepackage{float}
+  - \usepackage{sectsty}
+  - \usepackage{paralist}
+  - \usepackage{setspace}\spacing{1.5}
+  - \usepackage{fancyhdr}
+  - \usepackage{lastpage}
+  - \usepackage{dcolumn}
 ---
 
 ```{r setup, include=FALSE}
@@ -38,7 +46,23 @@ library(lavaan)
 library(validateR)
 library(corrplot)
 library(knitr)
+library(sna)
+library(corrr)
+library(gdata)
+library(Rfast)
 ```
+
+# Introduction 
+*Intro: Why should CAMS fit together? Why should we care? What are the advantages of analyzing this – pros and cons*
+
+In this chapter, I investigate whether there is an underlying construct or constructs driving the use of complementary and alternative medicines. This is in part an answer to the call from health lifestyles perspectives to examine the ways in which individual behaviors coalesce into meaningful behavioral patterns (Cockerham 2005). 
+
+The term complementary and alternative medicine encompasses an array of diverse approaches to healing and promoting wellness. Complementary and alternative medicine has often been defined in opposition to biomedicine (cite). This definition is not sufficient. CAMs are united by their holistic philosophies and the belief that indiviudals are experts on their own well-being (cite). 
+
+o	What have others done to group them, including industry/professional groups?
+
+
+o	What are the advantages of using these data to test this?
 
 ```{r, echo = FALSE, results = 'hide'}
 # This chunk reads in the Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
@@ -186,24 +210,60 @@ rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Hea
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage", "Prayer",
                   "Relaxiation Techniques", "Special Diet", "Spiritual Healing")
 ```
-
-```{r, echo = FALSE}
-# How many correlations greater than .299
-length(het.mat[het.mat>.299])
-length(het.mat[het.mat<.3])
-# Percent of correlations greater than .299
-length(het.mat[het.mat>.299])/length(het.mat)
-```
-
-
-```{r, echo=FALSE, results='hide'}
-# Visualize correlation matrix
-#cor.plot(het.mat, numbers=T, upper=FALSE, show.legend = TRUE, cex.axis = .7, xlas = 2)
-```
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
-corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, number.cex = .5, lower.col = "black", order = "hclust")
-#corrplot(het.mat, is.corr=FALSE, method="square", order="hclust", tl.cex = .75, tl.col = "black", cl.pos = "r", cl.align.text = "l")
+#corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(het.mat, method="color", number.cex = .5, order="hclust", 
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col="black", tl.srt=45 #Text label color and rotation
+         )
 ```
+
+## Assumption Testing
+
+```{r, echo = FALSE, results='hide'}
+# This code chunk explores inter-item correlations 
+
+# Create new matrix that is equal to het.mat to be used for exploring correlations
+asymm.mat <- het.mat
+upperTriangle(asymm.mat, diag=TRUE, byrow=FALSE) <- NA
+asymm.mat
+
+# Range of correlations
+# Highest correlation in the matrix
+max(asymm.mat, na.rm = TRUE)
+# Lowest correlation in the matrix
+min(asymm.mat, na.rm = TRUE)
+
+# How many correlations greater than .299
+length(asymm.mat[asymm.mat>.299 & !is.na(asymm.mat)])
+# How many correlations below .3
+length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])
+# Percent of correlations greater than .299
+length(asymm.mat[asymm.mat>.299 & !is.na(asymm.mat)])/length(asymm.mat[!is.na(asymm.mat)])
+
+# Columns with values less than .3
+# Copy het.mat
+no.diag <- het.mat
+# Replace diagonals with NAs
+diag(no.diag) <- NA
+no.diag
+# Check whether each item correlates with at least one other item at .3
+corr.max <- apply(no.diag,2,max, na.rm=TRUE)
+corr.max > .3
+
+no.diag <- as.data.frame(no.diag)
+
+
+sum(no.diag$Acupuncture > .3, na.rm = TRUE)
+
+```
+
+All items correlate with at least one other item 
+
+Out of `r length(asymm.mat[!is.na(asymm.mat)])` inter-item correlations, `r length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])` are less than .3. 
+
+Sampling Adequacy 
 
 ## Factor solutions including all CAM items 
 
