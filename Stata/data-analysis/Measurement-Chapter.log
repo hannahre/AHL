@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.12)  12 JUL 2021 18:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.12)  14 JUL 2021 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -631,24 +631,24 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
-x.map}]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-7-1.pdf, id=58, 469.755pt
+x.map}] [2]
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-7-1.pdf, id=62, 469.755pt
  x 325.215pt>
 File: Measurement-Chapter_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file
  (type pdf)
 <use Measurement-Chapter_files/figure-latex/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-7
--1.pdf  used on input line 173.
+-1.pdf  used on input line 202.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-AED: lastpage setting LastPage
-[2] [3pdfTeX warning (ext4): destination with the same identifier (name{figure.
-1}) has been already used, duplicate ignored
+[3pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.204 \end{document}
-                     <./Measurement-Chapter_files/figure-latex/unnamed-chunk-7-
-1.pdf>] [4] (./Measurement-Chapter.aux)
+l.211 O
+       ut of 105 inter-item correlations, 24 are less than .3. <./Measurement-C
+hapter_files/figure-latex/unnamed-chunk-7-1.pdf>] 
+AED: lastpage setting LastPage
+[4] (./Measurement-Chapter.aux)
 Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 (rerunfilecheck)             Checksum: 078D04A9859985A00C540020ADC4BE95;1781.
  )
@@ -659,11 +659,11 @@ Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 Here is how much of TeX's memory you used:
  11192 strings out of 480477
  164408 string characters out of 5897580
- 486158 words of memory out of 5000000
+ 484158 words of memory out of 5000000
  28674 multiletter control sequences out of 15000+600000
  440947 words of font info for 51 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,6n,66p,373b,1378s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,6n,66p,373b,1388s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dv
 ips/lm/lm-ec.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1
 /public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/
@@ -672,7 +672,7 @@ onts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-di
 st/fonts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texm
 f-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/
 texmf-dist/fonts/type1/public/lm/lmri10.pfb>
-Output written on Measurement-Chapter.pdf (4 pages, 169289 bytes).
+Output written on Measurement-Chapter.pdf (4 pages, 171834 bytes).
 PDF statistics:
  121 PDF objects out of 1000 (max. 8388607)
  100 compressed objects within 1 object stream
