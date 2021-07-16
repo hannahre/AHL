@@ -50,6 +50,7 @@ library(sna)
 library(corrr)
 library(gdata)
 library(Rfast)
+library(kableExtra)
 ```
 
 # Introduction 
@@ -72,14 +73,75 @@ Clearly there are many ways to categorize CAMs intellectually. CAMs vary in term
 
 ```{r, echo = FALSE}
 # Create a table one row for each CAM and how they would be assigned in each system
-CAM <- c("Acupuncture", "Prayer", "Ayurveda", "Biofeedback", "Chiropractic", "Deep breathing", "Energy healing", "Folk medicine", "Guided imagery", "Herbal therapy", "Homeopathy", "Hypnosis", "Massage", "Meditation", "Naturopathy", "Healing ritual", "Vitamins", "Special Diet")
-UK <- c("")
-NCCAM <- c("Alternative Medical Systems", "Mind-Body Treatments", "Alternative Medical Systems", "Mind-Body Treatments", "Manipulative Treatements", "Mind-Body Treatments", "Energy Medicine", "Alternative Medical Systems", "Mind-Body Treatments", "Biologically Based Practices", "Alternative Medical Systems", "Mind-Body Treatements", "Manipulative Treatments", "Mind-Body Treatments", "Alternative Medical Systems", "Mind-Body Treatments", "Biologically Based Practices", "Biologically Based Practices")
-NCCIH <- c("Other", "Not included", "Other", "Not included", "Physical", "Psychological and Physical", "Not included", "Other", "Psychological and Physical", "Nutrional", "Other", "Psychological", "Physical", "Psychological and Physical", "Other", "Psychological", "Nutritional", "Nutritional")
-Ayers <- c("Manipulative Treatments", "")
-domains.df <- data.frame(CAM, NCCAM)
-domains.df
-kable(domains.df, caption = "")
+UK.input <- c("Professionally Organized Alt. Therapies", 
+              "Complementary Therapies", "Alternative Disciplines", 
+              "Complementary Therapies", 
+              "Professionally Organized Alt. Therapies", 
+              "Complementary Therapies", "Complementary Therapies", 
+              "Alternative Disciplines", "Complementary Therapies", 
+              "Professionally Organized Alt. Therapies", 
+              "Professionally Organized Alt. Therapies", 
+              "Complementary Therapies", "Complementary Therapies", 
+              "Complementary Therapies", "Alternative Disciplines", 
+              "Complementary Therapies", "Complementary Therapies", 
+              "Complementary Therapies")
+UK <- ordered(UK.input, levels = c("Alternative Disciplines", 
+                                  "Professionally Organized Alt. Therapies",
+                                  "Complementary Therapies"))
+NCCAM.input <- c("Alternative Medical Systems", "Mind-Body Treatments", 
+           "Alternative Medical Systems", "Mind-Body Treatments", 
+           "Manipulative Treatments", "Mind-Body Treatments", "Energy Medicine", 
+           "Alternative Medical Systems", "Mind-Body Treatments", 
+           "Biologically Based Practices", "Alternative Medical Systems", 
+           "Mind-Body Treatments", "Manipulative Treatments", 
+           "Mind-Body Treatments", "Alternative Medical Systems", 
+           "Mind-Body Treatments", "Biologically Based Practices", 
+           "Biologically Based Practices")
+NCCAM <- ordered(NCCAM.input, levels = c("Alternative Medical Systems",
+                                        "Biologically Based Practices",
+                                        "Mind-Body Treatments", 
+                                        "Manipulative Treatments", 
+                                        "Energy Medicine"))
+NCCIH.input <- c("Physical", "Psychological", "Alternative Medical Systems",
+                 "Psychological and Physical", "Physical", "Psychological and Physical", NA, 
+                 "Alternative Medical Systems", "Psychological and Physical", "Nutritional",
+                 "Alternative Medical Systems", "Psychological", "Physical", 
+                 "Psychological and Physical", "Alternative Medical Systems", 
+                 "Psychological", "Nutritional", "Nutritional")
+NCCIH <- ordered(NCCIH.input, levels = c("Alternative Medical Systems", 
+                                        "Nutritional",
+                                        "Psychological", 
+                                        "Physical", 
+                                        "Psychological and Physical"))
+Ayers.input <- c("Manipulative Treatments", "Prayer", "Alternative Medical Systems", 
+           "Alternative Medical Systems", "Manipulative Treatments", "Mind-Body Medicine",
+           NA, "Alternative Medical Systems", "Mind-Body Medicine", 
+           "Alternative Medical Systems", "Alternative Medical Systems", NA, 
+           "Manipulative Treatments", "Mind-Body Medicine", "Alternative Medical Systems",
+           "Prayer", "Alternative Medical Systems", NA)
+Ayers <- ordered(Ayers.input, levels = c("Alternative Medical Systems", 
+                                        "Mind-Body Medicine",
+                                        "Manipulative Treatments", 
+                                        "Prayer"))
+domains.df <- data.frame(UK, NCCAM, NCCIH, Ayers)
+row.names(domains.df) <- c("Acupuncture", "Prayer", "Ayurveda", "Biofeedback", "Chiropractic", 
+         "Deep breathing", "Energy healing", "Folk medicine", "Guided imagery", 
+         "Herbal therapy", "Homeopathy", "Hypnosis", "Massage", "Meditation",
+         "Naturopathy", "Healing ritual", "Vitamins", "Special Diet")
+domains.df <- domains.df[
+  with(domains.df, order(UK, NCCAM, NCCIH, Ayers)),
+]
+kable(domains.df,
+      booktabs = T,
+      col.names = c("UK House of Lords",
+                  "NCCAM",
+                  "NCCIH",
+                  "Ayers and Kronenfeld (2010)"),
+      caption = "CAM Classifications According to Institutions and Previous Research") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape()
+
+#kable_styling(latex_options = "scale_down")
 ```
 
 o	What are the advantages of using these data to test this?
