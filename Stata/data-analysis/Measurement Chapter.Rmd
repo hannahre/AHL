@@ -43,7 +43,6 @@ library(gridExtra)
 library(DAKS)
 library(fdth)
 library(lavaan)
-library(validateR)
 library(corrplot)
 library(knitr)
 library(sna)
@@ -51,6 +50,11 @@ library(corrr)
 library(gdata)
 library(Rfast)
 library(kableExtra)
+library(janitor)
+library(stargazer)
+library(tables)
+library(gtsummary)
+library(pander)
 ```
 
 # Introduction 
@@ -74,7 +78,7 @@ In their Strategic Plan for 2005-2009, the National Center for Complementary and
 Clearly there are many ways to justify the conceptual classifications of CAMs. CAMs vary in terms of their therapeutic input, their level of professional organization, and their relation to biomedicine. The question remains whether these classifications of CAMs represent actual patterns of CAM use. To my knowledge, there has been only one test of these proposed CAM domains in the literature. Ayers and Kronenfeld (2010) utilized data from the 2002 National Health Interview Survey (NHIS) to test whether the five domains (including whole medical systems) reflect actual patterns of CAM use using confirmatory factor analysis. After dropping CAMs that did not load properly (hypnosis, biofeedback, and energy healing), the authors found that the CAM domains proposed by NCCAM did not fit the data. The authors then conducted an exploratory factor analysis on the NHIS data. The authors found a well-fitting four factor solution. The four factors include mind-body medicine, alternative medical systems, prayer, and manipulative treatments. Meditation, guided imagery, relaxation, and deep breathing load onto mind-body medicine. Ayurveda, folk medicine, naturopathy, homeopathy, herbal therapy, vitamins, and biofeedback load onto alternative medical systems. Pray for self, asked others to pray for self, prayer groups, and healing rituals load onto prayer. Acupuncture, chiropractic, and massage load onto manipulative therapies. 
 
 ```{r, echo = FALSE}
-# Create a table one row for each CAM and how they would be assigned in each system
+# Create a table: Rows = CAMs. Columns = category the CAM is assigned to in each system
 UK.input <- c("Professionally Organized Alt. Therapies", 
               "Complementary Therapies", 
               "Alternative Disciplines", 
@@ -236,6 +240,76 @@ head(acams)
 acams=acams[complete.cases(acams),]
 str(acams)
 ```
+
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk creates a crosstab for prayer and spiritual healing
+
+# create new df with prayer and spiritual healing
+my.vars <- c("aPrayer", "aSpiritHeal")
+pray.spirit <- acams[my.vars]
+  
+# Assign yes/no values labels to prayer and spiritual healing 
+pray.spirit$aPrayer <- ordered(pray.spirit$aPrayer,
+                              levels = c(0,1), 
+                              labels = c("No", "Yes"))
+head(pray.spirit)
+pray.spirit$aSpiritHeal <- ordered(pray.spirit$aSpiritHeal,
+                                   levels = c(0, 1), 
+                                   labels = c("No", "Yes"))
+head(pray.spirit)
+
+# Crosstab for prayer and spiritual healing
+table.pray.spirit <- pray.spirit %>% 
+  tabyl(aPrayer, aSpiritHeal) %>% 
+  adorn_percentages("all") %>% 
+  adorn_pct_formatting() %>% 
+  adorn_ns( position = "front") %>% 
+  adorn_title(placement = "top", row_name = "Prayer", col_name = "Spiritual Healing")
+```
+
+```{r, echo = FALSE}
+table.pray.spirit %>% 
+  kable(caption = "Crosstab of Prayer and Spiritual Healing") %>% 
+  kable_styling(bootstrap_options = c("basic"))
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
+acams <- acams %>% 
+  rowwise() %>% 
+  mutate(
+    aPraySpirit = case_when(
+      aPrayer == 0 & aSpiritHeal == 0 ~ 0,
+      aPrayer == 1 & aSpiritHeal == 1 ~ 1, 
+      aPrayer == 1 & aSpiritHeal == 0 ~ 1, 
+      aPrayer == 0 & aSpiritHeal == 1 ~ 1)
+    ) %>% 
+  mutate_if(is.numeric, as.factor)
+check.vars <- c("aPrayer", "aSpiritHeal", "aPraySpirit")
+view(acams[check.vars])
+
+# Check that code ran correctly with crosstabs 
+# Prayer and Spiritual Healing
+table.pray.spirit
+# 4304 cases report no on both prayer and spiritual healing. aPraySpirit should have 4304 0/nos and 1853 1/yeses. 
+table(acams$aPraySpirit)
+# Correct.
+# Check that no cases that responded yes on prayer are coded as 0 on the new variable.
+acams %>%
+  tabyl(aPrayer, aPraySpirit)
+# Correct. 
+# Chcek that no cases that responded yes on spiritual healing are coded as 0 on the new variable.
+acams %>%  
+  tabyl(aSpiritHeal, aPraySpirit)
+# Correct. 
+# Check that aPraySpirit is a factor.
+class(acams$aPraySpirit)
+
+# Drop prayer and spiritual healing columns 
+acams <- subset(acams, select = -c(aPrayer, aSpiritHeal))
+str(acams)
+```
+
 ```{r, echo = FALSE, results='hide'}
 # this chunk converts the tibble produced in the previous chunk to a matrix. 
 # Code was written by Ron. See Andrews.Hannah.FacAn.Ron.script 
@@ -246,10 +320,10 @@ acams.matrix <- as.matrix(acams)
 dim(acams.matrix)
 head(acams.matrix)
 acams.matrix <- as.numeric(acams.matrix)
-dim(acams) # is: 6157 rows by 15 columns
-6157 * 15 # is: 92,355
-length(acams.matrix) # also 92,355
-acams.matrix <- matrix(acams.matrix, ncol = 15)
+dim(acams) # is: 6157 rows by 14 columns
+6157 * 14 # is: 86,198
+length(acams.matrix) # also 86,198
+acams.matrix <- matrix(acams.matrix, ncol = 14)
 dim(acams.matrix)
 colnames(acams.matrix) <- names(acams)
 head(acams.matrix)
@@ -261,6 +335,7 @@ table(as.vector(acams.matrix))
 colSums(acams.matrix)
 sort(colSums(acams.matrix))
 ```
+
 ```{r, echo = FALSE, results = 'hide'}
 # this code chunk sets up the frequencies visualization
 
@@ -284,24 +359,24 @@ freq_dframer <- function(data){
 freqout <- freq_dframer(acams)
 
 # Check with my matrix version:
-freqout$Frequency[seq(2, 30, 2)]
+freqout$Frequency[seq(2, 28, 2)]
 colSums(acams.matrix)
-sum(freqout$Frequency[seq(2, 30, 2)] != colSums(acams.matrix)) # They are the same.
+sum(freqout$Frequency[seq(2, 28, 2)] != colSums(acams.matrix)) # They are the same.
 ```
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk creates a table that reports frequency and percent of respondents who have used each CAM in the last 12 months.
 
 # Subset yes rows from the frequency table above
-freqout.is1 <- freqout[seq(2, 30, 2),]
+freqout.is1 <- freqout[seq(2, 28, 2),]
 # Subset frequency and percent columns 
 freq.vars <- c("Frequency", "Percent")
 freqs <- freqout.is1[freq.vars]
 # Assign rownames 
 row.names(freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
-                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage", "Prayer",
-                  "Relaxiation Techniques", "Special Diet", "Spiritual Healing")
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
+                  "Relaxiation Techniques", "Special Diet", "Prayer or Spiritual Healing")
 # Order rows by frequency
 ordered.freqs <- arrange(freqs, Frequency)
 ```
@@ -310,7 +385,7 @@ ordered.freqs <- arrange(freqs, Frequency)
 Data presented in this chapter come from Wave 1 of the Midlife in the United States (MIDUS). These data were collected between 1995 and 1996. Only cases with no missing values on the complementary and alternative medicine (CAM) items are included in analyses (*N* = 6157). 
 
 ## Measures Description  
-Descriptive statistics for each CAM item are presented in Table 1. Biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer (29.9%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%).
+Descriptive statistics for each CAM item are presented in Table 1. Biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer or spiritual healing (30%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%).
 
 ```{r, echo = FALSE}
 # Print table of frequencies
@@ -327,12 +402,12 @@ het.mat <- hetcor(acams)$cor
 # Rename columns for correlation matrix visualization 
 colnames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise", "Herbal Therapy", "Vitamins", 
-                  "Homeopathy", "Hypnosis", "Imagery", "Massage", "Prayer",
-                  "Relaxiation", "Special Diet", "Spiritual Healing")
+                  "Homeopathy", "Hypnosis", "Imagery", "Massage", 
+                  "Relaxiation", "Special Diet", "Prayer/Spiritual Healing")
 rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise", "Herbal Therapy", "Vitamins", 
-                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage", "Prayer",
-                  "Relaxiation Techniques", "Special Diet", "Spiritual Healing")
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
+                  "Relaxiation Techniques", "Special Diet", "Prayer/Spiritual Healing")
 ```
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")

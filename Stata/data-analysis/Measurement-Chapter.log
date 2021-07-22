@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  16 JUL 2021 17:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  22 JUL 2021 11:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -713,13 +713,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
 x.map}] [2]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 188.
+(Font)              <10> on input line 192.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 188.
+(Font)              <7> on input line 192.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 188.
+(Font)              <5> on input line 192.
 
-Overfull \hbox (31.83578pt too wide) in paragraph at lines 188--215
+Overfull \hbox (31.83578pt too wide) in paragraph at lines 192--219
  [][] 
  []
 
@@ -727,23 +727,28 @@ Overfull \hbox (31.83578pt too wide) in paragraph at lines 188--215
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.216 \end{landscape}
+l.220 \end{landscape}
                      ] [4pdfTeX warning (ext4): destination with the same ident
 ifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.292 
+l.316 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.3
+}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.316 
       
 
 
 ]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-8-1.pdf, id=72, 469.755pt
- x 325.215pt>
-File: Measurement-Chapter_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file
- (type pdf)
-<use Measurement-Chapter_files/figure-latex/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-8
--1.pdf  used on input line 295.
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf, id=73, 469.755p
+t x 325.215pt>
+File: Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fil
+e (type pdf)
+<use Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
+1-1.pdf  used on input line 319.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 AED: lastpage setting LastPage
@@ -751,9 +756,9 @@ AED: lastpage setting LastPage
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.326 \end{document}
-                     <./Measurement-Chapter_files/figure-latex/unnamed-chunk-8-
-1.pdf>] [6] (./Measurement-Chapter.aux)
+l.350 \end{document}
+                     <./Measurement-Chapter_files/figure-latex/unnamed-chunk-11
+-1.pdf>] [6] (./Measurement-Chapter.aux)
 Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 (rerunfilecheck)             Checksum: 078D04A9859985A00C540020ADC4BE95;1781.
  )
@@ -762,10 +767,10 @@ Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 ### semi simple group (level 1) entered at line 65 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 12077 strings out of 480502
- 178574 string characters out of 5898081
- 500993 words of memory out of 5000000
- 29481 multiletter control sequences out of 15000+600000
+ 12079 strings out of 480502
+ 178609 string characters out of 5898081
+ 502054 words of memory out of 5000000
+ 29482 multiletter control sequences out of 15000+600000
  453084 words of font info for 67 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,9n,66p,373b,2578s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -777,10 +782,10 @@ onts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-di
 st/fonts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texm
 f-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/
 texmf-dist/fonts/type1/public/lm/lmri10.pfb>
-Output written on Measurement-Chapter.pdf (6 pages, 176594 bytes).
+Output written on Measurement-Chapter.pdf (6 pages, 176935 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 107 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
+ 133 PDF objects out of 1000 (max. 8388607)
+ 109 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
  86 words of extra memory for PDF output out of 10000 (max. 10000000)
 

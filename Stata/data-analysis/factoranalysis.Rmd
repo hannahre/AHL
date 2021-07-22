@@ -289,6 +289,69 @@ foreach (i=1:6) %:%
   }
 ```
 
+# Combining Prayer and Spiritual Healing 
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
+acams <- acams %>% 
+  rowwise() %>% 
+  mutate(
+    aPraySpirit = case_when(
+      aPrayer == 0 & aSpiritHeal == 0 ~ 0,
+      aPrayer == 1 & aSpiritHeal == 1 ~ 1, 
+      aPrayer == 1 & aSpiritHeal == 0 ~ 1, 
+      aPrayer == 0 & aSpiritHeal == 1 ~ 1)
+    ) %>% 
+  mutate_if(is.numeric, as.factor)
+check.vars <- c("aPrayer", "aSpiritHeal", "aPraySpirit")
+view(acams[check.vars])
+
+# Check that code ran correctly with crosstabs 
+# Prayer and Spiritual Healing
+table.pray.spirit
+# 4304 cases report no on both prayer and spiritual healing. aPraySpirit should have 4304 0/nos and 1853 1/yeses. 
+table(acams$aPraySpirit)
+# Correct.
+# Check that no cases that responded yes on prayer are coded as 0 on the new variable.
+acams %>%
+  tabyl(aPrayer, aPraySpirit)
+# Correct. 
+# Chcek that no cases that responded yes on spiritual healing are coded as 0 on the new variable.
+acams %>%  
+  tabyl(aSpiritHeal, aPraySpirit)
+# Correct. 
+# Check that aPraySpirit is a factor.
+class(acams$aPraySpirit)
+
+# Drop prayer and spiritual healing columns 
+acams <- subset(acams, select = -c(aPrayer, aSpiritHeal))
+str(acams)
+```
+
+```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
+# Create correlation matrix 
+het.mat <- hetcor(acams)$cor
+# Rename columns for correlation matrix visualization 
+colnames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery", "Massage", 
+                  "Relaxiation", "Special Diet", "Prayer/Spiritual Healing")
+rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
+                  "Relaxiation Techniques", "Special Diet", "Prayer/Spiritual Healing")
+```
+```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
+# Visualize correlation matrix 
+#corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(het.mat, method="color", number.cex = .5, order="hclust", 
+         addCoef.col = "black", # Add coefficient of correlation
+         tl.col="black", tl.srt=45 #Text label color and rotation
+         )
+```
+
+# START HERE 
+
 # Exclude prayer and spiritual healing 
 ```{r, echo = FALSE, results = 'hide'}
 # Remove aPrayer and aSpiritHeal from acams
