@@ -37,7 +37,6 @@ library(gridExtra)
 library(DAKS)
 library(fdth)
 library(lavaan)
-library(validateR)
 library(corrplot)
 library(knitr)
 ```
@@ -290,42 +289,7 @@ foreach (i=1:6) %:%
 ```
 
 # Combining Prayer and Spiritual Healing 
-```{r, echo = FALSE, results = 'hide'}
-# This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
-acams <- acams %>% 
-  rowwise() %>% 
-  mutate(
-    aPraySpirit = case_when(
-      aPrayer == 0 & aSpiritHeal == 0 ~ 0,
-      aPrayer == 1 & aSpiritHeal == 1 ~ 1, 
-      aPrayer == 1 & aSpiritHeal == 0 ~ 1, 
-      aPrayer == 0 & aSpiritHeal == 1 ~ 1)
-    ) %>% 
-  mutate_if(is.numeric, as.factor)
-check.vars <- c("aPrayer", "aSpiritHeal", "aPraySpirit")
-view(acams[check.vars])
 
-# Check that code ran correctly with crosstabs 
-# Prayer and Spiritual Healing
-table.pray.spirit
-# 4304 cases report no on both prayer and spiritual healing. aPraySpirit should have 4304 0/nos and 1853 1/yeses. 
-table(acams$aPraySpirit)
-# Correct.
-# Check that no cases that responded yes on prayer are coded as 0 on the new variable.
-acams %>%
-  tabyl(aPrayer, aPraySpirit)
-# Correct. 
-# Chcek that no cases that responded yes on spiritual healing are coded as 0 on the new variable.
-acams %>%  
-  tabyl(aSpiritHeal, aPraySpirit)
-# Correct. 
-# Check that aPraySpirit is a factor.
-class(acams$aPraySpirit)
-
-# Drop prayer and spiritual healing columns 
-acams <- subset(acams, select = -c(aPrayer, aSpiritHeal))
-str(acams)
-```
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
 # Create correlation matrix 
@@ -350,7 +314,14 @@ corrplot(het.mat, method="color", number.cex = .5, order="hclust",
          )
 ```
 
-# START HERE 
+# Prayer and Spiritual healing combined 
+## Test for correlation adequacy 
+
+Bartlett's test for sphericity. 
+```{r, echo = FALSE}
+# Correlation adequacy Bartlett's test
+cortest.bartlett(het.mat, n = nrow(acams))
+```
 
 # Exclude prayer and spiritual healing 
 ```{r, echo = FALSE, results = 'hide'}

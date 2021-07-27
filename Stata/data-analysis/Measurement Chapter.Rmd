@@ -398,13 +398,13 @@ In this section, I will present exploratory factor analysis results. While data 
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
 # Create correlation matrix 
-het.mat <- hetcor(acams)$cor
+het.mat.a <- hetcor(acams)$cor
 # Rename columns for correlation matrix visualization 
-colnames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+colnames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery", "Massage", 
                   "Relaxiation", "Special Diet", "Prayer/Spiritual Healing")
-rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
                   "Relaxiation Techniques", "Special Diet", "Prayer/Spiritual Healing")
@@ -412,7 +412,7 @@ rownames(het.mat) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Hea
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
-corrplot(het.mat, method="color", number.cex = .5, order="hclust", 
+corrplot(het.mat.a, method="color", number.cex = .5, order="hclust", 
          addCoef.col = "black", # Add coefficient of correlation
          tl.col="black", tl.srt=45 #Text label color and rotation
          )
@@ -423,8 +423,8 @@ corrplot(het.mat, method="color", number.cex = .5, order="hclust",
 ```{r, echo = FALSE, results='hide'}
 # This code chunk explores inter-item correlations 
 
-# Create new matrix that is equal to het.mat to be used for exploring correlations
-asymm.mat <- het.mat
+# Create new matrix that is equal to het.mat.a to be used for exploring correlations
+asymm.mat <- het.mat.a
 upperTriangle(asymm.mat, diag=TRUE, byrow=FALSE) <- NA
 asymm.mat
 
@@ -442,8 +442,8 @@ length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])
 length(asymm.mat[asymm.mat>.299 & !is.na(asymm.mat)])/length(asymm.mat[!is.na(asymm.mat)])
 
 # Columns with values less than .3
-# Copy het.mat
-no.diag <- het.mat
+# Copy het.mat.a
+no.diag <- het.mat.a
 # Replace diagonals with NAs
 diag(no.diag) <- NA
 no.diag
@@ -462,10 +462,168 @@ All items correlate with at least one other item
 
 Out of `r length(asymm.mat[!is.na(asymm.mat)])` inter-item correlations, `r length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])` are less than .3. 
 
-Sampling Adequacy 
-
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk tests for correlation adequacy using Bartlett's test
+cortest.bartlett(het.mat.a, n = nrow(acams))
+```
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk tests for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test
+KMO(het.mat.a)
+```
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk runs a parallel test 
+# Convert acams to numerics for parallel analysis
+acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
+str(acams)
+paralell.all.cams <- fa.parallel(het.mat.a, n.obs = nrow(acams), fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plot")
+```
+```{r, echo = FALSE, results='hide'}
+# older kaiser criterion, number of eigenvalues greater than 1 
+sum(paralell.all.cams$fa.values > 1.0)
+# new kaiser criterion, number of eigenvalues greater than 0.7
+sum(paralell.all.cams$fa.values > .7)
+```
 ## Factor solutions including all CAM items 
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk runs all models with all CAMs. 
 
+# Create empty data frame to be filled with fit statistics 
+acams_all_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
+# Create counter to be used in the loop to input statistics into successive rows
+counter <- 1
+# Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
+acams_all_fit_table_efa <- foreach (i=1:6) %:%
+  foreach(j=c("ml", "minres", "pa")) %:%
+    foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
+      model_i_j_k<- fa(r = het.mat.a, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 100, fm = j)
+      acams_all_fit_table_efa [counter,"Model"] <- paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation)
+      acams_all_fit_table_efa [counter,"CFI"] <- 1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof))
+      acams_all_fit_table_efa [counter,"TLI"] <- model_i_j_k$TLI
+      acams_all_fit_table_efa [counter,"BIC"] <- model_i_j_k$BIC
+      acams_all_fit_table_efa [counter,"RMSR"] <- model_i_j_k$rms
+      acams_all_fit_table_efa [counter,"RMSEA"] <- model_i_j_k$RMSEA[1]
+      acams_all_fit_table_efa [counter, "Factors"] <- model_i_j_k$factors
+      acams_all_fit_table_efa [counter, "FactorMethod"] <- model_i_j_k$fm
+      acams_all_fit_table_efa [counter, "Rotation"] <- model_i_j_k$rotation
+      return(acams_all_fit_table_efa)
+      counter <- counter + 1 
+    }
+
+# Convert the nested lists created by the nested loops above to a data frame. 
+# 6 columns 72 rows (72 models)
+acams_all_df_unstacked <- unstack(data.frame(d<-unlist(acams_all_fit_table_efa),names(d)))
+acams_all_df_unstacked
+
+# Turn "Model" column into row names
+acams_all_df_rownames <- data.frame(acams_all_df_unstacked[,-5],
+                                  row.names=acams_all_df_unstacked[,5])
+acams_all_df_rownames
+
+# Reorder columns
+col_order <- c("Factors", "FactorMethod", "Rotation", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
+acams_all_df_rownames2 <- acams_all_df_rownames[, col_order]
+acams_all_df_rownames2
+
+str(acams_all_df_rownames2)
+
+# All columns are character vectors.
+# Convert appropriate columns to numeric.
+cols.num <- c("Factors", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
+acams_all_df_rownames2[cols.num] <- sapply(acams_all_df_rownames2[cols.num],as.numeric)
+sapply(acams_all_df_rownames2, class)
+
+# Round numeric values to four decimal places
+acams_all_df <- modify_if(acams_all_df_rownames2, ~is.numeric(.), ~round(., 4))
+```
+```{r, echo = FALSE, results='hide'}
+# 6 factor maximum likelihood solution had the best fit statistics above. Fit statistics are the same for all rotation methods. Check factor loadings for all rotation methods.
+all.6.ml.varimax <- fa(r = het.mat.a, nfactors = 6, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+all.6.ml.varimax$loadings
+all.6.ml.promax <- fa(r = het.mat.a, nfactors = 6, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "ml")
+all.6.ml.promax$loadings
+all.6.ml.cluster <- fa(r = het.mat.a, nfactors = 6, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+all.6.ml.cluster$loadings
+all.6.ml.oblimin <- fa(r = het.mat.a, nfactors = 6, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+all.6.ml.oblimin$loadings
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# Factor loadings for 5 factor solutions
+all.5.ml.varimax <- fa(r = het.mat.a, nfactors = 5, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+all.5.ml.varimax$loadings
+all.5.ml.promax <- fa(r = het.mat.a, nfactors = 5, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "ml")
+all.5.ml.promax$loadings
+# In the 5 factor solutions so far, CAMs are loading on multiple factors fairly evenly. Herbal and homeopathy and prayer/spiritual healing. 
+all.5.ml.cluster <- fa(r = het.mat.a, nfactors = 5, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+all.5.ml.cluster$loadings
+# Actually this cluster solution looks pretty good. Prayer/spirit is loading on two factors, and biofeedback is loading on its own factor. Otherwise the factor groupings make sense. 
+all.5.ml.oblimin <- fa(r = het.mat.a, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+all.5.ml.oblimin$loadings
+```
+
+```{r, echo = FALSE, results = 'hide'}
+# In the 5 and 6 factor solutions, biofeedback is loading on its own factor consistently. It also has the fewest cases reporting use over the last year. 
+# Run analyses dropping biofeedback. 
+
+# Drop biofeedback 
+acams.drop.bio <- subset(acams, select = -c(aBiofeedback))
+# Convert all columns to factors for tetrachoric correlations 
+acams.drop.bio[sapply(acams.drop.bio, is.numeric)] <- lapply(acams.drop.bio[sapply(acams.drop.bio, is.numeric)], as.factor)
+str(acams.drop.bio)
+
+# Create new correlation matrix
+het.mat.drop.bio <- hetcor(acams.drop.bio)$cor
+
+# Create empty data frame to be filled with fit statistics 
+acams_drop_bio_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
+# Create counter to be used in the loop to input statistics into successive rows
+counter <- 1
+# Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
+acams_drop_bio_efa_fit <- foreach (i=1:5) %:%
+  foreach(j=c("ml", "minres")) %:%
+    foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
+      model_i_j_k<- fa(r = het.mat.drop.bio, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
+      acams_drop_bio_fit_table_efa [counter,"Model"] <- paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation)
+      acams_drop_bio_fit_table_efa [counter,"CFI"] <- 1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof))
+      acams_drop_bio_fit_table_efa [counter,"TLI"] <- model_i_j_k$TLI
+      acams_drop_bio_fit_table_efa [counter,"BIC"] <- model_i_j_k$BIC
+      acams_drop_bio_fit_table_efa [counter,"RMSR"] <- model_i_j_k$rms
+      acams_drop_bio_fit_table_efa [counter,"RMSEA"] <- model_i_j_k$RMSEA[1]
+      acams_drop_bio_fit_table_efa [counter, "Factors"] <- model_i_j_k$factors
+      acams_drop_bio_fit_table_efa [counter, "FactorMethod"] <- model_i_j_k$fm
+      acams_drop_bio_fit_table_efa [counter, "Rotation"] <- model_i_j_k$rotation
+      return(acams_drop_bio_fit_table_efa)
+      counter <- counter + 1 
+    }
+
+# Convert the nested lists created by the nested loops above to a data frame. 
+# 6 columns 72 rows (72 models)
+acams_drop_bio_df_unstacked <- unstack(data.frame(d<-unlist(acams_drop_bio_efa_fit),names(d)))
+acams_drop_bio_df_unstacked
+
+# Turn "Model" column into row names
+acams_drop_bio_df_rownames <- data.frame(acams_drop_bio_df_unstacked[,-5],
+                                  row.names=acams_drop_bio_df_unstacked[,5])
+acams_drop_bio_df_rownames
+
+# Reorder columns
+col_order <- c("Factors", "FactorMethod", "Rotation", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
+acams_drop_bio_df_rownames2 <- acams_drop_bio_df_rownames[, col_order]
+acams_drop_bio_df_rownames2
+
+str(acams_drop_bio_df_rownames2)
+
+# All columns are character vectors.
+# Convert appropriate columns to numeric.
+cols.num <- c("Factors", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
+acams_drop_bio_df_rownames2[cols.num] <- sapply(acams_drop_bio_df_rownames2[cols.num],as.numeric)
+sapply(acams_drop_bio_df_rownames2, class)
+
+# Round numeric values to four decimal places
+acams_drop_bio_df <- modify_if(acams_drop_bio_df_rownames2, ~is.numeric(.), ~round(., 4))
+```
+
+```
 
 ### Goodness of Fit 
 ### Reliability 
