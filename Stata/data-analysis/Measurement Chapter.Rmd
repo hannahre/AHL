@@ -55,6 +55,8 @@ library(stargazer)
 library(tables)
 library(gtsummary)
 library(pander)
+library(validateR)
+library(lavaan)
 ```
 
 # Introduction 
@@ -376,7 +378,7 @@ freqs <- freqout.is1[freq.vars]
 row.names(freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
-                  "Relaxiation Techniques", "Special Diet", "Prayer or Spiritual Healing")
+                  "Relaxation Techniques", "Special Diet", "Prayer or Spiritual Healing")
 # Order rows by frequency
 ordered.freqs <- arrange(freqs, Frequency)
 ```
@@ -623,10 +625,90 @@ sapply(acams_drop_bio_df_rownames2, class)
 acams_drop_bio_df <- modify_if(acams_drop_bio_df_rownames2, ~is.numeric(.), ~round(., 4))
 ```
 
+```{r, echo = FALSE, results='hide'}
+# Maximum likelihood 5 factor solutions have best fit statistics. Review the factor loadings and groupings. 
+drop.bio.5.ml.varimax <- fa(r = het.mat.drop.bio, nfactors = 5, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+drop.bio.5.ml.varimax$loadings
+drop.bio.5.ml.promax <- fa(r = het.mat.drop.bio, nfactors = 5, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "ml")
+drop.bio.5.ml.promax$loadings
+drop.bio.5.ml.oblimin <- fa(r = het.mat.drop.bio, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+drop.bio.5.ml.oblimin$loadings
+drop.bio.5.ml.cluster <- fa(r = het.mat.drop.bio, nfactors = 5, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+drop.bio.5.ml.cluster$loadings
+# Consistent patterns: Acupuncture, herbal, vitamins, and homeopathy tend to load onto the same factor. This is also what Ayers and Kronenfeld found. Imagery tech, meditation, and prayer tend to go together. Imagery techniques also tend to load with hypnosis and energy healing. Exercise/movement is tending to load onto its own factor in the 5 factor solutions. Chiropractic and massage consistently load together. 
+```
+```{r, echo = FALSE, results = 'hide'}
+# 4 factor maximum likelihood solutions fit the data well- some statistics are just below the cutoff, and the BIC is a bit higher. 
+drop.bio.4.ml.varimax <- fa(r = het.mat.drop.bio, nfactors = 4, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
+drop.bio.4.ml.varimax$loadings
+drop.bio.4.ml.promax <- fa(r = het.mat.drop.bio, nfactors = 4, n.obs=nrow(acams), rotate = "promax", max.iter = 100, fm = "ml")
+drop.bio.4.ml.promax$loadings
+drop.bio.4.ml.oblimin <- fa(r = het.mat.drop.bio, nfactors = 4, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
+drop.bio.4.ml.oblimin$loadings
+drop.bio.4.ml.cluster <- fa(r = het.mat.drop.bio, nfactors = 4, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
+drop.bio.4.ml.cluster$loadings
+# Cluster solution looks pretty good- All the mind-body therapies load together. Acupuncture, herbal, and homeopathy load together - alternative systems. Chiropractic and massage load together - manipulative therapies. Exercise, vitamins, and special diet load together - physiological/nutrition. According to the NCCIH these would all be physical, but the difference between chiro/massage and diet/vitamins/nutrition is you don't need to see a professional (professionally organized therapies). 
+```
+```{r, echo = FALSE, results='hide'}
+# Check reliability for the 4 Factor Solution using Maximum Likelihood and cluster rotation. Prayer and spiritual healing have been combined, and biofeedback dropped (because it was loading onto its own factor). 
+
+# Convert acams.drop.bio to numeric 
+acams.drop.bio[] <- lapply(acams.drop.bio, function(x) as.numeric(as.character(x)))
+str(acams.drop.bio)
+# Calculate Kuder-Richardson coefficient for binary data 
+kr20(acams.drop.bio)
+
+# Reliability for factor 1 
+f1 <- acams.drop.bio[c("aEnergyHeal", "aHypnosis", "aImageryTech", "aRelaxMeditate", "aPraySpirit")]
+head(f1)
+kr20(f1)
+# Reliability for factor 2 
+f2 <- acams.drop.bio[c("aAcupuncture", "aHerbal", "aHomeopathy")]
+head(f2)
+kr20(f2)
+# Reliability for factor 3 
+f3 <- acams.drop.bio[c("aExerciseMove", "aVitamins", "aSpecialDiet")]
+head(f3)
+kr20(f3)
+# Reliability for factor 4 
+f4 <- acams.drop.bio[c("aChiropractic", "aMassage")]
+head(f4)
+kr20(f4)
+```
+```{r, echo = FALSE, results='hide'}
+# Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio)
+
+# Convert acams.drop.bio columns to ordered factors
+## Convert to factors 
+acams.drop.bio[] <- lapply(acams.drop.bio[], as.factor)
+head(acams.drop.bio)
+## Order factors
+acams.drop.bio[] <- lapply(acams.drop.bio, function(x) factor(x, 
+                                                              levels = c("0", "1"),             
+                                                              ordered = TRUE))
+str(acams.drop.bio)
+# Check that frequencies are the same
+drop.bio.freqs <- freq_dframer(acams.drop.bio)
+# Add print out of acams freqencies here 
+drop.bio.freqs 
+# They are the same. 
+
+# Assigning items to factors 
+efa.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
+        f2 =~ aAcupuncture + aHerbal + aHomeopathy
+        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
+        f4 =~ aChiropractic + aMassage '
+# Run CFA model 
+fit <- cfa(efa.model, data = acams.drop.bio,
+             ordered = TRUE)
+# Review fit statistics
+summary(fit, fit.measures = TRUE)
+# Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
+# sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
+```
+```{r, echo = FALSE}
+# Model Plot 
+semPlot::semPaths(fit, "std")
 ```
 
-### Goodness of Fit 
-### Reliability 
-## Models excluding prayer and spiritual healing 
-## Models excluding items with fewer than 100 cases 
 
