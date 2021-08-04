@@ -16,7 +16,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(foreign)
 library(expss)
 library(Hmisc)
@@ -57,6 +57,7 @@ library(gtsummary)
 library(pander)
 library(validateR)
 library(lavaan)
+options(scipen = 999)
 ```
 
 # Introduction 
@@ -425,8 +426,9 @@ corrplot(het.mat.a, method="color", number.cex = .5, order="hclust",
          tl.col="black", tl.srt=45 #Text label color and rotation
          )
 ```
+## Exploratory Factor Analysis 
 
-## Assumption Testing
+### Assumption Testing
 
 ```{r, echo = FALSE, results='hide'}
 # This code chunk explores inter-item correlations 
@@ -472,29 +474,30 @@ sum(no.diag$Acupuncture > .3, na.rm = TRUE)
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk tests for correlation adequacy using Bartlett's test
-cortest.bartlett(het.mat.a, n = nrow(acams))
+bartlett <- cortest.bartlett(het.mat.a, n = nrow(acams))
+bart.chisq <- round(cortest.bartlett(het.mat.a, n = nrow(acams))$chisq, 2)
 ```
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk tests for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test
 KMO(het.mat.a)
-kmo <- KMO(het.mat.a)$MSA
+kmo <- round(KMO(het.mat.a)$MSA, 2)
 ```
-The factorability of the 13 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Second, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6, and Bartlett's test of sphericity was significant () 
+The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Next, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6. Bartlett's test of sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* <.01) indicating that the correlations between variables are higher than would be expected by chance. There is correlation adequacy. Finally, (Report communalities - which indicate that items share common variance with other items).    
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs a parallel test 
 # Convert acams to numerics for parallel analysis
 acams[] <- lapply(acams, function(x) as.numeric(as.character(x)))
 str(acams)
-paralell.all.cams <- fa.parallel(het.mat.a, n.obs = nrow(acams), fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plot")
+parallel.all.cams <- fa.parallel(het.mat.a, n.obs = nrow(acams), fm = "ml", fa = "fa", main = "Parallel Analysis Scree Plot")
 ```
 ```{r, echo = FALSE, results='hide'}
 # older kaiser criterion, number of eigenvalues greater than 1 
-sum(paralell.all.cams$fa.values > 1.0)
+sum(parallel.all.cams$fa.values > 1.0)
 # new kaiser criterion, number of eigenvalues greater than 0.7
-sum(paralell.all.cams$fa.values > .7)
+sum(parallel.all.cams$fa.values > .7)
 ```
-## Factor solutions including all CAM items 
+### Results
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs all models with all CAMs. 
 
@@ -571,7 +574,7 @@ all.5.ml.cluster$loadings
 all.5.ml.oblimin <- fa(r = het.mat.a, nfactors = 5, n.obs=nrow(acams), rotate = "oblimin", max.iter = 100, fm = "ml")
 all.5.ml.oblimin$loadings
 ```
-
+First, I ran the exploratory factor analysis on all 14 CAMs. After examining one through six factor solutions using different extraction and rotation methods (See Appendix (create appendix for model fit statistics including all CAMs)), I found that the five and six factor maximum likelihood solutions fit the data best; however, biofeedback consistently loaded onto its own factor. Biofeedback is utilized by the smallest number of respondents (48). In light of the few cases reporting use of biofeedback and failure to load with other items, I dropped biofeedback and ran the analysis with the other 13 CAMs. 
 ```{r, echo = FALSE, results = 'hide'}
 # In the 5 and 6 factor solutions, biofeedback is loading on its own factor consistently. It also has the fewest cases reporting use over the last year. 
 # Run analyses dropping biofeedback. 
@@ -657,7 +660,14 @@ drop.bio.4.ml.oblimin$loadings
 drop.bio.4.ml.cluster <- fa(r = het.mat.drop.bio, nfactors = 4, n.obs=nrow(acams), rotate = "cluster", max.iter = 100, fm = "ml")
 drop.bio.4.ml.cluster$loadings
 # Cluster solution looks pretty good- All the mind-body therapies load together. Acupuncture, herbal, and homeopathy load together - alternative systems. Chiropractic and massage load together - manipulative therapies. Exercise, vitamins, and special diet load together - physiological/nutrition. According to the NCCIH these would all be physical, but the difference between chiro/massage and diet/vitamins/nutrition is you don't need to see a professional (professionally organized therapies). 
+
+# Assign CFI for the cluster solution to an object for inclusion in text 
+drop.bio.4.ml.cluster.cfi <- 1 - ((drop.bio.4.ml.cluster$STATISTIC-drop.bio.4.ml.cluster$dof)/(drop.bio.4.ml.cluster$null.chisq-drop.bio.4.ml.cluster$null.dof))
 ```
+I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). (Unsure how to report the chi-square test. Using model$STATISTIC, model$dof, model$PVAL to report). The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
+
+The four factors in the final model account for `r round(drop.bio.4.ml.cluster$Vaccounted["Cumulative Var","ML3"],2)` of the variance in the data. Factor 1, 
+
 ```{r, echo = FALSE, results='hide'}
 # Check reliability for the 4 Factor Solution using Maximum Likelihood and cluster rotation. Prayer and spiritual healing have been combined, and biofeedback dropped (because it was loading onto its own factor). 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  3 AUG 2021 18:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  4 AUG 2021 12:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -743,71 +743,74 @@ File: Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fil
 e (type pdf)
 <use Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf>
 Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
-1-1.pdf  used on input line 329.
+1-1.pdf  used on input line 327.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 327--329
+[][]
+ []
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 331.
+
 [5pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.342 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.342 
+l.343 
        <./Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf>]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf, id=70, 469.755p
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf, id=69, 469.755p
 t x 325.215pt>
 File: Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf Graphic fil
 e (type pdf)
 <use Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf>
 Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
-5-1.pdf  used on input line 343.
+5-1.pdf  used on input line 344.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3
-49.
-(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [6 <./Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf>]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf, id=83, 469.755p
+[6 <./Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf>]
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf, id=84, 469.755p
 t x 325.215pt>
 File: Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf Graphic fil
 e (type pdf)
 <use Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf>
 Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-2
-6-1.pdf  used on input line 420.
+6-1.pdf  used on input line 378.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 AED: lastpage setting LastPage
-[7] [8 <./Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf>] (./Me
-asurement-Chapter.aux)
+[7 <./Measurement-Chapter_files/figure-latex/unnamed-chunk-26-1.pdf>] (./Measur
+ement-Chapter.aux)
 Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
-(rerunfilecheck)             Checksum: 5A5161B0E4A02924ACB1BBC6D839DA55;926.
+(rerunfilecheck)             Checksum: 6EC5846930009C8933F9E2FA5112D316;746.
  )
 (\end occurred inside a group at level 1)
 
 ### semi simple group (level 1) entered at line 65 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 12120 strings out of 480502
- 179862 string characters out of 5898081
- 501838 words of memory out of 5000000
- 29524 multiletter control sequences out of 15000+600000
- 450408 words of font info for 67 fonts, out of 8000000 for 9000
+ 12078 strings out of 480502
+ 179095 string characters out of 5898081
+ 501808 words of memory out of 5000000
+ 29486 multiletter control sequences out of 15000+600000
+ 456076 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,9n,66p,324b,2697s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,9n,66p,253b,2579s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dv
-ips/lm/lm-ec.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1
-/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/
-type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fo
-nts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dis
-t/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf
--dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/
-texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Measurement-Chapter.pdf (8 pages, 194639 bytes).
+ips/lm/lm-ec.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/d
+vips/lm/lm-mathit.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/
+type1/public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/f
+onts/type1/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-d
+ist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/te
+xmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTe
+X/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/Ti
+nyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roamin
+g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/hanna/AppData/Roa
+ming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb>
+Output written on Measurement-Chapter.pdf (7 pages, 215040 bytes).
 PDF statistics:
- 135 PDF objects out of 1000 (max. 8388607)
- 105 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
+ 140 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
  64 words of extra memory for PDF output out of 10000 (max. 10000000)
 
