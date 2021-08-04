@@ -263,17 +263,13 @@ head(pray.spirit)
 # Crosstab for prayer and spiritual healing
 table.pray.spirit <- pray.spirit %>% 
   tabyl(aPrayer, aSpiritHeal) %>% 
-  adorn_percentages("all") %>% 
+  adorn_percentages("col") %>%
+  adorn_totals(where = "row") %>% 
   adorn_pct_formatting() %>% 
   adorn_ns( position = "front") %>% 
   adorn_title(placement = "top", row_name = "Prayer", col_name = "Spiritual Healing")
 ```
 
-```{r, echo = FALSE}
-table.pray.spirit %>% 
-  kable(caption = "Crosstab of Prayer and Spiritual Healing") %>% 
-  kable_styling(bootstrap_options = c("basic"))
-```
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
@@ -394,9 +390,17 @@ Descriptive statistics for each CAM item are presented in Table 1. Biofeedback w
 kable(ordered.freqs, caption = "Descriptive Statistics for CAM Use in the Last 12 Months")
 ```
 
+It should be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
+
+```{r, echo = FALSE}
+table.pray.spirit %>% 
+  kable(caption = "Crosstab of Prayer and Spiritual Healing") %>% 
+  kable_styling(bootstrap_options = c("basic"))
+```
+
 # Factor Analysis
 
-In this section, I will present exploratory factor analysis results. While data screening revealed that the data are factorable, I did not find a factor solution that fit the the data. First, I ran factor models on all CAM items. Next, I ran factor models on all CAM items excluding prayer and spiritual healing. Then, in addition to prayer and spiritual healing I excluded all CAMs with fewer than 100 cases reporting use in the last year (biofeedback, hypnosis, acupuncture, and energy healing). Alternative factoring and rotation methods did not produce a well fitting factor solution. Fit statistics for models not presented in this chapter can be found in Appendix (insert letter). 
+In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis. 
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
 # Create correlation matrix 
@@ -411,6 +415,8 @@ rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy H
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
                   "Relaxiation Techniques", "Special Diet", "Prayer/Spiritual Healing")
 ```
+
+
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
@@ -430,10 +436,19 @@ asymm.mat <- het.mat.a
 upperTriangle(asymm.mat, diag=TRUE, byrow=FALSE) <- NA
 asymm.mat
 
+# Create matrix with NAs on diagonal (remove item correlations with themselves)
+# Copy het.mat.a
+no.diag <- het.mat.a
+# Replace diagonals with NAs
+diag(no.diag) <- NA
+no.diag
+
 # Range of correlations
 # Highest correlation in the matrix
 max(asymm.mat, na.rm = TRUE)
 # Lowest correlation in the matrix
+apply(het.mat.a, 1, FUN = min, na.rm = TRUE)
+apply(no.diag, 1, FUN = max, na.rm = TRUE)
 min(asymm.mat, na.rm = TRUE)
 
 # How many correlations greater than .299
@@ -444,11 +459,6 @@ length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])
 length(asymm.mat[asymm.mat>.299 & !is.na(asymm.mat)])/length(asymm.mat[!is.na(asymm.mat)])
 
 # Columns with values less than .3
-# Copy het.mat.a
-no.diag <- het.mat.a
-# Replace diagonals with NAs
-diag(no.diag) <- NA
-no.diag
 # Check whether each item correlates with at least one other item at .3
 corr.max <- apply(no.diag,2,max, na.rm=TRUE)
 corr.max > .3
@@ -460,10 +470,6 @@ sum(no.diag$Acupuncture > .3, na.rm = TRUE)
 
 ```
 
-All items correlate with at least one other item 
-
-Out of `r length(asymm.mat[!is.na(asymm.mat)])` inter-item correlations, `r length(asymm.mat[asymm.mat<.3 & !is.na(asymm.mat)])` are less than .3. 
-
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk tests for correlation adequacy using Bartlett's test
 cortest.bartlett(het.mat.a, n = nrow(acams))
@@ -471,7 +477,10 @@ cortest.bartlett(het.mat.a, n = nrow(acams))
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk tests for sampling adequacy using the Kaiser-Meyer-Olkin (KMO) test
 KMO(het.mat.a)
+kmo <- KMO(het.mat.a)$MSA
 ```
+The factorability of the 13 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Second, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6, and Bartlett's test of sphericity was significant () 
+
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs a parallel test 
 # Convert acams to numerics for parallel analysis
@@ -675,6 +684,8 @@ f4 <- acams.drop.bio[c("aChiropractic", "aMassage")]
 head(f4)
 kr20(f4)
 ```
+
+
 ```{r, echo = FALSE, results='hide'}
 # Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio)
 
@@ -702,10 +713,43 @@ efa.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aE
 fit <- cfa(efa.model, data = acams.drop.bio,
              ordered = TRUE)
 # Review fit statistics
-summary(fit, fit.measures = TRUE)
+summary.fit.1 <- summary(fit, fit.measures = TRUE)
+summary(fit, standardized = TRUE)
 # Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
 # sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
 ```
+
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk explores the modification indices- whether freeing parameter constraints or adding paths to the model would help improve it. 
+
+modificationindices(fit) %>% 
+  as.data.frame() %>%  # read the modification indices output in as a dataframe
+  arrange(-mi) %>%  # sorts the rows by the mi column, which represents the change in the model chi-square we see if the path was included
+  filter(mi > 10) %>%  # filter the results to show only those with chi-square change > 10
+  select(lhs, op,rhs, mi, epc) %>%  # select only these columns from the modification indices output
+  pander(caption = "Largest MI values for CFA")
+
+# The largest mi suggests exercise/movement should be linked to Factor 4
+# Model with largest mi change 
+efa.model.2 <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
+        f2 =~ aAcupuncture + aHerbal + aHomeopathy
+        f3 =~ aVitamins + aSpecialDiet
+        f4 =~ aChiropractic + aMassage + aExerciseMove'
+# Run CFA model 
+fit.2 <- cfa(efa.model.2, data = acams.drop.bio,
+             ordered = TRUE)
+
+# Compare fit statistics 
+fit.stats.1 <- fitmeasures(fit, c("cfi", "tli", "rmsea", "bic"))
+fit.stats.2 <- fitmeasures(fit.2, c("cfi", "tli", "rmsea", "bic"))
+fit.stats.1
+fit.stats.2
+
+# No change to the fit statistics. Look at full model summary
+summary.fit.2 <- summary(fit.2, fit.measures = TRUE)
+
+```
+
 ```{r, echo = FALSE}
 # Model Plot 
 semPlot::semPaths(fit, "std")
