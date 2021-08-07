@@ -500,6 +500,33 @@ sum(parallel.all.cams$fa.values > 1.0)
 sum(parallel.all.cams$fa.values > .7)
 ```
 ### Results
+```{r, echo = FALSE}
+# This code chunk runs the CFA on Ayers and Kronenfelds model
+# Factor 1 (Mind-Body medicine): Meditation, Guided imagery, relaxation, deep breathing 
+# Factor 2 (Alternative Medical Systems): Ayurveda, Folk medicine, Naturopathy, Homeopathy,Herbs, vitamins, Biofeedback 
+# Factor 3 (Prayer): 
+# Factor  (Manipulative treatments): acupuncture, chiropractic, massage 
+
+# Prayer or spiritual healing will not be included because there are not enough items for measure that latent variable 
+
+# Subset acams to remove prayer and spiritual healing 
+
+
+# 08/06/21 code below is from the cfa for the efa model. adjust for ayers and kronenfeld. 
+# Assigning items to factors 
+ayers.kronenfeld.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
+        f2 =~ aAcupuncture + aHerbal + aHomeopathy
+        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
+        f4 =~ aChiropractic + aMassage '
+# Run CFA model 
+fit <- cfa(efa.model, data = acams.drop.bio,
+             ordered = TRUE)
+# Review fit statistics
+summary.fit.1 <- summary(fit, fit.measures = TRUE)
+summary(fit, standardized = TRUE)
+```
+
+
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs all models with all CAMs. 
 
@@ -666,7 +693,13 @@ drop.bio.4.ml.cluster$loadings
 # Assign CFI for the cluster solution to an object for inclusion in text 
 drop.bio.4.ml.cluster.cfi <- 1 - ((drop.bio.4.ml.cluster$STATISTIC-drop.bio.4.ml.cluster$dof)/(drop.bio.4.ml.cluster$null.chisq-drop.bio.4.ml.cluster$null.dof))
 ```
-I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). (Unsure how to report the chi-square test. Using model$STATISTIC, model$dof, model$PVAL to report). The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
+
+```{r, echo = FALSE}
+# This code chunk creates a table of fit statistics for the final efa model 
+
+```
+
+I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). The null hypothesis for the $\chi$^2^ states that the model fits the analyzed covariance matrix (maybe reword), thus a significant $\chi$^2^ indicates a poor fitting model. It should be noted that the $\chi$^2^ is sensitive to large sample sizes. The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. (Unsure how to report the chi-square test. Using model$STATISTIC, model$dof, model$PVAL to report). The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
 
 ```{r, echo = FALSE}
 # Import organized loadings table from excel
@@ -708,7 +741,7 @@ kable(loadings.table,
 
 The four factors in the final model account for `r round(drop.bio.4.ml.cluster$Vaccounted["Cumulative Var","ML3"],2)` of the variance in the data. 
 
-The cluster rotation factor loadings for the 13 CAM types are shown in Table \ref{tab:efa-loadings-table}
+The cluster rotation factor loadings for the 13 CAM types are shown in Table \ref{tab:efa-loadings-table}. Factor 1, 
 
 ```{r, echo = FALSE, results='hide'}
 # Check reliability for the 4 Factor Solution using Maximum Likelihood and cluster rotation. Prayer and spiritual healing have been combined, and biofeedback dropped (because it was loading onto its own factor). 
