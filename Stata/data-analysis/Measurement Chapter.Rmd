@@ -197,7 +197,7 @@ MIDUS is representative of non-institutionalzed, English-speaking adults in the 
 MIDUS includes data on CAM use for a variety of CAMs. This is important for testing possible underlying constructs or groupings of CAMs. 
 
 ```{r, echo = FALSE, results = 'hide'}
-# This chunk reads in the Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+# This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
 
 # Read in MIDUS1 data and subset to complete cases on CAMs
 # Read in stata file for MIDUS 1
@@ -216,6 +216,56 @@ str(acams)
 
 # Create column that is the sum of CAMs used 
 totalCams <- rowSums(acams[,1:15])
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- dplyr::rename(acams, 
+                          aAcupuncture = acam1, 
+                          aBiofeedback = acam2,
+                          aChiropractic = acam3,
+                          aEnergyHeal = acam4,
+                          aExerciseMove = acam5,
+                          aHerbal = acam6,
+                          aVitamins = acam7,
+                          aHomeopathy = acam8,
+                          aHypnosis = acam9,
+                          aImageryTech = acam10,
+                          aMassage = acam11,
+                          aPrayer = acam12,
+                          aRelaxMeditate = acam13,
+                          aSpecialDiet = acam14,
+                          aSpiritHeal = acam15)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
+```
+```{r, echo = FALSE, results = 'hide'}
+# This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
+M2 <- read_dta(path)
+bcamsList <- c("bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14")
+
+bcams <- M2[bcamsList] # Subset MIDUS2 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+bcams <- remove_attributes(bcams, "label")
+bcams <- remove_attributes(bcams, "notes")
+
+str(bcams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(bcams[,1:14])
 
 acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
 
@@ -426,6 +476,7 @@ corrplot(het.mat.a, method="color", number.cex = .5, order="hclust",
          addCoef.col = "black", # Add coefficient of correlation
          tl.col="black", tl.srt=45 #Text label color and rotation
          )
+corrplot(het.mat.a, method = "number", number.cex = .5, order = "hclust", tl.col = "black")
 ```
 
 ## Exploratory Factor Analysis 
@@ -514,16 +565,16 @@ sum(parallel.all.cams$fa.values > .7)
 
 # 08/06/21 code below is from the cfa for the efa model. adjust for ayers and kronenfeld. 
 # Assigning items to factors 
-ayers.kronenfeld.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
-        f2 =~ aAcupuncture + aHerbal + aHomeopathy
-        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
-        f4 =~ aChiropractic + aMassage '
+#ayers.kronenfeld.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
+#        f2 =~ aAcupuncture + aHerbal + aHomeopathy
+#        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
+#        f4 =~ aChiropractic + aMassage '
 # Run CFA model 
-fit <- cfa(efa.model, data = acams.drop.bio,
-             ordered = TRUE)
+# fit <- cfa(efa.model, data = acams.drop.bio,
+#             ordered = TRUE)
 # Review fit statistics
-summary.fit.1 <- summary(fit, fit.measures = TRUE)
-summary(fit, standardized = TRUE)
+#summary.fit.1 <- summary(fit, fit.measures = TRUE)
+#summary(fit, standardized = TRUE)
 ```
 
 

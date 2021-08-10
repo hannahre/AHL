@@ -746,6 +746,30 @@ set more off
 		}
 
 	tab1 bcam17 bcam18 bcam19
+	
+	* Combine physician prescribed diet (cam18) and weight control diet (cam19) with special diet (cam14)
+		* Crosstab: Special diet and physician prescribed
+		tab bcam14 bcam18, missing
+		* 3128 are missing on both. 62 obs report yes on both. 618 report yes on physician prescribed only and 108 report yes on special diet only. 
+		* 11 missing on special only, 15 missing on physician prescribed only. 
+		* Crosstab: Special diet and weight control 
+		tab bcam14 bcam19, missing
+		* 3124 missing on both. 15 missing on special diet only. 2 missing on weight control only. 
+		* 64 yes on both. 828 yes on weight control only. 108 yes on special diet only. 
+		
+		* Replace statement for bcam18- physician prescibed diet 
+		replace bcam14 = 1 if bcam18 == 1
+		tab bcam14 bcam18, missing
+		* Replace statemtn for bcam19- weight control diet 
+		replace bcam14 = 1 if bcam19 == 1
+		tab bcam14 bcam19, missing
+		
+	* Combine prayer (cam12) and spiritual healing (cam15). They will become cam12. 
+		tab bcam12 bcam15, missing
+		* 13 yes on spiritual only. 
+		* Replace statement: assign all that answer yes on spiritual healing to be yes on prayer 
+		replace bcam12 = 1 if bcam15 == 1
+		tab bcam12 bcam15, missing
 
 	* Check missing patterns
 		* Create local list of cams
@@ -877,8 +901,6 @@ set more off
 	* Exercise
 	othercam bcam5 B1SA56SBO "B1SA56SBO == 116"
 	* Did not reassign "taking supplments" observations, though this could potentially fall under taking vitamins. 
-	
-// Diet CAMS 
 	
 	
 	*Create co-occurrence index 1 
