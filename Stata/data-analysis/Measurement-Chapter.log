@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  9 AUG 2021 13:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.7.16)  11 AUG 2021 15:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -728,74 +728,72 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.220 \end{landscape}
-                     ] [4pdfTeX warning (ext4): destination with the same ident
-ifier (name{table.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.317 \end{table}
-                 
+                     ] [4
 
 
 ]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf, id=59, 469.755p
-t x 325.215pt>
-File: Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fil
-e (type pdf)
-<use Measurement-Chapter_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
-1-1.pdf  used on input line 327.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-11-2.pdf, id=60, 469.755p
-t x 325.215pt>
-File: Measurement-Chapter_files/figure-latex/unnamed-chunk-11-2.pdf Graphic fil
-e (type pdf)
-<use Measurement-Chapter_files/figure-latex/unnamed-chunk-11-2.pdf>
-Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
-1-2.pdf  used on input line 328.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--329
-[][]
- []
-
-[5pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
-as been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.332 ...ysis}\label{exploratory-factor-analysis}}
-                                                   <./Measurement-Chapter_files
-/figure-latex/unnamed-chunk-11-1.pdf>]
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf, id=73, 469.755p
-t x 325.215pt>
-File: Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf Graphic fil
-e (type pdf)
-<use Measurement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf>
-Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
-5-1.pdf  used on input line 348.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[6 <./Measurement-Chapter_files/figure-latex/unnamed-chunk-11-2.pdf>] [7 <./Mea
-surement-Chapter_files/figure-latex/unnamed-chunk-15-1.pdf>]
-Overfull \hbox (162.49622pt too wide) in paragraph at lines 390--416
+Overfull \hbox (22.04784pt too wide) in paragraph at lines 252--277
  [][] 
  []
 
-<Measurement-Chapter_files/figure-latex/unnamed-chunk-29-1.pdf, id=102, 469.755
-pt x 325.215pt>
-File: Measurement-Chapter_files/figure-latex/unnamed-chunk-29-1.pdf Graphic fil
-e (type pdf)
-<use Measurement-Chapter_files/figure-latex/unnamed-chunk-29-1.pdf>
-Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-2
-9-1.pdf  used on input line 424.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-AED: lastpage setting LastPage
-[8pdfTeX warning (ext4): destination with the same identifier (name{table.4}) h
+[5pdfTeX warning (ext4): destination with the same identifier (name{table.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.426 \end{document}
-                    ] [9 <./Measurement-Chapter_files/figure-latex/unnamed-chun
-k-29-1.pdf>] (./Measurement-Chapter.aux)
+l.278 \end{landscape}
+                     ]
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-13-1.pdf, id=64, 469.755p
+t x 325.215pt>
+File: Measurement-Chapter_files/figure-latex/unnamed-chunk-13-1.pdf Graphic fil
+e (type pdf)
+<use Measurement-Chapter_files/figure-latex/unnamed-chunk-13-1.pdf>
+Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
+3-1.pdf  used on input line 323.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-17-1.pdf, id=65, 469.755p
+t x 325.215pt>
+File: Measurement-Chapter_files/figure-latex/unnamed-chunk-17-1.pdf Graphic fil
+e (type pdf)
+<use Measurement-Chapter_files/figure-latex/unnamed-chunk-17-1.pdf>
+Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-1
+7-1.pdf  used on input line 343.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[6pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.346 \subsubsection{Results}\label{results}}
+                                             
+
+
+] [7pdfTeX warning (ext4): destination with the same identifier (name{figure.1}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.346 \subsubsection{Results}\label{results}}
+                                              <./Measurement-Chapter_files/figu
+re-latex/unnamed-chunk-13-1.pdf>] [8 <./Measurement-Chapter_files/figure-latex/
+unnamed-chunk-17-1.pdf>] [9] [10pdfTeX warning (ext4): destination with the sam
+e identifier (name{table.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.413 \end{landscape}
+                     ]
+<Measurement-Chapter_files/figure-latex/unnamed-chunk-30-1.pdf, id=109, 469.755
+pt x 325.215pt>
+File: Measurement-Chapter_files/figure-latex/unnamed-chunk-30-1.pdf Graphic fil
+e (type pdf)
+<use Measurement-Chapter_files/figure-latex/unnamed-chunk-30-1.pdf>
+Package pdftex.def Info: Measurement-Chapter_files/figure-latex/unnamed-chunk-3
+0-1.pdf  used on input line 421.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+
+AED: lastpage setting LastPage
+[11
+
+
+ <./Measurement-Chapter_files/figure-latex/unnamed-chunk-30-1.pdf>] (./Measurem
+ent-Chapter.aux)
 Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 (rerunfilecheck)             Checksum: 0368C934FDAE6FAFC9F9505E20BB936C;941.
  )
@@ -804,16 +802,16 @@ Package rerunfilecheck Info: File `Measurement-Chapter.out' has not changed.
 ### semi simple group (level 1) entered at line 65 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 12093 strings out of 480502
- 179659 string characters out of 5898081
- 505932 words of memory out of 5000000
- 29495 multiletter control sequences out of 15000+600000
+ 12090 strings out of 480502
+ 179255 string characters out of 5898081
+ 504952 words of memory out of 5000000
+ 29490 multiletter control sequences out of 15000+600000
  456076 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,9n,66p,253b,2579s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,13n,66p,253b,2580s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dv
-ips/lm/lm-ec.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/d
-vips/lm/lm-mathit.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/
+ips/lm/lm-mathit.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/e
+nc/dvips/lm/lm-ec.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/
 type1/public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/f
 onts/type1/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-d
 ist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/te
@@ -822,10 +820,10 @@ X/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/Ti
 nyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roamin
 g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/hanna/AppData/Roa
 ming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb>
-Output written on Measurement-Chapter.pdf (9 pages, 227466 bytes).
+Output written on Measurement-Chapter.pdf (11 pages, 218757 bytes).
 PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 126 compressed objects within 2 object streams
- 28 named destinations out of 1000 (max. 500000)
- 77 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 166 PDF objects out of 1000 (max. 8388607)
+ 129 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 72 words of extra memory for PDF output out of 10000 (max. 10000000)
 

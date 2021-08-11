@@ -942,6 +942,28 @@ set more off
 	}
 
 	tab1 ccam17 ccam18 ccam19
+	
+	* Combine physician prescribed diet (cam18) and weight control diet (cam19) with special diet (cam14)
+		* Crosstab: Special diet and physician prescribed
+		tab ccam14 ccam18, missing
+		* 484 respondents report only using a physician prescribed diet. They will be added to the yes column on special diet. 
+		* Crosstab: Special diet and weight control 
+		tab ccam14 ccam19, missing
+		* 354 respondents report only using a weight control diet. They will be added to the yes column on special diet. 
+		
+		* Replace statement for ccam18- physician prescibed diet 
+		replace ccam14 = 1 if ccam18 == 1
+		tab ccam14 ccam18, missing
+		* Replace statemtn for bccam19- weight control diet 
+		replace ccam14 = 1 if ccam19 == 1
+		tab ccam14 ccam19, missing
+		
+	* Combine prayer (cam12) and spiritual healing (cam15). They will become cam12. 
+		tab ccam12 ccam15, missing
+		* 5 yes on spiritual only 
+		* Replace statement: assign all that answer yes on spiritual healing to be yes on prayer 
+		replace ccam12 = 1 if ccam15 == 1
+		tab ccam12 ccam15, missing
 
 	* Check missing patterns
 		* Create local list of cams

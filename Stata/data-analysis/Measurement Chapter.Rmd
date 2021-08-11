@@ -244,6 +244,7 @@ head(acams)
 acams=acams[complete.cases(acams),]
 str(acams)
 ```
+
 ```{r, echo = FALSE, results = 'hide'}
 # This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
 
@@ -265,38 +266,86 @@ bcams <- remove_attributes(bcams, "notes")
 str(bcams)
 
 # Create column that is the sum of CAMs used 
-totalCams <- rowSums(bcams[,1:14])
+btotalCams <- rowSums(bcams[,1:14])
 
-acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+bcams[sapply(bcams, is.numeric)] <- lapply(bcams[sapply(bcams, is.numeric)], as.factor) # convert all columns to factors
 
-str(acams) 
-head(acams)
+str(bcams) 
+head(bcams)
 
 # Rename columns 
-acams <- dplyr::rename(acams, 
-                          aAcupuncture = acam1, 
-                          aBiofeedback = acam2,
-                          aChiropractic = acam3,
-                          aEnergyHeal = acam4,
-                          aExerciseMove = acam5,
-                          aHerbal = acam6,
-                          aVitamins = acam7,
-                          aHomeopathy = acam8,
-                          aHypnosis = acam9,
-                          aImageryTech = acam10,
-                          aMassage = acam11,
-                          aPrayer = acam12,
-                          aRelaxMeditate = acam13,
-                          aSpecialDiet = acam14,
-                          aSpiritHeal = acam15)
-head(acams)
+bcams <- dplyr::rename(bcams, 
+                         bAcupuncture = bcam1, 
+                         bBiofeedback = bcam2,
+                         bChiropractic = bcam3,
+                         bEnergyHeal = bcam4,
+                         bExerciseMove = bcam5,
+                         bHerbal = bcam6,
+                         bVitamins = bcam7,
+                         bHomeopathy = bcam8,
+                         bHypnosis = bcam9,
+                         bImageryTech = bcam10,
+                         bMassage = bcam11,
+                         bPraySpirit = bcam12,
+                         bRelaxMeditate = bcam13,
+                         bSpecialDiet = bcam14)
+head(bcams)
 # Keep only complete cases
-acams=acams[complete.cases(acams),]
-str(acams)
+bcams=bcams[complete.cases(bcams),]
+str(bcams)
+```
+```{r, echo = FALSE, results = 'hide'}
+# This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
+M3 <- read_dta(path)
+ccamsList <- c("ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
+               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14")
+
+ccams <- M3[ccamsList] # Subset MIDUS2 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+ccams <- remove_attributes(ccams, "label")
+ccams <- remove_attributes(ccams, "notes")
+
+str(ccams)
+
+# Create column that is the sum of CAMs used 
+ctotalCams <- rowSums(ccams[,1:14])
+
+ccams[sapply(ccams, is.numeric)] <- lapply(ccams[sapply(ccams, is.numeric)], as.factor) # convert all columns to factors
+
+str(ccams) 
+head(ccams)
+
+# Rename columns 
+ccams <- dplyr::rename(ccams, 
+                        cAcupuncture = ccam1, 
+                        cBiofeedback = ccam2,
+                        cChiropractic = ccam3,
+                        cEnergyHeal = ccam4,
+                        cExerciseMove = ccam5,
+                        cHerbal = ccam6,
+                        cVitamins = ccam7,
+                        cHomeopathy = ccam8,
+                        cHypnosis = ccam9,
+                        cImageryTech = ccam10,
+                        cMassage = ccam11,
+                        cPraySpirit = ccam12,
+                        cRelaxMeditate = ccam13,
+                        cSpecialDiet = ccam14)
+head(ccams)
+# Keep only complete cases
+ccams=ccams[complete.cases(ccams),]
+str(ccams)
 ```
 
 ```{r, echo = FALSE, results = 'hide'}
-# This code chunk creates a crosstab for prayer and spiritual healing
+# This code chunk creates a crosstab for prayer and spiritual healing in Wave 1 
 
 # create new df with prayer and spiritual healing
 my.vars <- c("aPrayer", "aSpiritHeal")
@@ -412,37 +461,109 @@ freqout <- freq_dframer(acams)
 freqout$Frequency[seq(2, 28, 2)]
 colSums(acams.matrix)
 sum(freqout$Frequency[seq(2, 28, 2)] != colSums(acams.matrix)) # They are the same.
+
+# Frequency output for bcams
+b.freqout <- freq_dframer(bcams)
+
+# Frequency output for ccams 
+c.freqout <- freq_dframer(ccams)
 ```
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk creates a table that reports frequency and percent of respondents who have used each CAM in the last 12 months.
 
 # Subset yes rows from the frequency table above
-freqout.is1 <- freqout[seq(2, 28, 2),]
-# Subset frequency and percent columns 
+# MIDUS1
+a.freqout.is1 <- freqout[seq(2, 28, 2),]
+# MIDUS2 
+b.freqout.is1 <- b.freqout[seq(2,28,2),]
+# MIDUS3 
+c.freqout.is1 <- c.freqout[seq(2, 28,2),]
+
+# Subset frequency and percent columns
+# MIDUS1 
 freq.vars <- c("Frequency", "Percent")
-freqs <- freqout.is1[freq.vars]
+freqs <- a.freqout.is1[freq.vars] 
+# MIDUS2
+b.freqs <- b.freqout.is1[freq.vars]
+# MIDUS3
+c.freqs <- c.freqout.is1[freq.vars]
+
+# Rename columns for merging 
+# MIDUS 1
+freqs <- freqs %>% 
+  rename(
+    M1.Frequency = Frequency,
+    M1.Percent = Percent
+    )
+# MIDUS 2
+b.freqs <- b.freqs %>% 
+  rename(
+    M2.Frequency = Frequency,
+    M2.Percent = Percent
+    )
+# MIDUS 3
+c.freqs <- c.freqs %>% 
+  rename(
+    M3.Frequency = Frequency,
+    M3.Percent = Percent
+    )
+
 # Assign rownames 
 row.names(freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
                   "Relaxation Techniques", "Special Diet", "Prayer or Spiritual Healing")
-# Order rows by frequency
-ordered.freqs <- arrange(freqs, Frequency)
+row.names(b.freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
+                  "Prayer or Spiritual Healing", "Relaxation Techniques", "Special Diet")
+row.names(c.freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
+                  "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
+                  "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
+                  "Prayer or Spiritual Healing", "Relaxation Techniques", "Special Diet")
+
+# Next, merge frequency dataframes for all three waves
+# Merge freqs and b.freqs 
+tmp.a.b <- merge(freqs, b.freqs, by = 0)
+# Merge() created a new column row.names 
+# Assign the row.names column to row names
+rownames(tmp.a.b) <- tmp.a.b[,1]
+# Remove Row.names column 
+tmp.a.b[,1] <- NULL
+# Merge c.freqs to tmp.a.b
+all.freqs <- merge(tmp.a.b, c.freqs, by = 0)
+# Assign the row.names column to row names
+rownames(all.freqs) <- all.freqs[,1]
+# Remove Row.names column 
+all.freqs[,1] <- NULL
+
+# Order rows by M1 frequency
+all.freqs.ordered <- arrange(all.freqs, M1.Frequency)
 ```
 
 # Data Description 
-Data presented in this chapter come from Wave 1 of the Midlife in the United States (MIDUS). These data were collected between 1995 and 1996. Only cases with no missing values on the complementary and alternative medicine (CAM) items are included in analyses (*N* = 6157). 
+Data presented in the exploratory factor analysis come from Wave 1 of the Midlife in the United States (MIDUS) dataset. These data were collected between 1995 and 1996. Only cases with no missing values on the complementary and alternative medicine (CAM) items are included in analyses (*N* = 6157). 
 
 ## Measures Description  
 Descriptive statistics for each CAM item are presented in Table 1. Biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer or spiritual healing (30%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%).
 
 ```{r, echo = FALSE}
-# Print table of frequencies
-kable(ordered.freqs, caption = "Descriptive Statistics for CAM Use in the Last 12 Months")
+kable(all.freqs.ordered,
+      booktabs = T,
+      col.names = c("Wave 1 Frequency", 
+                    "Wave 1 Percent", 
+                    "Wave 2 Frequency", 
+                    "Wave 2 Percent", 
+                    "Wave 3 Frequency",
+                    "Wave 3 Percent"),
+      caption = "Descriptive Statistics for CAM Use in the Last 12 Months at each Wave") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  add_footnote(c("Wave 1 n = 6157", "Wave 2 n = 3834", "Wave 3 n = 2675"), notation="number") 
 ```
 
-It should be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
+(Move to data section.) It should be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
 
 ```{r, echo = FALSE}
 table.pray.spirit %>% 
@@ -452,7 +573,7 @@ table.pray.spirit %>%
 
 # Factor Analysis
 
-In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis. 
+In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data. 
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
 # Create correlation matrix 
@@ -471,15 +592,15 @@ rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy H
 
 ```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
-col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
-corrplot(het.mat.a, method="color", number.cex = .5, order="hclust", 
-         addCoef.col = "black", # Add coefficient of correlation
-         tl.col="black", tl.srt=45 #Text label color and rotation
-         )
+# col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+# corrplot(het.mat.a, method="color", number.cex = .5, order="hclust", 
+#         addCoef.col = "black", # Add coefficient of correlation
+#         tl.col="black", tl.srt=45 #Text label color and rotation
+#         )
 corrplot(het.mat.a, method = "number", number.cex = .5, order = "hclust", tl.col = "black")
 ```
 
-## Exploratory Factor Analysis 
+## Exploratory Factor Analysis: Wave 1 
 
 ### Assumption Testing
 
@@ -535,7 +656,7 @@ bart.chisq <- round(cortest.bartlett(het.mat.a, n = nrow(acams))$chisq, 2)
 KMO(het.mat.a)
 kmo <- round(KMO(het.mat.a)$MSA, 2)
 ```
-The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Next, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6. Bartlett's test of sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* <.01) indicating that the correlations between variables are higher than would be expected by chance. There is correlation adequacy. Finally, (Report communalities - which indicate that items share common variance with other items).    
+The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Next, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6. Bartlett's test of sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* <.01) indicating that the correlations between variables are higher than would be expected by chance.    
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs a parallel test 
@@ -551,32 +672,6 @@ sum(parallel.all.cams$fa.values > 1.0)
 sum(parallel.all.cams$fa.values > .7)
 ```
 ### Results
-```{r, echo = FALSE}
-# This code chunk runs the CFA on Ayers and Kronenfelds model
-# Factor 1 (Mind-Body medicine): Meditation, Guided imagery, relaxation, deep breathing 
-# Factor 2 (Alternative Medical Systems): Ayurveda, Folk medicine, Naturopathy, Homeopathy,Herbs, vitamins, Biofeedback 
-# Factor 3 (Prayer): 
-# Factor  (Manipulative treatments): acupuncture, chiropractic, massage 
-
-# Prayer or spiritual healing will not be included because there are not enough items for measure that latent variable 
-
-# Subset acams to remove prayer and spiritual healing 
-
-
-# 08/06/21 code below is from the cfa for the efa model. adjust for ayers and kronenfeld. 
-# Assigning items to factors 
-#ayers.kronenfeld.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
-#        f2 =~ aAcupuncture + aHerbal + aHomeopathy
-#        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
-#        f4 =~ aChiropractic + aMassage '
-# Run CFA model 
-# fit <- cfa(efa.model, data = acams.drop.bio,
-#             ordered = TRUE)
-# Review fit statistics
-#summary.fit.1 <- summary(fit, fit.measures = TRUE)
-#summary(fit, standardized = TRUE)
-```
-
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs all models with all CAMs. 
@@ -748,9 +843,32 @@ drop.bio.4.ml.cluster.cfi <- 1 - ((drop.bio.4.ml.cluster$STATISTIC-drop.bio.4.ml
 ```{r, echo = FALSE}
 # This code chunk creates a table of fit statistics for the final efa model 
 
+# Create empty dataframe
+fa.fit.statistics <- data.frame(Model=0, Chi.Square=0, CFI=0, TLI=0, RMSR=0, RMSEA=0)  
+
+# Add in fit statistics from the efa model 
+fa.fit.statistics[1, "Model"] <- "Wave 1 Exploratory Factor Analysis"
+fa.fit.statistics[1, "Chi.Square"] <- paste(round(drop.bio.4.ml.cluster$STATISTIC, 3),"(", drop.bio.4.ml.cluster$dof, ")", " p<.001", sep = "")
+fa.fit.statistics[1, "CFI"] <- round(1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof)), 2)
+fa.fit.statistics[1, "TLI"] <- round(drop.bio.4.ml.cluster$TLI, 2)
+fa.fit.statistics[1, "RMSR"] <- round(drop.bio.4.ml.cluster$rms, 3)
+fa.fit.statistics[1, "RMSEA"] <- round(drop.bio.4.ml.cluster$RMSEA[1], 3)
+
+kable(fa.fit.statistics,
+      booktabs = T,
+      col.names = c("Model", 
+                    "Chi-Square(df)", 
+                    "CFI", 
+                    "TLI", 
+                    "RMSR", 
+                    "RMSEA"),
+      caption = "Goodness of Fit Statistics") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  add_footnote(c("Wave 1 n = 6157", "Wave 2 n = 3834", "Wave 3 n = 2675"), notation="number") 
 ```
 
-I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). The null hypothesis for the $\chi$^2^ states that the model fits the analyzed covariance matrix (maybe reword), thus a significant $\chi$^2^ indicates a poor fitting model. It should be noted that the $\chi$^2^ is sensitive to large sample sizes. The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. (Unsure how to report the chi-square test. Using model$STATISTIC, model$dof, model$PVAL to report). The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
+I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). The null hypothesis for the $\chi$^2^ states that the model fits the analyzed covariance matrix (maybe reword), thus a significant $\chi$^2^ indicates a poor fitting model. It should be noted that the $\chi$^2^ is sensitive to large sample sizes and may indicate a model is a poor fit by mistake (Byrne 1989). The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. The $\chi$^2^ for the model presented here indicates poor fit $\chi$^2^(`r round(drop.bio.4.ml.cluster$dof, 3)`)=`r round(drop.bio.4.ml.cluster$STATISTIC, 3)`, *p*<.001. The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
 
 ```{r, echo = FALSE}
 # Import organized loadings table from excel
@@ -781,13 +899,12 @@ kable(loadings.table,
                   "Factor 2",
                   "Factor 3", 
                   "Factor 4", 
-                  "Communality",
-                  "Uniqueness",
+                  "Communality", 
+                  "Uniqueness", 
                   "Item Complexity"),
       caption = "Exploratory Factor Analysis of CAMs Wave 1 (n = 6157)") %>%
-  kable_classic(html_font = "CMU Serif") 
-#%>% 
- # kableExtra::landscape()
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape()
 ```
 
 The four factors in the final model account for `r round(drop.bio.4.ml.cluster$Vaccounted["Cumulative Var","ML3"],2)` of the variance in the data. 
@@ -884,11 +1001,45 @@ fit.stats.2
 # No change to the fit statistics. Look at full model summary
 summary.fit.2 <- summary(fit.2, fit.measures = TRUE)
 
-```
-
-```{r, echo = FALSE}
 # Model Plot 
 semPlot::semPaths(fit, "std")
+```
+
+## Confirmatory Factor Analysis: Waves 2 and 3
+
+```{r, echo = FALSE}
+# Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio) at Wave 2 
+
+# 08/11/21 Adapt from wave 1 CFA above to be used on wave 2. Need to drop biofeedback to match wave 1. 
+
+# Convert acams.drop.bio columns to ordered factors
+## Convert to factors 
+acams.drop.bio[] <- lapply(acams.drop.bio[], as.factor)
+head(acams.drop.bio)
+## Order factors
+acams.drop.bio[] <- lapply(acams.drop.bio, function(x) factor(x, 
+                                                              levels = c("0", "1"),             
+                                                              ordered = TRUE))
+str(acams.drop.bio)
+# Check that frequencies are the same
+drop.bio.freqs <- freq_dframer(acams.drop.bio)
+# Add print out of acams freqencies here 
+drop.bio.freqs 
+# They are the same. 
+
+# Assigning items to factors 
+efa.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
+        f2 =~ aAcupuncture + aHerbal + aHomeopathy
+        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
+        f4 =~ aChiropractic + aMassage '
+# Run CFA model 
+fit <- cfa(efa.model, data = acams.drop.bio,
+             ordered = TRUE)
+# Review fit statistics
+summary.fit.1 <- summary(fit, fit.measures = TRUE)
+summary(fit, standardized = TRUE)
+# Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
+# sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
 ```
 
 
