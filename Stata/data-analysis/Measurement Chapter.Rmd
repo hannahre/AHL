@@ -853,19 +853,6 @@ fa.fit.statistics[1, "CFI"] <- round(1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof
 fa.fit.statistics[1, "TLI"] <- round(drop.bio.4.ml.cluster$TLI, 2)
 fa.fit.statistics[1, "RMSR"] <- round(drop.bio.4.ml.cluster$rms, 3)
 fa.fit.statistics[1, "RMSEA"] <- round(drop.bio.4.ml.cluster$RMSEA[1], 3)
-
-kable(fa.fit.statistics,
-      booktabs = T,
-      col.names = c("Model", 
-                    "Chi-Square(df)", 
-                    "CFI", 
-                    "TLI", 
-                    "RMSR", 
-                    "RMSEA"),
-      caption = "Goodness of Fit Statistics") %>%
-  kable_classic(html_font = "CMU Serif") %>% 
-  kableExtra::landscape() %>% 
-  add_footnote(c("Wave 1 n = 6157", "Wave 2 n = 3834", "Wave 3 n = 2675"), notation="number") 
 ```
 
 I ran one through five factor models using various extraction and rotation methods (See Appendix (model fit statistics dropping biofeedback)). While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. The four factor maximum likelihood solution with cluster rotation was chosen as the final measurement model. Model fit was evaluated using the chi-squared statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). The null hypothesis for the $\chi$^2^ states that the model fits the analyzed covariance matrix (maybe reword), thus a significant $\chi$^2^ indicates a poor fitting model. It should be noted that the $\chi$^2^ is sensitive to large sample sizes and may indicate a model is a poor fit by mistake (Byrne 1989). The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. The $\chi$^2^ for the model presented here indicates poor fit $\chi$^2^(`r round(drop.bio.4.ml.cluster$dof, 3)`)=`r round(drop.bio.4.ml.cluster$STATISTIC, 3)`, *p*<.001. The CFI is above the desired cutoff of 0.90 (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`). The TLI is just below the desired cutoff of 0.90 (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`). The RMSR indicates good fit (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`); however, the RMSEA is higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`). 
@@ -909,7 +896,7 @@ kable(loadings.table,
 
 The four factors in the final model account for `r round(drop.bio.4.ml.cluster$Vaccounted["Cumulative Var","ML3"],2)` of the variance in the data. 
 
-The cluster rotation factor loadings for the 13 CAM types are shown in Table \ref{tab:efa-loadings-table}. Factor 1, 
+The cluster rotation factor loadings for the 13 CAM types are shown in Table \ref{tab:efa-loadings-table}. Five items had moderate to high loadings on Factor 1, Mind-Body Medicine (prayer or spiritual healing, energy healing, imagery techniques, relaxation and meditation techniques, and hypnosis). This factor measures the use of the mind to improve health and wellness. Three items had moderate to high loadings on Factor 2, Alternative Medical Systems (homeopathy, herbal therapy, and acupuncture). This factor measures use of CAM build on complete systems of theory and practice. Three items loaded moderately to heavily on Factor 3, Physical and Nutritional Approaches (vitamins, exercise and movement, and special diet). This factor measures... Two items loaded moderately to heavily on Factor 4, Manipulative Treatments (massage and chiropractic care). This factor measures use of external physical manipulation to promote health and wellness. 
 
 ```{r, echo = FALSE, results='hide'}
 # Check reliability for the 4 Factor Solution using Maximum Likelihood and cluster rotation. Prayer and spiritual healing have been combined, and biofeedback dropped (because it was loading onto its own factor). 
@@ -924,6 +911,7 @@ kr20(acams.drop.bio)
 f1 <- acams.drop.bio[c("aEnergyHeal", "aHypnosis", "aImageryTech", "aRelaxMeditate", "aPraySpirit")]
 head(f1)
 kr20(f1)
+
 # Reliability for factor 2 
 f2 <- acams.drop.bio[c("aAcupuncture", "aHerbal", "aHomeopathy")]
 head(f2)
@@ -937,8 +925,9 @@ f4 <- acams.drop.bio[c("aChiropractic", "aMassage")]
 head(f4)
 kr20(f4)
 ```
+(Insert reliability discussion here.)
 
-
+## Confirmatory Factor Analysis: All waves
 ```{r, echo = FALSE, results='hide'}
 # Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio)
 
@@ -1005,41 +994,147 @@ summary.fit.2 <- summary(fit.2, fit.measures = TRUE)
 semPlot::semPaths(fit, "std")
 ```
 
-## Confirmatory Factor Analysis: Waves 2 and 3
-
-```{r, echo = FALSE}
+```{r, echo = FALSE, results='hide'}
 # Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio) at Wave 2 
 
-# 08/11/21 Adapt from wave 1 CFA above to be used on wave 2. Need to drop biofeedback to match wave 1. 
+# Drop biofeedback 
+bcams.drop.bio <- subset(bcams, select = -c(bBiofeedback))
 
-# Convert acams.drop.bio columns to ordered factors
-## Convert to factors 
-acams.drop.bio[] <- lapply(acams.drop.bio[], as.factor)
-head(acams.drop.bio)
-## Order factors
-acams.drop.bio[] <- lapply(acams.drop.bio, function(x) factor(x, 
+# Order factors
+bcams.drop.bio[] <- lapply(bcams.drop.bio, function(x) factor(x, 
                                                               levels = c("0", "1"),             
                                                               ordered = TRUE))
-str(acams.drop.bio)
+
 # Check that frequencies are the same
-drop.bio.freqs <- freq_dframer(acams.drop.bio)
-# Add print out of acams freqencies here 
+drop.bio.freqs <- freq_dframer(bcams.drop.bio)
+b.freqout.is1 
 drop.bio.freqs 
 # They are the same. 
 
 # Assigning items to factors 
-efa.model <- 'f1 =~ aPraySpirit + aHypnosis + aImageryTech + aRelaxMeditate + aEnergyHeal
-        f2 =~ aAcupuncture + aHerbal + aHomeopathy
-        f3 =~ aExerciseMove + aVitamins + aSpecialDiet
-        f4 =~ aChiropractic + aMassage '
+b.cfa <- 'f1 =~ bPraySpirit + bHypnosis + bImageryTech + bRelaxMeditate + bEnergyHeal
+        f2 =~ bAcupuncture + bHerbal + bHomeopathy
+        f3 =~ bExerciseMove + bVitamins + bSpecialDiet
+        f4 =~ bChiropractic + bMassage '
 # Run CFA model 
-fit <- cfa(efa.model, data = acams.drop.bio,
+b.fit <- cfa(b.cfa, data = bcams.drop.bio,
              ordered = TRUE)
 # Review fit statistics
-summary.fit.1 <- summary(fit, fit.measures = TRUE)
-summary(fit, standardized = TRUE)
+b.fit.summary <- summary(b.fit, fit.measures = TRUE)
+summary(b.fit, standardized = TRUE)
 # Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
 # sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
 ```
 
+```{r, echo = FALSE, results='hide'}
+# Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio) at Wave 3 
 
+# Drop biofeedback 
+ccams.drop.bio <- subset(ccams, select = -c(cBiofeedback))
+
+# Order factors
+ccams.drop.bio[] <- lapply(ccams.drop.bio, function(x) factor(x, 
+                                                              levels = c("0", "1"),             
+                                                              ordered = TRUE))
+str(ccams.drop.bio)
+# Check that frequencies are the same
+drop.bio.freqs <- freq_dframer(ccams.drop.bio)
+c.freqout.is1 
+drop.bio.freqs 
+# They are the same. 
+
+# Assigning items to factors 
+c.cfa <- 'f1 =~ cPraySpirit + cHypnosis + cImageryTech + cRelaxMeditate + cEnergyHeal
+        f2 =~ cAcupuncture + cHerbal + cHomeopathy
+        f3 =~ cExerciseMove + cVitamins + cSpecialDiet
+        f4 =~ cChiropractic + cMassage '
+# Run CFA model 
+c.fit <- cfa(c.cfa, data = ccams.drop.bio,
+             ordered = TRUE)
+# Review fit statistics
+c.fit.summary <- summary(c.fit, fit.measures = TRUE, standardized = TRUE)
+summary(c.fit, standardized = TRUE)
+# Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
+# sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
+```
+
+```{r gof-table, echo = FALSE}
+# This code chunk adds fit statistics for the CFAs.
+
+# Add in fit statistics from the wave 1 cfa model 
+fa.fit.statistics[2, "Model"] <- "Wave 1 Confirmatory Factor Analysis"
+fa.fit.statistics[2, "Chi.Square"] <- paste(round(fitMeasures(fit, "chisq"), 3),"(", fitMeasures(fit, "df"), ")", " p<.001", sep = "")
+fa.fit.statistics[2, "CFI"] <- round(fitMeasures(fit, "cfi"), 2)
+fa.fit.statistics[2, "TLI"] <- round(fitMeasures(fit, "tli"), 2)
+fa.fit.statistics[2, "RMSR"] <- round(fitMeasures(fit, "rmr"), 3)
+fa.fit.statistics[2, "RMSEA"] <- round(fitMeasures(fit, "rmsea"), 3)
+
+# Add in fit statistics from the wave 2 cfa model 
+fa.fit.statistics[3, "Model"] <- "Wave 2 Confirmatory Factor Analysis"
+fa.fit.statistics[3, "Chi.Square"] <- paste(round(fitMeasures(b.fit, "chisq"), 3),"(", fitMeasures(b.fit, "df"), ")", " p<.001", sep = "")
+fa.fit.statistics[3, "CFI"] <- round(fitMeasures(b.fit, "cfi"), 2)
+fa.fit.statistics[3, "TLI"] <- round(fitMeasures(b.fit, "tli"), 2)
+fa.fit.statistics[3, "RMSR"] <- round(fitMeasures(b.fit, "rmr"), 3)
+fa.fit.statistics[3, "RMSEA"] <- round(fitMeasures(b.fit, "rmsea"), 3)
+
+# Add in fit statistics from the wave 3 cfa model 
+fa.fit.statistics[4, "Model"] <- "Wave 3 Confirmatory Factor Analysis"
+fa.fit.statistics[4, "Chi.Square"] <- paste(round(fitMeasures(c.fit, "chisq"), 3),"(", fitMeasures(c.fit, "df"), ")", " p<.001", sep = "")
+fa.fit.statistics[4, "CFI"] <- round(fitMeasures(c.fit, "cfi"), 2)
+fa.fit.statistics[4, "TLI"] <- round(fitMeasures(c.fit, "tli"), 2)
+fa.fit.statistics[4, "RMSR"] <- round(fitMeasures(c.fit, "rmr"), 3)
+fa.fit.statistics[4, "RMSEA"] <- round(fitMeasures(c.fit, "rmsea"), 3)
+
+# Add row for fit guidelines
+fa.fit.statistics[5, "Model"] <- "Fit Guidelines"
+fa.fit.statistics[5, "Chi.Square"] <- ""
+fa.fit.statistics[5, "CFI"] <- paste(">.95")
+fa.fit.statistics[5, "TLI"] <- paste(">.95")
+fa.fit.statistics[5, "RMSR"] <- paste("<.08")
+fa.fit.statistics[5, "RMSEA"] <- paste("<.08")
+
+kable(fa.fit.statistics,
+      booktabs = T,
+      col.names = c("Model", 
+                    "Chi-Square(df)", 
+                    "CFI", 
+                    "TLI", 
+                    "RMSR", 
+                    "RMSEA"),
+      caption = "Goodness of Fit Statistics") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  add_footnote(c("Wave 1 n = 6157, Wave 2 n = 3834, Wave 3 n = 2675", "Values meeting fit guidelines indicate good model-data fit."), notation="number") 
+
+```
+
+```{r, echo = FALSE}
+# Import organized loadings table from excel
+loadings.table <- read.csv(
+  file = "CFA-std-loadings.csv",
+  header = TRUE,
+  sep = ",",
+  dec = ".",
+  stringsAsFactors = TRUE
+)
+
+# Function to control line separation in kable 
+linesep<-function(x,y=character()){
+  if(!length(x))
+    return(y)
+  linesep(x[-length(x)], c(rep('',x[length(x)]-1),'\\addlinespace',y))  
+}
+# Set NAs as blank in kable loadings table 
+options(knitr.kable.NA = '')
+```
+```{r, cfa-loadings-table, echo = FALSE}
+# Print loadings table 
+kable(loadings.table,
+      booktabs = T,
+      linesep = linesep(c(6, 4, 4)),
+      col.names = c("",
+                  "Wave 1",
+                  "Wave 2",
+                  "Wave 3"),
+      caption = "Confirmatory Factor Analysis Standardized Loadings for All Waves") %>%
+  kable_classic(html_font = "CMU Serif")
+```
