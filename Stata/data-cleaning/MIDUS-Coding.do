@@ -767,8 +767,12 @@ set more off
 	* Combine prayer (cam12) and spiritual healing (cam15). They will become cam12. 
 		tab bcam12 bcam15, missing
 		* 13 yes on spiritual only. 
-		* Replace statement: assign all that answer yes on spiritual healing to be yes on prayer 
+		* Replace statement: assign all that answer yes on prayer to be yes on spiritual healing
 		replace bcam12 = 1 if bcam15 == 1
+		* If respondent is missing on only one var, they should be recorded as their response of the other var
+		* whether they report yes or no. For example, if missing on prayer and no on spiritual healing, they 
+		* should be no on the combined variable. Below is a statement to address this. 
+		replace bcam12 = 0 if bcam12 == 0 & bcam15 == .
 		tab bcam12 bcam15, missing
 
 	* Check missing patterns
