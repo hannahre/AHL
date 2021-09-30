@@ -4,6 +4,8 @@
 # lmest
 # install.packages("LMest")
 library(LMest)
+library(tidyr)
+library(dplyr)
 
 data("PSIDlong")
 dim(PSIDlong)
@@ -26,29 +28,33 @@ str(ccams.drop.bio)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 a.lta.var.list <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
-               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15",
+               "acam21")
 
 a.cams.lta <- M1[a.lta.var.list] # Subset MIDUS1 - only include CAMs.
 
 # Rename columns 
 a.cams.lta <- dplyr::rename(a.cams.lta, 
-                       aAcupuncture = acam1, 
-                       aBiofeedback = acam2,
-                       aChiropractic = acam3,
-                       aEnergyHeal = acam4,
-                       aExerciseMove = acam5,
-                       aHerbal = acam6,
-                       aVitamins = acam7,
-                       aHomeopathy = acam8,
-                       aHypnosis = acam9,
-                       aImageryTech = acam10,
-                       aMassage = acam11,
-                       aPrayer = acam12,
-                       aRelaxMeditate = acam13,
-                       aSpecialDiet = acam14,
-                       aSpiritHeal = acam15)
+                            Acupuncture_W1 = acam1, 
+                            Biofeedback_W1 = acam2,
+                            Chiropractic_W1 = acam3,
+                            EnergyHeal_W1 = acam4,
+                            ExerciseMove_W1 = acam5,
+                            Herbal_W1 = acam6,
+                            Vitamins_W1 = acam7,
+                            Homeopathy_W1 = acam8,
+                            Hypnosis_W1 = acam9,
+                            ImageryTech_W1 = acam10,
+                            Massage_W1 = acam11,
+                            Prayer_W1 = acam12,
+                            RelaxMeditate_W1 = acam13,
+                            SpecialDiet_W1 = acam14, 
+                            SpiritHeal_W1 = acam15, 
+                            PraySpirit_W1 = acam21)
 head(a.cams.lta)
 
+# Add time variables. Wave 1 = 1
+# a.cams.lta$Wave1 <- "1"
 
 ################################################################################
 # Wave 2 
@@ -59,27 +65,32 @@ head(a.cams.lta)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
 M2 <- read_dta(path)
 b.cams.list <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
-               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14")
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14", "bcam15", "bcam21")
 
 b.cams.lta <- M2[b.cams.list] # Subset MIDUS2 - only include CAMs.
 
 # Rename columns 
 b.cams.lta <- dplyr::rename(b.cams.lta, 
-                       bAcupuncture = bcam1, 
-                       bBiofeedback = bcam2,
-                       bChiropractic = bcam3,
-                       bEnergyHeal = bcam4,
-                       bExerciseMove = bcam5,
-                       bHerbal = bcam6,
-                       bVitamins = bcam7,
-                       bHomeopathy = bcam8,
-                       bHypnosis = bcam9,
-                       bImageryTech = bcam10,
-                       bMassage = bcam11,
-                       bPraySpirit = bcam12,
-                       bRelaxMeditate = bcam13,
-                       bSpecialDiet = bcam14)
+                            Acupuncture_W2 = bcam1, 
+                            Biofeedback_W2 = bcam2,
+                            Chiropractic_W2 = bcam3,
+                            EnergyHeal_W2 = bcam4,
+                            ExerciseMove_W2 = bcam5,
+                            Herbal_W2 = bcam6,
+                            Vitamins_W2 = bcam7,
+                            Homeopathy_W2 = bcam8,
+                            Hypnosis_W2 = bcam9,
+                            ImageryTech_W2 = bcam10,
+                            Massage_W2 = bcam11,
+                            Prayer_W2 = bcam12,
+                            RelaxMeditate_W2 = bcam13,
+                            SpecialDiet_W2 = bcam14, 
+                            SpiritHeal_W2 = bcam15, 
+                            PraySpirit_W2 = bcam21)
 head(b.cams.lta)
+
+# Add time variable: Wave 2=2 
+#b.cams.lta$Wave2 <- "2"
 
 ################################################################################
 # Wave 3 
@@ -92,49 +103,57 @@ head(b.cams.lta)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
 M3 <- read_dta(path)
 c.cams.list <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
-               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14")
+               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14", 
+               "ccam15", "ccam21")
 
 c.cams.lta <- M3[c.cams.list] # Subset MIDUS2 - only include CAMs.
 
 # Rename columns 
 c.cams.lta <- dplyr::rename(c.cams.lta, 
-                       cAcupuncture = ccam1, 
-                       cBiofeedback = ccam2,
-                       cChiropractic = ccam3,
-                       cEnergyHeal = ccam4,
-                       cExerciseMove = ccam5,
-                       cHerbal = ccam6,
-                       cVitamins = ccam7,
-                       cHomeopathy = ccam8,
-                       cHypnosis = ccam9,
-                       cImageryTech = ccam10,
-                       cMassage = ccam11,
-                       cPraySpirit = ccam12,
-                       cRelaxMeditate = ccam13,
-                       cSpecialDiet = ccam14)
+                            Acupuncture_W3 = ccam1, 
+                            Biofeedback_W3 = ccam2,
+                            Chiropractic_W3 = ccam3,
+                            EnergyHeal_W3 = ccam4,
+                            ExerciseMove_W3 = ccam5,
+                            Herbal_W3 = ccam6,
+                            Vitamins_W3 = ccam7,
+                            Homeopathy_W3 = ccam8,
+                            Hypnosis_W3 = ccam9,
+                            ImageryTech_W3 = ccam10,
+                            Massage_W3 = ccam11,
+                            Prayer_W3 = ccam12,
+                            RelaxMeditate_W3 = ccam13,
+                            SpecialDiet_W3 = ccam14, 
+                            SpiritHeal_W3 = ccam15, 
+                            PraySpirit_W3 = ccam21)
 head(c.cams.lta)
 
+# Add time variable: Wave 3 = 3
+#c.cams.lta$Wave3 <- "3"
 
-# Combine prayer and spiritual healing in Wave 1 
-# This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
-a.cams.lta <- a.cams.lta %>% 
-  rowwise() %>% 
-  mutate(
-    aPraySpirit = case_when(
-      aPrayer == 0 & aSpiritHeal == 0 ~ 0,
-      aPrayer == 1 & aSpiritHeal == 1 ~ 1, 
-      aPrayer == 1 & aSpiritHeal == 0 ~ 1, 
-      aPrayer == 0 & aSpiritHeal == 1 ~ 1)
-  ) 
+#################################################################################
+# Drop biofeedback, prayer, and spirit from each wave
 
-check.vars <- c("aPrayer", "aSpiritHeal", "aPraySpirit")
-view(a.cams.lta[check.vars])
+a.cams.lta <- subset(a.cams.lta, select = -c(Prayer_W1, SpiritHeal_W1, Biofeedback_W1))
+str(a.cams.lta)
 
-# If respondents were missing on either prayer or spirit they're coded as missing on the new var. Ugh that needs to be fixed. 
+b.cams.lta <- subset(b.cams.lta, select = -c(Prayer_W2, SpiritHeal_W2, Biofeedback_W2))
+str(b.cams.lta)
 
+c.cams.lta <- subset(c.cams.lta, select = -c(Prayer_W3, SpiritHeal_W3, Biofeedback_W3))
+str(c.cams.lta)
 
-# Drop prayer and spiritual healing columns 
-acams <- subset(acams, select = -c(aPrayer, aSpiritHeal))
-str(acams)
+################################################################################
+# Reshaping and merging all three waves 
 
-# Drop biofeedback from each wave 
+# Merge a.cams.lta to b.cams.lta
+cams.lta.1 <- merge(a.cams.lta, b.cams.lta, by = "M2ID")
+# Merge cams.lta.1 and c.cams.lta
+cams.lta.2 <- merge(cams.lta.1, c.cams.lta, by = "M2ID")
+
+library(panelr)
+
+# Reshape wide to long 
+cams.long <- long_panel(cams.lta.2, prefix = "_W", begin = 1, end = 3, label_location = "end")
+
+################################################################################

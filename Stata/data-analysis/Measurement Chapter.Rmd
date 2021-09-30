@@ -14,6 +14,7 @@ header-includes:
 - \usepackage{fancyhdr}
 - \usepackage{lastpage}
 - \usepackage{dcolumn}
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -204,7 +205,8 @@ MIDUS includes data on CAM use for a variety of CAMs. This is important for test
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
-               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15")
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", 
+               "acam15", "acam21")
 
 acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
 
@@ -238,7 +240,8 @@ acams <- dplyr::rename(acams,
                           aPrayer = acam12,
                           aRelaxMeditate = acam13,
                           aSpecialDiet = acam14,
-                          aSpiritHeal = acam15)
+                          aSpiritHeal = acam15,
+                          aPraySpirit = acam21)
 head(acams)
 # Keep only complete cases
 acams=acams[complete.cases(acams),]
@@ -255,7 +258,8 @@ str(acams)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
 M2 <- read_dta(path)
 bcamsList <- c("bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
-               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14")
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14", 
+               "bcam15", "bcam21")
 
 bcams <- M2[bcamsList] # Subset MIDUS2 - only include CAMs.
 
@@ -286,9 +290,11 @@ bcams <- dplyr::rename(bcams,
                          bHypnosis = bcam9,
                          bImageryTech = bcam10,
                          bMassage = bcam11,
-                         bPraySpirit = bcam12,
+                         bPrayer = bcam12,
                          bRelaxMeditate = bcam13,
-                         bSpecialDiet = bcam14)
+                         bSpecialDiet = bcam14,
+                         bSpiritHeal = bcam15,
+                         bPraySpirit = bcam21)
 head(bcams)
 # Keep only complete cases
 bcams=bcams[complete.cases(bcams),]
@@ -304,7 +310,8 @@ str(bcams)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
 M3 <- read_dta(path)
 ccamsList <- c("ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
-               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14")
+               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14",
+               "ccam15", "ccam21")
 
 ccams <- M3[ccamsList] # Subset MIDUS2 - only include CAMs.
 
@@ -335,9 +342,11 @@ ccams <- dplyr::rename(ccams,
                         cHypnosis = ccam9,
                         cImageryTech = ccam10,
                         cMassage = ccam11,
-                        cPraySpirit = ccam12,
+                        cPrayer = ccam12,
                         cRelaxMeditate = ccam13,
-                        cSpecialDiet = ccam14)
+                        cSpecialDiet = ccam14, 
+                        cSpiritHeal = ccam15, 
+                        cPraySpirit = ccam21)
 head(ccams)
 # Keep only complete cases
 ccams=ccams[complete.cases(ccams),]
@@ -371,46 +380,76 @@ table.pray.spirit <- pray.spirit %>%
   adorn_title(placement = "top", row_name = "Prayer", col_name = "Spiritual Healing")
 ```
 
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk creates a crosstab for prayer and spiritual healing in Wave 2 
+
+# create new df with prayer and spiritual healing
+my.vars <- c("bPrayer", "bSpiritHeal")
+pray.spirit.b <- bcams[my.vars]
+  
+# Assign yes/no values labels to prayer and spiritual healing 
+pray.spirit.b$bPrayer <- ordered(pray.spirit.b$bPrayer,
+                              levels = c(0,1), 
+                              labels = c("No", "Yes"))
+head(pray.spirit.b)
+pray.spirit.b$bSpiritHeal <- ordered(pray.spirit.b$bSpiritHeal,
+                                   levels = c(0, 1), 
+                                   labels = c("No", "Yes"))
+head(pray.spirit.b)
+
+# Crosstab for prayer and spiritual healing
+table.pray.spirit.b <- pray.spirit.b %>% 
+  tabyl(bPrayer, bSpiritHeal) %>% 
+  adorn_percentages("col") %>%
+  adorn_totals(where = "row") %>% 
+  adorn_pct_formatting() %>% 
+  adorn_ns( position = "front") %>% 
+  adorn_title(placement = "top", row_name = "Prayer", col_name = "Spiritual Healing")
+```
 
 ```{r, echo = FALSE, results = 'hide'}
-# This code chunk combines prayer and spiritual healing and drops aPrayer and aSpiritHeal 
-acams <- acams %>% 
-  rowwise() %>% 
-  mutate(
-    aPraySpirit = case_when(
-      aPrayer == 0 & aSpiritHeal == 0 ~ 0,
-      aPrayer == 1 & aSpiritHeal == 1 ~ 1, 
-      aPrayer == 1 & aSpiritHeal == 0 ~ 1, 
-      aPrayer == 0 & aSpiritHeal == 1 ~ 1)
-    ) %>% 
-  mutate_if(is.numeric, as.factor)
-check.vars <- c("aPrayer", "aSpiritHeal", "aPraySpirit")
-view(acams[check.vars])
+# This code chunk creates a crosstab for prayer and spiritual healing at Wave 3
+# create new df with prayer and spiritual healing
+my.vars <- c("cPrayer", "cSpiritHeal")
+pray.spirit.c <- ccams[my.vars]
+  
+# Assign yes/no values labels to prayer and spiritual healing 
+pray.spirit.c$cPrayer <- ordered(pray.spirit.c$cPrayer,
+                              levels = c(0,1), 
+                              labels = c("No", "Yes"))
+head(pray.spirit.c)
+pray.spirit.c$cSpiritHeal <- ordered(pray.spirit.c$cSpiritHeal,
+                                   levels = c(0, 1), 
+                                   labels = c("No", "Yes"))
+head(pray.spirit.c)
 
-# Check that code ran correctly with crosstabs 
-# Prayer and Spiritual Healing
-table.pray.spirit
-# 4304 cases report no on both prayer and spiritual healing. aPraySpirit should have 4304 0/nos and 1853 1/yeses. 
-table(acams$aPraySpirit)
-# Correct.
-# Check that no cases that responded yes on prayer are coded as 0 on the new variable.
-acams %>%
-  tabyl(aPrayer, aPraySpirit)
-# Correct. 
-# Chcek that no cases that responded yes on spiritual healing are coded as 0 on the new variable.
-acams %>%  
-  tabyl(aSpiritHeal, aPraySpirit)
-# Correct. 
-# Check that aPraySpirit is a factor.
-class(acams$aPraySpirit)
+# Crosstab for prayer and spiritual healing
+table.pray.spirit.c <- pray.spirit.c %>% 
+  tabyl(cPrayer, cSpiritHeal) %>% 
+  adorn_percentages("col") %>%
+  adorn_totals(where = "row") %>% 
+  adorn_pct_formatting() %>% 
+  adorn_ns( position = "front") %>% 
+  adorn_title(placement = "top", row_name = "Prayer", col_name = "Spiritual Healing")
+
+
+```
+```{r, echo = FALSE, results = 'hide'}
+# This code chunk drops prayer and spiritual healing for the rest of the analyses.  
 
 # Drop prayer and spiritual healing columns 
 acams <- subset(acams, select = -c(aPrayer, aSpiritHeal))
 str(acams)
+
+bcams <- subset(bcams, select = -c(bPrayer, bSpiritHeal))
+str(bcams)
+
+ccams <- subset(ccams, select = -c(cPrayer, cSpiritHeal))
+str(ccams)
 ```
 
 ```{r, echo = FALSE, results='hide'}
-# this chunk converts the tibble produced in the previous chunk to a matrix. 
+# this chunk converts the tibble (acams) produced in the previous chunk to a matrix. 
 # Code was written by Ron. See Andrews.Hannah.FacAn.Ron.script 
 
 # What type of numbers do we have in the tibble "acams"? Let's see.
@@ -517,11 +556,11 @@ row.names(freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Heal
 row.names(b.freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
-                  "Prayer or Spiritual Healing", "Relaxation Techniques", "Special Diet")
+                  "Relaxation Techniques", "Special Diet", "Prayer or Spiritual Healing")
 row.names(c.freqs) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise and Movement Therapy", "Herbal Therapy", "Vitamins", 
                   "Homeopathy", "Hypnosis", "Imagery Techniques", "Massage",
-                  "Prayer or Spiritual Healing", "Relaxation Techniques", "Special Diet")
+                  "Relaxation Techniques", "Special Diet", "Prayer or Spiritual Healing")
 
 # Next, merge frequency dataframes for all three waves
 # Merge freqs and b.freqs 
@@ -566,8 +605,17 @@ kable(all.freqs.ordered,
 (Move to data section.) It should be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
 
 ```{r, echo = FALSE}
+# Print wave 1 pray spirit crosstab
 table.pray.spirit %>% 
-  kable(caption = "Crosstab of Prayer and Spiritual Healing") %>% 
+  kable(caption = "Crosstab of Prayer and Spiritual Healing Wave 1") %>% 
+  kable_styling(bootstrap_options = c("basic"))
+# Print wave 2 pray spirit crosstab 
+table.pray.spirit.b %>% 
+  kable(caption = "Crosstab of Prayer and Spiritual Healing Wave 2") %>% 
+  kable_styling(bootstrap_options = c("basic"))
+# Print wave 3 pray spirit crosstab
+table.pray.spirit.c %>% 
+  kable(caption = "Crosstab of Prayer and Spiritual Healing Wave 3") %>% 
   kable_styling(bootstrap_options = c("basic"))
 ```
 

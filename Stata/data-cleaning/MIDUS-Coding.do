@@ -537,7 +537,7 @@ set more off
 	*cam9	Hypnosis
 	*cam10	Imagery techniques
 	*cam11	Massage therapy
-	*cam12	Spiritual practices 
+	*cam12	Prayer or other Spiritual practices 
 	*cam13	Meditation
 	*cam14	Special diets
 	*cam15	Spiritual healing
@@ -710,7 +710,24 @@ set more off
 	othercam acam13 A1SA39PD "A1SA39PD == 14"
 
 
-// Multiple imputation for respondents missing on less than half of all CAMs.  
+// CAM21 : Combine prayer and spiritual healing into cam21 
+	* acam12 = prayer, acam15 = spiritual healing 
+	gen acam21 = .
+		replace acam21 = 0 if acam12 == 0 & acam15 == 0
+		replace acam21 = 0 if acam12 == 0 & acam15 == .
+		replace acam21 = 0 if acam12 == . & acam15 == 0
+		replace acam21 = 1 if acam12 == 1 & acam15 == 0
+		replace acam21 = 1 if acam12 == 0 & acam15 == 1
+		replace acam21 = 1 if acam12 == . & acam15 == 1
+		replace acam21 = 1 if acam12 == 1 & acam15 == .
+		replace acam21 = 1 if acam12 == 1 & acam15 == 1
+	tab acam21, missing
+	* Create variable to store all patterns of responses for acam12 and acam15 to be sure acam21 was coded correctly
+	* Only cases missing on both should be coded as missing. If respondents are missing on one var but not the other, the 
+	* case should be coded as the highest value. 
+	egen acam21pattern = concat(acam12 acam15) 
+	tab acam21pattern, missing
+	* Coded correctly. 
 
 	*Create count variable (sum of CAMs)
 	* Removing CAM16 because it is fill in the blank. 
@@ -764,16 +781,30 @@ set more off
 		replace bcam14 = 1 if bcam19 == 1
 		tab bcam14 bcam19, missing
 		
-	* Combine prayer (cam12) and spiritual healing (cam15). They will become cam12. 
-		tab bcam12 bcam15, missing
-		* 13 yes on spiritual only. 
-		* Replace statement: assign all that answer yes on prayer to be yes on spiritual healing
-		replace bcam12 = 1 if bcam15 == 1
-		* If respondent is missing on only one var, they should be recorded as their response of the other var
+// CAM21 : Combine prayer and spiritual healing into cam21 
+	* bcam12 = prayer, bcam15 = spiritual healing 
+	gen bcam21 = .
+		replace bcam21 = 0 if bcam12 == 0 & bcam15 == 0
+		replace bcam21 = 0 if bcam12 == 0 & bcam15 == .
+		replace bcam21 = 0 if bcam12 == . & bcam15 == 0
+		replace bcam21 = 1 if bcam12 == 1 & bcam15 == 0
+		replace bcam21 = 1 if bcam12 == 0 & bcam15 == 1
+		replace bcam21 = 1 if bcam12 == . & bcam15 == 1
+		replace bcam21 = 1 if bcam12 == 1 & bcam15 == .
+		replace bcam21 = 1 if bcam12 == 1 & bcam15 == 1
+	tab bcam21, missing
+	* Create variable to store all patterns of responses for bcam12 and bcam15 to be sure bcam21 was coded correctly
+	* Only cases missing on both should be coded as missing. If respondents are missing on one var but not the other, the 
+	* case should be coded as the highest value. 
+	egen bcam21pattern = concat(bcam12 bcam15) 
+	tab bcam21pattern, missing
+	* Coded correctly. 
+		
+		* When I realized the mistake. The code above fixes this.: If respondent is missing on only one var, 
+		* they should be recorded as their response of the other var
 		* whether they report yes or no. For example, if missing on prayer and no on spiritual healing, they 
 		* should be no on the combined variable. Below is a statement to address this. 
-		replace bcam12 = 0 if bcam12 == 0 & bcam15 == .
-		tab bcam12 bcam15, missing
+		* replace bcam12 = 0 if bcam12 == 0 & bcam15 == .
 
 	* Check missing patterns
 		* Create local list of cams
@@ -962,12 +993,24 @@ set more off
 		replace ccam14 = 1 if ccam19 == 1
 		tab ccam14 ccam19, missing
 		
-	* Combine prayer (cam12) and spiritual healing (cam15). They will become cam12. 
-		tab ccam12 ccam15, missing
-		* 5 yes on spiritual only 
-		* Replace statement: assign all that answer yes on spiritual healing to be yes on prayer 
-		replace ccam12 = 1 if ccam15 == 1
-		tab ccam12 ccam15, missing
+// CAM21 : Combine prayer and spiritual healing into cam21 
+	* ccam12 = prayer, ccam15 = spiritual healing 
+	gen ccam21 = .
+		replace ccam21 = 0 if ccam12 == 0 & ccam15 == 0
+		replace ccam21 = 0 if ccam12 == 0 & ccam15 == .
+		replace ccam21 = 0 if ccam12 == . & ccam15 == 0
+		replace ccam21 = 1 if ccam12 == 1 & ccam15 == 0
+		replace ccam21 = 1 if ccam12 == 0 & ccam15 == 1
+		replace ccam21 = 1 if ccam12 == . & ccam15 == 1
+		replace ccam21 = 1 if ccam12 == 1 & ccam15 == .
+		replace ccam21 = 1 if ccam12 == 1 & ccam15 == 1
+	tab ccam21, missing
+	* Create variable to store all patterns of responses for ccam12 and ccam15 to be sure ccam21 was coded correctly
+	* Only cases missing on both should be coded as missing. If respondents are missing on one var but not the other, the 
+	* case should be coded as the highest value. 
+	egen ccam21pattern = concat(ccam12 ccam15) 
+	tab ccam21pattern, missing
+	* Coded correctly. 
 
 	* Check missing patterns
 		* Create local list of cams
