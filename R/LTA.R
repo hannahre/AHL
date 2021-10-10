@@ -242,17 +242,51 @@ summary(d, dataSummary = "responses", varType = rep("c", ncol(d$Y)))
 # Build formula 
 basic.complete.fm <- lmestFormula(data = cams.complete.long, response = "Y")
 
-# Model search 
+# Model search, time homogenous
 complete.out <- lmestSearch(responsesFormula = basic.complete.fm$responsesFormula, 
                             index = c("M2ID", "time"),
                             data = cams.complete.long, 
-                            version = "categorical", k = 1:8, 
+                            version = "categorical", k = 1:10, 
                             modBasic = 1, seed = 123)
 summary(complete.out)
+
+# Marginal probabilities for each number of states
+complete.model.4 <- complete.out$out.single[[4]]
+complete.model.4$piv
+complete.model.5 <- complete.out$out.single[[5]]
+complete.model.5$piv
+complete.model.6 <- complete.out$out.single[[6]]
+complete.model.6$piv
+complete.model.7 <- complete.out$out.single[[7]]
+complete.model.7$piv
+# Very small classes (<5%) begin appearing at 5 classes and beyond
+# The majority of gains in model fit are also made between 1 and 4 classes. 
+
+# 4 state solution 
+plot(complete.model.4, what = "transitions")
+# Matrix of conditional probabilities
+mat4 <- as.matrix(complete.model.4$Psi[seq(2, 104,2)])
+complete.model.4.condprob <- as.data.frame(split(mat4, 1:13))
 
 # lowest AIC and BIC is 8 classes 
 complete.model.8 <- complete.out$out.single[[8]]
 summary(complete.model.8)
+# Name columns
+colnames(complete.model.4.condprob) <- c("Acupuncture",
+                                         "Chiropractic",
+                                         "EnergyHeal",
+                                         "ExerciseMove",
+                                         "Herbal",
+                                         "Vitamins",
+                                         "Homeopathy",
+                                         "Hypnosis",
+                                         "ImageryTech",
+                                         "Massage",
+                                         "RelaxMeditate",
+                                         "SpecialDiet",
+                                         "PraySpirit")
+# Export as excel file
+write_xlsx(complete.model.4.condprob, "C:/Users/hanna/Documents/git/AHL/R/complete4StatesCondProb.xlsx")
 
 # Create matrix of conditional probabilities of yes on each item. Columns = items, rows = states
 mat1 <- as.matrix(complete.model.8$Psi[seq(2, 208,2)])
@@ -273,6 +307,30 @@ colnames(complete.model.8.condprob) <- c("Acupuncture",
                                          "PraySpirit")
 library(writexl)
 write_xlsx(complete.model.8.condprob, "C:/Users/hanna/Documents/git/AHL/R/complete8StatesCondProb.xlsx")
+
+# 6 Classes 
+complete.model.6 <- complete.out$out.single[[6]]
+summary(complete.model.6)
+# Two very small classes, 2% and 3% 
+# Create matrix of conditional probabilities of yes on each item. Columns = items, rows = states
+mat6 <- as.matrix(complete.model.6$Psi[seq(2, 156,2)])
+complete.model.6.condprob <- as.data.frame(split(mat6, 1:13))
+colnames(complete.model.6.condprob) <- c("Acupuncture",
+                                         "Chiropractic",
+                                         "EnergyHeal",
+                                         "ExerciseMove",
+                                         "Herbal",
+                                         "Vitamins",
+                                         "Homeopathy",
+                                         "Hypnosis",
+                                         "ImageryTech",
+                                         "Massage",
+                                         "RelaxMeditate",
+                                         "SpecialDiet",
+                                         "PraySpirit")
+# Name rows 
+row.names(complete.model.6.condprob) <- c("State 1", "State 2", "State 3", "State 4", "State 5", "State 6")
+write_xlsx(complete.model.6.condprob, "C:/Users/hanna/Documents/git/AHL/R/complete6StatesCondProb.xlsx")
 
 ################################################################################
 # LMest - running markov model. 
