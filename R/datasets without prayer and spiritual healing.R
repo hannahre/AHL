@@ -1,0 +1,145 @@
+
+# This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+acamsList <- c("acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14", "acam21")
+
+acams <- M1[acamsList] # Subset MIDUS1 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+acams <- remove_attributes(acams, "label")
+acams <- remove_attributes(acams, "notes")
+
+str(acams)
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(acams[, c(1:14)])
+
+acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
+
+str(acams) 
+head(acams)
+
+# Rename columns 
+acams <- dplyr::rename(acams, 
+                       aAcupuncture = acam1, 
+                       aBiofeedback = acam2,
+                       aChiropractic = acam3,
+                       aEnergyHeal = acam4,
+                       aExerciseMove = acam5,
+                       aHerbal = acam6,
+                       aVitamins = acam7,
+                       aHomeopathy = acam8,
+                       aHypnosis = acam9,
+                       aImageryTech = acam10,
+                       aMassage = acam11,
+                       aRelaxMeditate = acam13,
+                       aSpecialDiet = acam14,
+                       aPraySpirit = acam21)
+head(acams)
+# Keep only complete cases
+acams=acams[complete.cases(acams),]
+str(acams)
+
+# This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
+M2 <- read_dta(path)
+bcamsList <- c("bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", "bcam21")
+
+bcams <- M2[bcamsList] # Subset MIDUS2 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+bcams <- remove_attributes(bcams, "label")
+bcams <- remove_attributes(bcams, "notes")
+
+str(bcams)
+
+# Create column that is the sum of CAMs used 
+btotalCams <- rowSums(bcams[,1:14])
+
+bcams[sapply(bcams, is.numeric)] <- lapply(bcams[sapply(bcams, is.numeric)], as.factor) # convert all columns to factors
+
+str(bcams) 
+head(bcams)
+
+# Rename columns 
+bcams <- dplyr::rename(bcams, 
+                       bAcupuncture = bcam1, 
+                       bBiofeedback = bcam2,
+                       bChiropractic = bcam3,
+                       bEnergyHeal = bcam4,
+                       bExerciseMove = bcam5,
+                       bHerbal = bcam6,
+                       bVitamins = bcam7,
+                       bHomeopathy = bcam8,
+                       bHypnosis = bcam9,
+                       bImageryTech = bcam10,
+                       bMassage = bcam11,
+                       bRelaxMeditate = bcam13,
+                       bSpecialDiet = bcam14,
+                       bPraySpirit = bcam21)
+head(bcams)
+# Keep only complete cases
+bcams=bcams[complete.cases(bcams),]
+str(bcams)
+
+# This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
+M3 <- read_dta(path)
+ccamsList <- c("ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
+               "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", "ccam21")
+
+ccams <- M3[ccamsList] # Subset MIDUS2 - only include CAMs.
+
+# Remove attributes from acams data - created in Stata (labels and data notes). They're (were) producing an error with bart_spher.
+ccams <- remove_attributes(ccams, "label")
+ccams <- remove_attributes(ccams, "notes")
+
+str(ccams)
+
+# Create column that is the sum of CAMs used 
+ctotalCams <- rowSums(ccams[,1:14])
+
+ccams[sapply(ccams, is.numeric)] <- lapply(ccams[sapply(ccams, is.numeric)], as.factor) # convert all columns to factors
+
+str(ccams) 
+head(ccams)
+
+# Rename columns 
+ccams <- dplyr::rename(ccams, 
+                       cAcupuncture = ccam1, 
+                       cBiofeedback = ccam2,
+                       cChiropractic = ccam3,
+                       cEnergyHeal = ccam4,
+                       cExerciseMove = ccam5,
+                       cHerbal = ccam6,
+                       cVitamins = ccam7,
+                       cHomeopathy = ccam8,
+                       cHypnosis = ccam9,
+                       cImageryTech = ccam10,
+                       cMassage = ccam11,
+                       cRelaxMeditate = ccam13,
+                       cSpecialDiet = ccam14, 
+                       cPraySpirit = ccam21)
+head(ccams)
+# Keep only complete cases
+ccams=ccams[complete.cases(ccams),]
+str(ccams)
+save(acams, file = "acams14.rda")
+save(bcams, file = "bcams14.rda")
+save(ccams, file = "ccams14.rda")

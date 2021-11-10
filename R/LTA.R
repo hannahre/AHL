@@ -6,6 +6,7 @@
 library(LMest)
 library(tidyr)
 library(dplyr)
+library(haven)
 
 data("PSIDlong")
 dim(PSIDlong)
@@ -18,7 +19,6 @@ str(acams.drop.bio)
 str(bcams.drop.bio)
 str(ccams.drop.bio)
 
-# Need to read in with m2id
 ################################################################################
 # Wave 1 
 # This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
@@ -29,9 +29,11 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 a.lta.var.list <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15",
-               "acam21")
+               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", "A1SCHROX")
 
 a.cams.lta <- M1[a.lta.var.list] # Subset MIDUS1 - only include CAMs.
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(a.cams.lta[, c(2:12, 14, 15, 17)])
 
 # Rename columns 
 a.cams.lta <- dplyr::rename(a.cams.lta, 
@@ -50,8 +52,31 @@ a.cams.lta <- dplyr::rename(a.cams.lta,
                             RelaxMeditate_W1 = acam13,
                             SpecialDiet_W1 = acam14, 
                             SpiritHeal_W1 = acam15, 
-                            PraySpirit_W1 = acam21)
+                            PraySpirit_W1 = acam21,
+                            Education_W1 = AEduc,
+                            Race_W1 = ARace,
+                            Sex_W1 = ASex,
+                            LogIncome_W1 = lnAHhInc,
+                            Marital_W1 = aMarried,
+                            HlthInsurance_W1 = aHlthIns,
+                            Age_W1 = AAge,
+                            SumChron_W1 = A1SCHROX, 
+                            totalCams_W1 = totalCams)
 head(a.cams.lta)
+
+# Convert education to factor 
+a.cams.lta$Education_W1 <- as_factor(a.cams.lta$Education_W1, levels = "labels")
+# Convert Race to factor
+a.cams.lta$Race_W1 <- as_factor(a.cams.lta$Race_W1, levels = "labels")
+# Convert Sex to factor
+a.cams.lta$Sex_W1 <- as_factor(a.cams.lta$Sex_W1, levels = "labels")
+# Convert marital to factor
+a.cams.lta$Marital_W1 <- as_factor(a.cams.lta$Marital_W1, levels = "labels")
+# Convert Health insurance to factor
+a.cams.lta$HlthInsurance_W1 <- as_factor(a.cams.lta$HlthInsurance_W1, levels = "labels")
+# Convert Age to numeric 
+a.cams.lta$Age_W1 <- as.numeric(a.cams.lta$Age_W1)
+
 
 # Add time variables. Wave 1 = 1
 # a.cams.lta$Wave1 <- "1"
@@ -65,9 +90,13 @@ head(a.cams.lta)
 path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
 M2 <- read_dta(path)
 b.cams.list <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
-               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14", "bcam15", "bcam21")
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14", "bcam15", 
+               "bcam21", "bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried", "B1SCHROX")
 
 b.cams.lta <- M2[b.cams.list] # Subset MIDUS2 - only include CAMs.
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(b.cams.lta[, c(2:12, 14, 15, 17)])
 
 # Rename columns 
 b.cams.lta <- dplyr::rename(b.cams.lta, 
@@ -86,11 +115,31 @@ b.cams.lta <- dplyr::rename(b.cams.lta,
                             RelaxMeditate_W2 = bcam13,
                             SpecialDiet_W2 = bcam14, 
                             SpiritHeal_W2 = bcam15, 
-                            PraySpirit_W2 = bcam21)
+                            PraySpirit_W2 = bcam21,
+                            Age_W2 = bAge,
+                            LogIncome_W2 = lnbHhInc,
+                            Education_W2 = bEduc,
+                            Race_W2 = bRace,
+                            Sex_W2 = bSex,
+                            HlthInsurance_W2 = bHlthIns,
+                            Marital_W2 = bMarried, 
+                            SumChron_W2 = B1SCHROX, 
+                            totalCams_W2 = totalCams)
 head(b.cams.lta)
 
-# Add time variable: Wave 2=2 
-#b.cams.lta$Wave2 <- "2"
+# Convert age to numeric
+b.cams.lta$Age_W2 <- as.numeric(b.cams.lta$Age_W2)
+# Convert education to factor 
+b.cams.lta$Education_W2 <- haven::as_factor(b.cams.lta$Education_W2, levels = "labels")
+# Convert Race to factor 
+b.cams.lta$Race_W2 <- haven::as_factor(b.cams.lta$Race_W2, levels = "labels")
+# Convert sex to factor 
+b.cams.lta$Sex_W2 <- haven::as_factor(b.cams.lta$Sex_W2, levels = "labels")
+# Convert marital status to factor 
+b.cams.lta$Marital_W2 <- haven::as_factor(b.cams.lta$Marital_W2, levels = "labels")
+# Convert health insurance to factor
+b.cams.lta$HlthInsurance_W2 <- haven::as_factor(b.cams.lta$HlthInsurance_W2, levels = "labels")
+
 
 ################################################################################
 # Wave 3 
@@ -104,9 +153,13 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
 M3 <- read_dta(path)
 c.cams.list <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14", 
-               "ccam15", "ccam21", "C1STATUS")
+               "ccam15", "ccam21", "C1STATUS", "CAge", "lnCHhInc", "CEduc", "CRace", 
+               "CSex", "cMarried", "cHlthIns", "C1SCHROX")
 
 c.cams.lta <- M3[c.cams.list] # Subset MIDUS2 - only include CAMs.
+
+# Create column that is the sum of CAMs used 
+totalCams <- rowSums(c.cams.lta[, c(2:12, 14, 15, 17)])
 
 # Rename columns 
 c.cams.lta <- dplyr::rename(c.cams.lta, 
@@ -125,8 +178,29 @@ c.cams.lta <- dplyr::rename(c.cams.lta,
                             RelaxMeditate_W3 = ccam13,
                             SpecialDiet_W3 = ccam14, 
                             SpiritHeal_W3 = ccam15, 
-                            PraySpirit_W3 = ccam21)
+                            PraySpirit_W3 = ccam21,
+                            Age_W3 = CAge,
+                            LogIncome_W3 = lnCHhInc,
+                            Education_W3 = CEduc,
+                            Race_W3 = CRace,
+                            Sex_W3 = CSex,
+                            Marital_W3 = cMarried,
+                            HlthInsurance_W3 = cHlthIns, 
+                            SumChron_W3 = C1SCHROX, 
+                            totalCams_W3 = totalCams)
 head(c.cams.lta)
+
+# Age and income already set as numeric 
+# Convert education to factor 
+c.cams.lta$Education_W3 <- haven::as_factor(c.cams.lta$Education_W3, levels = "labels")
+# Convert race to factor
+c.cams.lta$Race_W3 <- haven::as_factor(c.cams.lta$Race_W3, levels = "labels")
+# Convert sex to factor 
+c.cams.lta$Sex_W3 <- haven::as_factor(c.cams.lta$Sex_W3, levels = "labels")
+# Convert marital to factor 
+c.cams.lta$Marital_W3 <- haven::as_factor(c.cams.lta$Marital_W3, levels = "labels")
+# Convert health insurance to factor 
+c.cams.lta$HlthInsurance_W3 <- haven::as_factor(c.cams.lta$HlthInsurance_W3, levels = "labels")
 
 ################################################################################
 # create waves with only complete cases
@@ -190,7 +264,7 @@ cams.lta.2 <- merge(cams.lta.1, c.cams.lta, by = "M2ID")
 
 library(panelr)
 
-# Reshape wide to long 
+# Reshape wide to long: this is the dataset with all respondents to be used further down 
 cams.long <- long_panel(cams.lta.2, prefix = "_W", begin = 1, end = 3, label_location = "end")
 
 # Merge complete cases 
@@ -210,8 +284,6 @@ glimpse(cams.complete.3)
 
 # Convert complete cases to long format 
 cams.complete.long <- long_panel(cams.complete.3, prefix = "_W", begin = 1, end = 3, id = "M2ID", label_location = "end")
-
-# Rename with response identified at the beginning of the variable name 
 
 ################################################################################
 # Lmest on complete cases
@@ -233,7 +305,14 @@ cams.complete.long <- dplyr::rename(cams.complete.long,
                               YRelaxMeditate = RelaxMeditate,
                               YSpecialDiet = SpecialDiet,
                               YPraySpirit = PraySpirit, 
-                              time = wave)
+                              time = wave,
+                              xEducation = Education,
+                              XRace = Race, 
+                              XSex = Sex, 
+                              XLogIncome = LogIncome,
+                              XMarital = Marital, 
+                              XHlthInsurance = HlthInsurance,
+                              XAge = Age)
 
 # Prepare and explore data 
 d <- lmestData(data = cams.complete.long, id = "M2ID", time = "time")
@@ -259,7 +338,8 @@ complete.model.6 <- complete.out$out.single[[6]]
 complete.model.6$piv
 complete.model.7 <- complete.out$out.single[[7]]
 complete.model.7$piv
-# Very small classes (<5%) begin appearing at 5 classes and beyond
+# When using dataset with complete cases on CAMs: these notes were made before including covariates.
+# Very small classes (<5%) begin appearing at 5 classes and beyond 
 # The majority of gains in model fit are also made between 1 and 4 classes. 
 
 # 4 state solution 
@@ -331,6 +411,28 @@ colnames(complete.model.6.condprob) <- c("Acupuncture",
 # Name rows 
 row.names(complete.model.6.condprob) <- c("State 1", "State 2", "State 3", "State 4", "State 5", "State 6")
 write_xlsx(complete.model.6.condprob, "C:/Users/hanna/Documents/git/AHL/R/complete6StatesCondProb.xlsx")
+
+################################################################################
+#Model with Covariates on Complete Data
+
+# Write formula
+fm.cov <- lmestFormula(data = cams.complete.long, response = "Y", 
+                         LatentInitial = "X", LatentTransition ="X")
+# Convert M2ID to numeric after error message for lmestSearch
+cams.complete.long$M2ID <- as.numeric(cams.complete.long$M2ID)
+# Search for best fitting model
+mod.cov <- lmestSearch(responsesFormula = fm.cov$responsesFormula,
+              latentFormula =  fm.cov$latentFormula,
+              index = c("M2ID","time"),
+              data = cams.complete.long,
+              k = 1:6, 
+              version = "categorical",
+              seed = 123)
+summary(mod.cov)
+# 5 class solution has the lowest AIC and BIC 
+mod.cov.5 <- mod.cov$out.single[[5]]
+summary(mod.cov.5)
+
 
 ################################################################################
 # LMest - running markov model. 

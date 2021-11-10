@@ -217,7 +217,7 @@ acams <- remove_attributes(acams, "notes")
 str(acams)
 
 # Create column that is the sum of CAMs used 
-totalCams <- rowSums(acams[,1:15])
+totalCams <- rowSums(acams[, c(1:11, 13, 14, 16)])
 
 acams[sapply(acams, is.numeric)] <- lapply(acams[sapply(acams, is.numeric)], as.factor) # convert all columns to factors
 

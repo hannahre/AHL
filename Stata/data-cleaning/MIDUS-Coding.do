@@ -444,7 +444,8 @@ set more off
 	tab B1SC1, missing
 	recode B1SC1 (1 = 1) (2 = 0) (. = .), gen(bHlthIns)
 	label variable bHlthIns "Currently covered by health insurance"
-	label values bHlthIns hlthInVals
+	label define hlthins2 0 "Uninsured" 1 "Insured"
+	label values bHlthIns hlthins2
 	tab bHlthIns B1SC1, missing
 
 	//Type of health insurance coverage 
@@ -508,7 +509,8 @@ set more off
 	tab C1SC1, missing
 	recode C1SC1 (1 = 1) (2 = 0) (. = .), gen(cHlthIns)
 	label variable cHlthIns "Currently covered by health insurance"
-	label values cHlthIns hlthInVals
+	label define hlthins3 0 "Uninsured" 1 "Insured"
+	label values cHlthIns hlthins3
 	tab cHlthIns C1SC1, missing
 
 	save, replace

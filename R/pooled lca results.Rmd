@@ -1,0 +1,277 @@
+---
+title: "Pooled LCA Results"
+author: "Hannah Andrews"
+date: "11/9/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = "cairo_pdf")
+library(tidyverse)
+library(DT)
+library(writexl)
+```
+
+```{r, echo = FALSE}
+# Ran lca on hpc. Load results from those analyses. 
+setwd("C:/Users/hanna/Documents/git/AHL/R")
+load("pooledbiolca.rda")
+load("pooledbiotable.rda")
+load("pooledlca.rda")
+load("pooledtable.rda")
+```
+# Model Fit
+
+## With biofeedback 
+```{r, echo = FALSE}
+pooled.bio.table
+```
+AIC: Model 6. BIC: Model 5. Entropy low. Class <5% starting at 3 classes. 
+
+## Without biofeedback 
+```{r, echo=FALSE}
+pooled.table
+```
+AIC: Model 6. BIC: Model 6. Entropy low. Class <5% starting at 5 classes. 
+
+# Predicted class memberships 
+Models 5 and 6 had the lowest AIC and BIC. First I will examine the size of the classes. 
+
+## With biofeedback 
+
+### Model 5
+```{r, echo = FALSE}
+# With biofeedback Model 5 
+table(pooled.bio.lca[[5]]$predclass)
+round(prop.table(table(pooled.bio.lca[[5]]$predclass)),4)*100
+```
+
+### Model 6 
+```{r, echo = FALSE}
+table(pooled.bio.lca[[6]]$predclass)
+round(prop.table(table(pooled.bio.lca[[6]]$predclass)),4)*100
+```
+There are multiple classes for each model that are very small. Next, I will examine the models without biofeedback
+
+## Without Biofeedback 
+
+### Model 4
+```{r, echo = FALSE}
+table(pooled.lca[[4]]$predclass)
+round(prop.table(table(pooled.lca[[4]]$predclass)),4)*100
+```
+
+### Model 5
+```{r, echo = FALSE}
+table(pooled.lca[[5]]$predclass)
+round(prop.table(table(pooled.lca[[5]]$predclass)),4)*100
+```
+### Model 6
+```{r, echo = FALSE}
+table(pooled.lca[[6]]$predclass)
+round(prop.table(table(pooled.lca[[6]]$predclass)),4)*100
+```
+
+
+# Examine predicted probabilities for models without biofeedback
+
+## Model 4
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.lca[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.lca.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.lca.4) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.lca.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(pooled.lca.4, "C:/Users/hanna/Documents/git/AHL/R/pooledlca4probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(pooled.lca.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.lca.4 <- datatable(pooled.lca.4) %>% formatStyle(names(pooled.lca.4), backgroundColor = styleInterval(brks, clrs))
+color.pooled.lca.4
+```
+
+## Model 5
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.lca[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+test3 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(test3) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(test3) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(test3, "C:/Users/hanna/Documents/git/AHL/R/pooledlca5probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(test3, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.test3 <- datatable(test3) %>% formatStyle(names(test3), backgroundColor = styleInterval(brks, clrs))
+color.test3
+```
+Strongest model fit considering class proportions. 
+Class 1: Nothing really. Some Prayer. 64% 
+Class 2: Chiro, exercise, massage, diet, prayer 9% 
+Class 3: Exercise, Meditation, diet, prayer 16% 
+Class 4: Chiro, Exercise, Massage, Meditation, diet, Prayer 6% 
+Class 5: Everything. 4% 
+
+
+## Model 6
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.lca[[6]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=6, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.lca.6 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.lca.6) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.lca.6) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6")
+
+write_xlsx(pooled.lca.6, "C:/Users/hanna/Documents/git/AHL/R/pooledlca6probs.xlsx")
+
+# Create 
+brks <- quantile(pooled.lca.6, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.6 <- datatable(pooled.lca.6) %>% formatStyle(names(pooled.lca.6), backgroundColor = styleInterval(brks, clrs))
+color.pooled.6
+```
+
+# Examine predicted probabilities for models with biofeedback
+
+## Model 4
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.bio.lca[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.bio.lca.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.bio.lca.4) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.bio.lca.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(pooled.bio.lca.4, "C:/Users/hanna/Documents/git/AHL/R/pooledbiolca4probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(pooled.bio.lca.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.bio.lca.4 <- datatable(pooled.bio.lca.4) %>% formatStyle(names(pooled.bio.lca.4), backgroundColor = styleInterval(brks, clrs))
+color.pooled.bio.lca.4
+```
+
+## Model 5 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.bio.lca[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.bio.lca.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.bio.lca.5) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.bio.lca.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(pooled.bio.lca.5, "C:/Users/hanna/Documents/git/AHL/R/pooledbiolca5probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(pooled.bio.lca.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.bio.lca.5 <- datatable(pooled.bio.lca.5) %>% formatStyle(names(pooled.bio.lca.5), backgroundColor = styleInterval(brks, clrs))
+color.pooled.bio.lca.5
+```
+
+## Model 6
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.bio.lca[[6]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=6, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.bio.lca.6 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.bio.lca.6) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.bio.lca.6) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(pooled.bio.lca.6, "C:/Users/hanna/Documents/git/AHL/R/pooledbiolca6probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(pooled.bio.lca.6, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.bio.lca.6 <- datatable(pooled.bio.lca.6) %>% formatStyle(names(pooled.bio.lca.6), backgroundColor = styleInterval(brks, clrs))
+color.pooled.bio.lca.6
+```

@@ -1,0 +1,480 @@
+---
+title: "Differences in chronic conditions and total CAMs between waves"
+author: "Hannah Andrews"
+date: "11/3/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r, echo = FALSE,results='hide'}
+# Latent Transition Analysis 
+# 08/26/2021
+
+# lmest
+# install.packages("LMest")
+library(LMest)
+library(tidyr)
+library(dplyr)
+library(haven)
+
+################################################################################
+# Wave 1 
+# This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Read in MIDUS1 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 1
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
+M1 <- read_dta(path)
+a.lta.var.list <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
+               "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15",
+               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", "A1SCHROX")
+
+a.cams.lta <- M1[a.lta.var.list] # Subset MIDUS1 - only include CAMs.
+# Create column that is the sum of CAMs used 
+a.cams.lta <- a.cams.lta %>%
+  mutate(totalCams = rowSums(a.cams.lta[, c(2:12, 14, 15, 17)]))
+
+
+# Rename columns 
+a.cams.lta <- dplyr::rename(a.cams.lta, 
+                            Acupuncture_W1 = acam1, 
+                            Biofeedback_W1 = acam2,
+                            Chiropractic_W1 = acam3,
+                            EnergyHeal_W1 = acam4,
+                            ExerciseMove_W1 = acam5,
+                            Herbal_W1 = acam6,
+                            Vitamins_W1 = acam7,
+                            Homeopathy_W1 = acam8,
+                            Hypnosis_W1 = acam9,
+                            ImageryTech_W1 = acam10,
+                            Massage_W1 = acam11,
+                            Prayer_W1 = acam12,
+                            RelaxMeditate_W1 = acam13,
+                            SpecialDiet_W1 = acam14, 
+                            SpiritHeal_W1 = acam15, 
+                            PraySpirit_W1 = acam21,
+                            Education_W1 = AEduc,
+                            Race_W1 = ARace,
+                            Sex_W1 = ASex,
+                            LogIncome_W1 = lnAHhInc,
+                            Marital_W1 = aMarried,
+                            HlthInsurance_W1 = aHlthIns,
+                            Age_W1 = AAge,
+                            SumChron_W1 = A1SCHROX, 
+                            totalCams_W1 = totalCams)
+head(a.cams.lta)
+
+# Convert education to factor 
+a.cams.lta$Education_W1 <- as_factor(a.cams.lta$Education_W1, levels = "labels")
+# Convert Race to factor
+a.cams.lta$Race_W1 <- as_factor(a.cams.lta$Race_W1, levels = "labels")
+# Convert Sex to factor
+a.cams.lta$Sex_W1 <- as_factor(a.cams.lta$Sex_W1, levels = "labels")
+# Convert marital to factor
+a.cams.lta$Marital_W1 <- as_factor(a.cams.lta$Marital_W1, levels = "labels")
+# Convert Health insurance to factor
+a.cams.lta$HlthInsurance_W1 <- as_factor(a.cams.lta$HlthInsurance_W1, levels = "labels")
+# Convert Age to numeric 
+a.cams.lta$Age_W1 <- as.numeric(a.cams.lta$Age_W1)
+# Convert totalCams to numeric 
+a.cams.lta$totalCams_W1 <- as.numeric(a.cams.lta$totalCams_W1)
+# Convert totalCams to numeric 
+a.cams.lta$SumChron_W1 <- as.numeric(a.cams.lta$SumChron_W1)
+
+
+################################################################################
+# Wave 2 
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS2.dta")
+M2 <- read_dta(path)
+b.cams.list <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
+               "bcam8", "bcam9", "bcam10", "bcam11", "bcam12", "bcam13", "bcam14", "bcam15", 
+               "bcam21", "bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried", "B1SCHROX")
+
+b.cams.lta <- M2[b.cams.list] # Subset MIDUS2 - only include CAMs.
+
+# Create column that is the sum of CAMs used 
+b.cams.lta <- b.cams.lta %>% 
+  mutate(totalCams = rowSums(b.cams.lta[, c(2:12, 14, 15, 17)]))
+
+# Rename columns 
+b.cams.lta <- dplyr::rename(b.cams.lta, 
+                            Acupuncture_W2 = bcam1, 
+                            Biofeedback_W2 = bcam2,
+                            Chiropractic_W2 = bcam3,
+                            EnergyHeal_W2 = bcam4,
+                            ExerciseMove_W2 = bcam5,
+                            Herbal_W2 = bcam6,
+                            Vitamins_W2 = bcam7,
+                            Homeopathy_W2 = bcam8,
+                            Hypnosis_W2 = bcam9,
+                            ImageryTech_W2 = bcam10,
+                            Massage_W2 = bcam11,
+                            Prayer_W2 = bcam12,
+                            RelaxMeditate_W2 = bcam13,
+                            SpecialDiet_W2 = bcam14, 
+                            SpiritHeal_W2 = bcam15, 
+                            PraySpirit_W2 = bcam21,
+                            Age_W2 = bAge,
+                            LogIncome_W2 = lnbHhInc,
+                            Education_W2 = bEduc,
+                            Race_W2 = bRace,
+                            Sex_W2 = bSex,
+                            HlthInsurance_W2 = bHlthIns,
+                            Marital_W2 = bMarried, 
+                            SumChron_W2 = B1SCHROX, 
+                            totalCams_W2 = totalCams)
+head(b.cams.lta)
+
+# Convert age to numeric
+b.cams.lta$Age_W2 <- as.numeric(b.cams.lta$Age_W2)
+# Convert education to factor 
+b.cams.lta$Education_W2 <- haven::as_factor(b.cams.lta$Education_W2, levels = "labels")
+# Convert Race to factor 
+b.cams.lta$Race_W2 <- haven::as_factor(b.cams.lta$Race_W2, levels = "labels")
+# Convert sex to factor 
+b.cams.lta$Sex_W2 <- haven::as_factor(b.cams.lta$Sex_W2, levels = "labels")
+# Convert marital status to factor 
+b.cams.lta$Marital_W2 <- haven::as_factor(b.cams.lta$Marital_W2, levels = "labels")
+# Convert health insurance to factor
+b.cams.lta$HlthInsurance_W2 <- haven::as_factor(b.cams.lta$HlthInsurance_W2, levels = "labels")
+# Convert totalCams to numeric 
+b.cams.lta$totalCams_W2 <- as.numeric(b.cams.lta$totalCams_W2)
+# Convert totalCams to numeric 
+b.cams.lta$SumChron_W2 <- as.numeric(b.cams.lta$SumChron_W2)
+
+################################################################################
+# Wave 3 
+# This chunk reads in the MIDUS2 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
+
+# Prayer and spiritual healing combined in stata.
+
+# Read in MIDUS2 data and subset to complete cases on CAMs
+# Read in stata file for MIDUS 2
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
+M3 <- read_dta(path)
+c.cams.list <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
+               "ccam8", "ccam9", "ccam10", "ccam11", "ccam12", "ccam13", "ccam14", 
+               "ccam15", "ccam21", "C1STATUS", "CAge", "lnCHhInc", "CEduc", "CRace", 
+               "CSex", "cMarried", "cHlthIns", "C1SCHROX")
+
+c.cams.lta <- M3[c.cams.list] # Subset MIDUS2 - only include CAMs.
+
+# Create column that is the sum of CAMs used 
+c.cams.lta <- c.cams.lta %>% 
+  mutate(totalCams = rowSums(c.cams.lta[, c(2:12, 14, 15, 17)]))
+
+# Rename columns 
+c.cams.lta <- dplyr::rename(c.cams.lta, 
+                            Acupuncture_W3 = ccam1, 
+                            Biofeedback_W3 = ccam2,
+                            Chiropractic_W3 = ccam3,
+                            EnergyHeal_W3 = ccam4,
+                            ExerciseMove_W3 = ccam5,
+                            Herbal_W3 = ccam6,
+                            Vitamins_W3 = ccam7,
+                            Homeopathy_W3 = ccam8,
+                            Hypnosis_W3 = ccam9,
+                            ImageryTech_W3 = ccam10,
+                            Massage_W3 = ccam11,
+                            Prayer_W3 = ccam12,
+                            RelaxMeditate_W3 = ccam13,
+                            SpecialDiet_W3 = ccam14, 
+                            SpiritHeal_W3 = ccam15, 
+                            PraySpirit_W3 = ccam21,
+                            Age_W3 = CAge,
+                            LogIncome_W3 = lnCHhInc,
+                            Education_W3 = CEduc,
+                            Race_W3 = CRace,
+                            Sex_W3 = CSex,
+                            Marital_W3 = cMarried,
+                            HlthInsurance_W3 = cHlthIns, 
+                            SumChron_W3 = C1SCHROX, 
+                            totalCams_W3 = totalCams)
+head(c.cams.lta)
+
+# Age and income already set as numeric 
+# Convert education to factor 
+c.cams.lta$Education_W3 <- haven::as_factor(c.cams.lta$Education_W3, levels = "labels")
+# Convert race to factor
+c.cams.lta$Race_W3 <- haven::as_factor(c.cams.lta$Race_W3, levels = "labels")
+# Convert sex to factor 
+c.cams.lta$Sex_W3 <- haven::as_factor(c.cams.lta$Sex_W3, levels = "labels")
+# Convert marital to factor 
+c.cams.lta$Marital_W3 <- haven::as_factor(c.cams.lta$Marital_W3, levels = "labels")
+# Convert health insurance to factor 
+c.cams.lta$HlthInsurance_W3 <- haven::as_factor(c.cams.lta$HlthInsurance_W3, levels = "labels")
+# Convert totalCams to numeric 
+c.cams.lta$totalCams_W3 <- as.numeric(c.cams.lta$totalCams_W3)
+# Convert totalCams to numeric 
+c.cams.lta$SumChron_W3 <- as.numeric(c.cams.lta$SumChron_W3)
+
+################################################################################
+# create waves with only complete cases
+
+# wave 3
+# Convert C1STATUS to factor 
+c.cams.lta$C1STATUS <- as_factor(c.cams.lta$C1STATUS, levels = "values")
+# Drop biofeedback and prayer and spirit 
+c.cams.lta <- subset(c.cams.lta, select = -c(Prayer_W3, SpiritHeal_W3, Biofeedback_W3))
+str(c.cams.lta) 
+# Drop incomplete cases
+c.cams.complete <- c.cams.lta[complete.cases(c.cams.lta),]
+
+# Create dataframe with only C1STATUS and M2ID to be merged with the other waves so cases that do not have data in wave 3 can be dropped. 
+path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
+M3 <- read_dta(path)
+status.list <- c("M2ID", "C1STATUS")
+
+w3.completion <- M3[status.list] # Subset MIDUS2 - only include CAMs.
+
+# Convert c1status to factor variable
+w3.completion$C1STATUS <- as_factor(w3.completion$C1STATUS, levels = "values")
+
+# Drop biofeedback and prayspirit
+b.cams.lta <- subset(b.cams.lta, select = -c(Prayer_W2, SpiritHeal_W2, Biofeedback_W2))
+str(b.cams.lta)
+# Merge with Wave 2 
+w2.w3.completion <- merge(w3.completion, b.cams.lta, by = "M2ID")
+# Drop incomplete cases 
+b.cams.complete <- w2.w3.completion[complete.cases(w2.w3.completion),]
+
+# Drop biofeedback and pray spirit
+a.cams.lta <- subset(a.cams.lta, select = -c(Prayer_W1, SpiritHeal_W1, Biofeedback_W1))
+str(a.cams.lta)
+# Merge with Wave 3 
+w1.w3.completion <- merge(w3.completion, a.cams.lta, by = "M2ID")
+# Drop incomplete cases
+a.cams.complete <- w1.w3.completion[complete.cases(w1.w3.completion),]
+dim(a.cams.complete)
+
+ 
+#################################################################################
+# Drop biofeedback, prayer, and spirit from each wave
+
+#a.cams.lta <- subset(a.cams.lta, select = -c(Prayer_W1, SpiritHeal_W1, Biofeedback_W1))
+#str(a.cams.lta)
+
+#b.cams.lta <- subset(b.cams.lta, select = -c(Prayer_W2, SpiritHeal_W2, Biofeedback_W2))
+#str(b.cams.lta)
+
+#c.cams.lta <- subset(c.cams.lta, select = -c(Prayer_W3, SpiritHeal_W3, Biofeedback_W3))
+#str(c.cams.lta) 
+################################################################################
+# Reshaping and merging all three waves 
+
+# These include incomplete cases
+# Merge a.cams.lta to b.cams.lta
+cams.lta.1 <- merge(a.cams.lta, b.cams.lta, by = "M2ID")
+# Merge cams.lta.1 and c.cams.lta
+cams.lta.2 <- merge(cams.lta.1, c.cams.lta, by = "M2ID")
+
+library(panelr)
+
+# Reshape wide to long: this is the dataset with all respondents to be used further down 
+cams.long <- long_panel(cams.lta.2, prefix = "_W", begin = 1, end = 3, label_location = "end")
+
+# Merge complete cases 
+# Merge waves 1 and 2
+cams.complete.1 <- merge(a.cams.complete, b.cams.complete, by = "M2ID", all = TRUE)
+# Merge with wave 3
+cams.complete.2 <- merge(cams.complete.1, c.cams.complete, by = "M2ID", all = TRUE)
+
+# Drop incomplete cases for cams.complete.  
+dim(cams.complete.2)
+cams.complete.3 <- cams.complete.2[complete.cases(cams.complete.2),]
+dim(cams.complete.3)
+
+# Drop C1STATUS, .x, and .y
+cams.complete.3 <- subset(cams.complete.3, select = -c(C1STATUS, C1STATUS.x, C1STATUS.y))
+glimpse(cams.complete.3)
+
+# Convert complete cases to long format 
+cams.complete.long <- long_panel(cams.complete.3, prefix = "_W", begin = 1, end = 3, id = "M2ID", label_location = "end")
+
+
+################################################################################
+# LMest - running markov model. 
+
+# Prepare and explore data
+
+# Convert cams.long to a dataframe for lmestData function
+cams.long.df <- as.data.frame(cams.long)
+
+# drop id column. I'll use M2ID as the unit identifier 
+# cams.long.df <- subset(cams.long.df, select = -c(id))
+str(cams.long.df)
+
+# Rename vars so that all all cams start with Cam.
+cams.long.df <- dplyr::rename(cams.long.df,
+                              YAcupuncture = Acupuncture,
+                              YChiropractic = Chiropractic,
+                              YEnergyHeal = EnergyHeal,
+                              YExerciseMove = ExerciseMove,
+                              YHerbal = Herbal,
+                              YVitamins = Vitamins,
+                              YHomeopathy = Homeopathy,
+                              YHypnosis = Hypnosis,
+                              YImageryTech = ImageryTech,
+                              YMassage = Massage,
+                              YRelaxMeditate = RelaxMeditate,
+                              YSpecialDiet = SpecialDiet,
+                              YPraySpirit = PraySpirit, 
+                              time = wave)
+
+```
+
+
+
+
+```{r, echo = FALSE, results='hide'}
+# Subset cams.lta.2 to only include cases complete on all CAM vars. 
+
+colnames(cams.lta.2) #Colnames will return column names present in the dataset,df=DataFrame name
+
+
+wide.complete.cams <- cams.lta.2[c(2:14, 22:36,44:58,67,68)]
+wide.complete.cams <- wide.complete.cams[complete.cases(wide.complete.cams), ] 
+```
+# All cases
+## Sum of chronic conditions 
+### Difference between wave 1 and wave 2
+```{r, echo = FALSE, results='hide'}
+# Using data cams.lta.2 created in long_data script
+
+# Chronic Conditions
+# Create new column equal to wave 1 - wave 2
+cams.lta.2$SumChron_Diff_W1W2 <- (cams.lta.2$SumChron_W2 - cams.lta.2$SumChron_W1)
+# Create new column equal to wave 3 - wave 2 
+cams.lta.2$SumChron_Diff_W2W3 <- (cams.lta.2$SumChron_W3 - cams.lta.2$SumChron_W2)
+```
+#### Frequencies Table 
+```{r, echo=FALSE}
+diff.chron.1 <- table(cams.lta.2$SumChron_Diff_W1W2)
+diff.chron.1
+```
+#### Percentages 
+```{r,echo=FALSE}
+prop.table(diff.chron.1)
+```
+
+### Difference between wave 2 and wave 3
+#### Frequencies table
+```{r, echo = FALSE}
+diff.chron.2 <- table(cams.lta.2$SumChron_Diff_W2W3)
+diff.chron.2
+```
+#### Percentages 
+```{r, echo = FALSE}
+prop.table(diff.chron.2)
+```
+
+## Total CAMs 
+### Difference between wave 1 and wave 2 
+```{r, echo = FALSE, results='hide'}
+# Total CAMs
+# Create new column equal to wave 2 - wave 1
+cams.lta.2$TotCams_Diff_W1W2 <- (cams.lta.2$totalCams_W2 - cams.lta.2$totalCams_W1)
+# Create new column equal to wave 3 - wave 2 
+cams.lta.2$TotCams_Diff_W2W3 <- (cams.lta.2$totalCams_W3 - cams.lta.2$totalCams_W2)
+
+# Check NAs 
+# Subset total cam vars
+tot.cams.df <- cams.lta.2[c("totalCams_W1", "totalCams_W2", "totalCams_W3", "TotCams_Diff_W1W2", "TotCams_Diff_W2W3")]
+```
+#### Frequencies 
+```{r, echo = FALSE}
+diff.cams.1 <- table(cams.lta.2$TotCams_Diff_W1W2)
+diff.cams.1
+barplot(diff.cams.1)
+```
+#### Percentages
+```{r, echo = FALSE}
+prop.table(diff.cams.1)
+```
+### Difference between waves 2 and 3 
+#### Frequencies
+```{r, echo = FALSE}
+diff.cams.2 <- table(cams.lta.2$TotCams_Diff_W2W3)
+diff.cams.2
+barplot(diff.cams.2)
+```
+#### Percentages
+```{r, echo = FALSE}
+prop.table(diff.cams.2)
+```
+
+# Complete on CAMs at all three waves
+## Sum of chronic conditions 
+### Difference between wave 1 and wave 2
+```{r, echo = FALSE, results='hide'}
+# Using data wide.complete.cams
+
+# Chronic Conditions
+# Create new column equal to wave 1 - wave 2
+wide.complete.cams$SumChron_Diff_W1W2 <- (wide.complete.cams$SumChron_W2 - wide.complete.cams$SumChron_W1)
+# Create new column equal to wave 3 - wave 2 
+wide.complete.cams$SumChron_Diff_W2W3 <- (wide.complete.cams$SumChron_W3 - wide.complete.cams$SumChron_W2)
+```
+#### Frequencies Table 
+```{r, echo=FALSE}
+diff.chron.1 <- table(wide.complete.cams$SumChron_Diff_W1W2)
+diff.chron.1
+```
+#### Percentages 
+```{r,echo=FALSE}
+prop.table(diff.chron.1)
+```
+
+### Difference between wave 2 and wave 3
+#### Frequencies table
+```{r, echo = FALSE}
+diff.chron.2 <- table(wide.complete.cams$SumChron_Diff_W2W3)
+diff.chron.2
+```
+#### Percentages 
+```{r, echo = FALSE}
+prop.table(diff.chron.2)
+```
+
+## Total CAMs 
+### Difference between wave 1 and wave 2 
+```{r, echo = FALSE, results='hide'}
+# Total CAMs
+# Create new column equal to wave 2 - wave 1
+wide.complete.cams$TotCams_Diff_W1W2 <- (wide.complete.cams$totalCams_W2 - wide.complete.cams$totalCams_W1)
+# Create new column equal to wave 3 - wave 2 
+wide.complete.cams$TotCams_Diff_W2W3 <- (wide.complete.cams$totalCams_W3 - wide.complete.cams$totalCams_W2)
+
+# Check NAs 
+# Subset total cam vars
+tot.cams.df <- wide.complete.cams[c("totalCams_W1", "totalCams_W2", "totalCams_W3", "TotCams_Diff_W1W2", "TotCams_Diff_W2W3")]
+```
+#### Frequencies 
+```{r, echo = FALSE}
+diff.cams.1 <- table(wide.complete.cams$TotCams_Diff_W1W2)
+diff.cams.1
+barplot(diff.cams.1)
+```
+#### Percentages
+```{r, echo = FALSE}
+prop.table(diff.cams.1)
+```
+### Difference between waves 2 and 3 
+#### Frequencies
+```{r, echo = FALSE}
+diff.cams.2 <- table(wide.complete.cams$TotCams_Diff_W2W3)
+diff.cams.2
+barplot(diff.cams.2)
+```
+#### Percentages
+```{r, echo = FALSE}
+prop.table(diff.cams.2)
+```

@@ -1,0 +1,195 @@
+---
+title: "LCA by Wave"
+author: "Hannah Andrews"
+date: "11/10/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(DT)
+library(writexl)
+```
+
+```{r, echo = FALSE}
+# Ran lca on hpc. Load results from those analyses. 
+setwd("C:/Users/hanna/Documents/git/AHL/R")
+load("wave1biolca.rda")
+load("wave1biotable.rda")
+load("wave1lca.rda")
+load("wave1table.rda")
+load("wave2biolca.rda")
+load("wave2biotable.rda")
+load("wave2lca.rda")
+load("wave2table.rda")
+load("wave3biolca.rda")
+load("wave3biotable.rda")
+load("wave3lca.rda")
+load("wave3table.rda")
+```
+
+# Model Fit 
+
+## Wave 1 
+
+### With bio
+```{r, echo = FALSE}
+wave1bio.table
+```
+Smallest AIC: 6 classes. Smallest BIC: 6 classes. Entropy low for all models. Classes below 5% started at Model 3. 
+
+On entropy: An output from latent class analysis is an estimate of the probability that each subject (e.g., person) is in each of the classes. This data can be summarized into a single number, called entropy, which takes a value of 1 when all respondents have a probability of 1 of being in one class, and value of 0 when the probabilities of being assigned to a class are constant for all subjects. (Sometimes this is scaled in reverse, where 0 indicates all respondents have a probability of 1 and 1 indicates constant probabilities.)
+
+The main role of entropy is to rule out the number of classes when the entropy is too low (e.g., less than 0.8). The evidence in favor of selecting the number of classes based on entropy is weak.
+
+### Without bio
+```{r, echo = FALSE}
+wave1.table
+```
+Lowest AIC 5 classes. BIC 6 classes. Entropy low. Classes less than 5% starting at 3 classes. 
+
+## Wave 2 
+
+### With bio
+```{r, echo = FALSE}
+wave2bio.table
+```
+AIC 6 classes. BIC 5 classes. Entropy low. Classes less than 5 % starting at 6 classes. 
+
+### Without Bio
+```{r, echo = FALSE}
+wave2.table
+```
+AIC 5 classes. BIC 6 classes. Entropy low. Classes less than 5% starting at 6 classes. 
+
+## Wave 3 
+
+### With bio
+```{r, echo = FALSE}
+wave3bio.table
+```
+AIC 5 classes. BIC 3 classes. Entropy over 8 for 4 and 5 classes. Classes less than 5% starting at 4 classes. 
+
+### Without bio
+```{r, echo = FALSE}
+wave3.table
+```
+AIC 6 classes. BIC 3 classes. Entropy low. Classes less than 5% starting at 5 classes. 
+
+Do proportions of use change at wave 3?
+
+# Check 5 class models for all waves without biofeedback. 
+
+## Wave 1
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1.lca[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1.lca.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1.lca.5) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1.lca.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave1.lca.5, "C:/Users/hanna/Documents/git/AHL/R/wave1lca5probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1.lca.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1.lca.5 <- datatable(wave1.lca.5) %>% formatStyle(names(wave1.lca.5), backgroundColor = styleInterval(brks, clrs))
+color.wave1.lca.5
+```
+Class 1: Nothing
+Class 2: Prayer 
+Class 3: Exercise movement, imagery tech, meditation, prayer
+Class 4: Exercise movement, massage
+Class 5: Exercise movement, herbal, vitamins, homeopathy, massage, meditation, diet, prayer (most things class)
+
+## Wave 2
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2.lca[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2.lca.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2.lca.5) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2.lca.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave2.lca.5, "C:/Users/hanna/Documents/git/AHL/R/wave2lca5probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2.lca.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2.lca.5 <- datatable(wave2.lca.5) %>% formatStyle(names(wave2.lca.5), backgroundColor = styleInterval(brks, clrs))
+color.wave2.lca.5
+```
+Class 1: Chiro, Massage, Prayer
+Class 2: Herbal, vitamins, diet, prayer
+Class 3: Exercise, herbal, vitamins, homeopathy, massage, meditation, diet, prayer
+Class 4: Nothing
+Class 5: Meditation, diet, prayer
+
+## Wave 3 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3.lca[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3.lca.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3.lca.5) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3.lca.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave3.lca.5, "C:/Users/hanna/Documents/git/AHL/R/wave3lca5probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3.lca.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3.lca.5 <- datatable(wave3.lca.5) %>% formatStyle(names(wave3.lca.5), backgroundColor = styleInterval(brks, clrs))
+color.wave3.lca.5
+```
+Class 1: Meditation, prayer 
+Class 2: Exercise, herbal, massage, meditation, diet, prayer
+Class 3: Nothing
+Class 4: Acupuncture, chiro, energy, exercise, herbal, vitamins, homeopathy, imagery, massage, meditation, diet, prayer
+Class 5: Nothing 
