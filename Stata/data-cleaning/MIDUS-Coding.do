@@ -121,6 +121,10 @@ set more off
 *** Self
 
 **** Wave 1
+	use MIDUS1.dta, clear
+	tab A1SHLOCS, missing
+	sum A1SHLOCS, detail
+	
 
 
 **** Wave 2
@@ -130,7 +134,7 @@ set more off
 	sum B1SHLOCS, detail
 	* skew -2.02 kurtosis 9.5
 	hist B1SHLOCS
-	rename B1SHLOCS bHLOCS
+	* rename B1SHLOCS bHLOCS
 	save, replace
 
 **** Wave 3
@@ -169,7 +173,7 @@ set more off
 	use MIDUS1.dta, clear 
 	tab A1SS7, missing
 	recode A1SS7 (1 = 1) (2 = 2) (3/6 = 3) (. = .), gen(ARace)
-	label define race 1 "White" 2 "Black" 3 "Other"
+	label define race 1 "Non-Hispanic White" 2 "Non-Hispanic Black" 3 "Other Race"
 	label values ARace race
 	tab A1SS7 ARace, missing 
 	save, replace

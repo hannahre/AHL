@@ -1,0 +1,1130 @@
+---
+title: "Wave 1 Income Regressions"
+author: "Hannah Andrews"
+date: "1/24/2022"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycomm)
+library(haven)
+library(tidyverse)
+library(foreach)
+library(kableExtra)
+library(janitor)
+library(stargazer)
+library(tables)
+library(ggpubr)
+library(aod)
+library(ggplot2)
+library(foreign)
+library(Hmisc)
+library(reshape2)
+library(MASS)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("wave1complete.rda")
+load("wave2complete.rda")
+load("wave3complete.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Regressions by wave")
+```
+
+# Bivariate and controls individual CAMs
+
+```{r, echo = FALSE}
+# convert cams to factors 
+for (j in c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")) {
+  wave1[[j]] <- factor(wave1[[j]])
+}
+
+```
+
+## Acupuncture
+
+### Bivariate
+
+```{r, echo = FALSE}
+mylogit <- glm(Acupuncture_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+wave1_acupuncture <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+wave1_acupuncture$LogOdds <- summary(mylogit)$coefficients[2]
+wave1_acupuncture$pvalue <- summary(mylogit)$coefficients[8]
+wave1_acupuncture$OR <- OR
+wave1_acupuncture$Lower <- lower 
+wave1_acupuncture$Upper <- upper
+wave1_acupuncture
+```
+
+### Multivariate Logistic Regression
+
+```{r, echo = FALSE}
+
+
+
+```
+
+# Factor dummies
+
+## Mindbody
+
+### Bivariate logistic regression
+```{r, echo = FALSE}
+mylogit <- glm(mindbody ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+### Multivariate logistic regression 
+
+#### Income and education 
+
+```{r, echo = FALSE}
+# Create table for results from the 
+mindbody2 <- data.frame(OR=0, Lower=0, Upper=0)
+
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(mindbody ~ LogIncome_W1 + Education_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+# OR for 0 (reference category) 1 mindbody
+# Income
+mindbody2[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+mindbody2[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+mindbody2[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+
+# Fill in income logodds and p value
+#mindbody2[1, "LogOdds"] <- summary(mylogit)$coefficients[2]
+#mindbody2$pvalue <- summary(mylogit)$coefficients[20]
+#mindbody2
+
+# Education HS diploma/GED
+mindbody2[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+mindbody2[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+mindbody2[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+mindbody2[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+mindbody2[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+mindbody2[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+mindbody2[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+mindbody2[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+mindbody2[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+mindbody2[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+mindbody2[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+mindbody2[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(mindbody2) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+mindbody2
+```
+
+#### Income, education, and controls
+
+```{r, echo = FALSE}
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(mindbody ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+mindbody3 <- data.frame(OR=0, Lower=0, Upper=0)
+# OR for 0 (reference category) 1 mindbody
+# Income
+mindbody3[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+mindbody3[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+mindbody3[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+# Education HS diploma/GED
+mindbody3[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+mindbody3[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+mindbody3[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+mindbody3[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+mindbody3[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+mindbody3[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+mindbody3[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+mindbody3[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+mindbody3[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+mindbody3[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+mindbody3[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+mindbody3[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(mindbody3) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+mindbody2
+mindbody3
+
+```
+
+### Mindbody summary
+
+Income is significant in the bivariate regression of mindbody practices. Odds ratio is .93, indicating that the odds of using mind body CAM methods decreases by 7% for each one unit increase in logged income.  
+
+When education is added to the regression, income remains significant though the odds ratio decreases. The odds ratio is .83, indicating that the odds of using mind body CAM methods decrease by 17% for each one unit increase in logged income. All levels of education are significantly different than having less than a high school education. The odds ratio increases for each level of education.
+
+When controls are added, income remains significant and actually become more significant. The odds ratio remains the same as in the regression that only included education. Education is significantly different from less than high school at all levels and increases as education increases. 
+
+### Regression with each education category
+
+#### Less than HS
+
+```{r, echo = FALSE, results='hide'}
+# Create subset of data
+LsThanHS <-subset(wave1,Education_W1=="Less than High School")
+summary(LsThanHS$Education_W1)
+```
+
+```{r, echo = FALSE}
+mylogit <- glm(mindbody_W1 ~ LogIncome_W1, data = LsThanHS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+
+#### High School Diploma
+
+```{r, echo = FALSE, results='hide'}
+# Create subset of data
+HS <-subset(wave1,Education_W1=="HS Diploma/GED")
+summary(HS$Education_W1)
+```
+
+```{r, echo = FALSE}
+mylogit <- glm(mindbody_W1 ~ LogIncome_W1, data = HS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+#### Some College/AA
+
+```{r, echo = FALSE, results='hide'}
+# Create subset of data
+SomeCollege <-subset(wave1,Education_W1=="Some College/AA Degree")
+summary(SomeCollege$Education_W1)
+```
+
+```{r, echo = FALSE}
+mylogit <- glm(mindbody_W1 ~ LogIncome_W1, data = SomeCollege, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+
+#### College degree
+
+```{r, echo = FALSE, results='hide'}
+# Create subset of data
+CollegeGrad <-subset(wave1,Education_W1=="College Grad")
+summary(CollegeGrad$Education_W1)
+```
+
+```{r, echo = FALSE}
+mylogit <- glm(mindbody_W1 ~ LogIncome_W1, data = CollegeGrad, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+
+#### Graduate or Professional Degree
+
+```{r, echo = FALSE, results='hide'}
+# Create subset of data
+GradPro <-subset(wave1,Education_W1=="Graduate or Professional Degree")
+summary(GradPro$Education_W1)
+```
+
+```{r, echo = FALSE}
+mylogit <- glm(mindbody_W1 ~ LogIncome_W1, data = GradPro, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+mindbody1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+mindbody1$LogOdds <- summary(mylogit)$coefficients[2]
+mindbody1$pvalue <- summary(mylogit)$coefficients[8]
+mindbody1$OR <- OR
+mindbody1$Lower <- lower 
+mindbody1$Upper <- upper
+mindbody1
+```
+
+
+#### Within education levels summary
+
+Within Less than HS: Log income is not significant (pvalue = 0.995). Odds ratio is 0.86 indicating that for each additional unit in logged income there is a 15% decrease in the odds of using mindbody practices.
+
+Within HS diploma/GED: Logged income does not significantly predict use of mind body medicine (pvalue = 0.27). The odds of using mind body medicine decrease by 6% for each additional unit in logged income (OR = 0.94). 
+
+Within Some College/AA:Logged income significantly predicts use of mind body medicine. The odds of using mind body medicine decrease by 17% for each additional unit of logged income (OR = 0.83).
+
+Within College Grads: Logged income significantly predicts use of mindbody medicine (pvalue = 7.62e-05). The odds of using mind body medicine decrease by 25% for each additional unit increase in logged income. 
+
+Within Graduate or Professional Degree:Logged income significantly predicts use of mind body medicine (p < .001). The odds of using mind body medicine decrease by 29% for each additional unit increase in logged income (OR = 0.71). 
+
+## Alternative medicines
+
+### Bivariate logistic regression 
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+
+```
+
+### Multivariate logistic regression 
+
+#### Income and education 
+
+```{r, echo = FALSE}
+# Create table for results from the 
+altmed2 <- data.frame(OR=0, Lower=0, Upper=0)
+
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(altmed ~ LogIncome_W1 + Education_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+# OR for 0 (reference category) 1 altmed
+# Income
+altmed2[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+altmed2[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+altmed2[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+
+# Fill in income logodds and p value
+#altmed2[1, "LogOdds"] <- summary(mylogit)$coefficients[2]
+#altmed2$pvalue <- summary(mylogit)$coefficients[20]
+#altmed2
+
+# Education HS diploma/GED
+altmed2[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+altmed2[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+altmed2[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+altmed2[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+altmed2[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+altmed2[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+altmed2[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+altmed2[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+altmed2[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+altmed2[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+altmed2[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+altmed2[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(altmed2) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+altmed2
+
+```
+
+#### Income, education, and controls
+
+```{r, echo = FALSE}
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(altmed_W1 ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+altmed3 <- data.frame(OR=0, Lower=0, Upper=0)
+# OR for 0 (reference category) 1 altmed
+# Income
+altmed3[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+altmed3[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+altmed3[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+# Education HS diploma/GED
+altmed3[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+altmed3[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+altmed3[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+altmed3[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+altmed3[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+altmed3[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+altmed3[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+altmed3[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+altmed3[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+altmed3[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+altmed3[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+altmed3[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(altmed3) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+altmed2
+altmed3
+
+```
+
+### Alternative medicines summary 
+
+The relationship between income and alternative medicine is not significant in the bivariate analysis. 
+
+Income becomes significant when education is included in the model. I'm not sure what this indicates. Did some reading and it seems that some of the variation in residuals for income may have been masked by the variation in education residuals? The odds ratio is .85 indicating that the odds of using alternative medicine decreases by 15% for each one unit increase in logged income. 
+
+When controls are included income become insignificant, education becomes less significant though there is still a significant difference between college education and graduate degree vs. having less than a high school diploma. 
+
+### Regression within each education level 
+
+#### Less than High School 
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed_W1 ~ LogIncome_W1, data = LsThanHS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+```
+
+#### HS diploma or GED
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed_W1 ~ LogIncome_W1, data = HS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+```
+
+#### Some college/AA
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed_W1 ~ LogIncome_W1, data = SomeCollege, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+```
+
+#### College grad 
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed_W1 ~ LogIncome_W1, data = CollegeGrad, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+```
+
+#### Graduate or Professional Degree
+
+```{r, echo = FALSE}
+mylogit <- glm(altmed_W1 ~ LogIncome_W1, data = GradPro, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+altmed1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+altmed1$LogOdds <- summary(mylogit)$coefficients[2]
+altmed1$pvalue <- summary(mylogit)$coefficients[8]
+altmed1$OR <- OR
+altmed1$Lower <- lower 
+altmed1$Upper <- upper
+altmed1
+```
+
+#### Summary: Within Education Levels
+
+Less than HS: Income is not a significant predictor of alternative medicine use (pvalue = 0.94). OR is 1.02, indicating that there is are equal odds for using alternative medicine across income levels. 
+
+HS or GED: Income is not a significant predictor of alt med use (pvalue = 0.71). Odds are equal for each income level. 
+
+Some College/AA: Income is not a significant predictor of alt med use (pvalue = 0.08). For each addtional unit in logged income the odds of alt med use decrease by 17%. 
+
+College Grad: Income significantly predicts alt med use (p < .05). For each one unit increase in logged income the odds of using alt med decrease by 23%. 
+
+Professional/Grad Degree: Income is a significant predictor of alt med use (p < .05). For each one unit increase in logged income there is a 30% decrease in the odds of using alt med. 
+
+Logged income is a significant predictor at higher levels of education. Among college grads and professionals the odds of using alt med decreases as income increases. 
+
+## Physical and Nutritional approaches
+
+### Bivariate logistic regression
+
+```{r, echo = FALSE}
+mylogit <- glm(pna ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+
+### Multivariate logistic regression
+
+#### Income and education 
+
+```{r, echo = FALSE}
+# Create table for results from the 
+pna2 <- data.frame(OR=0, Lower=0, Upper=0)
+
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(pna ~ LogIncome_W1 + Education_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+# OR for 0 (reference category) 1 pna
+# Income
+pna2[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+pna2[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+pna2[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+
+# Fill in income logodds and p value
+#pna2[1, "LogOdds"] <- summary(mylogit)$coefficients[2]
+#pna2$pvalue <- summary(mylogit)$coefficients[20]
+#pna2
+
+# Education HS diploma/GED
+pna2[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+pna2[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+pna2[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+pna2[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+pna2[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+pna2[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+pna2[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+pna2[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+pna2[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+pna2[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+pna2[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+pna2[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(pna2) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+pna2
+```
+
+#### Income, education, and controls
+
+```{r, echo = FALSE}
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(pna ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+pna3 <- data.frame(OR=0, Lower=0, Upper=0)
+# OR for 0 (reference category) 1 pna
+# Income
+pna3[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+pna3[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+pna3[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+# Education HS diploma/GED
+pna3[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+pna3[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+pna3[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+pna3[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+pna3[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+pna3[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+pna3[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+pna3[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+pna3[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+pna3[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+pna3[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+pna3[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(pna3) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+pna2
+pna3
+```
+
+### Summary for physical and nutrional approaches
+
+In the bivariate analysis income does not significantly predict physical and nutritional approaches. 
+When education is included logged income becomes significant. The odds ratio is .9 indicating that there is a 10% reduction in the odds of using PNA for each one unit increase in logged income. The difference between having a high school diploma and some college, college grad, and graduate degree are all significant and the odds ratio increases with each level of education. 
+
+When controls are included income becomes nonsignificant. Some college, college grad, and graduate degree remain significant. 
+
+### Regression within each level of education 
+
+#### Less than HS 
+
+```{r, echo = FALSE}
+mylogit <- glm(pna_W1 ~ LogIncome_W1, data = LsThanHS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+#### HS diploma or GED
+
+```{r, echo = FALSE}
+mylogit <- glm(pna_W1 ~ LogIncome_W1, data = HS, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+#### Some college/AA
+
+```{r, echo = FALSE}
+mylogit <- glm(pna_W1 ~ LogIncome_W1, data = SomeCollege, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+
+#### College Grad
+
+```{r, echo = FALSE}
+mylogit <- glm(pna_W1 ~ LogIncome_W1, data = CollegeGrad, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+
+#### Graduate or Professional Degree
+
+```{r, echo = FALSE}
+mylogit <- glm(pna_W1 ~ LogIncome_W1, data = GradPro, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+pna1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+pna1$LogOdds <- summary(mylogit)$coefficients[2]
+pna1$pvalue <- summary(mylogit)$coefficients[8]
+pna1$OR <- OR
+pna1$Lower <- lower 
+pna1$Upper <- upper
+pna1
+```
+
+#### Summary: Regressions within each education level
+
+Less than HS: Income is not a significant predictor of pna. OR indicates an 8% decrease for each additional unit of logged income. 
+
+HS/GED: Income is not a significant predictor of pna. OR indicates a 9% decrease for each additional unit of logged income. 
+
+Some college/AA: Income is not a significant predictor of pna. OR indicates an 8% decrease for each additional unit of logged income. 
+
+College grad: Income is a significant predictor of pna (p < .05). OR indicates a 14% decrease in odds for each additional unit of logged income. 
+
+Graduate or professional degree: Income is not a significant predictor of pna. OR indicates a decrease in odds (8%) for each one unit increase in logged income. 
+
+Income only predicts pna among college grads. The odds of pna use decrease at higher levels of within college grads. 
+
+## Manipulative treatments
+
+### Bivariate logistic regression
+
+```{r, echo = FALSE}
+mylogit <- glm(manipulative ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+manipulative1 <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+manipulative1$LogOdds <- summary(mylogit)$coefficients[2]
+manipulative1$pvalue <- summary(mylogit)$coefficients[8]
+manipulative1$OR <- OR
+manipulative1$Lower <- lower 
+manipulative1$Upper <- upper
+manipulative1
+```
+
+### Multivariate logistic regression
+
+#### Income and education 
+
+```{r, echo = FALSE}
+# Create table for results from the 
+manipulative2 <- data.frame(OR=0, Lower=0, Upper=0)
+
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(manipulative_W1 ~ LogIncome_W1 + Education_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+# OR for 0 (reference category) 1 manipulative
+# Income
+manipulative2[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+manipulative2[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+manipulative2[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+
+# Fill in income logodds and p value
+#manipulative2[1, "LogOdds"] <- summary(mylogit)$coefficients[2]
+#manipulative2$pvalue <- summary(mylogit)$coefficients[20]
+#manipulative2
+
+# Education HS diploma/GED
+manipulative2[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+manipulative2[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+manipulative2[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+manipulative2[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+manipulative2[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+manipulative2[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+manipulative2[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+manipulative2[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+manipulative2[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+manipulative2[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+manipulative2[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+manipulative2[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(manipulative2) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+manipulative2
+```
+
+#### Income, education, and controls
+
+```{r, echo = FALSE}
+# run logistic regression
+# Education reference category less than high school
+mylogit <- glm(manipulative ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, data = wave1, family = "binomial"(link = logit))
+# print logistic regression results 
+summary(mylogit)
+
+manipulative3 <- data.frame(OR=0, Lower=0, Upper=0)
+# OR for 0 (reference category) 1 manipulative
+# Income
+manipulative3[1, "OR"] <- exp(mylogit$coefficients[2])
+## lower limit of 95% confidence interval for OR
+manipulative3[1, "Lower"] <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[8]))
+## upper limit of 95% confidence interval for OR
+manipulative3[1, "Upper"] <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[8]))
+# Education HS diploma/GED
+manipulative3[2, "OR"] <- exp(mylogit$coefficients[3])
+## lower limit of 95% confidence interval for OR
+manipulative3[2, "Lower"] <- exp((mylogit$coefficients[3]) - 1.96*(summary(mylogit)$coefficients[9]))
+## upper limit of 95% confidence interval for OR
+manipulative3[2, "Upper"] <- exp((mylogit$coefficients[3]) + 1.96*(summary(mylogit)$coefficients[9]))
+# Some college/AA degree
+manipulative3[3, "OR"] <- exp(mylogit$coefficients[4])
+## lower limit of 95% confidence interval for OR
+manipulative3[3, "Lower"] <- exp((mylogit$coefficients[4]) - 1.96*(summary(mylogit)$coefficients[10]))
+## upper limit of 95% confidence interval for OR
+manipulative3[3, "Upper"] <- exp((mylogit$coefficients[4]) + 1.96*(summary(mylogit)$coefficients[10]))
+#College grade
+manipulative3[4, "OR"] <- exp(mylogit$coefficients[5])
+## lower limit of 95% confidence interval for OR
+manipulative3[4, "Lower"] <- exp((mylogit$coefficients[5]) - 1.96*(summary(mylogit)$coefficients[11]))
+## upper limit of 95% confidence interval for OR
+manipulative3[4, "Upper"] <- exp((mylogit$coefficients[5]) + 1.96*(summary(mylogit)$coefficients[11]))
+# Graduate or professional degree
+manipulative3[5, "OR"] <- exp(mylogit$coefficients[6])
+## lower limit of 95% confidence interval for OR
+manipulative3[5, "Lower"] <- exp((mylogit$coefficients[6]) - 1.96*(summary(mylogit)$coefficients[12]))
+## upper limit of 95% confidence interval for OR
+manipulative3[5, "Upper"] <- exp((mylogit$coefficients[6]) + 1.96*(summary(mylogit)$coefficients[12]))
+
+rownames(manipulative3) <- c("Income", "HS diploma or GED", "Some college", "College grad", "Graduate or professional degree")
+
+manipulative2
+manipulative3
+```
+
+### Summary for manipulative treatments
+
+Logged income is not a significant predictor of manipulative treatments in the bivariate regression. 
+
+Logged income remains nonsignificant when education is included. Education is significant. 
+
+Logged income remains nonsignficant when controls are included. 
+
+## Overall summary of factor dummies relationship with income 
+
+The relationship between income and the factor dummies is inconsistent, though becomes significant when education is included. The overall relationship is negative - as logged income increases the odds of using CAMs decreases. 
+
+# Dummy count 
+
+## Test assumptions for type of regression  
+
+```{r, echo = FALSE}
+# Create histogram of dummy count 
+hist(wave1$totalCams_W1)
+
+# If the variance is equal to the mean, the dispersion statistic would equal one. When the dispersion statistic is close to one a poisson model fits. If it is larger than one, a negative binomial model fits better. 
+var(wave1$totalCams_W1, y = NULL, na.rm=TRUE)
+mean(wave1$totalCams_W1, trim = 0, na.rm=TRUE)
+totcams <- wave1$totalCams_W1
+sd(totcams, na.rm = TRUE)
+```
+
+## Negative Binomial Regression - Income 
+
+```{r, echo = FALSE}
+m1 <- (glm.nb(totalCams_W1 ~ LogIncome_W1, data = wave1 ))
+summary(m1)
+```
+
+## Income and Education 
+
+```{r, echo = FALSE}
+m2 <- (glm.nb(totalCams_W1 ~ LogIncome_W1 + Education_W1, data = wave1 ))
+summary(m2)
+```
+
+## Compare with and without income
+```{r, echo = FALSE}
+# Important to fit separate models because unless we do the overdispersion parameter is held constant. 
+anova(m1, m2)
+
+# Interpretation: 
+```
+
+## Negative Binomial Regression with Controls
+
+```{r, echo = FALSE}
+m3 <- (glm.nb(totalCams_W1 ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, data = wave1 ))
+summary(m3)
+```
+
+## Comparing to Poisson model
+
+```{r, echo = FALSE}
+m4 <- glm(totalCams_W1 ~ LogIncome_W1 + Education_W1 + Race_W1 + Sex_W1 + Marital_W1 + HlthInsurance_W1 + Age_W1, family = "poisson", data = wave1)
+pchisq(2 * (logLik(m3) - logLik(m4)), df = 1, lower.tail = FALSE)
+```
+
+## Converting coefficients
+
+```{r, echo = FALSE}
+(est <- cbind(Estimate = coef(m3), confint(m3)))
+exp(est)
+```
+
+When including controls, the percent change in the incident rate for total CAMs is a 4% decrease for every one unit increase in logged income. Incidence rate increases with each additional unit of education compared to the reference group (less than a high school diploma). 
+
+# Income within each education group
+
+```{r, echo = FALSE}
+library(ggplot2)
+ggplot(wave1, aes(as.factor(Education_W1), LogIncome_W1)) + 
+    geom_point() + theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(wave1, aes(as.factor(Education_W1), LogIncome_W1)) +
+    geom_bar(stat = "identity") + theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+    
+
+ggplot(wave1, aes(x = Education_W1, y = LogIncome_W1)) + 
+  geom_boxplot() + theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# Scatterplot: Income and Dummy Count
+
+```{r, echo = FALSE}
+plot(wave1$LogIncome_W1, wave1$totalCams_W1, main="Scatterplot Example",
+   xlab="Log Income", ylab="Total CAMs", pch=19)
+```
+
+# Check for outliers: education regressed on income
+
+```{r, echo = FALSE}
+qqPlot(fit,labels=row.names(states), id.method=”identify”,
+         simulate=TRUE, main=”Q-Q Plot”)
+```

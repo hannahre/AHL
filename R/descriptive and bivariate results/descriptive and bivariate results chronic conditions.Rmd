@@ -1,0 +1,929 @@
+---
+title: "descriptive and bivariate results chronic conditions"
+author: "Hannah Andrews"
+date: "11/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycomm)
+library(haven)
+library(tidyverse)
+library(foreach)
+library(kableExtra)
+library(janitor)
+library(stargazer)
+library(tables)
+library(ggpubr)
+library(aod)
+library(ggplot2)
+library(foreign)
+library(Hmisc)
+library(reshape2)
+library(MASS)
+library(ggstatsplot)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("wave1data.rda")
+load("wave2data.rda")
+load("wave3data.rda")
+```
+
+```{r, echo = FALSE}
+# This code chunk creates the factor dummy indices 
+# Factor 1: Mind body practices 
+# wave 1
+wave1$mindbody <- rowSums(wave1[, c("PraySpirit_W1", "EnergyHeal_W1", "ImageryTech_W1",
+                                    "RelaxMeditate_W1", "Hypnosis_W1")])
+# wave 2
+wave2$mindbody <- rowSums(wave2[, c("PraySpirit_W2", "EnergyHeal_W2", "ImageryTech_W2",
+                                    "RelaxMeditate_W2", "Hypnosis_W2")])
+#wave 3
+wave3$mindbody <- rowSums(wave3[, c("PraySpirit_W3", "EnergyHeal_W3", "ImageryTech_W3",
+                                    "RelaxMeditate_W3", "Hypnosis_W3")])
+
+# Factor 2: Alternative medical systems
+# wave 1
+wave1$altmed <- rowSums(wave1[, c("Homeopathy_W1", "Herbal_W1", "Acupuncture_W1")])
+# wave 2
+wave2$altmed <- rowSums(wave2[, c("Homeopathy_W2", "Herbal_W2", "Acupuncture_W2")])
+# wave 3
+wave3$altmed <- rowSums(wave3[, c("Homeopathy_W3", "Herbal_W3", "Acupuncture_W3")])
+
+# Factor 3: Physical and Nutritional Approaches
+wave1$pna <- rowSums(wave1[, c("Vitamins_W1", "ExerciseMove_W1", "SpecialDiet_W1")])
+wave2$pna <- rowSums(wave2[, c("Vitamins_W2", "ExerciseMove_W2", "SpecialDiet_W2")])
+wave3$pna <- rowSums(wave3[, c("Vitamins_W3", "ExerciseMove_W3", "SpecialDiet_W3")])
+
+# Factor 4: Manipulative treatments
+wave1$manipulative <- rowSums(wave1[, c("Massage_W1", "Chiropractic_W1")])
+wave2$manipulative <- rowSums(wave2[, c("Massage_W2", "Chiropractic_W2")])
+wave3$manipulative <- rowSums(wave3[, c("Massage_W3", "Chiropractic_W3")])
+```
+
+# Individual CAMs
+
+## Wave 1 
+
+### Boxplot Sum of Chronic Conditions
+```{r, echo = FALSE}
+# Boxplot for sum of chronic conditions
+ggplot(wave1, aes(x = 1, y = A1SCHRON)) + geom_boxplot() + 
+           xlab(NULL) + theme(axis.text.y = element_blank()) +
+           coord_flip()
+```
+
+### T-tests sum of chronic conditions 
+```{r, echo=FALSE}
+varlist <- c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+
+wave1ttest <- wave1[varlist]
+
+lapply(wave1ttest, function(x) t.test(wave1$A1SCHRON ~ x))
+
+```
+
+### T-tests removing outliers
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave1$A1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+z <- wave1
+# Remove outliers
+z <- z[-which(z$A1SCHRON %in% outliers),]
+
+# Create list of CAMs to be used in ttest
+varlist <- c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+
+# Subset z so that it only includes cases without outliers on A1SCHRON
+zttest <- z[varlist]
+
+# Run ttest on all CAMs and A1SCHRON
+lapply(zttest, function(x) t.test(z$A1SCHRON ~ x))
+```
+
+### Crosstabs- presence of chronic condition
+```{r, echo = FALSE}
+
+
+# Create crosstabs education and all cams. 
+
+
+varlist <- c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+
+for(j in varlist){
+  tbl <- wave1 %>% 
+    tabyl(SumChron_W1, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+
+```
+
+### Chi Squares - presence of chronic conditions
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+# SumChron_W1 is actually presence of chronic condition. Dataset created in the bivariate education analyses r markdown file 
+vars <- c("SumChron_W1", "Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+wave1.chron.df <- wave1[vars]
+
+chron.cams.chisquares <- lapply(wave1.chron.df[-length(wave1.chron.df)], function(x) chisq.test(table(wave1$SumChron_W1, x)))
+chron.cams.chisquares
+
+```
+
+## Wave 2 
+
+### Boxplot Sum of Chronic Conditions
+```{r, echo = FALSE}
+# Boxplot for sum of chronic conditions
+ggplot(wave2, aes(x = 1, y = B1SCHRON)) + geom_boxplot() + 
+           xlab(NULL) + theme(axis.text.y = element_blank()) +
+           coord_flip()
+```
+
+### T-tests sum of chronic conditions 
+```{r, echo=FALSE}
+varlist <- c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+
+wave2ttest <- wave2[varlist]
+
+lapply(wave2ttest, function(x) t.test(wave2$B1SCHRON ~ x))
+
+```
+
+### T-tests removing outliers
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave2$B1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+z <- wave2
+# Remove outliers
+z <- z[-which(z$B1SCHRON %in% outliers),]
+
+# Create list of CAMs to be used in ttest
+varlist <- c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+
+# Subset z so that it only includes cases without outliers on A2SCHRON
+zttest <- z[varlist]
+
+# Run ttest on all CAMs and A2SCHRON
+lapply(zttest, function(x) t.test(z$B1SCHRON ~ x))
+```
+
+### Crosstabs- presence of chronic condition
+```{r, echo = FALSE}
+
+
+# Create crosstabs education and all cams. 
+
+
+varlist <- c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+
+for(j in varlist){
+  tbl <- wave2 %>% 
+    tabyl(SumChron_W2, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+
+```
+
+### Chi Squares - presence of chronic conditions
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+# SumChron_W2 is actually presence of chronic condition. Dataset created in the bivariate education analyses r markdown file 
+vars <- c("SumChron_W2", "Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+wave2.chron.df <- wave2[vars]
+
+chron.cams.chisquares <- lapply(wave2.chron.df[-length(wave2.chron.df)], function(x) chisq.test(table(wave2$SumChron_W2, x)))
+chron.cams.chisquares
+
+```
+
+## Wave 3 
+
+### Boxplot Sum of Chronic Conditions
+```{r, echo = FALSE}
+# Boxplot for sum of chronic conditions
+ggplot(wave3, aes(x = 1, y = C1SCHRON)) + geom_boxplot() + 
+           xlab(NULL) + theme(axis.text.y = element_blank()) +
+           coord_flip()
+```
+
+### T-tests sum of chronic conditions 
+```{r, echo=FALSE}
+varlist <- c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+
+wave3ttest <- wave3[varlist]
+
+lapply(wave3ttest, function(x) t.test(wave3$C1SCHRON ~ x))
+
+```
+
+### T-tests removing outliers
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave3$C1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+z <- wave3
+# Remove outliers
+z <- z[-which(z$C1SCHRON %in% outliers),]
+
+# Create list of CAMs to be used in ttest
+varlist <- c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+
+# Subset z so that it only includes cases without outliers on A3SCHRON
+zttest <- z[varlist]
+
+# Run ttest on all CAMs and A3SCHRON
+lapply(zttest, function(x) t.test(z$C1SCHRON ~ x))
+```
+
+### Crosstabs- presence of chronic condition
+```{r, echo = FALSE}
+
+
+# Create crosstabs education and all cams. 
+
+
+varlist <- c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+
+for(j in varlist){
+  tbl <- wave3 %>% 
+    tabyl(SumChron_W3, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+
+```
+
+### Chi Squares - presence of chronic conditions
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+# SumChron_W3 is actually presence of chronic condition. Dataset created in the bivariate education analyses r markdown file 
+vars <- c("SumChron_W3", "Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+wave3.chron.df <- wave3[vars]
+
+chron.cams.chisquares <- lapply(wave3.chron.df[-length(wave3.chron.df)], function(x) chisq.test(table(wave3$SumChron_W3, x)))
+chron.cams.chisquares
+
+```
+
+# Dummy Count 
+
+## Wave 1 
+
+### Scatterplot sum of chronic conditions
+```{r, echo = FALSE}
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = wave1, target_x = wave1$A1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = wave1[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(wave1)[target_y_num]), 
+         y = colnames(wave1)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+# Convert from tibble to dataframe
+wave1 <- as.data.frame(wave1)
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W1"))
+
+boxplot(wave1$totalCams_W1,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave1$totalCams_W1)$out
+```
+
+### Scatterplot sum of chronic conditions remove outliers on chronic conditions
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave1$A1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave1
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$A1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = df.no.out, target_x = df.no.out$A1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = df.no.out[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(df.no.out)[target_y_num]), 
+         y = colnames(df.no.out)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W1"))
+```
+
+### Correlation - sum of chronic conditions
+```{r, echo = FALSE}
+cor.test(x = wave1$totalCams_W1, y = wave1$A1SCHRON,
+    method = "pearson", use = "complete.obs")
+```
+
+### Correlation - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+cor.test(x = df.no.out$totalCams_W1, y = df.no.out$A1SCHRON, 
+         method = "pearson", use = "complete.obs")
+
+```
+
+### Visuals - presence of chronic condition
+```{r, echo = FALSE}
+ggboxplot(wave1, x = "SumChron_W1", y = "totalCams_W1",
+          color = "black", palette = c("#00AFBB", "#E7B800"),
+          ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+
+# Visualize means by group
+ggline(wave1, x = "SumChron_W1", y = "totalCams_W1", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+```
+
+### Logistic Regression - presence of chronic condition
+```{r, echo = FALSE}
+mylogit <- glm(SumChron_W1 ~ totalCams_W1, data = wave1, family = "binomial")
+summary(mylogit)
+```
+
+## Wave 2 
+
+### Scatterplot sum of chronic conditions
+```{r, echo = FALSE}
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = wave2, target_x = wave2$B1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = wave2[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(wave2)[target_y_num]), 
+         y = colnames(wave2)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+# Convert from tibble to dataframe
+wave2 <- as.data.frame(wave2)
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W2"))
+
+boxplot(wave2$totalCams_W2,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave2$totalCams_W2)$out
+```
+
+### Scatterplot sum of chronic conditions remove outliers on chronic conditions
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave2$B1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave2
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$B1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = df.no.out, target_x = df.no.out$B1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = df.no.out[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(df.no.out)[target_y_num]), 
+         y = colnames(df.no.out)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W2"))
+```
+
+### Correlation - sum of chronic conditions
+```{r, echo = FALSE}
+cor.test(x = wave2$totalCams_W2, y = wave2$B1SCHRON,
+    method = "pearson", use = "complete.obs")
+```
+
+### Correlation - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+cor.test(x = df.no.out$totalCams_W2, y = df.no.out$B1SCHRON, 
+         method = "pearson", use = "complete.obs")
+
+```
+
+### Visuals - presence of chronic condition
+```{r, echo = FALSE}
+ggboxplot(wave2, x = "SumChron_W2", y = "totalCams_W2",
+          color = "black", palette = c("#00AFBB", "#E7B800"),
+          ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+
+# Visualize means by group
+ggline(wave2, x = "SumChron_W2", y = "totalCams_W2", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+```
+
+### Logistic Regression - presence of chronic condition
+```{r, echo = FALSE}
+mylogit <- glm(SumChron_W2 ~ totalCams_W2, data = wave2, family = "binomial")
+summary(mylogit)
+```
+
+## Wave 3 
+
+### Scatterplot sum of chronic conditions
+```{r, echo = FALSE}
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = wave3, target_x = wave3$C1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = wave3[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(wave3)[target_y_num]), 
+         y = colnames(wave3)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+# Convert from tibble to dataframe
+wave3 <- as.data.frame(wave3)
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W3"))
+
+boxplot(wave3$totalCams_W3,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave3$totalCams_W3)$out
+```
+
+### Scatterplot sum of chronic conditions remove outliers on chronic conditions
+```{r, echo = FALSE}
+# Identify outliers and save in vector
+outliers <- boxplot(wave3$C1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave3
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$C1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = df.no.out, target_x = df.no.out$C1SCHRON, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = df.no.out[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Sum of Chronic Conditions Vs ", colnames(df.no.out)[target_y_num]), 
+         y = colnames(df.no.out)[target_y_num], x = "Sum of Chronic Conditions") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W3"))
+```
+
+### Correlation - sum of chronic conditions
+```{r, echo = FALSE}
+cor.test(x = wave3$totalCams_W3, y = wave3$C1SCHRON,
+    method = "pearson", use = "complete.obs")
+```
+
+### Correlation - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+cor.test(x = df.no.out$totalCams_W3, y = df.no.out$C1SCHRON, 
+         method = "pearson", use = "complete.obs")
+
+```
+
+### Visuals - presence of chronic condition
+```{r, echo = FALSE}
+ggboxplot(wave3, x = "SumChron_W3", y = "totalCams_W3",
+          color = "black", palette = c("#00AFBB", "#E7B800"),
+          ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+
+# Visualize means by group
+ggline(wave3, x = "SumChron_W3", y = "totalCams_W3", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Presence of chronic condition")
+
+```
+
+### Logistic Regression - presence of chronic condition
+```{r, echo = FALSE}
+mylogit <- glm(SumChron_W3 ~ totalCams_W3, data = wave3, family = "binomial")
+summary(mylogit)
+```
+
+# Factor Indices
+
+## Wave 1
+
+### Boxplots - Sum of chronic conditions 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave1, x = j, y = "A1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave1, x = j, y = "A1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### Boxplots - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+
+# Identify outliers and save in vector
+outliers <- boxplot(wave1$A1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave1
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$A1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(df.no.out, x = j, y = "A1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(df.no.out, x = j, y = "A1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### ANOVA 
+```{r, echo = FALSE}
+one.way <- aov(A1SCHRON ~ mindbody, data = wave1)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ altmed, data = wave1)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ pna, data = wave1)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ manipulative, data = wave1)
+summary(one.way)
+```
+
+### ANOVA - no outliers
+```{r, echo = FALSE}
+one.way <- aov(A1SCHRON ~ mindbody, data = df.no.out)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ altmed, data = df.no.out)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ pna, data = df.no.out)
+summary(one.way)
+one.way <- aov(A1SCHRON ~ manipulative, data = df.no.out)
+summary(one.way)
+```
+
+### Barcharts - presence of chronic conditions 
+```{r, echo = FALSE}
+# Convert all to factor 
+# Create dataset only containing factor indices and sumchron
+varlist <- c("mindbody", "pna", "altmed", "manipulative", "SumChron_W1")
+df.bar <- wave1[varlist]
+# Convert all to factor
+wave1[varlist]<-lapply(wave1[varlist],factor)
+
+# Create bar charts
+# stacked bar chart
+ggplot(wave1, 
+       aes(x = mindbody, 
+           fill = SumChron_W1)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave1, 
+       aes(x = altmed, 
+           fill = SumChron_W1)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave1, 
+       aes(x = pna, 
+           fill = SumChron_W1)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave1, 
+       aes(x = manipulative, 
+           fill = SumChron_W1)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+
+```
+
+### Chi-square presence of chronic conditions 
+```{r, echo = FALSE}
+vars <- c("SumChron_W1", "mindbody", "pna", "altmed", "manipulative")
+wave1.chron.df <- wave1[vars]
+
+chron.factors.chisquares <- lapply(wave1.chron.df[-length(wave1.chron.df)], function(x)
+  chisq.test(table(wave1$SumChron_W1, x)))
+
+chron.factors.chisquares
+```
+
+## Wave 2
+
+### Boxplots - Sum of chronic conditions 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave2, x = j, y = "B1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave2, x = j, y = "B1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### Boxplots - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+
+# Identify outliers and save in vector
+outliers <- boxplot(wave2$B1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave2
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$B1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(df.no.out, x = j, y = "B1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(df.no.out, x = j, y = "B1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### ANOVA 
+```{r, echo = FALSE}
+one.way <- aov(B1SCHRON ~ mindbody, data = wave2)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ altmed, data = wave2)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ pna, data = wave2)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ manipulative, data = wave2)
+summary(one.way)
+```
+
+### ANOVA - no outliers
+```{r, echo = FALSE}
+one.way <- aov(B1SCHRON ~ mindbody, data = df.no.out)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ altmed, data = df.no.out)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ pna, data = df.no.out)
+summary(one.way)
+one.way <- aov(B1SCHRON ~ manipulative, data = df.no.out)
+summary(one.way)
+```
+
+### Barcharts - presence of chronic conditions 
+```{r, echo = FALSE}
+# Convert all to factor 
+# Create dataset only containing factor indices and sumchron
+varlist <- c("mindbody", "pna", "altmed", "manipulative", "SumChron_W2")
+df.bar <- wave2[varlist]
+# Convert all to factor
+wave2[varlist]<-lapply(wave2[varlist],factor)
+
+# Create bar charts
+# stacked bar chart
+ggplot(wave2, 
+       aes(x = mindbody, 
+           fill = SumChron_W2)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave2, 
+       aes(x = altmed, 
+           fill = SumChron_W2)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave2, 
+       aes(x = pna, 
+           fill = SumChron_W2)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave2, 
+       aes(x = manipulative, 
+           fill = SumChron_W2)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+
+```
+
+### Chi-square presence of chronic conditions 
+```{r, echo = FALSE}
+vars <- c("SumChron_W2", "mindbody", "pna", "altmed", "manipulative")
+wave2.chron.df <- wave2[vars]
+
+chron.factors.chisquares <- lapply(wave2.chron.df[-length(wave2.chron.df)], function(x)
+  chisq.test(table(wave2$SumChron_W2, x)))
+
+chron.factors.chisquares
+```
+
+## Wave 3
+
+### Boxplots - Sum of chronic conditions 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave3, x = j, y = "C1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave3, x = j, y = "C1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### Boxplots - sum of chronic conditions no outliers
+```{r, echo = FALSE}
+
+# Identify outliers and save in vector
+outliers <- boxplot(wave3$C1SCHRON, plot = FALSE)$out
+# Create new dataset from which I'll remove outliers
+df.no.out <- wave3
+# Remove outliers
+df.no.out <- df.no.out[-which(df.no.out$C1SCHRON %in% outliers),]
+
+# Convert from tibble to dataframe
+df.no.out <- as.data.frame(df.no.out)
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(df.no.out, x = j, y = "C1SCHRON",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Sum of chronic conditions", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(df.no.out, x = j, y = "C1SCHRON", 
+       add = c("mean_se"),
+       ylab = "Sum of chronic conditions", xlab = j)
+  print(means)
+}
+```
+
+### ANOVA 
+```{r, echo = FALSE}
+one.way <- aov(C1SCHRON ~ mindbody, data = wave3)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ altmed, data = wave3)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ pna, data = wave3)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ manipulative, data = wave3)
+summary(one.way)
+```
+
+### ANOVA - no outliers
+```{r, echo = FALSE}
+one.way <- aov(C1SCHRON ~ mindbody, data = df.no.out)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ altmed, data = df.no.out)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ pna, data = df.no.out)
+summary(one.way)
+one.way <- aov(C1SCHRON ~ manipulative, data = df.no.out)
+summary(one.way)
+```
+
+### Barcharts - presence of chronic conditions 
+```{r, echo = FALSE}
+# Convert all to factor 
+# Create dataset only containing factor indices and sumchron
+varlist <- c("mindbody", "pna", "altmed", "manipulative", "SumChron_W3")
+df.bar <- wave3[varlist]
+# Convert all to factor
+wave3[varlist]<-lapply(wave3[varlist],factor)
+
+# Create bar charts
+# stacked bar chart
+ggplot(wave3, 
+       aes(x = mindbody, 
+           fill = SumChron_W3)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave3, 
+       aes(x = altmed, 
+           fill = SumChron_W3)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave3, 
+       aes(x = pna, 
+           fill = SumChron_W3)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+ggplot(wave3, 
+       aes(x = manipulative, 
+           fill = SumChron_W3)) + 
+  geom_bar(position = "fill") +
+  labs(y = "proportion")
+
+```
+
+### Chi-square presence of chronic conditions 
+```{r, echo = FALSE}
+vars <- c("SumChron_W3", "mindbody", "pna", "altmed", "manipulative")
+wave3.chron.df <- wave3[vars]
+
+chron.factors.chisquares <- lapply(wave3.chron.df[-length(wave3.chron.df)], function(x)
+  chisq.test(table(wave3$SumChron_W3, x)))
+
+chron.factors.chisquares
+```

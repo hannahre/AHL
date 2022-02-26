@@ -1,0 +1,66 @@
+---
+title: "Mixed Model"
+author: "Hannah Andrews"
+date: "2/9/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+```
+
+# Logistic Regressions
+
+## Mind Body 
+
+```{r, echo = FALSE}
+# baseline model 
+baseline <- glmer(mindbody ~ 1 + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
+tab_model(baseline)
+```
+
+```{r, echo = FALSE}
+mb1 <- glmer(mindbody ~ LogIncome + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
+summary(mb1)
+tab_model(mb1)
+```
+
+```{r, echo = FALSE}
+mb2 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
+summary(mb2)
+tab_model(mb2)
+sjPlot::plot_model(mb2, 
+                   show.values=TRUE, show.p=TRUE,
+                   title="Effect of Income and Education on Mind Body Medicine Use")
+```
+
+```{r, echo = FALSE}
+mb3 <- glmer(mindbody ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
+summary(mb2)
+tab_model(mb3)
+```
+
+```{r, echo = FALSE}
+tab_model(baseline, mb1, mb2, mb3)
+
+anova(m1, m2, m3)
+
+
+
+```
+
+
+
+

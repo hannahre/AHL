@@ -193,3 +193,113 @@ Class 2: Exercise, herbal, massage, meditation, diet, prayer
 Class 3: Nothing
 Class 4: Acupuncture, chiro, energy, exercise, herbal, vitamins, homeopathy, imagery, massage, meditation, diet, prayer
 Class 5: Nothing 
+
+# Four classes with biofeedback 
+
+## Wave 1
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1bio.lca[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1.bio.lca.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1.bio.lca.4) <- c("Acupuncture","Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1.bio.lca.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave1.bio.lca.4, "C:/Users/hanna/Documents/git/AHL/R/wave1biolca4probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1.bio.lca.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1.bio.lca.4 <- datatable(wave1.bio.lca.4) %>% formatStyle(names(wave1.bio.lca.4), backgroundColor = styleInterval(brks, clrs))
+color.wave1.bio.lca.4
+```
+class 1: Exercise, herbal, massage, meditation, prayer
+Class 2: Prayer
+Class 3: Nothing 
+Class 4: Exercise
+
+## Wave 2 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2bio.lca[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2.bio.lca.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2.bio.lca.4) <- c("Acupuncture","Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2.bio.lca.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave2.bio.lca.4, "C:/Users/hanna/Documents/git/AHL/R/wave2biolca4probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2.bio.lca.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2.bio.lca.4 <- datatable(wave2.bio.lca.4) %>% formatStyle(names(wave2.bio.lca.4), backgroundColor = styleInterval(brks, clrs))
+color.wave2.bio.lca.4
+```
+Class 1: Meditation, Diet, Prayer
+Class 2: Massage, meditation, prayer
+Class 3: Exercise, herbal, vitamins, homeopathy, massage, meitation, diet, prayer
+Class 4: nothing 
+
+## Wave 3 
+```{r, echo=FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3bio.lca[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3.bio.lca.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3.bio.lca.4) <- c("Acupuncture","Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3.bio.lca.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(wave3.bio.lca.4, "C:/Users/hanna/Documents/git/AHL/R/wave3biolca4probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3.bio.lca.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3.bio.lca.4 <- datatable(wave3.bio.lca.4) %>% formatStyle(names(wave3.bio.lca.4), backgroundColor = styleInterval(brks, clrs))
+color.wave3.bio.lca.4
+```
+Class 1: Meditation, prayer
+Class 2: Acupuncture, Chiro, energy, exercise, herbal, vitamins, homeopathy, imagery, massage, meditation, diet, prayer
+Class 3: exercise, herbal, vitamins, mssage, meditation, diet, prayer 
+Class 4: nothing 

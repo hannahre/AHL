@@ -4,8 +4,6 @@ author: "Hannah Andrews"
 date: "6/28/2021"
 output:
   pdf_document: default
-  html_document: default
-  word_document: default
 header-includes:
 - \usepackage{float}
 - \usepackage{sectsty}
@@ -14,7 +12,7 @@ header-includes:
 - \usepackage{fancyhdr}
 - \usepackage{lastpage}
 - \usepackage{dcolumn}
-always_allow_html: true
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -584,8 +582,10 @@ all.freqs.ordered <- arrange(all.freqs, M1.Frequency)
 # Data Description 
 Data presented in the exploratory factor analysis come from Wave 1 of the Midlife in the United States (MIDUS) dataset. These data were collected between 1995 and 1996. Only cases with no missing values on the complementary and alternative medicine (CAM) items are included in analyses (*N* = 6157). 
 
+MIDUS includes 15 questions asking respondents if they have used a specific type of CAM in the previous 12 months. These CAMs include: biofeedback, hypnosis, acupuncture, energy healing, homeopathy, imagery techniques, vitamins, herbal therapy, massage, special diet, chiropractic, relaxation and meditation techniques, exercise and movement therapy, prayer, and spiritual healing.In the first wave, repondents indicated simply whether they had used each CAMs in the previous 12 months. At Waves 2 and 3, respondents indicated the frequency of use (a lot, often, sometimes, rarely, or never). To maintain consistency between waves, responses at Waves 2 and 3 were dichotomized. 
+
 ## Measures Description  
-Descriptive statistics for each CAM item are presented in Table 1. Biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer or spiritual healing (30%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%).
+Descriptive statistics for each CAM item are presented in Table 1. At Wave 1, biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer or spiritual healing (30%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%). At Wave 2, special diet (34.5%) is one of the most frequently reported CAMs. It should be noted that the diet measure was changed between Waves 1 and 2 to be more inclusive. The original survey question asks respondents whether they've used a special diet to treat health problems or promote wellness. At Wave 2, the wording asks about more specific diets, such as vegetarian, macrobiotic, or Ayurvedic diets. Other frequencies at Waves 2 and 3 remain similar to Wave 1. 
 
 ```{r, echo = FALSE}
 kable(all.freqs.ordered,
@@ -602,8 +602,6 @@ kable(all.freqs.ordered,
   add_footnote(c("Wave 1 n = 6157", "Wave 2 n = 3834", "Wave 3 n = 2675"), notation="number") 
 ```
 
-(Move to data section.) It should be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
-
 ```{r, echo = FALSE}
 # Print wave 1 pray spirit crosstab
 table.pray.spirit %>% 
@@ -619,13 +617,15 @@ table.pray.spirit.c %>%
   kable_styling(bootstrap_options = c("basic"))
 ```
 
+It should also be noted that utilization of prayer and spiritual healing was originally measured separately. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these data were collected via survey, it is impossible to know exactly how the respondents interpreted the survey questions and how their interpretations effected the data collected. It does appear that the two questions measured the same behavior in those that use spiritual healing. The variables were combined so that all respondents that report using prayer or spiritual healing are coded as 1 or yes on the new prayer or spiritual healing variable.
+
 # Factor Analysis
 
-In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data. 
+This research utilizes factor analysis to examine the underlying factor structure of CAM utilization. In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data. 
 
-```{r, echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix"}
+```{r, echo = FALSE}
 # Create correlation matrix 
-het.mat.a <- hetcor(acams)$cor
+het.mat.a <- hetcor(as.data.frame(acams))$cor
 # Rename columns for correlation matrix visualization 
 colnames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy Healing", 
                   "Exercise", "Herbal Therapy", "Vitamins", 
@@ -638,7 +638,7 @@ rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy H
 ```
 
 
-```{r, echo = FALSE, fig.cap = "Tetrachoric Correlations for CAM items"}
+```{r tetra-corr, fig.cap = "Tetrachoric Correlation Matrix.",echo = FALSE}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
 # col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 # corrplot(het.mat.a, method="color", number.cex = .5, order="hclust", 
@@ -704,7 +704,7 @@ bart.chisq <- round(cortest.bartlett(het.mat.a, n = nrow(acams))$chisq, 2)
 KMO(het.mat.a)
 kmo <- round(KMO(het.mat.a)$MSA, 2)
 ```
-The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Next, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6. Bartlett's test of sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* <.01) indicating that the correlations between variables are higher than would be expected by chance.    
+The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability (Figure \ref{fig:tetra-corr} ). Next, the Kaiser-Meyer-Olkin measure of sampling adequacy was `r kmo`, above the recommended value of at least .6. Bartlett's test of sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* <.01) indicating that the correlations between variables are higher than would be expected by chance.    
 
 ```{r, echo = FALSE, results = 'hide'}
 # This code chunk runs a parallel test 
@@ -809,7 +809,7 @@ acams.drop.bio[sapply(acams.drop.bio, is.numeric)] <- lapply(acams.drop.bio[sapp
 str(acams.drop.bio)
 
 # Create new correlation matrix
-het.mat.drop.bio <- hetcor(acams.drop.bio)$cor
+het.mat.drop.bio <- hetcor(as.data.frame(acams.drop.bio))$cor
 
 # Create empty data frame to be filled with fit statistics 
 acams_drop_bio_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  

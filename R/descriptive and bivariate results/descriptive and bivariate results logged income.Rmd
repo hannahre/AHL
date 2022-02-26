@@ -1,0 +1,600 @@
+---
+title: "descriptive and bivariate results logged income"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycomm)
+library(haven)
+library(tidyverse)
+library(foreach)
+library(kableExtra)
+library(janitor)
+library(stargazer)
+library(tables)
+library(ggpubr)
+library(aod)
+library(ggplot2)
+library(foreign)
+library(Hmisc)
+library(reshape2)
+library(MASS)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("wave1data.rda")
+load("wave2data.rda")
+load("wave3data.rda")
+```
+
+# Individual CAMs
+
+## Wave 1
+
+### Box plots 
+```{r, echo = FALSE }
+
+varlist <- c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave1, x = j, y = "LogIncome_W1",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave1, x = j, y = "LogIncome_W1", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+
+```
+### Logistic regressions
+```{r, echo = FALSE}
+# convert cams to factors 
+for (j in c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")) {
+  wave1[[j]] <- factor(wave1[[j]])
+}
+
+```
+
+### Logistic regression acupuncture
+```{r, echo=FALSE}
+mylogit <- glm(Acupuncture_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+# OR for 0 (reference category) 1 Acupuncture
+OR <- exp(mylogit$coefficients[2])
+# lower limit of 95% confidence interval for OR
+lower <- exp((mylogit$coefficients[2]) - 1.96*(summary(mylogit)$coefficients[4]))
+# upper limit of 95% confidence interval for OR
+upper <- exp((mylogit$coefficients[2]) + 1.96*(summary(mylogit)$coefficients[4]))
+
+# Create table for OR and 95% confidence interval, log odds and pvalue
+wave1_acupuncture <- data.frame(LogOdds=0, pvalue= 0, OR=0, Lower=0, Upper=0) 
+wave1_acupuncture$LogOdds <- summary(mylogit)$coefficients[2]
+wave1_acupuncture$pvalue <- summary(mylogit)$coefficients[8]
+wave1_acupuncture$OR <- OR
+wave1_acupuncture$Lower <- lower 
+wave1_acupuncture$Upper <- upper
+wave1_acupuncture
+```
+```{r, echo = FALSE}
+mylogit <- glm(Biofeedback_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Chiropractic_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(EnergyHeal_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(ExerciseMove_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Herbal_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Homeopathy_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Hypnosis_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(ImageryTech_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Massage_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Massage_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(PraySpirit_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(RelaxMeditate_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(SpecialDiet_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+mylogit <- glm(Vitamins_W1 ~ LogIncome_W1, data = wave1, family = "binomial"(link = logit))
+summary(mylogit)
+```
+
+## Wave 2
+
+### Box plots
+```{r, echo = FALSE }
+
+varlist <- c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave2, x = j, y = "LogIncome_W2",
+          color = j, palette = c("#00AFBB", "#E7B800"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave2, x = j, y = "LogIncome_W2", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+
+```
+
+### Logistic Regressions
+```{r, echo = FALSE}
+# convert cams to factors 
+for (j in c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")) {
+  wave2[[j]] <- factor(wave2[[j]])
+}
+
+
+mylogit <- glm(Acupuncture_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Biofeedback_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Chiropractic_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(EnergyHeal_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(ExerciseMove_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Herbal_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Homeopathy_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Hypnosis_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(ImageryTech_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Massage_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(PraySpirit_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(RelaxMeditate_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(SpecialDiet_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Vitamins_W2 ~ LogIncome_W2, data = wave2, family = "binomial")
+summary(mylogit)
+```
+
+## Wave 3
+
+### Box Plots 
+```{r, echo = FALSE }
+varlist <- c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave3, x = j, y = "LogIncome_W3",
+          color = j, palette = c("#00AFBB", "#E7B800"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave3, x = j, y = "LogIncome_W3", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+
+```
+
+### Logistic Regressions
+```{r, echo = FALSE}
+# convert cams to factors 
+for (j in c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")) {
+  wave3[[j]] <- factor(wave3[[j]])
+}
+
+
+mylogit <- glm(Acupuncture_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Biofeedback_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Chiropractic_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(EnergyHeal_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(ExerciseMove_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Herbal_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Homeopathy_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Hypnosis_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(ImageryTech_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Massage_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(PraySpirit_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(RelaxMeditate_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(SpecialDiet_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+mylogit <- glm(Vitamins_W3 ~ LogIncome_W3, data = wave3, family = "binomial")
+summary(mylogit)
+```
+
+# Dummy Count 
+
+## Wave 1
+
+### Visuals 
+```{r, echo = FALSE}
+# Scatterplots
+# Write function to be used at each wave
+sct_plot_function <- function(dataset = wave1, target_x = wave1$LogIncome_W1, target_y_num){
+  ggplot(dataset, aes(x = target_x, y = wave1[,target_y_num])) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() +
+    labs(title = paste("Scatter plot of Income Vs ", colnames(wave1)[target_y_num]), 
+         y = colnames(wave1)[target_y_num], x = "Income") +
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+# Convert from tibble to dataframe
+wave1 <- as.data.frame(wave1)
+
+# Loop over function
+plot(sct_plot_function(target_y_num = "totalCams_W1"))
+
+boxplot(wave1$totalCams_W1,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave1$totalCams_W1)$out
+```
+
+### Correlation
+```{r, echo = FALSE}
+cor.test(x = wave1$LogIncome_W1, y = wave1$totalCams_W1,
+    method = "pearson", use = "complete.obs")
+
+# Correlation without outliers on total cams. 
+wave1.no.out <- subset(wave1, totalCams_W1 < 6)
+
+cor.test(x = wave1.no.out$LogIncome_W1, y = wave1.no.out$totalCams_W1, 
+         method = "pearson", use = "complete.obs")
+```
+
+## Wave 2
+
+### Visuals
+```{r, echo = FALSE}
+
+  ggplot(wave2, aes(x = LogIncome_W2, y = totalCams_W2)) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() 
+
+boxplot(wave2$totalCams_W2,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave2$totalCams_W2)$out
+
+```
+
+### Correlation
+```{r, echo = FALSE}
+cor.test(x = wave2$LogIncome_W2, y = wave2$totalCams_W2,
+    method = "pearson", use = "complete.obs")
+
+# Correlation without outliers on total cams. 
+wave2.no.out <- subset(wave2, totalCams_W2 < 8)
+
+cor.test(x = wave2.no.out$LogIncome_W2, y = wave2.no.out$totalCams_W2, 
+         method = "pearson", use = "complete.obs")
+```
+
+## Wave 3
+
+### Visuals
+```{r, echo = FALSE}
+
+  ggplot(wave3, aes(x = LogIncome_W3, y = totalCams_W3)) +
+    geom_point() + 
+    geom_smooth(level = 0.95) +
+    theme_bw() 
+
+boxplot(wave3$totalCams_W3,
+  ylab = "Total Cams"
+)
+boxplot.stats(wave3$totalCams_W3)$out
+
+```
+
+### Correlation
+```{r, echo = FALSE}
+cor.test(x = wave3$LogIncome_W3, y = wave3$totalCams_W3,
+    method = "pearson", use = "complete.obs")
+
+# Correlation without outliers on total cams. 
+wave3.no.out <- subset(wave3, totalCams_W3 < 8)
+
+cor.test(x = wave3.no.out$LogIncome_W3, y = wave3.no.out$totalCams_W3, 
+         method = "pearson", use = "complete.obs")
+```
+# Predicted Classes
+
+# Factor Indices
+
+## Factor Indices Distributions 
+
+### Wave 1
+```{r, echo=FALSE}
+hist(wave1$mindbody)
+hist(wave1$manipulative)
+hist(wave1$pna)
+hist(wave1$altmed)
+```
+
+## Wave 1
+
+### Visuals
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave1, x = j, y = "LogIncome_W1",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave1, x = j, y = "LogIncome_W1", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+```
+
+### Ordinal regression
+
+#### Mind Body 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+# Convert all factors indices to factors 
+wave1[varlist] <- lapply(wave1[varlist], factor)
+
+# Fit ordinal logistic regression model 
+mindbody.ordinal.m <- polr(mindbody ~ LogIncome_W1, data = wave1, Hess=TRUE)
+# View summary of the model 
+summary(mindbody.ordinal.m)
+# Calculate p value - first store table
+ctable <- coef(summary(mindbody.ordinal.m))
+# Calculate and store p values
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+# Combine table
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Physical and Nutritional Approaches 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+pna.ordinal.m <- polr(pna ~ LogIncome_W1, data = wave1, Hess=TRUE)
+summary(pna.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(pna.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Alternative Medicines 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+altmed.ordinal.m <- polr(altmed ~ LogIncome_W1, data = wave1, Hess=TRUE)
+summary(altmed.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(altmed.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Manipulative Treatments
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+manipulative.ordinal.m <- polr(manipulative ~ LogIncome_W1, data = wave1, Hess=TRUE)
+summary(manipulative.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(manipulative.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+## Wave 2
+
+### Visuals
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave2, x = j, y = "LogIncome_W2",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave2, x = j, y = "LogIncome_W2", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+```
+
+### Ordinal regression
+
+#### Mind Body 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+# Convert all factors indices to factors 
+wave2[varlist] <- lapply(wave2[varlist], factor)
+
+# Fit ordinal logistic regression model 
+mindbody.ordinal.m <- polr(mindbody ~ LogIncome_W2, data = wave2, Hess=TRUE)
+# View summary of the model 
+summary(mindbody.ordinal.m)
+# Calculate p value - first store table
+ctable <- coef(summary(mindbody.ordinal.m))
+# Calculate and store p values
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+# Combine table
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Physical and Nutritional Approaches 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+pna.ordinal.m <- polr(pna ~ LogIncome_W2, data = wave2, Hess=TRUE)
+summary(pna.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(pna.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Alternative Medicines 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+altmed.ordinal.m <- polr(altmed ~ LogIncome_W2, data = wave2, Hess=TRUE)
+summary(altmed.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(altmed.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Manipulative Treatments
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+manipulative.ordinal.m <- polr(manipulative ~ LogIncome_W2, data = wave2, Hess=TRUE)
+summary(manipulative.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(manipulative.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+## Wave 3
+
+### Visuals
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for (j in varlist){
+  boxplot <- ggboxplot(wave3, x = j, y = "LogIncome_W3",
+          color = j, palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF", "#FF336A"),
+          ylab = "Log Income", xlab = j)
+  print(boxplot)
+}
+
+
+# Visualize means by group
+for (j in varlist) {
+  means <- ggline(wave3, x = j, y = "LogIncome_W3", 
+       add = c("mean_se"),
+       ylab = "Income", xlab = j)
+  print(means)
+}
+```
+
+### Ordinal regression
+
+#### Mind Body 
+```{r, echo = FALSE}
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+# Convert all factors indices to factors 
+wave3[varlist] <- lapply(wave3[varlist], factor)
+
+# Fit ordinal logistic regression model 
+mindbody.ordinal.m <- polr(mindbody ~ LogIncome_W3, data = wave3, Hess=TRUE)
+# View summary of the model 
+summary(mindbody.ordinal.m)
+# Calculate p value - first store table
+ctable <- coef(summary(mindbody.ordinal.m))
+# Calculate and store p values
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+# Combine table
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Physical and Nutritional Approaches 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+pna.ordinal.m <- polr(pna ~ LogIncome_W3, data = wave3, Hess=TRUE)
+summary(pna.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(pna.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Alternative Medicines 
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+altmed.ordinal.m <- polr(altmed ~ LogIncome_W3, data = wave3, Hess=TRUE)
+summary(altmed.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(altmed.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```
+
+#### Manipulative Treatments
+```{r, echo = FALSE}
+
+# Run ordinal logistic regression
+manipulative.ordinal.m <- polr(manipulative ~ LogIncome_W3, data = wave3, Hess=TRUE)
+summary(manipulative.ordinal.m)
+# Calculate p value 
+ctable <- coef(summary(manipulative.ordinal.m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+ctable
+```

@@ -1,0 +1,504 @@
+---
+title: "lca results complete all waves with biofeedback"
+author: "Hannah Andrews"
+date: "11/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(DT)
+
+setwd("C:/Users/hanna/Documents/git/AHL/R/complete all waves lca")
+load("complete_wave1_allbio_lca.rda")
+load("complete_wave1_allbio_table.rda")
+load("complete_wave2_allbio_lca.rda")
+load("complete_wave2_allbio_table.rda")
+load("complete_wave3_allbio_lca.rda")
+load("complete_wave3_allbio_table.rda")
+```
+
+# Model fit and class sizes 
+
+## Wave 1 
+```{r, echo = FALSE}
+wave1allbiotable
+```
+AIC 8 classes BIC 4 classes Entropy 4 classes 
+
+```{r, echo = FALSE}
+# Class sizes
+table(wave1allbio[[3]]$predclass)
+round(prop.table(table(wave1allbio[[3]]$predclass)),4)*100
+table(wave1allbio[[4]]$predclass)
+round(prop.table(table(wave1allbio[[4]]$predclass)),4)*100
+table(wave1allbio[[5]]$predclass)
+round(prop.table(table(wave1allbio[[5]]$predclass)),4)*100
+table(wave1allbio[[6]]$predclass)
+round(prop.table(table(wave1allbio[[6]]$predclass)),4)*100
+```
+
+
+## Wave 2
+```{r, echo = FALSE}
+wave2allbiotable
+```
+AIC 8 classes BIC 3 classes Entropy 5 classes 
+
+```{r, echo = FALSE}
+# Class sizes
+table(wave2allbio[[3]]$predclass)
+round(prop.table(table(wave2allbio[[3]]$predclass)),4)*100
+table(wave2allbio[[4]]$predclass)
+round(prop.table(table(wave2allbio[[4]]$predclass)),4)*100
+table(wave2allbio[[5]]$predclass)
+round(prop.table(table(wave2allbio[[5]]$predclass)),4)*100
+table(wave2allbio[[6]]$predclass)
+round(prop.table(table(wave2allbio[[6]]$predclass)),4)*100
+```
+
+## Wave 3 
+```{r, echo = FALSE}
+wave3allbiotable
+```
+AIC 6 classes BIC 3 classes Entropy 4 classes 
+
+```{r, echo = FALSE}
+# Class sizes
+table(wave3allbio[[3]]$predclass)
+round(prop.table(table(wave3allbio[[3]]$predclass)),4)*100
+table(wave3allbio[[4]]$predclass)
+round(prop.table(table(wave3allbio[[4]]$predclass)),4)*100
+table(wave3allbio[[5]]$predclass)
+round(prop.table(table(wave3allbio[[5]]$predclass)),4)*100
+table(wave3allbio[[6]]$predclass)
+round(prop.table(table(wave3allbio[[6]]$predclass)),4)*100
+```
+# 3 Class Model 
+
+## Wave 1 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1allbio[[3]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=3, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1allbio.3 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 3 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1allbio.3) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1allbio.3) <- c("Model 1", "Model 2", "Model 3")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1allbio.3, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1allbio.3 <- datatable(wave1allbio.3) %>% 
+  formatStyle(names(c(wave1allbio.3)), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave1allbio.3
+```
+High quality indicators (close to zero or 1): Acupuncture, biofeedback, hypnosis
+
+Class 1: Prayer
+Class 2: Exercise, herbal, massage, meditation, prayer
+Class 3: Nothing 
+
+
+## Wave 2 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2allbio[[3]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=3, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2allbio.3 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 3 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2allbio.3) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2allbio.3) <- c("Model 1", "Model 2", "Model 3")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2allbio.3, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2allbio.3 <- datatable(wave2allbio.3) %>% 
+  formatStyle(names(c(wave2allbio.3)), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave2allbio.3
+```
+High quality indicators: Acupuncture, biofeedback, energy (moderate), herbal, vitamins (moderate), hypnosis, mediation (moderate), prayer(moderate)
+
+Class 1: Exercise, herbal, vitamins, homeopathy, massage, meditation, diet, prayer
+Class 2: Nothing 
+Class 3: mediatation, diet, prayer 
+
+## Wave 3
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3allbio[[3]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=3, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3allbio.3 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 3 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3allbio.3) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3allbio.3) <- c("Model 1", "Model 2", "Model 3")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3allbio.3, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3allbio.3 <- datatable(wave3allbio.3) %>% 
+  formatStyle(names(c(wave3allbio.3)), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave3allbio.3
+```
+
+High quality indicators: acupuncture, biofeedback, energy (moderate)herbal (moderate), vitamins moderate, homeopathy moderate, hypnosis, homeopathy moderate, meditation
+
+Class 1: meditation, prayer
+Class 2: Nothing
+Class 3: chiropractic, exercise, herbal, vitamins, homeopathy, massage, meditation, diet, prayer 
+
+# 4 Class model 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1allbio[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1allbio.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 4 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1allbio.4) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1allbio.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1allbio.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1allbio.4 <- datatable(wave1allbio.4) %>% 
+  formatStyle(names(wave1allbio.4), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave1allbio.4
+```
+Class 1: Nothing 
+Class 2: Nothing
+Class 3: Meditation, prayer 
+Class 4: exercise, herbal, massage, meditation, diet, prayer 
+
+## Wave 2 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2allbio[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2allbio.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 4 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2allbio.4) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2allbio.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2allbio.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2allbio.4 <- datatable(wave2allbio.4) %>% 
+  formatStyle(names(wave2allbio.4), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave2allbio.4
+```
+Class 1: Nothing 
+Class 2: herbal, vitamins, prayer
+Class 3: exercise, herbal, vitamins, homeopathy, massage, meditation, diet, prayer 
+Class 4: Meditation, Diet, Prayer 
+
+## Wave 3
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3allbio[[4]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=4, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3allbio.4 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 4 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3allbio.4) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3allbio.4) <- c("Model 1", "Model 2", "Model 3", "Model 4")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3allbio.4, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3allbio.4 <- datatable(wave3allbio.4) %>% 
+  formatStyle(names(wave3allbio.4), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave3allbio.4
+```
+Class 1: Meditation, Prayer
+Class 2: Acupuncture, Chiropractic, energy, Exercise, herbal, vitamins, homeopathy, imagery, massage, meditation, diet, prayer
+Class 3: Nothing
+Class 3: Exercise, herbal, vitamins, massage, meditation, diet, prayer 
+
+# 5 classes 
+
+## Wave 1
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1allbio[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1allbio.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1allbio.5) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1allbio.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1allbio.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 50, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1allbio.5 <- datatable(wave1allbio.5) %>% 
+  formatStyle(names(wave1allbio.5), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave1allbio.5
+```
+Class 1: Meditation, Prayer
+Class 2: Nothing
+Class 3: exercise, herbal, vitamins, homepathy, massage, meditation, diet, prayer 
+Class 4: Exercise
+Class 5: exercise, massage, meditation, prayer 
+
+## Wave 2
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2allbio[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2allbio.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2allbio.5) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2allbio.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2allbio.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 50, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2allbio.5 <- datatable(wave2allbio.5) %>% 
+  formatStyle(names(wave2allbio.5), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave2allbio.5
+```
+Class 1: Herbal, vitamins, diet, prayer
+Class 2: exercise, herbal, vitamins, massage, meditation, diet, prayer 
+Class 3: nothing
+Class 4: meditation, diet, prayer 
+Class 5: chiropractic, massage, prayer 
+
+## Wave 3
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3allbio[[5]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=5, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3allbio.5 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3allbio.5) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3allbio.5) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3allbio.5, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 50, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3allbio.5 <- datatable(wave3allbio.5) %>% 
+  formatStyle(names(wave3allbio.5), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave3allbio.5
+```
+Class 1: Nothing 
+Class 2: exercise, herbal, vitamins, massage, meditation, diet, prayer 
+Class 3: Acupuncture, chiropractic, energy, exercise, herbal, vitamins, homeopathy, imagery, massage, meditation, diet, prayer 
+Class 4: meditation, prayer
+Class 5: nothing
+
+# 6 Class Model 
+
+## Wave 1 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave1allbio[[6]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=6, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave1allbio.6 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 6 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave1allbio.6) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave1allbio.6) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6" )
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave1allbio.6, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 60, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave1allbio.6 <- datatable(wave1allbio.6) %>% 
+  formatStyle(names(wave1allbio.6), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave1allbio.6
+```
+Class 1: Exercise  massage meditation prayer 
+Class 2: exercise, herbal, vitamins, homeopathy, massage meditation diet prayer  
+Class 3: exercise, 
+Class 4: nothing  
+Class 5: herbal prayer 
+Class 6: meditation, prayer  
+
+## Wave 2
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave2allbio[[6]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=6, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave2allbio.6 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 6 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave2allbio.6) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave2allbio.6) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6" )
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave2allbio.6, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 60, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave2allbio.6 <- datatable(wave2allbio.6) %>% 
+  formatStyle(names(wave2allbio.6), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave2allbio.6
+```
+
+## Wave 3 
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(wave3allbio[[6]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 3 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=6, ncol=28)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+wave3allbio.6 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 6 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(wave3allbio.6) <- c("Acupuncture", "Biofeedback", "Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(wave3allbio.6) <- c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6" )
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(wave3allbio.6, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 60, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.wave3allbio.6 <- datatable(wave3allbio.6) %>% 
+  formatStyle(names(wave3allbio.6), backgroundColor = styleInterval(brks, clrs)) %>% 
+  formatRound(columns = 1:14, 3)
+color.wave3allbio.6
+```

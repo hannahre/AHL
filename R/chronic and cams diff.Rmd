@@ -3,8 +3,8 @@ title: "Differences in chronic conditions and total CAMs between waves"
 author: "Hannah Andrews"
 date: "11/3/2021"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -31,7 +31,7 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS1.dta")
 M1 <- read_dta(path)
 a.lta.var.list <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
                "acam8", "acam9", "acam10", "acam11", "acam12", "acam13", "acam14", "acam15",
-               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", "A1SCHROX")
+               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", "A1SCHROX", "A1SHLOCS")
 
 a.cams.lta <- M1[a.lta.var.list] # Subset MIDUS1 - only include CAMs.
 # Create column that is the sum of CAMs used 
@@ -87,7 +87,6 @@ a.cams.lta$SumChron_W1 <- as.numeric(a.cams.lta$SumChron_W1)
 
 
 ################################################################################
-# Wave 2 
 # Prayer and spiritual healing combined in stata.
 
 # Read in MIDUS2 data and subset to complete cases on CAMs

@@ -1,0 +1,367 @@
+---
+title: "descriptive and bivariate results self reported health"
+author: "Hannah Andrews"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycomm)
+library(haven)
+library(tidyverse)
+library(foreach)
+library(kableExtra)
+library(janitor)
+library(stargazer)
+library(tables)
+library(ggpubr)
+library(aod)
+library(ggplot2)
+library(foreign)
+library(Hmisc)
+library(reshape2)
+library(MASS)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("wave1data.rda")
+load("wave2data.rda")
+load("wave3data.rda")
+```
+
+```{r, echo = FALSE}
+# This code chunk creates the factor dummy indices 
+# Factor 1: Mind body practices 
+# wave 1
+wave1$mindbody <- rowSums(wave1[, c("PraySpirit_W1", "EnergyHeal_W1", "ImageryTech_W1",
+                                    "RelaxMeditate_W1", "Hypnosis_W1")])
+# wave 2
+wave2$mindbody <- rowSums(wave2[, c("PraySpirit_W2", "EnergyHeal_W2", "ImageryTech_W2",
+                                    "RelaxMeditate_W2", "Hypnosis_W2")])
+#wave 3
+wave3$mindbody <- rowSums(wave3[, c("PraySpirit_W3", "EnergyHeal_W3", "ImageryTech_W3",
+                                    "RelaxMeditate_W3", "Hypnosis_W3")])
+
+# Factor 2: Alternative medical systems
+# wave 1
+wave1$altmed <- rowSums(wave1[, c("Homeopathy_W1", "Herbal_W1", "Acupuncture_W1")])
+# wave 2
+wave2$altmed <- rowSums(wave2[, c("Homeopathy_W2", "Herbal_W2", "Acupuncture_W2")])
+# wave 3
+wave3$altmed <- rowSums(wave3[, c("Homeopathy_W3", "Herbal_W3", "Acupuncture_W3")])
+
+# Factor 3: Physical and Nutritional Approaches
+wave1$pna <- rowSums(wave1[, c("Vitamins_W1", "ExerciseMove_W1", "SpecialDiet_W1")])
+wave2$pna <- rowSums(wave2[, c("Vitamins_W2", "ExerciseMove_W2", "SpecialDiet_W2")])
+wave3$pna <- rowSums(wave3[, c("Vitamins_W3", "ExerciseMove_W3", "SpecialDiet_W3")])
+
+# Factor 4: Manipulative treatments
+wave1$manipulative <- rowSums(wave1[, c("Massage_W1", "Chiropractic_W1")])
+wave2$manipulative <- rowSums(wave2[, c("Massage_W2", "Chiropractic_W2")])
+wave3$manipulative <- rowSums(wave3[, c("Massage_W3", "Chiropractic_W3")])
+```
+
+# Individual CAMs
+
+## Wave 1
+
+### Crosstabs
+```{r, echo = FALSE}
+# Create crosstabs education and all cams. 
+
+varlist <- c("Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+
+for(j in varlist){
+  tbl <- wave1 %>% 
+    tabyl(SRHealth_W1, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+```
+
+### Chi squares
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+vars <- c("SRHealth_W1", "Acupuncture_W1", "Biofeedback_W1", "Chiropractic_W1", "EnergyHeal_W1", "ExerciseMove_W1", "Herbal_W1", "Homeopathy_W1", "Hypnosis_W1", "ImageryTech_W1", "Massage_W1", "PraySpirit_W1", "RelaxMeditate_W1", "SpecialDiet_W1", "Vitamins_W1")
+wave1.srhealth.df <- wave1[vars]
+
+srhealth.cams.chisquares <- lapply(wave1.srhealth.df[-length(wave1.srhealth.df)], function(x) chisq.test(table(wave1$SRHealth_W1, x)))
+srhealth.cams.chisquares
+
+```
+
+## Wave 2
+
+### Crosstabs
+```{r, echo = FALSE}
+# Create crosstabs education and all cams. 
+
+varlist <- c("Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+
+for(j in varlist){
+  tbl <- wave2 %>% 
+    tabyl(SRHealth_W2, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+```
+
+### Chi squares
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+vars <- c("SRHealth_W2", "Acupuncture_W2", "Biofeedback_W2", "Chiropractic_W2", "EnergyHeal_W2", "ExerciseMove_W2", "Herbal_W2", "Homeopathy_W2", "Hypnosis_W2", "ImageryTech_W2", "Massage_W2", "PraySpirit_W2", "RelaxMeditate_W2", "SpecialDiet_W2", "Vitamins_W2")
+wave2.srhealth.df <- wave2[vars]
+
+srhealth.cams.chisquares <- lapply(wave2.srhealth.df[-length(wave2.srhealth.df)], function(x) chisq.test(table(wave2$SRHealth_W2, x)))
+srhealth.cams.chisquares
+
+```
+
+## Wave 3
+
+### Crosstabs
+```{r, echo = FALSE}
+# Create crosstabs education and all cams. 
+
+varlist <- c("Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+
+for(j in varlist){
+  tbl <- wave3 %>% 
+    tabyl(SRHealth_W3, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 3) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+```
+
+### Chi squares
+```{r, echo = FALSE}
+# Run chi squares
+# subset data for lapply; only include education and CAMs
+vars <- c("SRHealth_W3", "Acupuncture_W3", "Biofeedback_W3", "Chiropractic_W3", "EnergyHeal_W3", "ExerciseMove_W3", "Herbal_W3", "Homeopathy_W3", "Hypnosis_W3", "ImageryTech_W3", "Massage_W3", "PraySpirit_W3", "RelaxMeditate_W3", "SpecialDiet_W3", "Vitamins_W3")
+wave3.srhealth.df <- wave3[vars]
+
+srhealth.cams.chisquares <- lapply(wave3.srhealth.df[-length(wave3.srhealth.df)], function(x) chisq.test(table(wave3$SRHealth_W3, x)))
+srhealth.cams.chisquares
+
+```
+
+# Dummy Count 
+
+## Wave 1
+
+```{r, echo = FALSE}
+# Crosstab
+  tbl <- wave1 %>% 
+    tabyl(SRHealth_W1, totalCams_W1) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+
+# Summary statistics 
+library(dplyr)
+group_by(wave1, SRHealth_W1) %>%
+  summarise(
+    count = n(),
+    mean = mean(totalCams_W1, na.rm = TRUE),
+    sd = sd(totalCams_W1, na.rm = TRUE)
+  )
+
+# Visualize data
+library(ggpubr)
+ggboxplot(wave1, x = "SRHealth_W1", y = "totalCams_W1",
+          color = "SRHealth_W1", palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF"),
+          ylab = "Total Cams", xlab = "Self reported health")
+
+# Visualize means by group
+ggline(wave1, x = "SRHealth_W1", y = "totalCams_W1", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Self reported health")
+
+# T test 
+t.test(as.numeric(wave1$SRHealth_W1), wave1$totalCams_W1)
+
+```
+
+## Wave 2
+
+```{r, echo = FALSE}
+# Crosstab
+  tbl <- wave2 %>% 
+    tabyl(SRHealth_W2, totalCams_W2) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+
+# Summary statistics 
+library(dplyr)
+group_by(wave2, SRHealth_W2) %>%
+  summarise(
+    count = n(),
+    mean = mean(totalCams_W2, na.rm = TRUE),
+    sd = sd(totalCams_W2, na.rm = TRUE)
+  )
+
+# Visualize data
+library(ggpubr)
+ggboxplot(wave2, x = "SRHealth_W2", y = "totalCams_W2",
+          color = "SRHealth_W2", palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF"),
+          ylab = "Total Cams", xlab = "Self reported health")
+
+# Visualize means by group
+ggline(wave2, x = "SRHealth_W2", y = "totalCams_W2", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Self reported health")
+
+# T test 
+t.test(as.numeric(wave2$SRHealth_W2), wave2$totalCams_W2)
+
+```
+
+## Wave 3
+
+```{r, echo = FALSE}
+# Crosstab
+  tbl <- wave3 %>% 
+    tabyl(SRHealth_W3, totalCams_W3) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 3) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+
+# Summary statistics 
+library(dplyr)
+group_by(wave3, SRHealth_W3) %>%
+  summarise(
+    count = n(),
+    mean = mean(totalCams_W3, na.rm = TRUE),
+    sd = sd(totalCams_W3, na.rm = TRUE)
+  )
+
+# Visualize data
+library(ggpubr)
+ggboxplot(wave3, x = "SRHealth_W3", y = "totalCams_W3",
+          color = "SRHealth_W3", palette = c("#00AFBB", "#E7B800", "#FC4E07", "#3369FF", "#F633FF"),
+          ylab = "Total Cams", xlab = "Self reported health")
+
+# Visualize means by group
+ggline(wave3, x = "SRHealth_W3", y = "totalCams_W3", 
+       add = c("mean_se"),
+       ylab = "Total Cams", xlab = "Self reported health")
+
+# T test 
+t.test(as.numeric(wave3$SRHealth_W3), wave3$totalCams_W3)
+
+```
+
+# Factor Indices
+
+## Wave 1 
+
+### crosstabs
+```{r, echo = FALSE}
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for(j in varlist){
+  tbl <- wave1 %>% 
+    tabyl(SRHealth_W1, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+```
+
+### Chi Squares
+```{r, echo = FALSE}
+vars <- c("mindbody", "pna", "altmed", "manipulative", "SRHealth_W1")
+wave1.srhealth.df <- wave1[vars]
+
+srhealth.factors.chisquares <- lapply(wave1.srhealth.df[-length(wave1.srhealth.df)], function(x) chisq.test(table(wave1$SRHealth_W1, x)))
+
+srhealth.factors.chisquares
+```
+
+## Wave 2 
+
+### crosstabs
+```{r, echo = FALSE}
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for(j in varlist){
+  tbl <- wave2 %>% 
+    tabyl(SRHealth_W2, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 2) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+```
+
+### Chi Squares
+```{r, echo = FALSE}
+vars <- c("mindbody", "pna", "altmed", "manipulative", "SRHealth_W2")
+wave2.srhealth.df <- wave2[vars]
+
+srhealth.factors.chisquares <- lapply(wave2.srhealth.df[-length(wave2.srhealth.df)], function(x) chisq.test(table(wave2$SRHealth_W2, x)))
+
+srhealth.factors.chisquares
+```
+
+## Wave 3 
+
+### crosstabs
+```{r, echo = FALSE}
+
+varlist <- c("mindbody", "pna", "altmed", "manipulative")
+
+for(j in varlist){
+  tbl <- wave3 %>% 
+    tabyl(SRHealth_W3, .data[[j]]) %>% 
+    adorn_percentages("row") %>%
+    adorn_pct_formatting(digits = 3) %>% 
+    adorn_ns() %>% 
+    adorn_title("combined") %>% 
+    knitr::kable()
+  print(tbl)
+}
+
+```
+
+### Chi Squares
+```{r, echo = FALSE}
+vars <- c("mindbody", "pna", "altmed", "manipulative", "SRHealth_W3")
+wave3.srhealth.df <- wave3[vars]
+
+srhealth.factors.chisquares <- lapply(wave3.srhealth.df[-length(wave3.srhealth.df)], function(x) chisq.test(table(wave3$SRHealth_W3, x)))
+
+srhealth.factors.chisquares
+```

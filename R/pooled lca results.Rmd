@@ -77,6 +77,39 @@ round(prop.table(table(pooled.lca[[6]]$predclass)),4)*100
 
 # Examine predicted probabilities for models without biofeedback
 
+## Model 3
+```{r, echo = FALSE}
+# Create dataframe of yes probabilities 
+# Unstack list of probabilities
+test <- unstack(data.frame(d<-unlist(pooled.lca[[3]]$probs), use.names = TRUE))
+# Convert unstacked list into matrix with 5 rows corresponding to classes and 26 columns corresponding to no yes probabilities
+test2 <- matrix(test[,1], nrow=3, ncol=26)
+# Convert matrix to dataframe
+test2 <- as.data.frame(test2)
+# Select only even columns - correspond with yes probabilities
+pooled.lca.3 <- test2 %>%
+  select(everything()[c(FALSE, TRUE)])
+# Result is 5 by 13 matrix of yes probabilities 
+# Rename columns to corresponding CAMs
+colnames(pooled.lca.3) <- c("Acupuncture","Chiropractic","EnergyHeal","ExerciseMove","Herbal",
+                     "Vitamins","Homeopathy","Hypnosis","ImageryTech","Massage",
+                     "RelaxMeditate","SpecialDiet","PraySpirit")
+# Rename rows after model #
+rownames(pooled.lca.3) <- c("Model 1", "Model 2", "Model 3")
+
+# tried to create color coordinated table in R but it won't print in the rmarkdown output. Do it in excel because it'll be easier to view. 
+write_xlsx(pooled.lca.3, "C:/Users/hanna/Documents/git/AHL/R/pooledlca3probs.xlsx")
+
+# Saving code in case it comes in handy later. https://rstudio.github.io/DT/010-style.html
+# create 19 breaks and 20 rgb color values ranging from white to red
+brks <- quantile(pooled.lca.3, probs = seq(.05, .95, .05), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+color.pooled.lca.3 <- datatable(pooled.lca.3) %>% formatStyle(names(pooled.lca.3), backgroundColor = styleInterval(brks, clrs))
+color.pooled.lca.3
+```
+
+
 ## Model 4
 ```{r, echo = FALSE}
 # Create dataframe of yes probabilities 
