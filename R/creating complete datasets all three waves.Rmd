@@ -42,7 +42,7 @@ M1 <- read_dta(path)
 varlist <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14",
               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", 
-              "A1SCHROX", "A1SCHRON", "A1SHLOCS", "A1SHLOCO")
+              "A1SCHROX", "A1SCHRON", "A1SHLOCS")
 
 wave1 <- M1[varlist] # Subset MIDUS1 - only include CAMs.
 
@@ -77,8 +77,7 @@ wave1 <- dplyr::rename(wave1,
                             AnyChron_W1 = A1SCHROX,
                             SumChron_W1 = A1SCHRON,
                             totalCams_W1 = totalCams, 
-                            HLSelf_W1 = A1SHLOCS, 
-                            HLOther_W1 = A1SHLOCO)
+                            HLSelf_W1 = A1SHLOCS)
 
 # Convert education to factor 
 wave1$Education_W1 <- as_factor(wave1$Education_W1, levels = "labels")
@@ -104,7 +103,10 @@ levels(wave1$AnyChron_W1)[levels(wave1$AnyChron_W1)=="Not calculated"]<-NA
 # Convert HLSelf to numeric 
 wave1$HLSelf_W1 <- as.numeric(wave1$HLSelf_W1)
 # Convert HLOther to numeric
-wave1$HLOther_W1 <- as.numeric(wave1$HLOther_W1)
+#wave1$HLOther_W1 <- as.numeric(wave1$HLOther_W1)
+
+# Restrict to cases not missing on any variables
+#wave1 <- wave1[complete.cases(wave1),]
 
 str(wave1)
 
@@ -119,7 +121,7 @@ M2 <- read_dta(path)
 varlist <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
                "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", 
                "bcam21","bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried",
-               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "B1SHLOCO")
+               "B1SCHROX", "B1SCHRON", "B1SHLOCS")
 
 wave2 <- M2[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -154,8 +156,7 @@ wave2 <- dplyr::rename(wave2,
                             AnyChron_W2 = B1SCHROX,
                             SumChron_W2 = B1SCHRON,
                             totalCams_W2 = totalCams,
-                            HLSelf_W2 = B1SHLOCS,
-                            HLOther_W2 = B1SHLOCO)
+                            HLSelf_W2 = B1SHLOCS)
 
 
 # Convert age to numeric
@@ -182,8 +183,11 @@ levels(wave2$AnyChron_W2)[levels(wave2$AnyChron_W2)=="YES"] <- "Yes"
 # Convert HLSelf to numeric 
 wave2$HLSelf_W2 <- as.numeric(wave2$HLSelf_W2)
 # Convert HLOther to numeric 
-wave2$HLOther_W2 <- as.numeric(wave2$HLOther_W2)
+#wave2$HLOther_W2 <- as.numeric(wave2$HLOther_W2)
 
+# Restrict to cases not missing on any variables
+#wave2 <- wave2[complete.cases(wave2),]
+str(wave2)
 
 ################################################################################
 # Wave 3 
@@ -197,8 +201,8 @@ path <- ("C:/Users/hanna/Documents/git/AHL/Stata/data-cleaning/MIDUS3.dta")
 M3 <- read_dta(path)
 varlist <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", 
-               "ccam21", "C1STATUS", "CAge", "lnCHhInc", "CEduc", "CRace", 
-               "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS", "C1SHLOCO")
+               "ccam21", "CAge", "lnCHhInc", "CEduc", "CRace", 
+               "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS")
 
 wave3 <- M3[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -232,7 +236,7 @@ wave3 <- dplyr::rename(wave3,
                             AnyChron_W3 = C1SCHROX,
                             SumChron_W3 = C1SCHRON,
                             HLSelf_W3 = C1SHLOCS,
-                            HLOther_W3 = C1SHLOCO,
+                            #HLOther_W3 = C1SHLOCO,
                             totalCams_W3 = totalCams)
 str(wave3)
 
@@ -262,7 +266,11 @@ levels(wave3$AnyChron_W3)[levels(wave3$AnyChron_W3)=="YES"] <- "Yes"
 # Convert HLSelf to numeric
 wave3$HLSelf_W3 <- as.numeric(wave3$HLSelf_W3)
 # Convert HLOther to numeric 
-wave3$HLOther_W3 <- as.numeric(wave3$HLOther_W3)
+#wave3$HLOther_W3 <- as.numeric(wave3$HLOther_W3)
+
+# Restrict to cases not missing on any variables
+#wave3 <- wave3[complete.cases(wave3),]
+str(wave3)
 
 ################################################################################
 # create waves with only complete cases
@@ -358,6 +366,81 @@ save(wave3, file = "wave3complete.rda")
 ```
 ```{r, echo = FALSE}
 
+#################################################################################
+# Merging wave 1 and wave 2 for change model dataset 
+# Creating change variables for chronic conditions and CAMs
+
+# Merge wave 1 and wave 2
+wave12.wide <- merge(wave1, wave2, by = "M2ID")
+
+# Subtract wave 1 from wave 2 chronic conditions 
+wave12.wide$DiffChron <- wave12.wide$SumChron_W2 - wave12.wide$SumChron_W1
+
+# Check Calculation 
+myvars <- c("DiffChron", "SumChron_W2", "SumChron_W1")
+newdata <- wave12.wide[myvars]
+
+# Subtract total cams wave 1 and wave 2
+wave12.wide$DiffCams <- wave12.wide$totalCams_W2 - wave12.wide$totalCams_W1
+
+# Check calculation 
+myvars <- c("DiffCams", "totalCams_W2", "totalCams_W1")
+newdata <- wave12.wide[myvars]
+
+#Drop incomplete cases
+waves12.wide.complete <- wave12.wide[complete.cases(wave12.wide),]
+save(waves12.wide.complete, file = "waves12.wide.complete.rda")
+
+#################################################################################
+# Merging waves 2 and 3 for change model dataset 
+# Creating change variables for chronic conditions and CAMs
+
+# Merge wave 1 and wave 2
+wave23.wide <- merge(wave2, wave3, by = "M2ID")
+
+# Subtract wave 1 from wave 2 chronic conditions 
+wave23.wide$DiffChron <- wave23.wide$SumChron_W3 - wave23.wide$SumChron_W2
+
+# Check Calculation 
+myvars <- c("DiffChron", "SumChron_W3", "SumChron_W2")
+newdata <- wave23.wide[myvars]
+
+# Subtract total cams wave 1 and wave 2
+wave23.wide$DiffCams <- wave23.wide$totalCams_W3 - wave23.wide$totalCams_W2
+
+# Check calculation 
+myvars <- c("DiffCams", "totalCams_W3", "totalCams_W2")
+newdata <- wave23.wide[myvars]
+
+#Drop incomplete cases
+waves23.wide.complete <- wave23.wide[complete.cases(wave23.wide),]
+save(waves23.wide.complete, file = "waves23.wide.complete.rda")
+
+################################################################################
+# Merging waves 1 and 3 for change model dataset 
+# Creating change variables for chronic conditions and CAMs
+
+# Merge wave 1 and wave 2
+wave13.wide <- merge(wave1, wave3, by = "M2ID")
+
+# Subtract wave 3 from wave 1 chronic conditions 
+wave13.wide$DiffChron <- wave13.wide$SumChron_W3 - wave13.wide$SumChron_W1
+
+# Check Calculation 
+myvars <- c("DiffChron", "SumChron_W3", "SumChron_W1")
+newdata <- wave13.wide[myvars]
+
+# Subtract total cams wave 1 and wave 2
+wave13.wide$DiffCams <- wave13.wide$totalCams_W3 - wave13.wide$totalCams_W1
+
+# Check calculation 
+myvars <- c("DiffCams", "totalCams_W3", "totalCams_W1")
+newdata <- wave13.wide[myvars]
+
+#Drop incomplete cases
+waves13.wide.complete <- wave13.wide[complete.cases(wave13.wide),]
+save(waves13.wide.complete, file = "waves13.wide.complete.rda")
+
 ################################################################################
 # Reshaping and merging all three waves 
 
@@ -372,12 +455,12 @@ library(panelr)
 # Reshape wide to long: this is the dataset with all respondents to be used further down 
 waves123.long <- long_panel(wide.waves123, prefix = "_W", begin = 1, end = 3, label_location = "end")
 
+# Drop incomplete rows
 save(waves123.long, file = "waves123.long.rda")
 
 # Drop incomplete cases for cams.complete.  
-dim(waves123.long)
-#waves123.long.complete <- waves123.long[complete.cases(waves123.long),]
-#dim(waves123.long.complete)
+waves123.long.complete <- waves123.long[complete.cases(waves123.long),]
+save(waves123.long.complete, file = "waves123.long.complete.rda")
 
 
 

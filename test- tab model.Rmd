@@ -1,0 +1,117 @@
+---
+title: "Mixed Model"
+author: "Hannah Andrews"
+date: "2/9/2022"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(parameters)
+library(webshot)
+library(tidyverse)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.complete.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
+```
+# Methods
+
+The first research question examined in this chapter is whether use of CAMs is predicted by socioeconomic status (SES), specifically income and education. I used generalized linear mixed models (GLMMs) to assess this relationship. I used logistic GLMMs to model the effect of SES on each of the CAM factor indices and a Poisson GLMM to model the effect of SES on total CAM use. 
+
+GLMMs are an extension of generalized linear models that account for the nested nature of data. In the MIDUS data, each respondent participated in the survey at one to three time points. Therefore measures at different time points are nested within the individual. GLMMs include fixed effects for level 1 predictors and random effects for level 2. The fixed effects in the models below include all predictors and covariates. The random effects... The intercept for each individual is allowed to vary randomly. 
+
+GLMMs allow for the separation of two sources of variation: variation between individuals and variation within individuals. 
+
+# Results
+
+## Factor Indices 
+
+### Mind Body 
+
+```{r, echo = FALSE}
+# baseline model 
+baseline <- glmer(mindbody ~ 1 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income
+mb1 <- glmer(mindbody ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with education
+mb2 <- glmer(mindbody ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income and education
+mb3 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+#sjPlot::plot_model(mb2, 
+#                   show.values=TRUE, show.p=TRUE,
+#                   title="Effect of Income and Education on Mind Body Medicine Use")
+
+
+# Model with all covariates
+mb4 <- glmer(mindbody ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Create table with results
+mb.tab.model <- tab_model(mb1, mb2, mb3, mb4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American & Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Mixed Model: Mind Body Approaches")
+
+library(XML)
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(mb.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+library(kableExtra)
+library(tidyverse)
+kable(df.2,
+      booktabs = T,
+      caption = "Mind Body Models: Random Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kable_styling(latex_options = c("striped"))
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+library(kableExtra)
+library(tidyverse)
+kable(df.1,
+      booktabs = T,
+      caption = "Mind Body Models: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+```

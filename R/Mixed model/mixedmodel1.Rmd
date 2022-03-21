@@ -2,11 +2,15 @@
 title: "Mixed Model"
 author: "Hannah Andrews"
 date: "2/9/2022"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+  always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```
 ```{r, echo = FALSE}
@@ -16,51 +20,600 @@ library(sjstats)
 library(jtools)
 library(ROCR)
 library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
 setwd("C:/Users/hanna/Documents/git/AHL/R/")
-load("waves123.long.rda")
+load("waves123.long.complete.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
 setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
 ```
 
-# Logistic Regressions
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
 
-## Mind Body 
+# Methods
+
+The first research question examined in this chapter is whether use of CAMs is predicted by socioeconomic status (SES), specifically income and education. I used generalized linear mixed models (GLMMs) to assess this relationship. I used logistic GLMMs to model the effect of SES on each of the CAM factor indices and a Poisson GLMM to model the effect of SES on total CAM use. 
+
+GLMMs are an extension of generalized linear models that account for the nested nature of data. In the MIDUS data, each respondent participated in the survey at one to three time points. Therefore measures at different time points are nested within the individual. GLMMs include fixed effects for level 1 predictors and random effects for level 2. The fixed effects in the models below include all predictors and covariates. Individual id numbers were used to obtain the random effects. The intercept for each individual is allowed to vary randomly. 
+
+GLMMs allow for the separation of two sources of variation: variation between individuals and variation within individuals. 
+
+# Results
+
+## Factor Indices 
+
+### Mind Body 
 
 ```{r, echo = FALSE}
 # baseline model 
-baseline <- glmer(mindbody ~ 1 + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
-tab_model(baseline)
+baseline <- glmer(mindbody ~ 1 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income
+mb1 <- glmer(mindbody ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with education
+mb2 <- glmer(mindbody ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income and education
+mb3 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+#sjPlot::plot_model(mb2, 
+#                   show.values=TRUE, show.p=TRUE,
+#                   title="Effect of Income and Education on Mind Body Medicine Use")
+
+
+# Model with all covariates
+mb4 <- glmer(mindbody ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Create table with results
+mb.tab.model <- tab_model(mb1, mb2, mb3, mb4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American and Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Mixed Model: Mind Body Approaches")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(mb.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+
+kable(df.2,
+      booktabs = T,
+      caption = "Mind Body Models: Random Effects") %>%
+   kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped"))
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+kable(df.1,
+      booktabs = T,
+      caption = "Mind Body Models: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+# Compare models
+# anova(mb1, mb2, mb3, mb4)
 ```
+
+Model 1 assesses the association between the use of mind body approaches and logged income. The odds of using mind body approaches at different levels of logged income do not differ significantly (OR = 0.99, 95% CI: 0.94, 1.04, *p* = 0.682). Within subject variance is 3.29 and between subject variance is 2.92. The Intraclass Correlation Coefficient (ICC) is 0.47, indicating that 47% of the variation in use of mind body approaches is between subjects. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.47, indicating that the variance explained in the model is due to the random rather than fixed effects. 
+
+Model 2 assesses the association between the use of mind body approaches and levels of education. The reference category is less than a high school education. The odds of using mind body approaches increase with each level of education compared to those with less than a high school education. The odds of using mind body approaches increase by 32% for those with a high school diploma or GED (OR = 1.32, 95% CI: 1.02, 1.71, *p* < 0.05), increase by 101% for those with some college or an associate's degree (OR = 2.01, 95% CI: 1.55, 2.59, *p* < 0.001), increase by 166% for those with a college degree (OR = 2.66, 95% CI: 2.04, 3.48, *p* < 0.001), and increase by 181% for those with a graduate or professional degree (OR = 2.81, 95% CI: 2.14, 3.70, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.78. The ICC is 0.46, indicating that 46% of the variance in use of mind body approaches is between subjects. The marginal $R^2$ is 0.018 and the conditional $R^2$ is 0.467, indicating that 1.8% of the variance explained in the model is due to the fixed effects. 
+
+Model 3 includes both logged income and education as predictors of the use of mind body approaches. When accounting for education, logged income significantly predicts the use of mind body approaches. For each one unit increase in logged income the odds of using mind body approaches decreases by 10% (OR = 0.90, 95% CI: 0.85, 0.95, *p* < 0.001). When accounting for the effect of logged income, the odds of using mind body approaches increase by 38% for those with a high school diploma or GED (OR = 1.38, 95% CI: 1.07, 1.79, *p* < 0.05), increase by 115% for those with some college or an associate's degree (OR = 2.55, 95% CI: 1.66, 2.78, *p* < 0.001), increase by 196% for those with a college degree (OR = 2.96, 95% CI: 2.25, 3.89, *p* < 0.001), and increase by 219% for those with a graduate or professional degree (OR = 3.19, 95% CI: 2.40, 4.22, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.76. The ICC is 0.46, indicating that 46% of the variance in use of mind body approaches is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.019 and the conditional $R^2$ is 0.47, indicating that 1.9% of the variance explained in the model is due to the fixed effects.
+
+In model 4, control variables are added to model 3. Logged income remains a significant predictor of the use of mind body approaches. For each one unit increase in logged income the odds of using mind body approaches decrease by 6% (OR = 0.94, 95% CI: 0.88, 1.00, *p* < 0.05). The effects of education compared to having less than a high school education remain significant and increase with each level of education. The odds of using mind body approaches increase by 32% for those with a high school diploma or GED (OR = 1.32, 95% CI: 1.02, 1.70, *p* < 0.05), increase by 107% for those with some college or an associate's degree (OR = 2.07, 95% CI: 1.60, 2.67, *p* < 0.001), increase by 211% for those with a college degree (OR = 3.11, 95% CI: 2.37, 4.08, *p* < 0.001), and increase by 228% for those with a graduate or professional degree (OR = 3.28, 95% CI: 2.48, 4.34, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.55. The ICC is 0.44, indicating that 44% of the variance in use of mind body approaches is between subjects when including controls. The marginal $R^2$ is 0.049 and the conditional $R^2$ is 0.46, indicating that 4.9% of the variance explained in the model is due to the fixed effects.
+
+The results of the above regressions on mind body approaches indicate that income and education significantly predict the use of mind body approaches, though most of the variation is explained by differences between subjects unaccounted for in the data rather than the predictors included (Louise - am I interpreting this correctly?). (Explanation for income becoming significant).
+
+### Alternative medicine
 
 ```{r, echo = FALSE}
-mb1 <- glmer(mindbody ~ LogIncome + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
-summary(mb1)
-tab_model(mb1)
+# baseline model 
+baseline <- glmer(altmed ~ 1 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income
+am1 <- glmer(altmed ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with education
+am2 <- glmer(altmed ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income and education
+am3 <- glmer(altmed ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+#sjPlot::plot_model(am2, 
+#                   show.values=TRUE, show.p=TRUE,
+#                   title="Effect of Income and Education on Mind Body Medicine Use")
+
+
+# Model with all covariates
+am4 <- glmer(altmed ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Create table with results
+altmed.tab.model <- tab_model(am1, am2, am3, am4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American and Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Logistic GLMM: Alternative Medical Systems")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(altmed.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+
+kable(df.2,
+      booktabs = T,
+      caption = "Alternative Medical Systems: Random Effects") %>%
+   kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped"))
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+kable(df.1,
+      booktabs = T,
+      caption = "Alternative Medical Systems: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+
+# Compare models
+# anova(am1, am2, am3, am4)
 ```
+
+Model 1 assesses the relationship between logged income and the use of alternative medical systems. The odds of using alternative medicines at different levels of logged income do not differ significantly (OR = 1.01, 95% CI: 0.93, 1.10, *p* = 0.824). Within subject variance is 3.29 and between subject variance is 2.82. The Intraclass Correlation Coefficient (ICC) is 0.46, indicating that 46% of the variation in use of alternative medicines is between subjects. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.46, indicating that the variance explained in the model is due to the random rather than fixed effects.
+
+Model 2 assesses the association between the use of alternative medical systems and levels of education. The reference category is less than a high school education. The odds of using mind body approaches increase with each level of education compared to those with less than a high school education. There are significant differences in using alternative medical systems between those with less than a high school education and those with some college or an AA degree, those with a bachelor's degree, and those with a graduate or professional degree. The odds of using mind body approaches increase by 44% for those with a high school diploma or GED (OR = 1.44, 95% CI: 0.92, 1.10, *p* = 0.107), increase by 91% for those with some college or an associate's degree (OR = 1.91, 95% CI: 1.23, 2.96, *p* < 0.05), increase by 166% for those with a college degree (OR = 2.66, 95% CI: 1.71, 4.16, *p* < 0.001), and increase by 159% for those with a graduate or professional degree (OR = 2.59, 95% CI: 1.65, 4.97, *p* < 0.001) compared to those with less than a high school education. The confidence intervals of the odds ratios for those with a bachelor's degree and those with a graduate or professional degree are large. Within subject variance is 3.29 and between subject variance is 2.72. The ICC is 0.45, indicating that 45% of the variance in use of alternative medical systems is between subjects. The marginal $R^2$ is 0.014 and the conditional $R^2$ is 0.460, indicating that 1.4% of the variance explained in the model is due to the fixed effects. 
+
+Model 3 includes both logged income and education as predictors of the use of alternative medical systems. When accounting for education, logged income does not significantly predict the use of alternative medical systems. For each one unit increase in logged income the odds of using alternative medical systems decreases by 8% (OR = 0.92, 95% CI: 0.85, 1.01, *p* = 0.70). When accounting for the effect of logged income, the odds of using alternative medical systems increase by 49% for those with a high school diploma or GED (OR = 1.49, 95% CI: 0.95, 2.32, *p* = 0.081), increase by 101% for those with some college or an associate's degree (OR = 2.01, 95% CI: 1.29, 3.12, *p* < 0.050), increase by 188% for those with a college degree (OR = 2.88, 95% CI: 1.83, 4.52, *p* < 0.001), and increase by 188% for those with a graduate or professional degree (OR = 2.83, 95% CI: 1.78, 4.49, *p* < 0.001) compared to those with less than a high school education. There is not a significant difference in the odds of using alternative medical systems between those with less than a high school education and those with a high school diploma or GED. The confidence intervals of the odds ratios for those with a bachelor's degree and those with a graduate or professional degree are large. Within subject variance is 3.29 and between subject variance is 2.69. The ICC is 0.45, indicating that 45% of the variance in use of alternative medical systems is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.458, indicating that 1.5% of the variance explained in the model is due to the fixed effects.
+
+In model 4, control variables are added to model 3. Logged income does not significantly predict the use of alternative medical systems. For each one unit increase in logged income the odds of using alternative medical systems increase by 3% (OR = 1.03, 95% CI: 0.94, 1.13, *p* = 0.531). The effects of education compared to having less than a high school education remain significant for those with some college or Associate's degree, a bachelor's degree, and those with a graduate or professional degree and increase with each level of education. The odds of using alternative medical systems increase by 40% for those with a high school diploma or GED (OR = 1.40, 95% CI: 0.09, 2.19, *p* = 0.134), increase by 85% for those with some college or an associate's degree (OR = 1.85, 95% CI: 1.19, 2.87, *p* < 0.050), increase by 193% for those with a college degree (OR = 2.93, 95% CI: 1.86, 4.60, *p* < 0.001), and increase by 169% for those with a graduate or professional degree (OR = 2.69, 95% CI: 1.70, 4.27, *p* < 0.001) compared to those with less than a high school education. The confidence intervals of the odds ratios for both those with a college degree and those with a professional or graduate degree are large. Within subject variance is 3.29 and between subject variance is 2.39. The ICC is 0.42, indicating that 42% of the variance in use of alternative medical systems is between subjects when including controls. The marginal $R^2$ is 0.059 and the conditional $R^2$ is 0.455, indicating that 5.9% of the variance explained in the model is due to the fixed effects.
+
+The results of the above regressions on alternative medical systems indicate that education significantly predicts the use of alternative medical systems, though most of the variation is explained by differences between subjects unaccounted for in the data rather than the predictors included (Louise - am I interpreting this correctly?).
+
+### Physical and nutritional approaches
 
 ```{r, echo = FALSE}
-mb2 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
-summary(mb2)
-tab_model(mb2)
-sjPlot::plot_model(mb2, 
-                   show.values=TRUE, show.p=TRUE,
-                   title="Effect of Income and Education on Mind Body Medicine Use")
+# baseline model 
+baseline <- glmer(pna ~ 1 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income
+pna1 <- glmer(pna ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with education
+pna2 <- glmer(pna ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income and education
+pna3 <- glmer(pna ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+#sjPlot::plot_model(pna2, 
+#                   show.values=TRUE, show.p=TRUE,
+#                   title="Effect of Income and Education on Mind Body Medicine Use")
+
+
+# Model with all covariates
+pna4 <- glmer(pna ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Create table with results
+pna.tab.model <- tab_model(pna1, pna2, pna3, pna4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American and Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Mixed Model: Physical and Nutritional Approaches")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(pna.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+kable(df.1,
+      booktabs = T,
+      caption = "Physical and Nutritional: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+  
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+
+kable(df.2,
+      booktabs = T,
+      caption = "Physical and Nutritional Approaches: Random Effects") %>%
+   kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped"))
+
+
+# Compare models
+# anova(pna1, pna2, pna3, pna4)
 ```
+
+Model 1 assesses the relationship between logged income and the use of physical and nutritional approaches. The odds of using physical and nutritional approaches increase by 5% for each additional unit of logged income (OR = 1.05, 95% CI: 1.01, 1.10, *p* < 0.050). Within subject variance is 3.29 and between subject variance is 0.83. The Intraclass Correlation Coefficient (ICC) is 0.20, indicating that 20% of the variation in use of physical and nutritional approaches is between subjects. The marginal $R^2$ is 0.001 and the conditional $R^2$ is 0.202, indicating that the variance explained in the model is due to the random rather than fixed effects.
+
+Model 2 assesses the association between the use of physical and nutritional approaches and levels of education. The reference category is less than a high school education. The odds of using physical and nutritional approaches increase with each level of education compared to those with less than a high school education. The odds of using physical and nutritional approaches increase by 33% for those with a high school diploma or GED (OR = 1.33, 95% CI: 1.07, 1.64, *p* < 0.050), increase by 74% for those with some college or an associate's degree (OR = 1.74, 95% CI: 1.41, 2.15, *p* < 0.001), increase by 108% for those with a college degree (OR = 2.08, 95% CI: 1.67, 2.58, *p* < 0.001), and increase by 138% for those with a graduate or professional degree (OR = 2.38, 95% CI: 1.91, 2.97, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 0.79. The ICC is 0.19, indicating that 19% of the variance in use of physical and nutritional approaches is between subjects. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.206, indicating that 1.5% of the variance explained in the model is due to the fixed effects. 
+
+Model 3 includes both logged income and education as predictors of the use of physical and nutritional approaches. When accounting for education, logged income does not significantly predict the use of physical and nutritional approaches. For each one unit increase in logged income the odds of using alternative medical systems decreases by 3% (OR = 0.97, 95% CI: 0.93, 1.02, *p* = 0.263). When accounting for the effect of logged income, the odds of using physical and nutritional approaches increase by 34% for those with a high school diploma or GED (OR = 1.34, 95% CI: 0.95, 2.32, *p* < 0.050), increase by 77% for those with some college or an associate's degree (OR = 1.77, 95% CI: 1.43, 2.19, *p* < 0.001), increase by 114% for those with a college degree (OR = 2.14, 95% CI: 1.71, 2.67, *p* < 0.001), and increase by 146% for those with a graduate or professional degree (OR = 2.46, 95% CI: 1.96, 3.09, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 0.79. The ICC is 0.19, indicating that 19% of the variance in use of physical and nutritional approaches is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.206, indicating that 1.5% of the variance explained in the model is due to the fixed effects.
+
+In model 4, control variables are added to model 3. Logged income does not significantly predict the use of physical and nutritional approaches. For each one unit increase in logged income the odds of using alternative medical systems increase by 5% (OR = 1.05, 95% CI: 1.00, 1.11, *p* = 0.066). The of using physical and nutritional approaches compared to having less than a high school increase with each level of education. The odds of using physical and nutritional approaches increase by 30% for those with a high school diploma or GED (OR = 1.30, 95% CI: 1.05, 1.62, *p* < 0.050), increase by 75% for those with some college or an associate's degree (OR = 1.75, 95% CI: 1.41, 2.17, *p* < 0.001), increase by 126% for those with a college degree (OR = 2.26, 95% CI: 1.80, 2.84, *p* < 0.001), and increase by 142% for those with a graduate or professional degree (OR = 2.42, 95% CI: 1.92, 3.05, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 0.76. The ICC is 0.19, indicating that 19% of the variance in use of physical and nutritional approaches is between subjects when including controls. The marginal $R^2$ is 0.050 and the conditional $R^2$ is 0.229, indicating that 5% of the variance explained in the model is due to the fixed effects.
+
+The results of the above regressions on physical and nutritional approaches indicate that education significantly predicts the use of physical and nutritional approaches, though most of the variation is explained by differences between subjects unaccounted for in the data rather than the predictors included (Louise - am I interpreting this correctly?).
+
+### Manipulative
 
 ```{r, echo = FALSE}
-mb3 <- glmer(mindbody ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long, family = binomial, nAGQ = 0)
-summary(mb2)
-tab_model(mb3)
+# baseline model 
+baseline <- glmer(manipulative ~ 1 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income
+manipulative1 <- glmer(manipulative ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with education
+manipulative2 <- glmer(manipulative ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Model with income and education
+manipulative3 <- glmer(manipulative ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+#sjPlot::plot_model(manipulative2, 
+#                   show.values=TRUE, show.p=TRUE,
+#                   title="Effect of Income and Education on Mind Body Medicine Use")
+
+
+# Model with all covariates
+manipulative4 <- glmer(manipulative ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Create table with results
+manipulative.tab.model <- tab_model(manipulative1, manipulative2, manipulative3, manipulative4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American and Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Mixed Model: Manipulative Treatments")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(manipulative.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+kable(df.1,
+      booktabs = T,
+      caption = "Manipulative Treatments: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+  
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+
+kable(df.2,
+      booktabs = T,
+      caption = "Manipulative Treatments: Random Effects") %>%
+   kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped"))
+
+
+# Compare models
+# anova(manipulative1, manipulative2, manipulative3, manipulative4)
 ```
+
+Model 1 assesses the relationship between logged income and the use of manipulative treatments. The odds of using manipulative treatments increase by 16% for each additional unit of logged income (OR = 1.16, 95% CI: 1.09, 1.23, *p* < 0.001). Within subject variance is 3.29 and between subject variance is 2.45. The Intraclass Correlation Coefficient (ICC) is 0.43, indicating that 43% of the variation in use of physical and nutritional approaches is between subjects. The marginal $R^2$ is 0.004 and the conditional $R^2$ is 0.429, indicating that the variance explained in the model is due to the random rather than fixed effects.
+
+Model 2 assesses the association between the use of manipulative treatments and levels of education. The reference category is less than a high school education. The odds of using manipulative treatments increase with each level of education compared to those with less than a high school education. The odds of using manipulative treatments increase by 48% for those with a high school diploma or GED (OR = 1.38, 95% CI: 1.11, 1.99, *p* < 0.050), increase by 84% for those with some college or an associate's degree (OR = 1.84, 95% CI: 1.37, 2.45, *p* < 0.001), increase by 102% for those with a college degree (OR = 2.02, 95% CI: 1.49, 2.73, *p* < 0.001), and increase by 133% for those with a graduate or professional degree (OR = 2.33, 95% CI: 1.72, 3.17, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.45. The ICC is 0.43, indicating that 43% of the variance in use of manipulative treatments is between subjects. The marginal $R^2$ is 0.008 and the conditional $R^2$ is 0.432, indicating that the variance explained in the model is due to the random effects. 
+
+Model 3 includes both logged income and education as predictors of the use of manipulative treatments. When accounting for education, logged income significantly predicts the use of manipulative treatments. For each one unit increase in logged income the odds of using manipulative treatments increases by 10% (OR = 1.10, 95% CI: 1.04, 1.18, *p* <0.050). When accounting for the effect of logged income, the odds of using manipulative treatments increase by 43% for those with a high school diploma or GED (OR = 1.43, 95% CI: 1.07, 1.92, *p* < 0.050), increase by 73% for those with some college or an associate's degree (OR = 1.73, 95% CI: 1.29, 2.32, *p* < 0.001), increase by 84% for those with a college degree (OR = 1.84, 95% CI: 1.35, 2.50, *p* < 0.001), and increase by 109% for those with a graduate or professional degree (OR = 2.09, 95% CI: 1.53, 2.87, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.46. The ICC is 0.43, indicating that 43% of the variance in use of manipulative treatments is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.009 and the conditional $R^2$ is 0.433, indicating that the variance explained in the model is due to the random effects.
+
+In model 4, control variables are added to model 3. For each one unit increase in logged income the odds of using alternative medical systems increase by 15% (OR = 1.15, 95% CI: 1.07, 1.24, *p* < 0.001). The odds of using manipulative treatments compared to having less than a high school increase with each level of education. The odds of using manipulative treatments increase by 37% for those with a high school diploma or GED (OR = 1.37, 95% CI: 1.02, 1.84, *p* < 0.050), increase by 66% for those with some college or an associate's degree (OR = 1.66, 95% CI: 1.24, 2.23, *p* < 0.010), increase by 83% for those with a college degree (OR = 1.83, 95% CI: 1.34, 2.49, *p* < 0.001), and increase by 99% for those with a graduate or professional degree (OR = 1.99, 95% CI: 1.45, 2.74, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 3.29 and between subject variance is 2.45. The ICC is 0.43, indicating that 43% of the variance in use of manipulative treatments is between subjects when including controls. The marginal $R^2$ is 0.023 and the conditional $R^2$ is 0.440, indicating that 2.3% of the variance explained in the model is due to the fixed effects.
+
+The results of the above regressions on manipulative treatments indicate that income and education significantly predict the use of manipulative treatments, though most of the variation is explained by differences between subjects unaccounted for in the data rather than the predictors included (Louise - am I interpreting this correctly?).
+
+# Poisson Regression: Total CAMs 
 
 ```{r, echo = FALSE}
-tab_model(baseline, mb1, mb2, mb3)
+# Model with income
+tot1 <- glmer(totalCams ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+# check_overdispersion(tot1)
 
-anova(m1, m2, m3)
+# Model with education
+tot2 <- glmer(totalCams ~ Education + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+# check_overdispersion(tot2)
 
+# Model with income and education
+tot3 <- glmer(totalCams ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+# check_overdispersion(tot3)
 
+# Model with all covariates
+tot4 <- glmer(totalCams ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+
+# Check for overdispersion 
+# If the dispersion ratio is close to one, a Poisson model fits well to the data. Dispersion ratios larger than one indicate overdispersion, thus a negative binomial model or similar might fit better to the data. A p-value < .05 indicates overdispersion.
+
+# check_overdispersion(tot4)
+
+# Create table with results
+tot.tab.model <- tab_model(tot1, tot2, tot3, tot4,
+          show.intercept = FALSE,
+          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", 
+                          "Mexican American and Other Hispanic", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4"),
+          title = "Poisson GLMM: Total CAMs")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(tot.tab.model))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+# Fixed effects table
+# Drop random effects rows
+df.1 <- df[c(1:13),]
+# Drop row names
+rownames(df.1)<-NULL
+kable(df.1,
+      booktabs = T,
+      caption = "Total CAMs: Fixed Effects") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+  
+# Random Effects Table 
+# Drop fixed effects rows
+df.1 <- df[c(15:20),]
+# change column names
+colnames(df.1) <- c(" ", "Model 1", "Model 2", "Model 3", "Model 4", "6", "7", "8", "9")
+# Drop NA columns 
+df.2 <- df.1 %>% 
+  dplyr::select(-(6:13))
+# Drop row names
+rownames(df.2)<-NULL
+
+kable(df.2,
+      booktabs = T,
+      caption = "Total CAMs: Random Effects") %>%
+   kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped"))
+
+#anova(tot1, tot2, tot3,tot4)
+```
+
+In Model 1, logged income significantly predicts the total number of CAMs used. For each one unit increase in logged income, the expected count of used CAMs increases by a factor of 1.03 (IRR = 1.03, 95% CI: 1.00, 1.05, *p* < 0.050). Within subject variance is 0.64 and between subject variance is 0.82. The ICC is 0.56, indicating that 56% of the variance in total CAM use is between subjects. The marginal $R^2$ is 0.000 and the conditional $R^2$ is 0.560, indicating that the variance explained in the model is due to the random effects.
+
+Model 2 assesses the association between total CAMs used and levels of education. The reference category is less than a high school education. The expected count of total CAMs used increases with each level of education compared to those with less than a high school education. The expected count of total CAMs used increases by a factor of 1.32 for those with a high school diploma or GED (IRR = 1.32, 95% CI: 1.17, 1.49, *p* < 0.001), increase by a factor of 1.65 for those with some college or an associate's degree (IRR = 1.65, 95% CI: 1.47, 1.86, *p* < 0.001), increase by a factor of 1.90 for those with a college degree (IRR = 1.90, 95% CI: 1.68, 2.15, *p* < 0.001), and increase by a factor of 2.07 for those with a graduate or professional degree (IRR = 2.07, 95% CI: 1.82, 2.34, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.77. The ICC is 0.55, indicating that 55% of the variance in total CAMs used is between subjects. The marginal $R^2$ is 0.028 and the conditional $R^2$ is 0.558, indicating that 2.8% of the variance explained in the model is due to the fixed effects.
+
+Model 3 includes both logged income and education as predictors of total CAMs used. When accounting for education, logged income does not significantly predict total CAMs used. When accounting for the effect of logged income, the expected count of total CAMs used increases by a factor of 1.33 for those with a high school diploma or GED (IRR = 1.33, 95% CI: 1.18, 1.50, *p* < 0.001), increases by a factor of 1.67 for those with some college or an associate's degree (IRR = 1.67, 95% CI: 1.48, 1.88, *p* < 0.001), increases by a factor of 1.92 for those with a college degree (IRR = 1.92, 95% CI: 1.69, 2.18, *p* < 0.001), and increases by a factor of 2.09 for those with a graduate or professional degree (IRR = 2.09, 95% CI: 1.84, 2.38, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.77. The ICC is 0.54, indicating that 54% of the variance in total CAMs used is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.028 and the conditional $R^2$ is 0.558, indicating that 2.8% of the variance explained in the model is due to the fixed effects.
+
+In model 4, control variables are added to model 3. Logged income does not significantly predict the expected count of total CAMs used. The expected count of total CAMs used increases with each level of education. The expected count of total CAMs used increases by a factor of 1.30 for those with a high school diploma or GED (IRR = 1.30, 95% CI: 1.15, 1.46, *p* < 0.001), increases by a factor of 1.65 for those with some college or an associate's degree (IRR = 1.65, 95% CI: 1.46, 1.86, *p* < 0.001), increases by a factor of 1.98 for those with a college degree (IRR = 1.98, 95% CI: 1.75, 2.25, *p* < 0.001), and increases by a factor of 2.06 for those with a graduate or professional degree (IRR = 2.06, 95% CI: 1.82, 2.34, *p* < 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.72. The ICC is 0.53, indicating that 53% of the variance in the expected count of total CAMs used is between subjects when including controls. The marginal $R^2$ is 0.080 and the conditional $R^2$ is 0.565, indicating that 8% of the variance explained in the model is due to the fixed effects.
+
+# Change models 
+
+## Waves 1 and 2
+
+```{r, echo = FALSE}
+# scatterplot diffcams and diffchron
+#plot(waves12.wide.complete$DiffCams, waves12.wide.complete$DiffChron)
+# plot diffchron
+#hist(waves12.wide.complete$DiffChron)
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams, data = waves12.wide.complete)
+
+# Run income model 
+waves12.change.income <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1, data = waves12.wide.complete)
+
+# Run income model education model
+waves12.change.education <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$Education_W1, data = waves12.wide.complete)
+
+# Run income and education model 
+waves12.change.incomeEducation <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1 + waves12.wide.complete$Education_W1, data = waves12.wide.complete)
+
+# Run full model
+waves12.change.all <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1 + waves12.wide.complete$Education_W1 + waves12.wide.complete$Age_W1 + waves12.wide.complete$Sex_W1 + waves12.wide.complete$Race_W1 + waves12.wide.complete$Marital_W1 + waves12.wide.complete$HlthInsurance_W1 + waves12.wide.complete$HLSelf_W1, data = waves12.wide.complete ) 
+
+# Create Table
+waves12.change <- tab_model(waves12.change.diffcams, waves12.change.income, waves12.change.education, waves12.change.incomeEducation, waves12.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves12.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) 
 
 ```
 
+## Waves 2 and 3
+```{r, echo = FALSE}
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams, data = waves23.wide.complete)
+
+# Run income model 
+waves23.change.income <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2, data = waves23.wide.complete)
+
+# Run income model education model
+waves23.change.education <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$Education_W2, data = waves23.wide.complete)
+
+# Run income and education model 
+waves23.change.incomeEducation <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2 + waves23.wide.complete$Education_W2, data = waves23.wide.complete)
+
+# Run full model
+waves23.change.all <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2 + waves23.wide.complete$Education_W2 + waves23.wide.complete$Age_W2 + waves23.wide.complete$Sex_W2 + waves23.wide.complete$Race_W2 + waves23.wide.complete$Marital_W2 + waves23.wide.complete$HlthInsurance_W2 + waves23.wide.complete$HLSelf_W2, data = waves23.wide.complete ) 
+
+# Create Table
+waves23.change <- tab_model(waves23.change.diffcams, waves23.change.income, waves23.change.education, waves23.change.incomeEducation, waves23.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Mexican American and Other Hispanic", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs Waves 2 and 3")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves23.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+```
+
+## Waves 1 and 3
+
+```{r, echo = FALSE}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams, data = waves13.wide.complete)
+
+# Run income model 
+waves13.change.income <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1, data = waves13.wide.complete)
+
+# Run income model education model
+waves13.change.education <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$Education_W1, data = waves13.wide.complete)
+
+# Run income and education model 
+waves13.change.incomeEducation <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1 + waves13.wide.complete$Education_W1, data = waves13.wide.complete)
+
+# Run full model
+waves13.change.all <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1 + waves13.wide.complete$Education_W1 + waves13.wide.complete$Age_W1 + waves13.wide.complete$Sex_W1 + waves13.wide.complete$Race_W1 + waves13.wide.complete$Marital_W1 + waves13.wide.complete$HlthInsurance_W1 + waves13.wide.complete$HLSelf_W1, data = waves13.wide.complete ) 
+
+# Create Table
+waves13.change <- tab_model(waves13.change.diffcams, waves13.change.income, waves13.change.education, waves13.change.incomeEducation, waves13.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs Waves 2 and 3")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves13.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
 
 
+```
 
