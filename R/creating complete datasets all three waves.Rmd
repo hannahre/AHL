@@ -31,6 +31,11 @@ library(LCA)
 library(poLCA)
 library(haven)
 library(labelled)
+```
+
+# Extract variables and create each wave of data
+
+```{r, echo = FALSE}
 ################################################################################
 # Wave 1 
 # This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
@@ -42,7 +47,8 @@ M1 <- read_dta(path)
 varlist <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam7", 
               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14",
               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", 
-              "A1SCHROX", "A1SCHRON", "A1SHLOCS")
+              "A1SCHROX", "A1SCHRON", "A1SHLOCS", "aSpiritual",
+             "aReligion")
 
 wave1 <- M1[varlist] # Subset MIDUS1 - only include CAMs.
 
@@ -77,8 +83,16 @@ wave1 <- dplyr::rename(wave1,
                             AnyChron_W1 = A1SCHROX,
                             SumChron_W1 = A1SCHRON,
                             totalCams_W1 = totalCams, 
-                            HLSelf_W1 = A1SHLOCS)
+                            HLSelf_W1 = A1SHLOCS, 
+                            #FaEduc_W1 =  aFaEduc, 
+                            #MoEduc_W1 = aMoEduc,
+                            Spiritual_W1 = aSpiritual, 
+                            Religion_W1 = aReligion)
 
+# Convert Father education to factor
+#wave1$FaEduc_W1 <- as_factor(wave1$FaEduc_W1, levels = "labels")
+# Convert mother education to factor
+#wave1$MoEduc_W1 <- as_factor(wave1$MoEduc_W1, levels = "labels")
 # Convert education to factor 
 wave1$Education_W1 <- as_factor(wave1$Education_W1, levels = "labels")
 # Convert Race to factor
@@ -121,7 +135,7 @@ M2 <- read_dta(path)
 varlist <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
                "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", 
                "bcam21","bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried",
-               "B1SCHROX", "B1SCHRON", "B1SHLOCS")
+               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId")
 
 wave2 <- M2[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -156,7 +170,9 @@ wave2 <- dplyr::rename(wave2,
                             AnyChron_W2 = B1SCHROX,
                             SumChron_W2 = B1SCHRON,
                             totalCams_W2 = totalCams,
-                            HLSelf_W2 = B1SHLOCS)
+                            HLSelf_W2 = B1SHLOCS,
+                            Spiritual_W2 = bSpirit, 
+                            Religion_W2 = bReligId)
 
 
 # Convert age to numeric
@@ -202,7 +218,8 @@ M3 <- read_dta(path)
 varlist <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam7", 
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", 
                "ccam21", "CAge", "lnCHhInc", "CEduc", "CRace", 
-               "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS")
+               "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS", 
+               "C1SSPIRI", "C1SRELID")
 
 wave3 <- M3[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -237,7 +254,9 @@ wave3 <- dplyr::rename(wave3,
                             SumChron_W3 = C1SCHRON,
                             HLSelf_W3 = C1SHLOCS,
                             #HLOther_W3 = C1SHLOCO,
-                            totalCams_W3 = totalCams)
+                            totalCams_W3 = totalCams,
+                            Spiritual_W3 = C1SSPIRI, 
+                            Religion_W3 = C1SRELID)
 str(wave3)
 
 # Age and income already set as numeric 
@@ -311,8 +330,8 @@ save(wave1, file = "wave1complete.rda")
 save(wave2, file = "wave2complete.rda")
 save(wave3, file = "wave3complete.rda")
 
-# Create dummies for each factor
 ```
+# Create factor dummies 
 
 ```{r, echo = FALSE}
 # This code chunk creates the factor dummy indices 
@@ -364,9 +383,47 @@ save(wave1, file = "wave1complete.rda")
 save(wave2, file = "wave2complete.rda")
 save(wave3, file = "wave3complete.rda")
 ```
-```{r, echo = FALSE}
 
-#################################################################################
+#Merge 
+
+```{r, echo = FALSE}
+##############################################################################
+# Merge mother and father education to each wave
+
+# Merge with wave 2
+# Convert mother father education to dataframe
+#ParentEduc <- data.frame(wave1$M2ID, 
+ #                        wave1$MoEduc_W1,
+ #                        wave1$FaEduc_W1)
+# Rename columns
+#ParentEduc <- ParentEduc %>% 
+#  rename(
+#    M2ID = wave1.M2ID,
+#    MoEduc_W2 = wave1.MoEduc_W1,
+#    FaEduc_W2 = wave1.FaEduc_W1
+#    )
+#Merge
+#wave2 <- merge(wave2, ParentEduc, by = "M2ID")
+
+# Merge with Wave 3
+#ParentEduc <- data.frame(wave1$M2ID, 
+#                         wave1$MoEduc_W1,
+#                         wave1$FaEduc_W1)
+# Rename columns
+#ParentEduc <- ParentEduc %>% 
+#  rename(
+#    M2ID = wave1.M2ID,
+#    MoEduc_W3 = wave1.MoEduc_W1,
+#    FaEduc_W3 = wave1.FaEduc_W1
+#    )
+#Merge
+#wave3 <- merge(wave3, ParentEduc, by = "M2ID")
+
+#save(wave1, file = "wave1complete.rda")
+#save(wave2, file = "wave2complete.rda")
+#save(wave3, file = "wave3complete.rda")
+
+##############################################################################
 # Merging wave 1 and wave 2 for change model dataset 
 # Creating change variables for chronic conditions and CAMs
 
@@ -448,12 +505,14 @@ save(waves13.wide.complete, file = "waves13.wide.complete.rda")
 # Merge a.cams.lta to b.cams.lta
 merge1 <- merge(wave1, wave2, by = "M2ID")
 # Merge cams.lta.1 and c.cams.lta
-wide.waves123 <- merge(merge1, wave3, by = "M2ID")
+waves123.wide <- merge(merge1, wave3, by = "M2ID")
+
+save(waves123.wide, file = "waves123.wide.rda")
 
 library(panelr)
 
 # Reshape wide to long: this is the dataset with all respondents to be used further down 
-waves123.long <- long_panel(wide.waves123, prefix = "_W", begin = 1, end = 3, label_location = "end")
+waves123.long <- long_panel(waves123.wide, prefix = "_W", begin = 1, end = 3, label_location = "end")
 
 # Drop incomplete rows
 save(waves123.long, file = "waves123.long.rda")

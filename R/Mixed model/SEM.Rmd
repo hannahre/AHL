@@ -1,0 +1,224 @@
+---
+title: "SEM"
+author: "Hannah Andrews"
+date: '2022-03-30'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
+library(lavaan)
+library(semPlot)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.complete.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
+load("waves123.wide.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
+```
+```{r, echo = FALSE}
+model1 <- '
+SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 #SES and CAMs predict health
+totalCams_W2 ~ LogIncome_W1 + Education_W1
+'
+waves123.wide$Education_W1 <- factor(waves123.wide$Education_W1, 
+                                     levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), 
+                                     ordered = TRUE)
+
+model1.summ <- sem(model1, data = waves123.wide)
+
+fit <- sem(model, data = waves123.wide)
+summary(model1.summ, standardized = TRUE)
+fitMeasures(model1.summ, c("cfi", "rmsea", "srmr"))
+
+
+model2.summ <- sem(model1, data = waves123.wide, missing = "ML", do.fit = TRUE)
+summary(model2.summ, standardized = TRUE)
+fitMeasures(model2.summ, c("cfi", "rmsea", "srmr"))
+
+semPaths(model2.summ, what = "paths", whatLabels = "stand", rotation = 1)
+
+m <- matrix(NA, 3, 4)
+m[1, 1] <- "LogIncome_W1"
+m[3, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[2, 4] <- "SumChron_W3"
+m
+
+m2 <- matrix(NA, 5, 3)
+m2[2, 1] <- "LogIncome_W1"
+m2[4, 1] <- "Education_W1"
+m2[3, 2] <- "totalCams_W2"
+m2[3, 3] <- "SumChron_W3" 
+
+semPaths(model1.summ, whatLabels = "std",
+           sizeMan = 10,
+           edge.label.cex = 1.15,
+           style = "ram", 
+           nCharNodes = 0, nCharEdges = 0,
+           layout = m)
+
+semPaths(model2.summ, what = "paths", whatLabels = "std",
+           sizeMan = 10,
+           edge.label.cex = 1.15,
+           style = "ram", 
+           nCharNodes = 0, 
+           nCharEdges = 0)
+```
+
+```{r, echo = FALSE}
+
+         
+fit <- sem(model, data = waves123.wide)
+summary(fit)
+fitMeasures(fit, c("cfi", "rmsea", "srmr"))
+
+```
+
+```{r, echo = FALSE}
+# Create dummy variables for race at wave 1
+library(fastDummies)
+path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2')
+path.waves123.wide <- rename(path.waves123.wide, 
+                             MexicanHispanic_W2 = "Race_W2_Mexican American and Other Hispanic",
+                             Black_W2 = "Race_W2_Non-Hispanic Black", 
+                             OtherRace_W2 = "Race_W2_Other Race",
+                             White_W2 = "Race_W2_Non-Hispanic White")
+
+model2 <- '
+# Regressions
+totalCams_W2 ~ LogIncome_W1 + Education_W1 
+SumChron_W2 ~ LogIncome_W1 + Education_W1 
+totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+
+model1 <- '
+# Regressions
+totalCams_W2 ~ LogIncome_W1 + Education_W1  
+SumChron_W2 ~ LogIncome_W1 + Education_W1 
+totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2
+SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2
+'
+
+path.waves123.wide <- waves123.wide %>%
+  mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+
+path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
+
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+
+path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
+
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+
+path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
+
+
+
+
+model1.summ <- sem(model1, data = path.waves123.wide)
+summary(model1.summ, standardized = TRUE)
+fitMeasures(model1.summ, c("cfi", "rmsea", "srmr"))
+
+model2.summ <- sem(model2, data = path.waves123.wide)
+summary(model2.summ, standardized = TRUE)
+fitMeasures(model2.summ, c("cfi", "rmsea", "srmr"))
+
+
+m <- matrix(NA, 19, 4)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+test <- semptools::drop_nodes(
+                object = semPlotModel(model2.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2"))
+
+path_dia <- semPaths(test, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m,
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+library(semptools)
+path_dia2 <- set_edge_label_position(path_dia, my_position_list)
+plot(path_dia2)
+
+m[1, 4] <- "Age_W3" 
+m[3, 4] <- "Sex_W1" 
+m[5, 4] <- "Marital_W3" 
+m[7, 4] <- "HlthInsurance_W3"
+m[9, 4] <- "HLSelf_W3" 
+m[11, 4] <- "Spiritual_W3"
+m[13, 4] <- "Religion_W3" 
+m[15, 4] <- "MexicanHispanic_W2"
+m[17, 4] <- "Black_W2" 
+m[19, 4] <- "OtherRace_W2"
+
+m <- matrix(NA, 7, 10)
+m[1, 1] <- "LogIncome_W1"
+m[1, 10] <- "Education_W1"
+m[3, 4] <- "totalCams_W2"
+m[3, 7] <- "SumChron_W2"
+m[5, 1] <- "totalCams_W3"
+m[5, 10] <- "SumChron_W3"
+m[7, 1] <- "Age_W3" 
+m[7, 2] <- "Sex_W1" 
+m[7, 3] <- "Marital_W3" 
+m[7, 4] <- "HlthInsurance_W3"
+m[7, 5] <- "HLSelf_W3" 
+m[7, 6] <- "Spiritual_W3"
+m[7, 7] <- "Religion_W3" 
+m[7, 8] <- "MexicanHispanic_W2"
+m[7, 9] <- "Black_W2" 
+m[7, 10] <- "OtherRace_W2"
+
+
+
+
+
+
+
+path.waves123.wide$diffeducation <- path.waves123.wide$Education_W3 - path.waves123.wide$Education_W1
+hist(path.waves123.wide$diffeducation)
+str(waves123.wide$diffeducation)
+
+```

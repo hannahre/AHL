@@ -279,6 +279,9 @@ set more off
 		tab `var' aRelig`period', missing
 		local period=`period'+1
 	}
+	
+	* Sum variables to create religion index
+	 egen aReligion = rowtotal(A1SR2A A1SR2D A1SR2F A1SR2G A1SR2H A1SR2I)
 
 	* Create Religious Index by summing all vars. 
 
@@ -318,6 +321,23 @@ set more off
 //Spirituality
 
 **** Wave 1
+	use MIDUS1.dta, clear
+	* Reverse code spiritual variables 
+	recode A1SR2B (1 = 4) (2 = 3) (3 = 2) (4 = 1) (. = .), gen(spirit1)
+	label variable spirit1 "How spiritual are you"
+	label define verynotatall 1 "Not at all" 2 "Not very" 3 "Somewhat" 4 "Very"
+	label values spirit1 verynotatall
+	tab spirit1 A1SR2B, missing 
+	
+	recode A1SR2E (1 = 4) (2 = 3) (3 = 2) (4 = 1) (. = .), gen(spirit2)
+	label variable spirit2 "How important is spirituality in your life"
+	label values spirit2 verynotatall
+	tab spirit2 A1SR2E, missing 
+	
+	* Sum across variables 
+	 egen aSpiritual = rowtotal(spirit1 spirit2) 
+	 
+	 save, replace
 	
 **** Wave 2
 
@@ -384,6 +404,21 @@ set more off
 //Childhood SES 
 
 **** Wave 1
+	use MIDUS1.dta, clear
+	* Father education
+	recode A1PC2 (1/3 = 1) (4/5 = 2) (6/8 = 3) (9/10 = 4) (11/12 = 5) (. = .), gen(aFaEduc)
+	label variable aFaEduc "Father's level of education"
+	label values aFaEduc education
+	tab aFaEduc A1PC2, missing 
+	
+	* Mother education
+	recode A1PC8 (1/3 = 1) (4/5 = 2) (6/8 = 3) (9/10 = 4) (11/12 = 5) (. = .), gen(aMoEduc)
+	label variable aMoEduc "Mother's level of education"
+	label values aMoEduc education
+	tab aMoEduc A1PC8, missing 
+	
+	save, replace
+	
 	
 **** Wave 2
 	
