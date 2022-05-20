@@ -1,0 +1,161 @@
+---
+title: "Change Models"
+author: "Hannah Andrews"
+date: '2022-05-05'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
+library(fastDummies)
+library(semptools)
+library(semoutput)
+library(lavaan)
+library(semPlot)
+library(stargazer)
+library(semTable)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.rda")
+load("waves123.long.complete.rda")
+load("waves123.wide.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+```
+
+# Waves 1 and 2: Difference in cams predicted by difference in chronic conditions moderated by income
+
+```{r diff12-table, echo = FALSE}
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
+
+# Center diff chron 
+waves12.wide.complete$DiffChronCenter <- scale(waves12.wide.complete$DiffChron, scale = FALSE)
+# Center log income 
+waves12.wide.complete$LogIncomeCenter <- scale(waves12.wide.complete$LogIncome_W1, scale = FALSE)
+# Create interaction term 
+waves12.wide.complete$DiffChronxLogIncome <- waves12.wide.complete$DiffChronCenter*waves12.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves12.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves12.wide.complete)
+
+
+# Create Table
+waves12.change <- tab_model(waves12.change.diffcams, waves12.change.income,
+          show.intercept = FALSE)
+waves12.change
+```
+
+# Waves 2 and 3: Difference in cams predicted by difference in chronic conditions moderated by income
+
+```{r diff23-table, echo = FALSE}
+
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
+
+# Center diff chron 
+waves23.wide.complete$DiffChronCenter <- scale(waves23.wide.complete$DiffChron, scale = FALSE)
+# Center log income 
+waves23.wide.complete$LogIncomeCenter <- scale(waves23.wide.complete$LogIncome_W2, scale = FALSE)
+# Create interaction term 
+waves23.wide.complete$DiffChronxLogIncome <- waves23.wide.complete$DiffChronCenter*waves23.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves23.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W2 + DiffChronxLogIncome, data = waves23.wide.complete)
+
+
+# Create Table
+waves23.change <- tab_model(waves23.change.diffcams, waves23.change.income,
+          show.intercept = FALSE)
+waves23.change
+```
+
+
+# Waves 1 and 2 Education as moderator
+
+```{r diff12-table, echo = FALSE}
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
+
+# Run income model 
+waves12.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1, data = waves12.wide.complete)
+
+
+# Create Table
+waves12.change <- tab_model(waves12.change.diffcams, waves12.change.education,
+          show.intercept = FALSE)
+waves12.change
+```
+
+# Waves 2 and 3 Education as moderator
+
+```{r diff23-table, echo = FALSE}
+
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
+
+# Run income model 
+waves23.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W2 + DiffChron*Education_W2, data = waves23.wide.complete)
+
+
+# Create Table
+waves23.change <- tab_model(waves23.change.diffcams, waves23.change.education,
+          show.intercept = FALSE)
+waves23.change
+```
+
+# Waves 1 and 3 Income as moderator 
+
+```{r diff13-table, echo = FALSE}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
+
+# Center diff chron 
+waves13.wide.complete$DiffChronCenter <- scale(waves13.wide.complete$DiffChron, scale = FALSE)
+# Center log income 
+waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
+# Create interaction term 
+waves13.wide.complete$DiffChronxLogIncome <- waves13.wide.complete$DiffChronCenter*waves13.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves13.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves13.wide.complete)
+
+
+# Create Table
+waves13.change <- tab_model(waves13.change.diffcams, waves13.change.income,
+          show.intercept = FALSE)
+waves13.change
+```
+
+# Waves 1 and 3 Education as moderator 
+
+```{r diff13-table, echo = FALSE}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
+
+# Run income model 
+waves13.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1, data = waves13.wide.complete)
+
+
+# Create Table
+waves13.change <- tab_model(waves13.change.diffcams, waves13.change.education,
+          show.intercept = FALSE)
+waves13.change
+```

@@ -1246,9 +1246,42 @@ save, replace
 	tab aSmoke A1PA43, missing
 	
 	save, replace 
+	
+* Self Reported Health 
+
+** Wave 1
+	use MIDUS1.dta, clear 
+	codebook A1PA4
+	recode A1PA4 (1 = 5) (2 = 4) (3 = 3) (4 = 2) (5 = 1) (. = .), gen(aSRH)
+	label variable aSRH "Self Reported Health"
+	label define asrh 1 "Poor" 2 "Fair" 3 "Good" 4 "Very Good" 5 "Excellent"
+	label values aSRH asrh
+	tab A1PA4 aSRH, missing
+	save, replace
+
+** Wave 2 
+	use MIDUS2.dta, clear 
+	codebook B1PA1
+	recode B1PA1 (1 = 5) (2 = 4) (3 = 3) (4 = 2) (5 = 1) (. = .), gen(bSRH)
+	label variable bSRH "Self Reported Health"
+	label define srh 1 "Poor" 2 "Fair" 3 "Good" 4 "Very Good" 5 "Excellent"
+	label values bSRH srh
+	tab B1PA1 bSRH, missing
+	save, replace
+	
+** Wave 3 
+	use MIDUS3.dta, clear 
+	codebook C1PA1
+	recode C1PA1 (1 = 5) (2 = 4) (3 = 3) (4 = 2) (5 = 1) (. = .), gen(cSRH)
+	label variable cSRH "Self Reported Health"
+	label define csrh 1 "Poor" 2 "Fair" 3 "Good" 4 "Very Good" 5 "Excellent"
+	label values cSRH csrh
+	tab C1PA1 cSRH, missing
+	save, replace
 		
 	
 // Delimit sample to cases not missing on variables in model. 
+	use MIDUS1.dta, clear 
 	mark nomiss
 	markout nomiss aHlthIns aMarried ASex ARace aRelig6 aRelig5 aRelig4 aRelig3 aRelig2 aRelig1 lnAHhInc AEduc A1SBMI A1SCHRON A1SHLOCO A1SHLOCS AAge A1PA4 acam1 acam2 acam3 acam4 acam5 acam6 acam7 acam8 acam9 acam10 acam11 acam12 acam13 acam14 acam15
 	tab nomiss

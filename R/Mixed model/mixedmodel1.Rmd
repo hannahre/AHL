@@ -683,20 +683,47 @@ path.waves123.wide <- rename(path.waves123.wide,
 
 model <- '
 # Regressions
-totalCams_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-SumChron_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SumChron_W2
+totalCams_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+SumChron_W2 ~ j*Education_W1 
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
 # Covariances
 totalCams_W2 ~~ SumChron_W2
 totalCams_W3 ~~ SumChron_W3
 '
 
+
 # Run model and get summary and fit statistics
 model.summ <- sem(model, data = path.waves123.wide)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
-modificationindices(model.summ)
+#modificationindices(model.summ)
+
 
 m <- matrix(NA, 4, 3)
 m[1, 1] <- "LogIncome_W1"
@@ -727,9 +754,7 @@ my_position_list <- c("totalCams_W3 ~ Education_W1" = .20,
 # Change label position
 path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
 
-path_dia4 <- mark_sig(path_dia3, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
-
-path_dia5 <- change_node_label(path_dia4,
+path_dia4 <- change_node_label(path_dia3,
                            c(LogIncome_W1 = "Income W1",
                              Education_W1 = "Education W1",
                              totalCams_W2 = "Total CAMs W2",
@@ -737,6 +762,10 @@ path_dia5 <- change_node_label(path_dia4,
                              totalCams_W3 = "Total CAMs W3",
                              SumChron_W3 = "Sum Chron W3"),
                            label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
 
 
 

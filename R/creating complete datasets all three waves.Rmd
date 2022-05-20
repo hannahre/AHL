@@ -48,7 +48,7 @@ varlist <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam
               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14",
               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", 
               "A1SCHROX", "A1SCHRON", "A1SHLOCS", "aSpiritual",
-             "aReligion")
+             "aReligion", "aSRH")
 
 wave1 <- M1[varlist] # Subset MIDUS1 - only include CAMs.
 
@@ -87,7 +87,8 @@ wave1 <- dplyr::rename(wave1,
                             #FaEduc_W1 =  aFaEduc, 
                             #MoEduc_W1 = aMoEduc,
                             Spiritual_W1 = aSpiritual, 
-                            Religion_W1 = aReligion)
+                            Religion_W1 = aReligion, 
+                            SRH_W1 = aSRH)
 
 # Convert Father education to factor
 #wave1$FaEduc_W1 <- as_factor(wave1$FaEduc_W1, levels = "labels")
@@ -118,6 +119,8 @@ levels(wave1$AnyChron_W1)[levels(wave1$AnyChron_W1)=="Not calculated"]<-NA
 wave1$HLSelf_W1 <- as.numeric(wave1$HLSelf_W1)
 # Convert HLOther to numeric
 #wave1$HLOther_W1 <- as.numeric(wave1$HLOther_W1)
+# Convert SRH to ordered factor
+wave1$SRH_W1 <- haven::as_factor(wave1$SRH_W1, levels = "labels")
 
 # Restrict to cases not missing on any variables
 #wave1 <- wave1[complete.cases(wave1),]
@@ -135,7 +138,7 @@ M2 <- read_dta(path)
 varlist <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
                "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", 
                "bcam21","bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried",
-               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId")
+               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId", "bSRH")
 
 wave2 <- M2[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -172,7 +175,8 @@ wave2 <- dplyr::rename(wave2,
                             totalCams_W2 = totalCams,
                             HLSelf_W2 = B1SHLOCS,
                             Spiritual_W2 = bSpirit, 
-                            Religion_W2 = bReligId)
+                            Religion_W2 = bReligId, 
+                            SRH_W2 = bSRH)
 
 
 # Convert age to numeric
@@ -200,6 +204,9 @@ levels(wave2$AnyChron_W2)[levels(wave2$AnyChron_W2)=="YES"] <- "Yes"
 wave2$HLSelf_W2 <- as.numeric(wave2$HLSelf_W2)
 # Convert HLOther to numeric 
 #wave2$HLOther_W2 <- as.numeric(wave2$HLOther_W2)
+# Convert SRH to ordered factor
+wave2$SRH_W2 <- haven::as_factor(wave2$SRH_W2, levels = "labels")
+
 
 # Restrict to cases not missing on any variables
 #wave2 <- wave2[complete.cases(wave2),]
@@ -219,7 +226,7 @@ varlist <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", 
                "ccam21", "CAge", "lnCHhInc", "CEduc", "CRace", 
                "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS", 
-               "C1SSPIRI", "C1SRELID")
+               "C1SSPIRI", "C1SRELID", "cSRH")
 
 wave3 <- M3[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -256,7 +263,8 @@ wave3 <- dplyr::rename(wave3,
                             #HLOther_W3 = C1SHLOCO,
                             totalCams_W3 = totalCams,
                             Spiritual_W3 = C1SSPIRI, 
-                            Religion_W3 = C1SRELID)
+                            Religion_W3 = C1SRELID, 
+                            SRH_W3 = cSRH)
 str(wave3)
 
 # Age and income already set as numeric 
@@ -286,6 +294,8 @@ levels(wave3$AnyChron_W3)[levels(wave3$AnyChron_W3)=="YES"] <- "Yes"
 wave3$HLSelf_W3 <- as.numeric(wave3$HLSelf_W3)
 # Convert HLOther to numeric 
 #wave3$HLOther_W3 <- as.numeric(wave3$HLOther_W3)
+# Convert SRH to ordered factor
+wave3$SRH_W3 <- haven::as_factor(wave3$SRH_W3, levels = "labels")
 
 # Restrict to cases not missing on any variables
 #wave3 <- wave3[complete.cases(wave3),]

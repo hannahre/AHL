@@ -23,6 +23,7 @@ library(tidyverse)
 library(caTools)
 library(lavaan)
 library(semPlot)
+library(fastDummies)
 setwd("C:/Users/hanna/Documents/git/AHL/R/")
 load("waves123.long.complete.rda")
 load("waves12.wide.complete.rda")
@@ -222,3 +223,1232 @@ hist(path.waves123.wide$diffeducation)
 str(waves123.wide$diffeducation)
 
 ```
+
+# Education and race recodes 
+```{r, echo = FALSE, results='hide'}
+# Order Education levels
+path.waves123.wide <- waves123.wide %>%
+  mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
+# Order education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
+# Order Education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
+
+# Create dummy variables for race
+path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2', ignore_na = TRUE)
+path.waves123.wide <- rename(path.waves123.wide, 
+                             MexicanHispanic_W2 = "Race_W2_Mexican American and Other Hispanic",
+                             Black_W2 = "Race_W2_Non-Hispanic Black", 
+                             OtherRace_W2 = "Race_W2_Other Race",
+                             White_W2 = "Race_W2_Non-Hispanic White")
+
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W2, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W2 <- as.numeric(path.waves123.wide$SRH_W2)
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W3 <- as.numeric(path.waves123.wide$SRH_W3)
+```
+
+# Full model as in chapter 05/03
+
+```{r, echo = FALSE}
+model <- '
+# Regressions
+totalCams_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W2 ~~ SumChron_W2
+totalCams_W3 ~~ SumChron_W3
+'
+
+# Run model and get summary and fit statistics
+model.summ <- sem(model, data = path.waves123.wide)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+```{r, echo = FALSE}
+# Create final plot
+plot(path_dia5)
+```
+
+# Simple Model
+
+```{r, echo = FALSE}
+sim.model <- '
+# Regressions
+totalCams_W2 ~ LogIncome_W1 + Education_W1 
+SumChron_W2 ~ LogIncome_W1 + Education_W1 
+totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2 
+SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2 
+# Covariances
+totalCams_W2 ~~ SumChron_W2
+totalCams_W3 ~~ SumChron_W3
+'
+
+# Run model and get summary and fit statistics
+sim.model.summ <- sem(sim.model, data = path.waves123.wide)
+summary(sim.model.summ, standardized = TRUE)
+fitMeasures(sim.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Create path diagram
+sim.path <- semPaths(sim.model.summ, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+sim.path.2 <- set_edge_label_position(sim.path, my_position_list)
+
+sim.path.3 <- change_node_label(sim.path.2,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+sim.path.4 <- mark_sig(sim.path.3, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+```
+# Simple and Full Path Diagrams
+
+```{r, echo = FALSE}
+# Create final plot
+plot(sim.path.4)
+plot(path_dia5)
+```
+
+# Fit Indices Simply and Full 
+
+```{r, echo = FALSE}
+fitMeasures(sim.model.summ, c("cfi", "rmsea", "srmr"))
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+```
+
+
+
+# Self Reported Health
+
+```{r, echo = FALSE}
+srh.model <- '
+# Regressions
+totalCams_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ LogIncome_W1 + Education_W1 + Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ LogIncome_W1 + Education_W1 + SRH_W2 + totalCams_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SRH_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W2 ~~ SRH_W2
+totalCams_W3 ~~ SRH_W3
+'
+
+# Run model and get summary and fit statistics
+srh.model.summ <- sem(srh.model, data = path.waves123.wide)
+summary(srh.model.summ, standardized = TRUE)
+fitMeasures(srh.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+srh.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(srh.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+srh.path_dia2 <- semPaths(srh.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+srh.path_dia3 <- set_edge_label_position(srh.path_dia2, my_position_list)
+
+srh.path_dia4 <- change_node_label(srh.path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+srh.path_dia5 <- mark_sig(srh.path_dia4, srh.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(srh.path_dia5)
+
+
+```
+# Separate Models for Each Education Level 
+
+## Less than High School 
+
+```{r, echo=FALSE}
+df.lshs <- subset(path.waves123.wide,Education_W1==1)
+
+ls.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+# Run model and get summary and fit statistics
+ls.model.summ <- sem(ls.model, data = df.lshs)
+summary(ls.model.summ, standardized = TRUE)
+fitMeasures(ls.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+ls.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(ls.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+ls.path <- semPaths(ls.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram", 
+           exoCov = FALSE,
+           layout = m, 
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+ls.path2 <- set_edge_label_position(ls.path, my_position_list)
+
+
+ls.path3 <- mark_sig(ls.path2, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(ls.path3)
+
+
+
+```
+
+## High School 
+
+```{r, echo=FALSE}
+df.hs <- subset(path.waves123.wide,Education_W1==2)
+
+hs.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+# Run model and get summary and fit statistics
+hs.model.summ <- sem(hs.model, data = df.hs)
+summary(hs.model.summ, standardized = TRUE)
+fitMeasures(hs.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+hs.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(hs.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+hs.path <- semPaths(hs.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram", 
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+hs.path2 <- set_edge_label_position(hs.path, my_position_list)
+
+
+hs.path3 <- mark_sig(hs.path2, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(hs.path3)
+
+
+
+```
+
+## Some College 
+
+```{r, echo=FALSE}
+df.sc <- subset(path.waves123.wide,Education_W1==3)
+
+sc.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+# Run model and get summary and fit statistics
+sc.model.summ <- sem(sc.model, data = df.sc)
+summary(sc.model.summ, standardized = TRUE)
+fitMeasures(sc.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+sc.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(sc.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+sc.path <- semPaths(sc.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram", 
+           layout = m,
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+sc.path2 <- set_edge_label_position(sc.path, my_position_list)
+
+
+sc.path3 <- mark_sig(sc.path2, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(sc.path3)
+
+
+
+```
+
+## College Grad 
+
+```{r, echo=FALSE}
+df.cg <- subset(path.waves123.wide,Education_W1==4)
+
+cg.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+# Run model and get summary and fit statistics
+cg.model.summ <- sem(cg.model, data = df.cg)
+summary(cg.model.summ, standardized = TRUE)
+fitMeasures(cg.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+cg.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(cg.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+cg.path <- semPaths(cg.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+cg.path2 <- set_edge_label_position(cg.path, my_position_list)
+
+
+cg.path3 <- mark_sig(cg.path2, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(cg.path3)
+
+
+
+```
+
+## Grad/Professional
+
+```{r, echo=FALSE}
+df.gp <- subset(path.waves123.wide,Education_W1==5)
+
+gp.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+# Run model and get summary and fit statistics
+gp.model.summ <- sem(gp.model, data = df.gp)
+summary(gp.model.summ, standardized = TRUE)
+fitMeasures(gp.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+gp.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(gp.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+gp.path <- semPaths(gp.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram", 
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+gp.path2 <- set_edge_label_position(gp.path, my_position_list)
+
+
+gp.path3 <- mark_sig(gp.path2, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(gp.path3)
+
+
+
+```
+
+## Multiple Group Analysis
+
+```{r, echo=FALSE}
+group.model <- '
+totalCams_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W3 ~~ SumChron_W3
+totalCams_W2 ~~ SumChron_W2
+'
+
+
+# Run model and get summary and fit statistics
+group.model.summ <- sem(group.model, data = path.waves123.wide, group = "Education_W1")
+summary(group.model.summ, standardized = TRUE)
+fitMeasures(group.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[4, 2] <- "SumChron_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+group.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(group.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+group.path <- semPaths(group.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram", 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ SumChron_W2" = .20, 
+                      "SumChron_W3 ~ totalCams_W2" = .75)
+# Change label position
+group.path2 <- set_edge_label_position(group.path, my_position_list)
+
+
+group.path3 <- mark_sig(group.path2, group.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+plot(group.path3)
+
+
+
+```
+
+# Income Moderator
+
+## Create Interaction terms and regress sumchron*income on total cams
+
+```{r, echo = FALSE}
+path.waves123.wide$LogIncomeCenter_W1 <- scale(path.waves123.wide$LogIncome_W1, scale = FALSE)
+path.waves123.wide$SumChronCenter_W2 <- scale(path.waves123.wide$SumChron_W2, scale = FALSE)
+path.waves123.wide$totalCamsCenter_W2 <- scale(path.waves123.wide$totalCams_W2, scale = FALSE)
+path.waves123.wide$SumChronxLogIncome <- path.waves123.wide$SumChronCenter_W2*path.waves123.wide$LogIncomeCenter_W1
+path.waves123.wide$totalCamsxLogIncome <- path.waves123.wide$totalCamsCenter_W2*path.waves123.wide$LogIncomeCenter_W1
+
+# Add interaction term, just one outcome not controlling for totalCams at previous wave 
+model = '
+totalCams_W3 ~ SumChron_W2 + SumChronxLogIncome + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+model.summ <- sem(model, data = path.waves123.wide)
+summary(model.summ, standardized = TRUE, fit.measures=TRUE)
+
+```
+
+## Regress totalcams*logincome on sumchron
+
+```{r,echo = FALSE}
+model = '
+SumChron_W3 ~ totalCams_W2 + totalCamsxLogIncome + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+model.summ <- sem(model, data = path.waves123.wide)
+summary(model.summ, standardized = TRUE, fit.measures=TRUE)
+```
+
+## Difference variables: Change in chronic conditions predict change in cams, income moderator wave 1 and wave 2
+
+```{r, echo = FALSE}
+# Subtract wave 1 from wave 2 chronic conditions 
+path.waves123.wide$DiffChron_W1W2 <- path.waves123.wide$SumChron_W2 - path.waves123.wide$SumChron_W1
+# Center 
+path.waves123.wide$DiffChronCenter_W1W2 <- scale(path.waves123.wide$DiffChron_W1W2, scale = FALSE)
+# Create interaction term 
+path.waves123.wide$DiffChronxLogIncome <- path.waves123.wide$DiffChronCenter_W1W2*path.waves123.wide$LogIncomeCenter_W1
+#Subtract wave 1 total cams from wave 2
+path.waves123.wide$DiffCams_W1W2 <- path.waves123.wide$totalCams_W2 - path.waves123.wide$totalCams_W1
+
+model = '
+DiffCams_W1W2 ~ DiffChron_W1W2 + DiffChronxLogIncome
+'
+model.summ <- sem(model, data = path.waves123.wide)
+summary(model.summ, standardized = TRUE, fit.measures=TRUE)
+
+```
+
+
+# Separate mediation models - chronic conditions
+
+## Total Cams
+
+### Income chron cam 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncChroCam.model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SumChron_W2
+# Indirect effect 
+ef := e*f
+# total effect
+total1 := a + (e*f)
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncChroCam.model.summ <- sem(IncChroCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncChroCam.model.summ, standardized = TRUE)
+#parameterestimates(IncChroCam.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(IncChroCam.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "totalCams_W3"
+
+# Drop controls from path diagram
+IncChroCam.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncChroCam.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncChroCam.path_dia2 <- semPaths(IncChroCam.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncChroCam.path_dia3 <- change_node_label(IncChroCam.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             totalCams_W3 = "Total CAMs W3"),
+                           label.cex = 1.1)
+
+IncChroCam.path_dia4 <- mark_sig(IncChroCam.path_dia3, IncChroCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncChroCam.path_dia4)
+
+
+```
+Every 1% increase in logged income at wave 1 is associated with a .27 decrease in chronic conditions at wave 2. Adjusting for logged income, every additional chronic condition at wave 2 is associated with using 0.103 additional CAMs at wave 3. Logged income does not have a direct effect on total CAMs at wave 3 independent of the presence of chronic conditions.
+
+### Income cam chron 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncCamChro.model <- '
+# Regressions
+# Direct effect - log income 
+SumChron_W3 ~ b*LogIncome_W1
+# Mediator effects - Income 
+totalCams_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*totalCams_W2
+# Indirect effect 
+gh := g*h
+# total effect
+total2 := b + (g*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+
+# Run model and get summary and fit statistics
+IncCamChro.model.summ <- sem(IncCamChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncCamChro.model.summ, standardized = TRUE)
+fitMeasures(IncCamChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "totalCams_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+IncCamChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncCamChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncCamChro.path_dia2 <- semPaths(IncCamChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncCamChro.path_dia3 <- change_node_label(IncCamChro.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             totalCams_W2 = "Total CAMs W2"),
+                           label.cex = 1.1)
+
+IncCamChro.path_dia4 <- mark_sig(IncCamChro.path_dia3, IncCamChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncCamChro.path_dia4)
+
+
+
+```
+Every 1% increase in logged income is associated with a 0.401 decrease in chronic conditions at wave 3. Every 1% increase in logged income at wave 1 is associated with using an additional 0.168 CAMs at wave 2. Each additional CAM used at wave 2 is associated with a 0.132 increase in chronic conditions at wave 3. For every 0.168 increase in CAMs at wave 2 there is a 0.022 increase in chronic conditions at wave 3. 
+
+### Education chron cam 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducChroCam.model <- '
+# Regressions
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+# Mediator effects - Income 
+totalCams_W3 ~ f*SumChron_W2
+# Mediator effects - Education
+SumChron_W2 ~ j*Education_W1 
+# Indirect effect 
+jf := j*f
+# total effect
+total3 := c + (j*f)
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+'
+
+
+# Run model and get summary and fit statistics
+EducChroCam.model.summ <- sem(EducChroCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducChroCam.model.summ, standardized = TRUE)
+fitMeasures(EducChroCam.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "totalCams_W3"
+
+# Drop controls from path diagram
+EducChroCam.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducChroCam.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducChroCam.path_dia2 <- semPaths(EducChroCam.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducChroCam.path_dia3 <- change_node_label(EducChroCam.path_dia2,
+                           c(Education_W1 = "Education W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             totalCams_W3 = "Total CAMs W3"),
+                           label.cex = 1.1)
+
+EducChroCam.path_dia4 <- mark_sig(EducChroCam.path_dia3, EducChroCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducChroCam.path_dia4)
+
+
+
+```
+
+### Education cam chron 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducCamChro.model <- '
+# Regressions
+# Direct Effect - Education
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+# Indirect effect 
+ih := i*h
+# total effect
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+
+# Run model and get summary and fit statistics
+EducCamChro.model.summ <- sem(EducCamChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducCamChro.model.summ, standardized = TRUE)
+fitMeasures(EducCamChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+EducCamChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducCamChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducCamChro.path_dia2 <- semPaths(EducCamChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducCamChro.path_dia3 <- change_node_label(EducCamChro.path_dia2,
+                           c(Education_W1 = "Education W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             totalCams_W2 = "Total CAMs W2"),
+                           label.cex = 1.1)
+
+EducCamChro.path_dia4 <- mark_sig(EducCamChro.path_dia3, EducCamChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducCamChro.path_dia4)
+
+
+
+```
+
+## Mind Body 
+
+### Income chron mb 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncChroCam.model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SumChron_W2
+# Indirect effect 
+ef := e*f
+# total effect
+total1 := a + (e*f)
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncChroCam.model.summ <- sem(IncChroCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncChroCam.model.summ, standardized = TRUE)
+#parameterestimates(IncChroCam.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(IncChroCam.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "totalCams_W3"
+
+# Drop controls from path diagram
+IncChroCam.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncChroCam.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncChroCam.path_dia2 <- semPaths(IncChroCam.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncChroCam.path_dia3 <- change_node_label(IncChroCam.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             totalCams_W3 = "Total CAMs W3"),
+                           label.cex = 1.1)
+
+IncChroCam.path_dia4 <- mark_sig(IncChroCam.path_dia3, IncChroCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncChroCam.path_dia4)
+
+
+```
+
+### Income mb chron 
+
+### Education chron mb 
+
+### Education mb chron 
+
+
+# Separate mediation models - SRH 
+
+## Income SRH cam 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncSrhCam.model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SRH_W2
+# Indirect effect 
+ef := e*f
+# total effect
+total1 := a + (e*f)
+# Controls
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncSrhCam.model.summ <- sem(IncSrhCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncSrhCam.model.summ, standardized = TRUE)
+fitMeasures(IncSrhCam.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "SRH_W2"
+m[2, 3] <- "totalCams_W3"
+
+# Drop controls from path diagram
+IncSrhCam.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncSrhCam.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncSrhCam.path_dia2 <- semPaths(IncSrhCam.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncSrhCam.path_dia3 <- change_node_label(IncSrhCam.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3"),
+                           label.cex = 1.1)
+
+IncSrhCam.path_dia4 <- mark_sig(IncSrhCam.path_dia3, IncSrhCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncSrhCam.path_dia4)
+
+
+```
+
+## Income cam SRH 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncCamSrh.model <- '
+# Regressions
+# Direct effect - log income 
+SRH_W3 ~ b*LogIncome_W1
+# Mediator effects - Income 
+totalCams_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*totalCams_W2
+# Indirect effect 
+gh := g*h
+# total effect
+total2 := b + (g*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+
+# Run model and get summary and fit statistics
+IncCamSrh.model.summ <- sem(IncCamSrh.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncCamSrh.model.summ, standardized = TRUE)
+fitMeasures(IncCamSrh.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "totalCams_W2"
+m[2, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+IncCamSrh.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncCamSrh.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncCamSrh.path_dia2 <- semPaths(IncCamSrh.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncCamSrh.path_dia3 <- change_node_label(IncCamSrh.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SRH_W3 = "SRH W3", 
+                             totalCams_W2 = "Total CAMs W2"),
+                           label.cex = 1.1)
+
+IncCamSrh.path_dia4 <- mark_sig(IncCamSrh.path_dia3, IncCamSrh.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncCamSrh.path_dia4)
+
+
+
+```
+
+## Education SRH cam 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducSrhCam.model <- '
+# Regressions
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+# Mediator effects - Income 
+totalCams_W3 ~ f*SRH_W2
+# Mediator effects - Education
+SRH_W2 ~ j*Education_W1 
+# Indirect effect 
+jf := j*f
+# total effect
+total3 := c + (j*f)
+# Controls
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+'
+
+
+# Run model and get summary and fit statistics
+EducSrhCam.model.summ <- sem(EducSrhCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducSrhCam.model.summ, standardized = TRUE)
+fitMeasures(EducSrhCam.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "SRH_W2"
+m[2, 3] <- "totalCams_W3"
+
+# Drop controls from path diagram
+EducSrhCam.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducSrhCam.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducSrhCam.path_dia2 <- semPaths(EducSrhCam.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducSrhCam.path_dia3 <- change_node_label(EducSrhCam.path_dia2,
+                           c(Education_W1 = "Education W1",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3"),
+                           label.cex = 1.1)
+
+EducSrhCam.path_dia4 <- mark_sig(EducSrhCam.path_dia3, EducSrhCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducSrhCam.path_dia4)
+
+
+
+```
+
+## Education cam SRH 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducCamSrh.model <- '
+# Regressions
+# Direct Effect - Education
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+# Indirect effect 
+ih := i*h
+# total effect
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+
+# Run model and get summary and fit statistics
+EducCamSrh.model.summ <- sem(EducCamSrh.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducCamSrh.model.summ, standardized = TRUE)
+fitMeasures(EducCamSrh.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "totalCams_W2"
+m[2, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+EducCamSrh.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducCamSrh.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducCamSrh.path_dia2 <- semPaths(EducCamSrh.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducCamSrh.path_dia3 <- change_node_label(EducCamSrh.path_dia2,
+                           c(Education_W1 = "Education W1",
+                             SRH_W3 = "SRH W3", 
+                             totalCams_W2 = "Total CAMs W2"),
+                           label.cex = 1.1)
+
+EducCamSrh.path_dia4 <- mark_sig(EducCamSrh.path_dia3, EducCamSrh.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducCamSrh.path_dia4)
+
+
+
+```
+
