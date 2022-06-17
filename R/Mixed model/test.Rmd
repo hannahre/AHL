@@ -1,0 +1,316 @@
+---
+title: "test"
+author: "Hannah Andrews"
+date: '2022-06-01'
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
+library(lavaan)
+library(semPlot)
+library(fastDummies)
+library(semptools)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.complete.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
+load("waves123.wide.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
+```
+
+# Recodes 
+```{r, echo = FALSE, results='hide'}
+# Order Education levels
+path.waves123.wide <- waves123.wide %>%
+  mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
+# Order education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
+# Order Education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
+
+# Create dummy variables for race
+path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2', ignore_na = TRUE)
+path.waves123.wide <- rename(path.waves123.wide, 
+                             MexicanHispanic_W2 = "Race_W2_Mexican American and Other Hispanic",
+                             Black_W2 = "Race_W2_Non-Hispanic Black", 
+                             OtherRace_W2 = "Race_W2_Other Race",
+                             White_W2 = "Race_W2_Non-Hispanic White")
+
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W2, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W2 <- as.numeric(path.waves123.wide$SRH_W2)
+
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W3 <- as.numeric(path.waves123.wide$SRH_W3)
+```
+
+
+```{r, echo =FALSE, results = 'hide'}
+myvars <- c("mindbody_W2", "mindbody_W3", "altmed_W2", "altmed_W3", "pna_W2", "pna_W3", "manipulative_W2", "manipulative_W3", "totalCams_W2", "totalCams_W3", "SumChron_W2", "SumChron_W3", "SRH_W2", "SRH_W3", "LogIncome_W1", "Education_W1", "Sex_W1", "Age_W2", "Age_W3", "Marital_W2", "Marital_W3", "HlthInsurance_W2", "HlthInsurance_W3", "HLSelf_W2", "HLSelf_W3", "Spiritual_W2", "Spiritual_W3", "Religion_W2", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2")
+
+path.complete <- path.waves123.wide[myvars]
+
+path.complete <- path.complete[complete.cases(path.complete),]
+
+```
+
+
+```{r, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SRH_W2
+totalCams_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+totalCams_W3 ~ totalCams_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W2 ~~ SRH_W2
+totalCams_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE, fit.measures = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+```
+
+```{r, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Total CAMs, Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+
+```{r, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.totCams <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.totCams <- tab.IE.totCams %>%
+  slice(match(x, Path))
+```
+  
+```{r, echo=FALSE}
+tab.IE.totCams %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Total CAMs, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Total CAMs Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```

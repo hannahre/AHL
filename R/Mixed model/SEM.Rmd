@@ -24,6 +24,7 @@ library(caTools)
 library(lavaan)
 library(semPlot)
 library(fastDummies)
+library(semptools)
 setwd("C:/Users/hanna/Documents/git/AHL/R/")
 load("waves123.long.complete.rda")
 load("waves12.wide.complete.rda")
@@ -35,196 +36,8 @@ setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
 # https://lmudge13.github.io/sample_code/mixed_effects.html
 # Converting html to pdf https://github.com/gorkang/html2latex/
 ```
-```{r, echo = FALSE}
-model1 <- '
-SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 #SES and CAMs predict health
-totalCams_W2 ~ LogIncome_W1 + Education_W1
-'
-waves123.wide$Education_W1 <- factor(waves123.wide$Education_W1, 
-                                     levels = c("Less than High School", "HS Diploma/GED", 
-                                                "Some College/AA Degree", "College Grad",
-                                                "Graduate or Professional Degree"), 
-                                     ordered = TRUE)
 
-model1.summ <- sem(model1, data = waves123.wide)
-
-fit <- sem(model, data = waves123.wide)
-summary(model1.summ, standardized = TRUE)
-fitMeasures(model1.summ, c("cfi", "rmsea", "srmr"))
-
-
-model2.summ <- sem(model1, data = waves123.wide, missing = "ML", do.fit = TRUE)
-summary(model2.summ, standardized = TRUE)
-fitMeasures(model2.summ, c("cfi", "rmsea", "srmr"))
-
-semPaths(model2.summ, what = "paths", whatLabels = "stand", rotation = 1)
-
-m <- matrix(NA, 3, 4)
-m[1, 1] <- "LogIncome_W1"
-m[3, 1] <- "Education_W1"
-m[2, 2] <- "totalCams_W2"
-m[2, 4] <- "SumChron_W3"
-m
-
-m2 <- matrix(NA, 5, 3)
-m2[2, 1] <- "LogIncome_W1"
-m2[4, 1] <- "Education_W1"
-m2[3, 2] <- "totalCams_W2"
-m2[3, 3] <- "SumChron_W3" 
-
-semPaths(model1.summ, whatLabels = "std",
-           sizeMan = 10,
-           edge.label.cex = 1.15,
-           style = "ram", 
-           nCharNodes = 0, nCharEdges = 0,
-           layout = m)
-
-semPaths(model2.summ, what = "paths", whatLabels = "std",
-           sizeMan = 10,
-           edge.label.cex = 1.15,
-           style = "ram", 
-           nCharNodes = 0, 
-           nCharEdges = 0)
-```
-
-```{r, echo = FALSE}
-
-         
-fit <- sem(model, data = waves123.wide)
-summary(fit)
-fitMeasures(fit, c("cfi", "rmsea", "srmr"))
-
-```
-
-```{r, echo = FALSE}
-# Create dummy variables for race at wave 1
-library(fastDummies)
-path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2')
-path.waves123.wide <- rename(path.waves123.wide, 
-                             MexicanHispanic_W2 = "Race_W2_Mexican American and Other Hispanic",
-                             Black_W2 = "Race_W2_Non-Hispanic Black", 
-                             OtherRace_W2 = "Race_W2_Other Race",
-                             White_W2 = "Race_W2_Non-Hispanic White")
-
-model2 <- '
-# Regressions
-totalCams_W2 ~ LogIncome_W1 + Education_W1 
-SumChron_W2 ~ LogIncome_W1 + Education_W1 
-totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2 + Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-'
-
-
-model1 <- '
-# Regressions
-totalCams_W2 ~ LogIncome_W1 + Education_W1  
-SumChron_W2 ~ LogIncome_W1 + Education_W1 
-totalCams_W3 ~ LogIncome_W1 + Education_W1 + SumChron_W2 + totalCams_W2
-SumChron_W3 ~ LogIncome_W1 + Education_W1 + totalCams_W2 + SumChron_W2
-'
-
-path.waves123.wide <- waves123.wide %>%
-  mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
-                                                "Some College/AA Degree", "College Grad",
-                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-
-path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
-
-path.waves123.wide <- path.waves123.wide %>%
-  mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
-                                                "Some College/AA Degree", "College Grad",
-                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-
-path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
-
-path.waves123.wide <- path.waves123.wide %>%
-  mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
-                                                "Some College/AA Degree", "College Grad",
-                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-
-path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
-
-
-
-
-model1.summ <- sem(model1, data = path.waves123.wide)
-summary(model1.summ, standardized = TRUE)
-fitMeasures(model1.summ, c("cfi", "rmsea", "srmr"))
-
-model2.summ <- sem(model2, data = path.waves123.wide)
-summary(model2.summ, standardized = TRUE)
-fitMeasures(model2.summ, c("cfi", "rmsea", "srmr"))
-
-
-m <- matrix(NA, 19, 4)
-m[1, 1] <- "LogIncome_W1"
-m[4, 1] <- "Education_W1"
-m[2, 2] <- "totalCams_W2"
-m[3, 2] <- "SumChron_W2"
-m[1, 3] <- "totalCams_W3"
-m[4, 3] <- "SumChron_W3"
-
-test <- semptools::drop_nodes(
-                object = semPlotModel(model2.summ),
-                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2"))
-
-path_dia <- semPaths(test, whatLabels = "std",
-           sizeMan = 8,
-           edge.label.cex = .8,
-           edge.color = "black",
-           style = "ram",
-           layout = m,
-           exoCov = FALSE,
-           nCharNodes = 0, nCharEdges = 0)
-
-my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
-                      "SumChron_W3 ~ LogIncome_W1" = .75)
-library(semptools)
-path_dia2 <- set_edge_label_position(path_dia, my_position_list)
-plot(path_dia2)
-
-m[1, 4] <- "Age_W3" 
-m[3, 4] <- "Sex_W1" 
-m[5, 4] <- "Marital_W3" 
-m[7, 4] <- "HlthInsurance_W3"
-m[9, 4] <- "HLSelf_W3" 
-m[11, 4] <- "Spiritual_W3"
-m[13, 4] <- "Religion_W3" 
-m[15, 4] <- "MexicanHispanic_W2"
-m[17, 4] <- "Black_W2" 
-m[19, 4] <- "OtherRace_W2"
-
-m <- matrix(NA, 7, 10)
-m[1, 1] <- "LogIncome_W1"
-m[1, 10] <- "Education_W1"
-m[3, 4] <- "totalCams_W2"
-m[3, 7] <- "SumChron_W2"
-m[5, 1] <- "totalCams_W3"
-m[5, 10] <- "SumChron_W3"
-m[7, 1] <- "Age_W3" 
-m[7, 2] <- "Sex_W1" 
-m[7, 3] <- "Marital_W3" 
-m[7, 4] <- "HlthInsurance_W3"
-m[7, 5] <- "HLSelf_W3" 
-m[7, 6] <- "Spiritual_W3"
-m[7, 7] <- "Religion_W3" 
-m[7, 8] <- "MexicanHispanic_W2"
-m[7, 9] <- "Black_W2" 
-m[7, 10] <- "OtherRace_W2"
-
-
-
-
-
-
-
-path.waves123.wide$diffeducation <- path.waves123.wide$Education_W3 - path.waves123.wide$Education_W1
-hist(path.waves123.wide$diffeducation)
-str(waves123.wide$diffeducation)
-
-```
-
-# Education and race recodes 
+# Recodes 
 ```{r, echo = FALSE, results='hide'}
 # Order Education levels
 path.waves123.wide <- waves123.wide %>%
@@ -264,6 +77,7 @@ path.waves123.wide <- path.waves123.wide %>%
                                 ordered = TRUE))
 # Convert to numeric to be used as ordinal variable
 path.waves123.wide$SRH_W2 <- as.numeric(path.waves123.wide$SRH_W2)
+
 # Order SRH levels
 path.waves123.wide <- path.waves123.wide %>%
   mutate(waves123.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
@@ -1141,42 +955,42 @@ plot(EducCamChro.path_dia4)
 
 ```{r, echo = FALSE}
 set.seed(1234)
-IncChroCam.model <- '
+IncChroMb.model <- '
 # Regressions
 # Direct effect - log income 
-totalCams_W3 ~ a*LogIncome_W1 
+mindbody_W3 ~ c*LogIncome_W1 
 # Mediator effects - Income 
-SumChron_W2 ~ e*LogIncome_W1 
-totalCams_W3 ~ f*SumChron_W2
+SumChron_W2 ~ a*LogIncome_W1 
+mindbody_W3 ~ b*SumChron_W2
 # Indirect effect 
-ef := e*f
+ab := a*b
 # total effect
-total1 := a + (e*f)
+total := c + ab
 # Controls
 SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
 '
 
 # Run model and get summary and fit statistics
-IncChroCam.model.summ <- sem(IncChroCam.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
-summary(IncChroCam.model.summ, standardized = TRUE)
-#parameterestimates(IncChroCam.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+IncChroMb.model.summ <- sem(IncChroMb.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncChroMb.model.summ, standardized = TRUE)
+#parameterestimates(IncChroMb.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
 #  kable()
-fitMeasures(IncChroCam.model.summ, c("cfi", "rmsea", "srmr"))
+fitMeasures(IncChroMb.model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
 
 m <- matrix(NA, 2, 3)
 m[2, 1] <- "LogIncome_W1"
 m[1, 2] <- "SumChron_W2"
-m[2, 3] <- "totalCams_W3"
+m[2, 3] <- "mindbody_W3"
 
 # Drop controls from path diagram
-IncChroCam.path_dia <- semptools::drop_nodes(
-                object = semPlotModel(IncChroCam.model.summ),
+IncChroMb.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncChroMb.model.summ),
                 nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
 
 # Create path diagram
-IncChroCam.path_dia2 <- semPaths(IncChroCam.path_dia, whatLabels = "std",
+IncChroMb.path_dia2 <- semPaths(IncChroMb.path_dia, whatLabels = "std",
            sizeMan = 8,
            edge.label.cex = .8,
            edge.color = "black",
@@ -1185,25 +999,446 @@ IncChroCam.path_dia2 <- semPaths(IncChroCam.path_dia, whatLabels = "std",
            exoCov = FALSE,
            nCharNodes = 0, nCharEdges = 0)
 
-IncChroCam.path_dia3 <- change_node_label(IncChroCam.path_dia2,
+IncChroMb.path_dia3 <- change_node_label(IncChroMb.path_dia2,
                            c(LogIncome_W1 = "Income W1",
                              SumChron_W2 = "Sum Chron W2", 
-                             totalCams_W3 = "Total CAMs W3"),
+                             mindbody_W3 = "Mind Body W3"),
                            label.cex = 1.1)
 
-IncChroCam.path_dia4 <- mark_sig(IncChroCam.path_dia3, IncChroCam.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+IncChroMb.path_dia4 <- mark_sig(IncChroMb.path_dia3, IncChroMb.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
-plot(IncChroCam.path_dia4)
+plot(IncChroMb.path_dia4)
 
 
 ```
 
 ### Income mb chron 
+```{r, echo = FALSE}
+set.seed(1234)
+IncMbChro.model <- '
+# Regressions
+# Direct effect - log income 
+SumChron_W3 ~ c*LogIncome_W1 
+# Mediator effects - Income 
+mindbody_W2 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*mindbody_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W3 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W2 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncMbChro.model.summ <- sem(IncMbChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncMbChro.model.summ, standardized = TRUE)
+#parameterestimates(IncMbChro.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(IncMbChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "mindbody_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+IncMbChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncMbChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncMbChro.path_dia2 <- semPaths(IncMbChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncMbChro.path_dia3 <- change_node_label(IncMbChro.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             mindbody_W2 = "Mind Body W2"),
+                           label.cex = 1.1)
+
+IncMbChro.path_dia4 <- mark_sig(IncMbChro.path_dia3, IncMbChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncMbChro.path_dia4)
+
+
+```
 
 ### Education chron mb 
 
+```{r, echo = FALSE}
+set.seed(1234)
+EducChroMb.model <- '
+# Regressions
+# Direct effect  
+mindbody_W3 ~ c*Education_W1 
+# Mediator effects
+SumChron_W2 ~ a*Education_W1 
+mindbody_W3 ~ b*SumChron_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+EducChroMb.model.summ <- sem(EducChroMb.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducChroMb.model.summ, standardized = TRUE)
+#parameterestimates(EducChroMb.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(EducChroMb.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "mindbody_W3"
+
+# Drop controls from path diagram
+EducChroMb.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducChroMb.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducChroMb.path_dia2 <- semPaths(EducChroMb.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducChroMb.path_dia3 <- change_node_label(EducChroMb.path_dia2,
+                           c(Education_W1 = "Educome W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             mindbody_W3 = "Mind Body W3"),
+                           label.cex = 1.1)
+
+EducChroMb.path_dia4 <- mark_sig(EducChroMb.path_dia3, EducChroMb.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducChroMb.path_dia4)
+
+
+```
+
 ### Education mb chron 
 
+```{r, echo = FALSE}
+set.seed(1234)
+EducMbChro.model <- '
+# Regressions
+# Direct effect -  
+SumChron_W3 ~ c*Education_W1 
+# Mediator effects  
+mindbody_W2 ~ a*Education_W1 
+SumChron_W3 ~ b*mindbody_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W3 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W2 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+EducMbChro.model.summ <- sem(EducMbChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducMbChro.model.summ, standardized = TRUE)
+#parameterestimates(EducMbChro.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(EducMbChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "mindbody_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+EducMbChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducMbChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducMbChro.path_dia2 <- semPaths(EducMbChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducMbChro.path_dia3 <- change_node_label(EducMbChro.path_dia2,
+                           c(Education_W1 = "Educome W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             mindbody_W2 = "Mind Body W2"),
+                           label.cex = 1.1)
+
+EducMbChro.path_dia4 <- mark_sig(EducMbChro.path_dia3, EducMbChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducMbChro.path_dia4)
+
+
+```
+
+## Alternative Medicine  
+
+### Income chron altmed 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncChroAltMed.model <- '
+# Regressions
+# Direct effect 
+altmed_W3 ~ c*LogIncome_W1 
+# Mediator effects 
+SumChron_W2 ~ a*LogIncome_W1 
+altmed_W3 ~ b*SumChron_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncChroAltMed.model.summ <- sem(IncChroAltMed.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncChroAltMed.model.summ, standardized = TRUE)
+#parameterestimates(IncChroAltMed.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(IncChroAltMed.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "altmed_W3"
+
+# Drop controls from path diagram
+IncChroAltMed.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncChroAltMed.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncChroAltMed.path_dia2 <- semPaths(IncChroAltMed.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncChroAltMed.path_dia3 <- change_node_label(IncChroAltMed.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             altmed_W3 = "Alt Med W3"),
+                           label.cex = 1.1)
+
+IncChroAltMed.path_dia4 <- mark_sig(IncChroAltMed.path_dia3, IncChroAltMed.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncChroAltMed.path_dia4)
+
+
+```
+
+### Income alt med chron 
+
+```{r, echo = FALSE}
+set.seed(1234)
+IncAltMedChro.model <- '
+# Regressions
+# Direct effect - log income 
+SumChron_W3 ~ c*LogIncome_W1 
+# Mediator effects - Income 
+altmed_W2 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*altmed_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W3 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W2 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+IncAltMedChro.model.summ <- sem(IncAltMedChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(IncAltMedChro.model.summ, standardized = TRUE)
+#parameterestimates(IncAltMedChro.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(IncAltMedChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "LogIncome_W1"
+m[1, 2] <- "altmed_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+IncAltMedChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(IncAltMedChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+IncAltMedChro.path_dia2 <- semPaths(IncAltMedChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+IncAltMedChro.path_dia3 <- change_node_label(IncAltMedChro.path_dia2,
+                           c(LogIncome_W1 = "Income W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             altmed_W2 = "Alt Med W2"),
+                           label.cex = 1.1)
+
+IncAltMedChro.path_dia4 <- mark_sig(IncAltMedChro.path_dia3, IncAltMedChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(IncAltMedChro.path_dia4)
+
+
+```
+
+### Education alt med chron 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducAltMedChro.model <- '
+# Regressions
+# Direct effect -  
+SumChron_W3 ~ c*Education_W1 
+# Mediator effects - 
+altmed_W2 ~ a*Education_W1
+SumChron_W3 ~ b*altmed_W2  + SumChron_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W3 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W2 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+EducAltMedChro.model.summ <- sem(EducAltMedChro.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducAltMedChro.model.summ, standardized = TRUE)
+#parameterestimates(EducAltMedChro.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(EducAltMedChro.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "altmed_W2"
+m[2, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+EducAltMedChro.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducAltMedChro.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducAltMedChro.path_dia2 <- semPaths(EducAltMedChro.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducAltMedChro.path_dia3 <- change_node_label(EducAltMedChro.path_dia2,
+                           c(Education_W1 = "Educome W1",
+                             SumChron_W3 = "Sum Chron W3", 
+                             altmed_W2 = "Alt Med W2"),
+                           label.cex = 1.1)
+
+EducAltMedChro.path_dia4 <- mark_sig(EducAltMedChro.path_dia3, EducAltMedChro.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducAltMedChro.path_dia4)
+
+
+```
+
+### Education chron altmed 
+
+```{r, echo = FALSE}
+set.seed(1234)
+EducChroAltMed.model <- '
+# Regressions
+# Direct effect 
+altmed_W3 ~ c*Education_W1 
+# Mediator effects 
+SumChron_W2 ~ a*Education_W1 
+altmed_W3 ~ b*SumChron_W2 + altmed_W2
+# Indirect effect 
+ab := a*b
+# total effect
+total := c + ab
+# Controls
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+'
+
+# Run model and get summary and fit statistics
+EducChroAltMed.model.summ <- sem(EducChroAltMed.model, data = path.waves123.wide, se = "bootstrap", bootstrap = 1000)
+summary(EducChroAltMed.model.summ, standardized = TRUE)
+#parameterestimates(EducChroAltMed.model.summ, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+#  kable()
+fitMeasures(EducChroAltMed.model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+m <- matrix(NA, 2, 3)
+m[2, 1] <- "Education_W1"
+m[1, 2] <- "SumChron_W2"
+m[2, 3] <- "altmed_W3"
+
+# Drop controls from path diagram
+EducChroAltMed.path_dia <- semptools::drop_nodes(
+                object = semPlotModel(EducChroAltMed.model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+EducChroAltMed.path_dia2 <- semPaths(EducChroAltMed.path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+EducChroAltMed.path_dia3 <- change_node_label(EducChroAltMed.path_dia2,
+                           c(Education_W1 = "Education W1",
+                             SumChron_W2 = "Sum Chron W2", 
+                             altmed_W3 = "Alt Med W3"),
+                           label.cex = 1.1)
+
+EducChroAltMed.path_dia4 <- mark_sig(EducChroAltMed.path_dia3, EducChroAltMed.model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+plot(EducChroAltMed.path_dia4)
+
+
+```
 
 # Separate mediation models - SRH 
 
@@ -1452,3 +1687,2200 @@ plot(EducCamSrh.path_dia4)
 
 ```
 
+# Listwise Deletion Path wide data 
+
+```{r, echo =FALSE}
+myvars <- c("mindbody_W2", "mindbody_W3", "altmed_W2", "altmed_W3", "pna_W2", "pna_W3", "manipulative_W2", "manipulative_W3", "totalCams_W2", "totalCams_W3", "SumChron_W2", "SumChron_W3", "SRH_W2", "SRH_W3", "LogIncome_W1", "Education_W1", "Sex_W1", "Age_W2", "Age_W3", "Marital_W2", "Marital_W3", "HlthInsurance_W2", "HlthInsurance_W3", "HLSelf_W2", "HLSelf_W3", "Spiritual_W2", "Spiritual_W3", "Religion_W2", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2")
+
+path.complete <- path.waves123.wide[myvars]
+
+path.complete <- path.complete[complete.cases(path.complete),]
+
+```
+
+# Chron- Cross lagged models 
+
+## Total Cams  
+
+```{r model-totcams-chron, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SRH_W2
+totalCams_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+totalCams_W3 ~ totalCams_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W2 ~~ SRH_W2
+totalCams_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE, fit.measures = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+```
+
+```{r path-totcams-chron, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-totcams-chron, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Total CAMs, Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-totcams-chron, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.totCams <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.totCams <- tab.IE.totCams %>%
+  slice(match(x, Path))
+```
+  
+```{r ie-totcams-chron, echo=FALSE}
+tab.IE.totCams %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Total CAMs \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Total CAMs, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-totcams-chron, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Total CAMs Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Mind body
+
+```{r model-mb-chron, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+mindbody_W3 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+mindbody_W3 ~ c*Education_W1
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+mindbody_W3 ~ f*SumChron_W2
+mindbody_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*mindbody_W2
+# Mediator effects - Education
+mindbody_W2 ~ i*Education_W1
+SumChron_W2 ~ j*Education_W1 
+# Control for previous wave
+mindbody_W3 ~ mindbody_W2
+SumChron_W3 ~ SumChron_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+mindbody_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+mindbody_W2 ~~ SumChron_W2
+mindbody_W3 ~~ SumChron_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "mindbody_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "mindbody_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("mindbody_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             mindbody_W2 = "Mind Body W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             mindbody_W3 = "Mind Body W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+```
+
+```{r path-mb-chron, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicine, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-mb-chron, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Mind-Body Medicine, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-mb, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.mb <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.mb <- tab.IE.mb %>%
+  slice(match(x, Path))
+```
+  
+```{r ie-mb-chron, echo=FALSE}
+tab.IE.mb %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Mind-Body Medicine \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Mind-Body Medicine \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Mind-Body Medicine \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Mind-Body Medicine \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Mind-Body Medicine, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+```
+
+```{r fit-mb-chron, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Mind-Body Medicine Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Alt Med
+
+```{r model-altmed-chron, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+altmed_W3 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+altmed_W3 ~ c*Education_W1
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+altmed_W3 ~ f*SumChron_W2
+altmed_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*altmed_W2
+# Mediator effects - Education
+altmed_W2 ~ i*Education_W1
+SumChron_W2 ~ j*Education_W1 
+# Control for previous wave
+altmed_W3 ~ altmed_W2
+SumChron_W3 ~ SumChron_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+altmed_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+altmed_W2 ~~ SumChron_W2
+altmed_W3 ~~ SumChron_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "altmed_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "altmed_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("altmed_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             altmed_W2 = "Alt Med W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             altmed_W3 = "Alt Med W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+```{r path-altmed-chron, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-altmed-chron, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Alternative Medicines, Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-altmed-chron, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.altmed <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.altmed <- tab.IE.altmed %>%
+  slice(match(x, Path))
+```
+
+```{r ie-altmed-chron, echo=FALSE}
+tab.IE.altmed %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Alternative Medicines \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Alternative Medicines \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Alternative Medicines \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Alternative Medicines \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Alternative Medicines, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-altmed-chron, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Alternative Medicines Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## PNA 
+
+```{r model-pna-chron, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+pna_W3 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+pna_W3 ~ c*Education_W1
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+pna_W3 ~ f*SumChron_W2
+pna_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*pna_W2
+# Mediator effects - Education
+pna_W2 ~ i*Education_W1
+SumChron_W2 ~ j*Education_W1 
+# Control for previous wave
+pna_W3 ~ pna_W2
+SumChron_W3 ~ SumChron_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+pna_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+pna_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+pna_W2 ~~ SumChron_W2
+pna_W3 ~~ SumChron_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "pna_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "pna_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("pna_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             pna_W2 = "PNA W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             pna_W3 = "PNA W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+```{r path-altmed-chron, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-pna-chron, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Physical and Nutritional Approaches, Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-pna-chron, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.pna <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.pna <- tab.IE.pna %>%
+  slice(match(x, Path))
+```
+
+```{r ie-pna-chron, echo=FALSE}
+tab.IE.pna %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Physical and Nutritional Approaches, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+```
+
+```{r fit-pna-chron, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Physical and Nutritional Approaches Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Manipulative 
+
+```{r model-manipulative-chron, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+manipulative_W3 ~ a*LogIncome_W1 
+SumChron_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+manipulative_W3 ~ c*Education_W1
+SumChron_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SumChron_W2 ~ e*LogIncome_W1 
+manipulative_W3 ~ f*SumChron_W2
+manipulative_W2 ~ g*LogIncome_W1
+SumChron_W3 ~ h*manipulative_W2
+# Mediator effects - Education
+manipulative_W2 ~ i*Education_W1
+SumChron_W2 ~ j*Education_W1 
+# Control for previous wave
+manipulative_W3 ~ manipulative_W2
+SumChron_W3 ~ SumChron_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+manipulative_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+manipulative_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SumChron_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+manipulative_W2 ~~ SumChron_W2
+manipulative_W3 ~~ SumChron_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "manipulative_W2"
+m[3, 2] <- "SumChron_W2"
+m[1, 3] <- "manipulative_W3"
+m[4, 3] <- "SumChron_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("manipulative_W3 ~ Education_W1" = .20, 
+                      "SumChron_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             manipulative_W2 = "Manipulative W2",
+                             SumChron_W2 = "Sum Chron W2", 
+                             manipulative_W3 = "Manipulative W3",
+                             SumChron_W3 = "Sum Chron W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+
+```{r path-manipulative-chron, echo = FALSE, fig.cap="Path Model: SES,Manipulative Treatments, and Chronic Conditions"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-manipulative-chron, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Manipulative Treatments, Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-manipulative-chron, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.manipulative <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.manipulative <- tab.IE.manipulative %>%
+  slice(match(x, Path))
+```
+
+```{r ie-manipulative-chron, echo=FALSE}
+tab.IE.manipulative %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Chronic Conditions \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Chronic Conditions \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Manipulative Treatments \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Manipulative Treatments \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Chronic Conditions \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Chronic Conditions \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Manipulative Treatments \U2192 Chronic Conditions")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Manipulative Treatments \U2192 Chronic Conditions")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Manipulative Treatments, and Chronic Conditions") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-manipulative-chron, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Chronic Conditions, and Manipulative Treatments Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+# SRH- Cross lagged models 
+
+## Total Cams  
+
+```{r model-totcams-srh, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+totalCams_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+totalCams_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+totalCams_W3 ~ f*SRH_W2
+totalCams_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*totalCams_W2
+# Mediator effects - Education
+totalCams_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+totalCams_W3 ~ totalCams_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+totalCams_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+totalCams_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+totalCams_W2 ~~ SRH_W2
+totalCams_W3 ~~ SRH_W3
+'
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE, fit.measures = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "totalCams_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "totalCams_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("totalCams_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             totalCams_W2 = "Total CAMs W2",
+                             SRH_W2 = "SRH W2", 
+                             totalCams_W3 = "Total CAMs W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+```
+
+```{r path-totcams-srh, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Self-Reported Health"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-totcams-srh, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Total CAMs, Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-totcams-srh, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.totCams.srh <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.totCams.srh <- tab.IE.totCams.srh %>%
+  slice(match(x, Path))
+```
+
+```{r ie-totcams-srh, echo=FALSE}
+tab.IE.totCams.srh %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Total CAMs \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Total CAMs \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Total CAMs \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Total CAMs \U2192 Self-Reported Health")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Total CAMs, and Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-totcams-srh, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Self-Reported Health, and Total CAMs Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Mind Body 
+
+```{r model-mb-srh, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+mindbody_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+mindbody_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+mindbody_W3 ~ f*SRH_W2
+mindbody_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*mindbody_W2
+# Mediator effects - Education
+mindbody_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+mindbody_W3 ~ mindbody_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+mindbody_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+mindbody_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+mindbody_W2 ~~ SRH_W2
+mindbody_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "mindbody_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "mindbody_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("mindbody_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             mindbody_W2 = "Mind Body W2",
+                             SRH_W2 = "SRH W2", 
+                             mindbody_W3 = "Mind Body W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+
+```{r path-mb-srh, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Self-Reported Health"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-mb-srh, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Mind-Body Medicines, Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-mb-srh, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.mb.srh <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.mb.srh <- tab.IE.mb.srh %>%
+  slice(match(x, Path))
+```
+
+```{r ie-mb-srh, echo=FALSE}
+tab.IE.totCams.srh %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Mind-Body Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Mind-Body Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Mind-Body Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Mind-Body Medicines \U2192 Self-Reported Health")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Mind-Body Medicines, and Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-mb-srh, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Self-Reported Health, and Mind-Body Medicines Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Alt Med
+
+```{r model-altmed-srh, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+altmed_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+altmed_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+altmed_W3 ~ f*SRH_W2
+altmed_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*altmed_W2
+# Mediator effects - Education
+altmed_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+altmed_W3 ~ altmed_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+altmed_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+altmed_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+altmed_W2 ~~ SRH_W2
+altmed_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "altmed_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "altmed_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("altmed_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             altmed_W2 = "Alt Med W2",
+                             SRH_W2 = "SRH W2", 
+                             altmed_W3 = "Alt Med W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+
+
+
+
+```
+
+```{r path-altmed-srh, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Self-Reported Health"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-altmed-srh, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Alternative Medicines, Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-altmed-srh, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.altmed.srh <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.altmed.srh <- tab.IE.altmed.srh %>%
+  slice(match(x, Path))
+```
+
+```{r ie-altmed-srh, echo=FALSE}
+tab.IE.altmed.srh %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Alternative Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Alternative Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Alternative Medicines \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Alternative Medicines \U2192 Self-Reported Health")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Alternative Medicines, and Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-altmed-srh, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Self-Reported Health, and Altnerative Medicines Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## PNA 
+
+```{r model-pna-srh, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+pna_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+pna_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+pna_W3 ~ f*SRH_W2
+pna_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*pna_W2
+# Mediator effects - Education
+pna_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+pna_W3 ~ pna_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+pna_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+pna_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+pna_W2 ~~ SRH_W2
+pna_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "pna_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "pna_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("pna_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             pna_W2 = "PNA W2",
+                             SRH_W2 = "SRH W2", 
+                             pna_W3 = "PNA W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+
+```
+
+```{r path-pna-srh, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Self-Reported Health"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-pna-srh, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Physical and Nutritional Approaches, Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-pna-srh, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.pna.srh <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.pna.srh <- tab.IE.pna.srh %>%
+  slice(match(x, Path))
+```
+
+```{r ie-pna-srh, echo=FALSE}
+tab.IE.totCams.srh %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Self-Reported Health")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Physical and Nutritional Approaches, and Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-pna-srh, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Self-Reported Health, and Physical and Nutritional Approaches Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```
+
+## Manipulative 
+
+```{r model-manipulative-srh, echo = FALSE, results='hide', fig.show='hide'}
+model <- '
+# Regressions
+# Direct effect - log income 
+manipulative_W3 ~ a*LogIncome_W1 
+SRH_W3 ~ b*LogIncome_W1
+# Direct Effect - Education
+manipulative_W3 ~ c*Education_W1
+SRH_W3 ~ d*Education_W1
+# Mediator effects - Income 
+SRH_W2 ~ e*LogIncome_W1 
+manipulative_W3 ~ f*SRH_W2
+manipulative_W2 ~ g*LogIncome_W1
+SRH_W3 ~ h*manipulative_W2
+# Mediator effects - Education
+manipulative_W2 ~ i*Education_W1
+SRH_W2 ~ j*Education_W1 
+# Control for previous wave
+manipulative_W3 ~ manipulative_W2
+SRH_W3 ~ SRH_W2
+# Indirect effect 
+ef := e*f
+gh := g*h
+jf := j*f
+ih := i*h
+# total effect
+total1 := a + (e*f)
+total2 := b + (g*h)
+total3 := c + (j*f)
+total4 := d + (i*h)
+# Controls
+manipulative_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+manipulative_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+SRH_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
+# Covariances
+manipulative_W2 ~~ SRH_W2
+manipulative_W3 ~~ SRH_W3
+'
+
+
+# Run model and get summary and fit statistics
+set.seed(1234)
+model.summ <- sem(model, data = path.complete)
+summary(model.summ, standardized = TRUE)
+fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
+#modificationindices(model.summ)
+
+
+m <- matrix(NA, 4, 3)
+m[1, 1] <- "LogIncome_W1"
+m[4, 1] <- "Education_W1"
+m[2, 2] <- "manipulative_W2"
+m[3, 2] <- "SRH_W2"
+m[1, 3] <- "manipulative_W3"
+m[4, 3] <- "SRH_W3"
+
+# Drop controls from path diagram
+path_dia <- semptools::drop_nodes(
+                object = semPlotModel(model.summ),
+                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
+
+# Create path diagram
+path_dia2 <- semPaths(path_dia, whatLabels = "std",
+           sizeMan = 8,
+           edge.label.cex = .8,
+           edge.color = "black",
+           style = "ram",
+           layout = m, 
+           exoCov = FALSE,
+           nCharNodes = 0, nCharEdges = 0)
+
+# Create list to rearrange positions of node edges that were blocking each other
+my_position_list <- c("manipulative_W3 ~ Education_W1" = .20, 
+                      "SRH_W3 ~ LogIncome_W1" = .75)
+# Change label position
+path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
+
+path_dia4 <- change_node_label(path_dia3,
+                           c(LogIncome_W1 = "Income W1",
+                             Education_W1 = "Education W1",
+                             manipulative_W2 = "Manipulative W2",
+                             SRH_W2 = "SRH W2", 
+                             manipulative_W3 = "Manipulative W3",
+                             SRH_W3 = "SRH W3"),
+                           label.cex = 1.1)
+
+path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
+```
+
+```{r path-manipulative-srh, echo = FALSE, fig.cap="Path Model: SES, Manipulative Treatments, and Self-Reported Health"}
+# Create final plot
+plot(path_dia5)
+```
+
+```{r de-manipulative-srh, echo = FALSE}
+# Create Direct Effects Table 
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == "~") %>%  
+  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
+  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Direct Effects: SES, Manipulative Treatments, Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif") 
+```
+
+```{r create-ie-manipulative-srh, echo = FALSE, results='hide'}
+parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=")
+
+# Create Indirect Effects Table 
+
+# Convert output to dataframe with desired rows and columns 
+tab.IE.manipulative.srh <- parameterEstimates(model.summ, standardized=TRUE) %>% 
+  filter(op == ":=") %>% 
+  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
+  as.data.frame() 
+
+
+# create a vector rows in desired order
+x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
+
+# Reorder rows
+tab.IE.manipulative.srh <- tab.IE.manipulative.srh %>%
+  slice(match(x, Path))
+```
+
+```{r ie-manipulative-srh, echo=FALSE}
+tab.IE.manipulative.srh %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Manipulative Treatments \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Manipulative Treatments \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Manipulative Treatments \U2192 Self-Reported Health")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Manipulative Treatments \U2192 Self-Reported Health")) %>%
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Indirect and Total Effects: SES, Manipulative Treatments, and Self-Reported Health") %>% 
+  kable_classic(html_font = "CMU Serif")
+
+```
+
+```{r fit-manipulative-srh, echo = FALSE}
+# Create fit statistics table 
+fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
+  as.data.frame() %>% 
+  t() %>%  
+  knitr::kable(digits = 3, booktabs=TRUE, caption="Fit Statistics: SES, Self-Reported Health, and Manipulative Treatments Path Model", col.names=c("Chi-Square","df","p-value", "CFI", "TLI", "RMSEA", "SRMR")) %>%  
+  kable_classic(html_font = "CMU Serif")
+```

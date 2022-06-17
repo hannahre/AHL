@@ -1,0 +1,211 @@
+---
+title: "Mixed Model"
+author: "Hannah Andrews"
+date: "2/9/2022"
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+bibliography: references.bib
+link-citations: true
+header-includes:
+   - \usepackage{rotating, graphicx, longtable}
+   - \extrafloats{200}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
+library(fastDummies)
+library(semptools)
+library(semoutput)
+library(lavaan)
+library(semPlot)
+library(stargazer)
+library(semTable)
+library(rstatix)
+library(gtsummary)
+library(forcats)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.rda")
+load("waves123.long.complete.rda")
+load("waves123.wide.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
+```
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+
+```{r path-data-recodes, echo = FALSE, results='hide'}
+# Order Education levels
+path.waves123.wide <- waves123.wide %>%
+  mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
+# Order education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
+# Order Education levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
+                                                "Some College/AA Degree", "College Grad",
+                                                "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
+
+# Create dummy variables for race
+path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2', ignore_na = TRUE)
+path.waves123.wide <- rename(path.waves123.wide, 
+                             MexicanHispanic_W2 = "Race_W2_Mexican American and Other Hispanic",
+                             Black_W2 = "Race_W2_Non-Hispanic Black", 
+                             OtherRace_W2 = "Race_W2_Other Race",
+                             White_W2 = "Race_W2_Non-Hispanic White")
+
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W2, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W2 <- as.numeric(path.waves123.wide$SRH_W2)
+
+# Order SRH levels
+path.waves123.wide <- path.waves123.wide %>%
+  mutate(waves123.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+path.waves123.wide$SRH_W3 <- as.numeric(path.waves123.wide$SRH_W3)
+```
+
+```{r listwise-delete-path-data, echo =FALSE}
+myvars <- c("mindbody_W2", "mindbody_W3", "altmed_W2", "altmed_W3", "pna_W2", "pna_W3", "manipulative_W2", "manipulative_W3", "totalCams_W2", "totalCams_W3", "SumChron_W2", "SumChron_W3", "SRH_W2", "SRH_W3", "LogIncome_W1", "Education_W1", "Sex_W1", "Age_W2", "Age_W3", "Marital_W2", "Marital_W3", "HlthInsurance_W2", "HlthInsurance_W3", "HLSelf_W2", "HLSelf_W3", "Spiritual_W2", "Spiritual_W3", "Religion_W2", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2")
+
+path.complete <- path.waves123.wide[myvars]
+
+path.complete <- path.complete[complete.cases(path.complete),]
+
+```
+
+```{r educ-reorder-recodes, echo=FALSE}
+
+#  Education.2 so that college graduate is the reference category. 
+waves123.long.complete$Education.2 <- factor(waves123.long.complete$Education, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+waves12.wide.complete$Education_W1.2 <- factor(waves12.wide.complete$Education_W1, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+
+waves23.wide.complete$Education_W2.2 <- factor(waves23.wide.complete$Education_W2, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+waves13.wide.complete$Education_W1.2 <- factor(waves13.wide.complete$Education_W1, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+```
+
+```{r models-waves12-chron-mod-income, echo = FALSE, results='hide'}
+
+# Center diff chron 
+waves12.wide.complete$DiffChronCenter <- scale(waves12.wide.complete$DiffChron, scale = FALSE)
+
+# Center log income 
+waves12.wide.complete$LogIncomeCenter <- scale(waves12.wide.complete$LogIncome_W1, scale = FALSE)
+waves12.wide.complete$LogIncomeCenter <- as.numeric(waves12.wide.complete$LogIncomeCenter)
+# Create interaction term 
+waves12.wide.complete$DiffChronxLogIncome <- waves12.wide.complete$DiffChronCenter*waves12.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves12.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves12.wide.complete)
+
+# Run income model 
+waves12.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronxLogIncome, data = waves12.wide.complete)
+
+# Add Controls 
+waves12.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronxLogIncome + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+# Extract standard errors
+waves12.chron.income.1.se <- summary(waves12.chron.income.1)$coef[,"Std. Error"]
+waves12.chron.income.2.se <- summary(waves12.chron.income.2)$coef[,"Std. Error"]
+waves12.chron.income.3.se <- summary(waves12.chron.income.3)$coef[,"Std. Error"]
+# waves12.chron.income.4.se <- summary(waves12.chron.income.4)$coef[,"Std. Error"]
+```
+
+```{r plot-waves12-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 2"}
+library(interactions)
+interact_plot(waves12.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+
+```{r waves12-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.chron.income.1, waves12.chron.income.2, waves12.chron.income.3,
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3", "Model 4"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.",
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          label = "tab:waves12-chron-mod-income") 
+
+```

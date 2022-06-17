@@ -1,0 +1,149 @@
+---
+title: "Difference Models"
+author: "Hannah Andrews"
+date: '2022-06-03'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r diff12-table, echo = FALSE}
+# scatterplot diffcams and diffchron
+#plot(waves12.wide.complete$DiffCams, waves12.wide.complete$DiffChron)
+# plot diffchron
+#hist(waves12.wide.complete$DiffChron)
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams, data = waves12.wide.complete)
+
+# Run income model 
+waves12.change.income <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1, data = waves12.wide.complete)
+
+# Run income model education model
+waves12.change.education <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$Education_W1, data = waves12.wide.complete)
+
+# Run income and education model 
+waves12.change.incomeEducation <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1 + waves12.wide.complete$Education_W1, data = waves12.wide.complete)
+
+# Run full model
+waves12.change.all <- lm(formula = waves12.wide.complete$DiffChron ~ waves12.wide.complete$DiffCams + waves12.wide.complete$LogIncome_W1 + waves12.wide.complete$Education_W1 + waves12.wide.complete$Age_W1 + waves12.wide.complete$Sex_W1 + waves12.wide.complete$Race_W1 + waves12.wide.complete$Marital_W1 + waves12.wide.complete$HlthInsurance_W1 + waves12.wide.complete$HLSelf_W1, data = waves12.wide.complete ) 
+
+# Create Table
+waves12.change <- tab_model(waves12.change.diffcams, waves12.change.income, waves12.change.education, waves12.change.incomeEducation, waves12.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves12.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) 
+
+```
+
+```{r diff23-table, echo = FALSE}
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams, data = waves23.wide.complete)
+
+# Run income model 
+waves23.change.income <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2, data = waves23.wide.complete)
+
+# Run income model education model
+waves23.change.education <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$Education_W2, data = waves23.wide.complete)
+
+# Run income and education model 
+waves23.change.incomeEducation <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2 + waves23.wide.complete$Education_W2, data = waves23.wide.complete)
+
+# Run full model
+waves23.change.all <- lm(formula = waves23.wide.complete$DiffChron ~ waves23.wide.complete$DiffCams + waves23.wide.complete$LogIncome_W2 + waves23.wide.complete$Education_W2 + waves23.wide.complete$Age_W2 + waves23.wide.complete$Sex_W2 + waves23.wide.complete$Race_W2 + waves23.wide.complete$Marital_W2 + waves23.wide.complete$HlthInsurance_W2 + waves23.wide.complete$HLSelf_W2, data = waves23.wide.complete ) 
+
+# Create Table
+waves23.change <- tab_model(waves23.change.diffcams, waves23.change.income, waves23.change.education, waves23.change.incomeEducation, waves23.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Mexican American and Other Hispanic", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs Waves 2 and 3")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves23.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+```
+
+```{r diff13-table, echo = FALSE}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams, data = waves13.wide.complete)
+
+# Run income model 
+waves13.change.income <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1, data = waves13.wide.complete)
+
+# Run income model education model
+waves13.change.education <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$Education_W1, data = waves13.wide.complete)
+
+# Run income and education model 
+waves13.change.incomeEducation <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1 + waves13.wide.complete$Education_W1, data = waves13.wide.complete)
+
+# Run full model
+waves13.change.all <- lm(formula = waves13.wide.complete$DiffChron ~ waves13.wide.complete$DiffCams + waves13.wide.complete$LogIncome_W1 + waves13.wide.complete$Education_W1 + waves13.wide.complete$Age_W1 + waves13.wide.complete$Sex_W1 + waves13.wide.complete$Race_W1 + waves13.wide.complete$Marital_W1 + waves13.wide.complete$HlthInsurance_W1 + waves13.wide.complete$HLSelf_W1, data = waves13.wide.complete ) 
+
+# Create Table
+waves13.change <- tab_model(waves13.change.diffcams, waves13.change.income, waves13.change.education, waves13.change.incomeEducation, waves13.change.all,
+          show.intercept = FALSE,
+          pred.labels = c("Difference between Total CAMs","Logged Income", 
+                          "High School Diploma/GED", "Some College/AA", 
+                          "College Graduate", "Graduate/Professional Degree", "Age", 
+                          "Female", "Non-Hispanic Black", "Other Race", "Married", "Insured",
+                          "Health Locus of Control"),
+          dv.labels= c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+          title = "Difference in Chronic Conditions Regressed on Difference in CAMs Waves 2 and 3")
+
+ # first you parse the html, then you put it as table, taking the first
+df <- data.frame(readHTMLTable(htmlParse(waves13.change))[1])
+# first row as colnames
+colnames(df) <- df[1,]
+# remove the fake first row
+df <- df[-1,]
+
+rownames(df)<-NULL
+kable(df,
+      booktabs = T,
+      caption = "Difference in Chronic Conditions Regressed on Difference in CAMs") %>%
+  kable_classic(html_font = "CMU Serif") %>% 
+  kableExtra::landscape() %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+
+```
+

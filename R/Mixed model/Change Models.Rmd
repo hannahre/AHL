@@ -2,7 +2,11 @@
 title: "Change Models"
 author: "Hannah Andrews"
 date: '2022-05-05'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
+header-includes:
+   - \usepackage{rotating, graphicx}
 ---
 
 ```{r setup, include=FALSE}
@@ -38,9 +42,9 @@ load("waves13.wide.complete.rda")
 setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
 ```
 
-# Waves 1 and 2: Difference in cams predicted by difference in chronic conditions moderated by income
+# Chron/Income Waves 1 and 2: Difference in cams predicted by difference in chronic conditions moderated by income
 
-```{r diff12-table, echo = FALSE}
+```{r models-waves12-chron-mod-income, echo = FALSE, results='hide'}
 
 # Run diff cams model
 waves12.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
@@ -55,16 +59,37 @@ waves12.wide.complete$DiffChronxLogIncome <- waves12.wide.complete$DiffChronCent
 # Run income model 
 waves12.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves12.wide.complete)
 
-
-# Create Table
-waves12.change <- tab_model(waves12.change.diffcams, waves12.change.income,
-          show.intercept = FALSE)
-waves12.change
+# Add Controls 
+waves12.change.controls <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
 ```
 
-# Waves 2 and 3: Difference in cams predicted by difference in chronic conditions moderated by income
+```{r waves12-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.change.diffcams, waves12.change.income, waves12.change.controls, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Difference in Chronic Conditions x Logged Income",
+                               "Age at Wave 2", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.",
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r") 
 
-```{r diff23-table, echo = FALSE}
+```
+
+# Chron/Income Waves 2 and 3: Difference in cams predicted by difference in chronic conditions moderated by income
+
+```{r models-waves23-chron-mod-income, echo = FALSE, results='hide'}
 
 # Run diff cams model
 waves23.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
@@ -79,51 +104,37 @@ waves23.wide.complete$DiffChronxLogIncome <- waves23.wide.complete$DiffChronCent
 # Run income model 
 waves23.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W2 + DiffChronxLogIncome, data = waves23.wide.complete)
 
-
-# Create Table
-waves23.change <- tab_model(waves23.change.diffcams, waves23.change.income,
-          show.intercept = FALSE)
-waves23.change
+# Add Controls 
+waves23.change.controls <- lm(formula = DiffCams ~ DiffChron + LogIncome_W2 + DiffChronxLogIncome + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
 ```
 
+```{r waves23-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.change.diffcams, waves23.change.income, waves23.change.controls, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Difference in Chronic Conditions x Logged Income",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r") 
 
-# Waves 1 and 2 Education as moderator
-
-```{r diff12-table, echo = FALSE}
-
-# Run diff cams model
-waves12.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
-
-# Run income model 
-waves12.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1, data = waves12.wide.complete)
-
-
-# Create Table
-waves12.change <- tab_model(waves12.change.diffcams, waves12.change.education,
-          show.intercept = FALSE)
-waves12.change
 ```
 
-# Waves 2 and 3 Education as moderator
+# Chron/Income Waves 1 and 3 Income as moderator 
 
-```{r diff23-table, echo = FALSE}
-
-# Run diff cams model
-waves23.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
-
-# Run income model 
-waves23.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W2 + DiffChron*Education_W2, data = waves23.wide.complete)
-
-
-# Create Table
-waves23.change <- tab_model(waves23.change.diffcams, waves23.change.education,
-          show.intercept = FALSE)
-waves23.change
-```
-
-# Waves 1 and 3 Income as moderator 
-
-```{r diff13-table, echo = FALSE}
+```{r models-waves13-chron-mod-income, echo = FALSE, results='hide'}
 # Run diff cams model
 waves13.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
 
@@ -137,25 +148,435 @@ waves13.wide.complete$DiffChronxLogIncome <- waves13.wide.complete$DiffChronCent
 # Run income model 
 waves13.change.income <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves13.wide.complete)
 
-
-# Create Table
-waves13.change <- tab_model(waves13.change.diffcams, waves13.change.income,
-          show.intercept = FALSE)
-waves13.change
+# Add Controls
+waves13.change.controls <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
 ```
 
-# Waves 1 and 3 Education as moderator 
+```{r waves13-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.change.diffcams, waves13.change.income, waves13.change.controls, 
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Difference in Chronic Conditions x Logged Income",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.",
+                    "Standard errors shown in parentheses."),
+          notes.align = "r")
 
-```{r diff13-table, echo = FALSE}
+```
+
+# Chron/Educ Waves 1 and 2 Education as moderator
+
+```{r models-waves12-chron-mod-educ, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
+
+# Run income model 
+waves12.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1, data = waves12.wide.complete)
+
+# Add Controls
+waves12.change.controls <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+```
+
+```{r waves12-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.change.diffcams, waves12.change.education, waves12.change.controls, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x College Graduate", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.",
+                    "White is the reference category for race.",
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          float.env = "sidewaystable")
+```
+
+# Chron/Educ Waves 2 and 3 Education as moderator
+
+```{r models-waves23-chron-mod-educ, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
+
+# Run income model 
+waves23.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W2 + DiffChron*Education_W2, data = waves23.wide.complete)
+
+# Add Controls
+waves23.change.controls <- lm(formula = DiffCams ~ DiffChron + Education_W2 + DiffChron*Education_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+```
+
+```{r waves23-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.change.diffcams, waves23.change.education, waves23.change.controls, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x College Graduate", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.",
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses."),
+          notes.align = "r", 
+          float.env = "sidewaystable")
+```
+
+# Chron/Educ Waves 1 and 3 Education as moderator 
+
+```{r models-waves13-chron-mod-educ, echo = FALSE, results='hide'}
+
 # Run diff cams model
 waves13.change.diffcams <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
 
 # Run income model 
 waves13.change.education <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1, data = waves13.wide.complete)
 
+# Add Controls
+waves13.change.controls <- lm(formula = DiffCams ~ DiffChron + Education_W1 + DiffChron*Education_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+```
 
-# Create Table
-waves13.change <- tab_model(waves13.change.diffcams, waves13.change.education,
-          show.intercept = FALSE)
-waves13.change
+```{r waves13-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.change.diffcams, waves13.change.education, waves13.change.controls, 
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x College Graduate", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          float.env = "sidewaystable")
+```
+
+# SRH/Income Waves 1 and 2: Difference in cams predicted by difference in SRH moderated by income
+
+```{r model-waves12-SRH-mod-income, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves12.wide.complete)
+
+# Center diff SRH 
+waves12.wide.complete$DiffSRHCenter <- scale(waves12.wide.complete$DiffSRH, scale = FALSE)
+# Create interaction term 
+waves12.wide.complete$DiffSRHxLogIncome <- NA
+waves12.wide.complete$DiffSRHxLogIncome <- waves12.wide.complete$DiffSRHCenter*waves12.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves12.change.income <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome, data = waves12.wide.complete)
+
+# Add controls 
+waves12.change.controls <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+```
+
+```{r waves12-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.change.diffcams, waves12.change.income, waves12.change.controls, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Difference in SRH x Logged Income",
+                               "Age at Wave 2", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r") 
+
+```
+
+# SRH/Income Waves 2 and 3: Difference in cams predicted by difference in chronic conditions moderated by income
+
+```{r models-waves23-SRH-mod-income, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves23.wide.complete)
+
+# Center diff SRH 
+waves23.wide.complete$DiffSRHCenter <- scale(waves23.wide.complete$DiffSRH, scale = FALSE)
+# Create interaction term 
+waves23.wide.complete$DiffSRHxLogIncome <- NA
+waves23.wide.complete$DiffSRHxLogIncome <- waves23.wide.complete$DiffSRHCenter*waves23.wide.complete$LogIncomeCenter
+
+
+# Run income model 
+waves23.change.income <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W2 + DiffSRHxLogIncome, data = waves23.wide.complete)
+
+# Add Controls 
+waves23.change.controls <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W2 + DiffSRHxLogIncome + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+```
+
+```{r waves23-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.change.diffcams, waves23.change.income, waves23.change.controls, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Difference in SRH x Logged Income",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r") 
+
+```
+
+# SRH/Income Waves 1 and 3 Income as moderator 
+
+```{r models-waves13-SRH-mod-income, echo = FALSE, results='hide'}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves13.wide.complete)
+
+# Center diff chron 
+waves13.wide.complete$DiffSRHCenter <- scale(waves13.wide.complete$DiffSRH, scale = FALSE)
+# Center log income 
+waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
+# Create interaction term 
+waves13.wide.complete$DiffSRHxLogIncome <- waves13.wide.complete$DiffSRHCenter*waves13.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves13.change.income <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome, data = waves13.wide.complete)
+
+
+# Add Controls
+waves13.change.controls <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+```
+
+```{r waves13-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.change.diffcams, waves13.change.income, waves13.change.controls, 
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Difference in SRH x Logged Income",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health"), 
+          notes.align = "r")
+
+```
+
+# SRH/Educ Waves 1 and 2 Education as moderator
+
+```{r models-waves12-SRH-mod-educ, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves12.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves12.wide.complete)
+
+# Run income model 
+waves12.change.education <- lm(formula = DiffCams ~ DiffSRH + Education_W1 + DiffChron*Education_W1, data = waves12.wide.complete)
+
+# Add Controls
+waves12.change.controls <- lm(formula = DiffCams ~ DiffSRH + Education_W1 + DiffChron*Education_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+```
+
+```{r waves12-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.change.diffcams, waves12.change.education, waves12.change.controls, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in SRH x HS Diploma/GED", 
+                               "Difference in SRH x Some College/AA Degree", 
+                               "Difference in SRH x College Graduate", 
+                               "Difference in SRH x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable")
+```
+
+# SRH/Educ Waves 2 and 3 Education as moderator
+
+```{r models-waves23-SRH-mod-educ, echo = FALSE, results='hide'}
+
+# Run diff cams model
+waves23.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves23.wide.complete)
+
+# Run income model 
+waves23.change.education <- lm(formula = DiffCams ~ DiffSRH + Education_W2 + DiffSRH*Education_W2, data = waves23.wide.complete)
+
+# Add Controls 
+waves23.change.controls <- lm(formula = DiffCams ~ DiffSRH + Education_W2 + DiffSRH*Education_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+
+```
+
+```{r waves23-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.change.diffcams, waves23.change.education, waves23.change.controls, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in SRH x HS Diploma/GED", 
+                               "Difference in SRH x Some College/AA Degree", 
+                               "Difference in SRH x College Graduate", 
+                               "Difference in SRH x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable")
+```
+
+# SRH/Educ Waves 1 and 3 Education as moderator 
+
+```{r models-waves13-SRH-mod-educ, echo = FALSE, results='hide'}
+# Run diff cams model
+waves13.change.diffcams <- lm(formula = DiffCams ~ DiffSRH, data = waves13.wide.complete)
+
+# Run income model 
+waves13.change.education <- lm(formula = DiffCams ~ DiffSRH + Education_W1 + DiffChron*Education_W1, data = waves13.wide.complete)
+
+# Add Controls 
+waves13.change.controls <- lm(formula = DiffCams ~ DiffSRH + Education_W1 + DiffChron*Education_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+```
+
+```{r waves13-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.change.diffcams, waves13.change.education, waves13.change.controls, 
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "HS Diploma/GED", 
+                               "Some College/AA Degree",
+                               "College Graduate", "Graduate or Professional Degree", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in SRH x HS Diploma/GED", 
+                               "Difference in SRH x Some College/AA Degree", 
+                               "Difference in SRH x College Graduate", 
+                               "Difference in SRH x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("Less than HS is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable")
 ```

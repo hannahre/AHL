@@ -3,7 +3,8 @@ title: "Mixed Model"
 author: "Hannah Andrews"
 date: "2/9/2022"
 output:
-  bookdown::pdf_document2: default
+  bookdown::pdf_document2:
+    latex_engine: xelatex
 bibliography: references.bib
 link-citations: true
 header-includes:
@@ -66,22 +67,19 @@ path.waves123.wide <- waves123.wide %>%
   mutate(waves123.wide = factor(Education_W1, levels = c("Less than High School", "HS Diploma/GED", 
                                                 "Some College/AA Degree", "College Grad",
                                                 "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-# Convert to numeric to be used as ordinal variable
-path.waves123.wide$Education_W1 <- as.numeric(path.waves123.wide$Education_W1)
+
 # Order education levels
 path.waves123.wide <- path.waves123.wide %>%
   mutate(path.waves123.wide = factor(Education_W2, levels = c("Less than High School", "HS Diploma/GED", 
                                                 "Some College/AA Degree", "College Grad",
                                                 "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-# Convert to numeric to be used as ordinal variable
-path.waves123.wide$Education_W2 <- as.numeric(path.waves123.wide$Education_W2)
+
 # Order Education levels
 path.waves123.wide <- path.waves123.wide %>%
   mutate(path.waves123.wide = factor(Education_W3, levels = c("Less than High School", "HS Diploma/GED", 
                                                 "Some College/AA Degree", "College Grad",
                                                 "Graduate or Professional Degree"), labels = 1:5, ordered = TRUE))
-# Convert to numeric to be used as ordinal variable
-path.waves123.wide$Education_W3 <- as.numeric(path.waves123.wide$Education_W3)
+
 
 # Create dummy variables for race
 path.waves123.wide <- dummy_cols(path.waves123.wide, select_columns = 'Race_W2', ignore_na = TRUE)
@@ -97,8 +95,7 @@ path.waves123.wide <- path.waves123.wide %>%
                                                    "Very Good", "Excellent"), 
                                 labels = 1:5, 
                                 ordered = TRUE))
-# Convert to numeric to be used as ordinal variable
-path.waves123.wide$SRH_W2 <- as.numeric(path.waves123.wide$SRH_W2)
+
 
 # Order SRH levels
 path.waves123.wide <- path.waves123.wide %>%
@@ -106,8 +103,13 @@ path.waves123.wide <- path.waves123.wide %>%
                                                    "Very Good", "Excellent"), 
                                 labels = 1:5, 
                                 ordered = TRUE))
-# Convert to numeric to be used as ordinal variable
-path.waves123.wide$SRH_W3 <- as.numeric(path.waves123.wide$SRH_W3)
+# Order Sex_W1
+path.waves123.wide <- path.waves123.wide %>% 
+  mutate(waves123.wide = factor(Sex_W1, levels = c("Male", "Female"),
+                                labels = 0:1, 
+                                ordered = TRUE))
+
+# Order 
 ```
 
 ```{r listwise-delete-path-data, echo =FALSE}
@@ -164,12 +166,34 @@ Race, sex, marital status, health insurance, age, spirituality and religiosity a
 
 # Methods
 
-The research question examined in this chapter is whether socieconomic status (SES) predict the use of mind body approaches, alternative medical systems, physical and nutritional approaches, manipulative treatments, and total CAMs. To address this question. I used generalized linear mixed models (GLMMs) to assess these relationships. I used logistic GLMMs to model the effect of SES on each of the CAM factor indices and a Poisson GLMM to model the effect of SES on total CAM use. To assess a change in the total CAMs used in response to a change in chronic conditions, I used OLS models to compare waves 1 and 2, waves 2 and 3, and waves 1 and 3.
+To address the question of whether CAM use is related to SES, I used generalized linear mixed models (GLMMs). I used logistic GLMMs to model the effect of SES on each of the CAM factor indices and a Poisson GLMM to model the effect of SES on total CAM use. For each CAM variable I run four models with the following predictors: (1) income, (2) education, (3) income and education, and (4) income, education, and controls. 
 
-GLMMs are an extension of generalized linear models that account for the nested nature of data. In the MIDUS data, each respondent participated in the survey at one to three time points. Therefore measures at different time points are nested within the individual. GLMMs include fixed effects for level 1 predictors and random effects for level 2. The fixed effects in the models below include all predictors and covariates. Individual id numbers were used to obtain the random effects. The intercept for each individual can vary randomly.
+GLMMs are an extension of generalized linear models that account for the nested nature of data. In the MIDUS data, each respondent participated in the survey at one to three time points. Therefore measures at different time points are nested within the individual. GLMMs include fixed effects for level 1 predictors and random effects for level 2. The fixed effects in the models below include all predictors and covariates. Individual id numbers were used to obtain the random effects. The intercept for each individual can vary randomly. Logistic GLMMs were utilized to predict the binary factor indices. Given that the total CAMs variable is a count variable and no over dispersion was detected in the distribution a Poisson GLMM was used to predict the total CAMs variable. 
+
+Path analysis, a type of structural equation modeling (SEM) was used to address the question of whether CAM use mediates the relationship between SES and health. Path analysis is a form of multiple regression used to assess causal relationships between variables. Unlike SEM, only one indicator is used to measure each latent variable. Path analysis allows for the inclusion of multiple dependent, or endogenous, variables. In the models below, total CAMs and health measures are included as dependent variables. SES at time 1 is the main predictor, wave 2 variables are used as mediators, and wave 3 variables are included as outcomes. In constructing the path model I utilize a cross-lagged panel design. Cross-lagged panel designs are useful when examining the relationship between two variables over time. In this case, one of my concerns is the direction of the relationship between total CAMs used and health. Do people utilize CAMs to address poor health? In this case health would predict CAM use. Or do people utilize CAMs as a preventative measure against poor health? In this case CAMs would predict health. A cross-lagged panel design allows me to test each of these relationships simultaneously. 
+
+Model identification... Fit indices... unstandardized and standardized coefficients. Cross lagged... Indirect effects... total effects... 
+(SEM description)  
+
+(SEM process)
+
+(Moderation description)
+
+(Sequence of models for moderation)
+
+All models were fit using R software. 
 
 
-```{r wave-comp-educ-recodes, echo=FALSE}
+```{r educ-reorder-recodes, echo=FALSE}
+
+#  Education.2 so that college graduate is the reference category. 
+waves123.long.complete$Education.2 <- factor(waves123.long.complete$Education, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
 waves12.wide.complete$Education_W1.2 <- factor(waves12.wide.complete$Education_W1, 
                                               levels = c("College Grad", 
                                                          "Less than High School", 
@@ -196,21 +220,23 @@ waves13.wide.complete$Education_W1.2 <- factor(waves13.wide.complete$Education_W
 
 ```{r models-waves12-chron-mod-income, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves12.chron.income.1 <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
-
 # Center diff chron 
 waves12.wide.complete$DiffChronCenter <- scale(waves12.wide.complete$DiffChron, scale = FALSE)
+waves12.wide.complete$DiffChronCenter <- as.numeric(waves12.wide.complete$DiffChronCenter)
 # Center log income 
 waves12.wide.complete$LogIncomeCenter <- scale(waves12.wide.complete$LogIncome_W1, scale = FALSE)
+waves12.wide.complete$LogIncomeCenter <- as.numeric(waves12.wide.complete$LogIncomeCenter)
 # Create interaction term 
 waves12.wide.complete$DiffChronxLogIncome <- waves12.wide.complete$DiffChronCenter*waves12.wide.complete$LogIncomeCenter
 
 # Run income model 
-waves12.chron.income.2 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves12.wide.complete)
+waves12.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves12.wide.complete)
+
+# Run income model 
+waves12.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves12.wide.complete)
 
 # Add Controls 
-waves12.chron.income.3 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+waves12.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
 
 # Extract standard errors
 waves12.chron.income.1.se <- summary(waves12.chron.income.1)$coef[,"Std. Error"]
@@ -220,21 +246,22 @@ waves12.chron.income.3.se <- summary(waves12.chron.income.3)$coef[,"Std. Error"]
 
 ```{r models-waves23-chron-mod-income, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves23.chron.income.1 <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
-
 # Center diff chron 
 waves23.wide.complete$DiffChronCenter <- scale(waves23.wide.complete$DiffChron, scale = FALSE)
+waves23.wide.complete$DiffChronCenter <- as.numeric(waves23.wide.complete$DiffChronCenter)
 # Center log income 
 waves23.wide.complete$LogIncomeCenter <- scale(waves23.wide.complete$LogIncome_W2, scale = FALSE)
 # Create interaction term 
 waves23.wide.complete$DiffChronxLogIncome <- waves23.wide.complete$DiffChronCenter*waves23.wide.complete$LogIncomeCenter
 
 # Run income model 
-waves23.chron.income.2 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W2 + DiffChronxLogIncome, data = waves23.wide.complete)
+waves23.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves23.wide.complete)
+
+# Run income model 
+waves23.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves23.wide.complete)
 
 # Add Controls 
-waves23.chron.income.3 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W2 + DiffChronxLogIncome + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+waves23.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W2.2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
 
 # Extract standard errors
 waves23.chron.income.1.se <- summary(waves23.chron.income.1)$coef[,"Std. Error"]
@@ -243,21 +270,23 @@ waves23.chron.income.3.se <- summary(waves23.chron.income.3)$coef[,"Std. Error"]
 ```
 
 ```{r models-waves13-chron-mod-income, echo = FALSE, results='hide'}
-# Run diff cams model
-waves13.chron.income.1 <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
 
 # Center diff chron 
 waves13.wide.complete$DiffChronCenter <- scale(waves13.wide.complete$DiffChron, scale = FALSE)
+waves13.wide.complete$DiffChronCenter <- as.numeric(waves13.wide.complete$DiffChronCenter)
 # Center log income 
 waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
 # Create interaction term 
 waves13.wide.complete$DiffChronxLogIncome <- waves13.wide.complete$DiffChronCenter*waves13.wide.complete$LogIncomeCenter
 
 # Run income model 
-waves13.chron.income.2 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome, data = waves13.wide.complete)
+waves13.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves13.wide.complete)
+
+# Run income model 
+waves13.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves13.wide.complete)
 
 # Add Controls
-waves13.chron.income.3 <- lm(formula = DiffCams ~ DiffChron + LogIncome_W1 + DiffChronxLogIncome + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+waves13.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W1.2 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
 
 waves13.chron.income.1.se <- summary(waves13.chron.income.1)$coef[,"Std. Error"]
 waves13.chron.income.2.se <- summary(waves13.chron.income.2)$coef[,"Std. Error"]
@@ -266,14 +295,14 @@ waves13.chron.income.3.se <- summary(waves13.chron.income.3)$coef[,"Std. Error"]
 
 ```{r models-waves12-chron-mod-educ, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves12.chron.educ.1 <- lm(formula = DiffCams ~ DiffChron, data = waves12.wide.complete)
+# Run income model 
+waves12.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2, data = waves12.wide.complete)
 
 # Run income model 
-waves12.chron.educ.2 <- lm(formula = DiffCams ~ DiffChron + Education_W1.2 + DiffChron*Education_W1.2, data = waves12.wide.complete)
+waves12.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2, data = waves12.wide.complete)
 
 # Add Controls
-waves12.chron.educ.3 <- lm(formula = DiffCams ~ DiffChron + Education_W1.2 + DiffChron*Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+waves12.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2 + LogIncome_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
 
 # Extract standard errors
 waves12.chron.educ.1.se <- summary(waves12.chron.educ.1)$coef[,"Std. Error"]
@@ -283,14 +312,14 @@ waves12.chron.educ.3.se <- summary(waves12.chron.educ.3)$coef[,"Std. Error"]
 
 ```{r models-waves23-chron-mod-educ, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves23.chron.educ.1 <- lm(formula = DiffCams ~ DiffChron, data = waves23.wide.complete)
+# Run income model 
+waves23.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2, data = waves23.wide.complete)
 
 # Run income model 
-waves23.chron.educ.2 <- lm(formula = DiffCams ~ DiffChron + Education_W2.2 + DiffChron*Education_W2, data = waves23.wide.complete)
+waves23.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2 + DiffChronCenter*Education_W2.2, data = waves23.wide.complete)
 
 # Add Controls
-waves23.chron.educ.3 <- lm(formula = DiffCams ~ DiffChron + Education_W2.2 + DiffChron*Education_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+waves23.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2 + DiffChronCenter*Education_W2.2 + LogIncome_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
 
 # Extract standard errors
 waves23.chron.educ.1.se <- summary(waves23.chron.educ.1)$coef[,"Std. Error"]
@@ -300,38 +329,40 @@ waves23.chron.educ.3.se <- summary(waves23.chron.educ.3)$coef[,"Std. Error"]
 
 ```{r models-waves13-chron-mod-educ, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves13.chron.educ.1 <- lm(formula = DiffCams ~ DiffChron, data = waves13.wide.complete)
 
 # Run income model 
-waves13.chron.educ.2 <- lm(formula = DiffCams ~ DiffChron + Education_W1.2 + DiffChron*Education_W1, data = waves13.wide.complete)
+waves13.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2, data = waves13.wide.complete)
+
+# Run income model 
+waves13.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2, data = waves13.wide.complete)
 
 # Add Controls
-waves13.chron.educ.3 <- lm(formula = DiffCams ~ DiffChron + Education_W1.2 + DiffChron*Education_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+waves13.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2 + LogIncome_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
 
 # Extract standard errors
 waves13.chron.educ.1.se <- summary(waves13.chron.educ.1)$coef[,"Std. Error"]
 waves13.chron.educ.2.se <- summary(waves13.chron.educ.2)$coef[,"Std. Error"]
 waves13.chron.educ.3.se <- summary(waves13.chron.educ.3)$coef[,"Std. Error"]
-```
 
+```
 
 ```{r model-waves12-SRH-mod-income, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves12.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves12.wide.complete)
-
 # Center diff SRH 
 waves12.wide.complete$DiffSRHCenter <- scale(waves12.wide.complete$DiffSRH, scale = FALSE)
+waves12.wide.complete$DiffSRHCenter <- as.numeric(waves12.wide.complete$DiffSRHCenter)
 # Create interaction term 
 waves12.wide.complete$DiffSRHxLogIncome <- NA
 waves12.wide.complete$DiffSRHxLogIncome <- waves12.wide.complete$DiffSRHCenter*waves12.wide.complete$LogIncomeCenter
 
 # Run income model 
-waves12.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome, data = waves12.wide.complete)
+waves12.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves12.wide.complete)
+
+# Run income model 
+waves12.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves12.wide.complete)
 
 # Add controls 
-waves12.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+waves12.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
 
 # Extract standard errors
 waves12.SRH.income.1.se <- summary(waves12.SRH.income.1)$coef[,"Std. Error"]
@@ -342,21 +373,22 @@ waves12.SRH.income.3.se <- summary(waves12.SRH.income.3)$coef[,"Std. Error"]
 
 ```{r models-waves23-SRH-mod-income, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves23.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves23.wide.complete)
-
 # Center diff SRH 
 waves23.wide.complete$DiffSRHCenter <- scale(waves23.wide.complete$DiffSRH, scale = FALSE)
+waves23.wide.complete$DiffSRHCenter <- as.numeric(waves23.wide.complete$DiffSRHCenter)
 # Create interaction term 
 # waves23.wide.complete$DiffSRHxLogIncome <- NA
 waves23.wide.complete$DiffSRHxLogIncome <- waves23.wide.complete$DiffSRHCenter*waves23.wide.complete$LogIncomeCenter
 
 
 # Run income model 
-waves23.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W2 + DiffSRHxLogIncome, data = waves23.wide.complete)
+waves23.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves23.wide.complete)
+
+# Run income model 
+waves23.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves23.wide.complete)
 
 # Add Controls 
-waves23.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W2 + DiffSRHxLogIncome + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+waves23.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W2.2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
 
 # Extract standard errors
 waves23.SRH.income.1.se <- summary(waves23.SRH.income.1)$coef[,"Std. Error"]
@@ -365,22 +397,24 @@ waves23.SRH.income.3.se <- summary(waves23.SRH.income.3)$coef[,"Std. Error"]
 ```
 
 ```{r models-waves13-SRH-mod-income, echo = FALSE, results='hide'}
-# Run diff cams model
-waves13.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves13.wide.complete)
 
 # Center diff chron 
 waves13.wide.complete$DiffSRHCenter <- scale(waves13.wide.complete$DiffSRH, scale = FALSE)
+waves13.wide.complete$DiffSRHCenter <- as.numeric(waves13.wide.complete$DiffSRHCenter)
 # Center log income 
 waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
 # Create interaction term 
 waves13.wide.complete$DiffSRHxLogIncome <- waves13.wide.complete$DiffSRHCenter*waves13.wide.complete$LogIncomeCenter
 
 # Run income model 
-waves13.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome, data = waves13.wide.complete)
+waves13.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves13.wide.complete)
+
+# Run income model 
+waves13.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves13.wide.complete)
 
 
 # Add Controls
-waves13.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRH + LogIncome_W1 + DiffSRHxLogIncome + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+waves13.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
 
 # Extract standard errors
 waves13.SRH.income.1.se <- summary(waves13.SRH.income.1)$coef[,"Std. Error"]
@@ -390,14 +424,14 @@ waves13.SRH.income.3.se <- summary(waves13.SRH.income.3)$coef[,"Std. Error"]
 
 ```{r models-waves12-SRH-mod-educ, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves12.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves12.wide.complete)
+# Run income model 
+waves12.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves12.wide.complete)
 
 # Run income model 
-waves12.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRH + Education_W1.2 + DiffChron*Education_W1.2, data = waves12.wide.complete)
+waves12.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves12.wide.complete)
 
 # Add Controls
-waves12.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRH + Education_W1.2 + DiffChron*Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+waves12.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
 
 # Extract standard errors
 waves12.SRH.educ.1.se <- summary(waves12.SRH.educ.1)$coef[,"Std. Error"]
@@ -407,14 +441,14 @@ waves12.SRH.educ.3.se <- summary(waves12.SRH.educ.3)$coef[,"Std. Error"]
 
 ```{r models-waves23-SRH-mod-educ, echo = FALSE, results='hide'}
 
-# Run diff cams model
-waves23.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves23.wide.complete)
+# Run income model 
+waves23.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2, data = waves23.wide.complete)
 
 # Run income model 
-waves23.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRH + Education_W2.2 + DiffSRH*Education_W2, data = waves23.wide.complete)
+waves23.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2, data = waves23.wide.complete)
 
 # Add Controls 
-waves23.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRH + Education_W2.2 + DiffSRH*Education_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+waves23.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2 + LogIncome_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
 
 # Extract standard errors
 waves23.SRH.educ.1.se <- summary(waves23.SRH.educ.1)$coef[,"Std. Error"]
@@ -423,14 +457,15 @@ waves23.SRH.educ.3.se <- summary(waves23.SRH.educ.3)$coef[,"Std. Error"]
 ```
 
 ```{r models-waves13-SRH-mod-educ, echo = FALSE, results='hide'}
-# Run diff cams model
-waves13.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRH, data = waves13.wide.complete)
 
 # Run income model 
-waves13.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRH + Education_W1.2 + DiffChron*Education_W1, data = waves13.wide.complete)
+waves13.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves13.wide.complete)
+
+# Run income model 
+waves13.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves13.wide.complete)
 
 # Add Controls 
-waves13.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRH + Education_W1.2 + DiffChron*Education_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+waves13.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
 
 # Extract standard errors
 waves13.SRH.educ.1.se <- summary(waves13.SRH.educ.1)$coef[,"Std. Error"]
@@ -488,10 +523,10 @@ baseline <- glmer(mindbody ~ 1 + (1|M2ID), data = waves123.long.complete, family
 mb1 <- glmer(mindbody ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with education
-mb2 <- glmer(mindbody ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+mb2 <- glmer(mindbody ~ Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with income and education
-mb3 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+mb3 <- glmer(mindbody ~ LogIncome + Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 #sjPlot::plot_model(mb2, 
 #                   show.values=TRUE, show.p=TRUE,
@@ -499,13 +534,19 @@ mb3 <- glmer(mindbody ~ LogIncome + Education + (1|M2ID), data = waves123.long.c
 
 
 # Model with all covariates
-mb4 <- glmer(mindbody ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+mb4 <- glmer(mindbody ~ LogIncome + Education.2 + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Store results for reporting 
+summ.mb1 <- summary(mb1)
+summ.mb2 <- summary(mb2)
+summ.mb3 <- summary(mb3)
+summ.mb4 <- summary(mb4)
 
 # Create table with results
 mb.tab.model <- tab_model(mb1, mb2, mb3, mb4,
           show.intercept = FALSE,
-          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
-                          "College Graduate", "Graduate/Professional Degree", "Age", 
+          pred.labels = c("Logged Income",  "Less than high school", "High School Diploma/GED",
+                          "Some College/AA", "Graduate/Professional Degree", "Age", 
                           "Female", "Non-Hispanic Black", "Other Race", 
                           "Mexican American and Other Hispanic", "Married", "Insured",
                           "Health Locus of Control", "Spirituality", "Religiosity"),
@@ -574,10 +615,10 @@ baseline <- glmer(altmed ~ 1 + (1|M2ID), data = waves123.long.complete, family =
 am1 <- glmer(altmed ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with education
-am2 <- glmer(altmed ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+am2 <- glmer(altmed ~ Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with income and education
-am3 <- glmer(altmed ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+am3 <- glmer(altmed ~ LogIncome + Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 #sjPlot::plot_model(am2, 
 #                   show.values=TRUE, show.p=TRUE,
@@ -585,13 +626,19 @@ am3 <- glmer(altmed ~ LogIncome + Education + (1|M2ID), data = waves123.long.com
 
 
 # Model with all covariates
-am4 <- glmer(altmed ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+am4 <- glmer(altmed ~ LogIncome + Education.2 + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Store results for reporting 
+summ.am1 <- summary(am1)
+summ.am2 <- summary(am2)
+summ.am3 <- summary(am3)
+summ.am4 <- summary(am4)
 
 # Create table with results
 altmed.tab.model <- tab_model(am1, am2, am3, am4,
           show.intercept = FALSE,
-          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
-                          "College Graduate", "Graduate/Professional Degree", "Age", 
+          pred.labels = c("Logged Income", "Less than high school", "High School Diploma/GED",
+                          "Some College/AA", "Graduate/Professional Degree", "Age", 
                           "Female", "Non-Hispanic Black", "Other Race", 
                           "Mexican American and Other Hispanic", "Married", "Insured",
                           "Health Locus of Control", "Spirituality", "Religiosity"),
@@ -661,10 +708,10 @@ baseline <- glmer(pna ~ 1 + (1|M2ID), data = waves123.long.complete, family = bi
 pna1 <- glmer(pna ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with education
-pna2 <- glmer(pna ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+pna2 <- glmer(pna ~ Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with income and education
-pna3 <- glmer(pna ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+pna3 <- glmer(pna ~ LogIncome + Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 #sjPlot::plot_model(pna2, 
 #                   show.values=TRUE, show.p=TRUE,
@@ -672,13 +719,19 @@ pna3 <- glmer(pna ~ LogIncome + Education + (1|M2ID), data = waves123.long.compl
 
 
 # Model with all covariates
-pna4 <- glmer(pna ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+pna4 <- glmer(pna ~ LogIncome + Education.2 + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Store results for reporting 
+summ.pna1 <- summary(pna1)
+summ.pna2 <- summary(pna2)
+summ.pna3 <- summary(pna3)
+summ.pna4 <- summary(pna4)
 
 # Create table with results
 pna.tab.model <- tab_model(pna1, pna2, pna3, pna4,
           show.intercept = FALSE,
-          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
-                          "College Graduate", "Graduate/Professional Degree", "Age", 
+          pred.labels = c("Logged Income", "Less than high school", "High School Diploma/GED",
+                          "Some College/AA", "Graduate/Professional Degree", "Age", 
                           "Female", "Non-Hispanic Black", "Other Race", 
                           "Mexican American and Other Hispanic", "Married", "Insured",
                           "Health Locus of Control", "Spirituality", "Religiosity"),
@@ -747,10 +800,10 @@ baseline <- glmer(manipulative ~ 1 + (1|M2ID), data = waves123.long.complete, fa
 manipulative1 <- glmer(manipulative ~ LogIncome + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with education
-manipulative2 <- glmer(manipulative ~ Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+manipulative2 <- glmer(manipulative ~ Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 # Model with income and education
-manipulative3 <- glmer(manipulative ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+manipulative3 <- glmer(manipulative ~ LogIncome + Education.2 + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
 
 #sjPlot::plot_model(manipulative2, 
 #                   show.values=TRUE, show.p=TRUE,
@@ -758,13 +811,19 @@ manipulative3 <- glmer(manipulative ~ LogIncome + Education + (1|M2ID), data = w
 
 
 # Model with all covariates
-manipulative4 <- glmer(manipulative ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+manipulative4 <- glmer(manipulative ~ LogIncome + Education.2 + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = binomial, nAGQ = 0)
+
+# Store results for reporting 
+summ.manipulative1 <- summary(manipulative1)
+summ.manipulative2 <- summary(manipulative2)
+summ.manipulative3 <- summary(manipulative3)
+summ.manipulative4 <- summary(manipulative4)
 
 # Create table with results
 manipulative.tab.model <- tab_model(manipulative1, manipulative2, manipulative3, manipulative4,
           show.intercept = FALSE,
-          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
-                          "College Graduate", "Graduate/Professional Degree", "Age", 
+          pred.labels = c("Logged Income", "Less than high school", "High School Diploma/GED",
+                          "Some College/AA", "Graduate/Professional Degree", "Age", 
                           "Female", "Non-Hispanic Black", "Other Race", 
                           "Mexican American and Other Hispanic", "Married", "Insured",
                           "Health Locus of Control", "Spirituality", "Religiosity"),
@@ -831,15 +890,21 @@ tot1 <- glmer(totalCams ~ LogIncome + (1|M2ID), data = waves123.long.complete, f
 # check_overdispersion(tot1)
 
 # Model with education
-tot2 <- glmer(totalCams ~ Education + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+tot2 <- glmer(totalCams ~ Education.2 + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
 # check_overdispersion(tot2)
 
 # Model with income and education
-tot3 <- glmer(totalCams ~ LogIncome + Education + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+tot3 <- glmer(totalCams ~ LogIncome + Education.2 + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
 # check_overdispersion(tot3)
 
 # Model with all covariates
-tot4 <- glmer(totalCams ~ LogIncome + Education + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+tot4 <- glmer(totalCams ~ LogIncome + Education.2 + Age + Sex + Race + Marital + HlthInsurance + HLSelf + Spiritual + Religion + (1|M2ID), data = waves123.long.complete, family = poisson, nAGQ = 0)
+
+# Store results for reporting 
+summ.tot1 <- summary(tot1)
+summ.tot2 <- summary(tot2)
+summ.tot3 <- summary(tot3)
+summ.tot4 <- summary(tot4)
 
 # Check for overdispersion 
 # If the dispersion ratio is close to one, a Poisson model fits well to the data. Dispersion ratios larger than one indicate overdispersion, thus a negative binomial model or similar might fit better to the data. A p-value < .05 indicates overdispersion.
@@ -849,8 +914,8 @@ tot4 <- glmer(totalCams ~ LogIncome + Education + Age + Sex + Race + Marital + H
 # Create table with results
 tot.tab.model <- tab_model(tot1, tot2, tot3, tot4,
           show.intercept = FALSE,
-          pred.labels = c("Logged Income", "High School Diploma/GED", "Some College/AA", 
-                          "College Graduate", "Graduate/Professional Degree", "Age", 
+          pred.labels = c("Logged Income", "Less than high school", "High School Diploma/GED",
+                          "Some College/AA", "Graduate/Professional Degree", "Age", 
                           "Female", "Non-Hispanic Black", "Other Race", 
                           "Mexican American and Other Hispanic", "Married", "Insured",
                           "Health Locus of Control", "Spirituality", "Religiosity"),
@@ -953,7 +1018,7 @@ totalCams_W3 ~~ SumChron_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete, ordered = c("Sex_W1", "Marital_W2", "HlthInsurance_W2", "Marital_W3", ) estimator = "DWLS")
 summary(model.summ, standardized = TRUE, fit.measures = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -1219,7 +1284,7 @@ mindbody_W3 ~~ SumChron_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -1483,7 +1548,7 @@ altmed_W3 ~~ SumChron_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -1753,7 +1818,7 @@ pna_W3 ~~ SumChron_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -2023,7 +2088,7 @@ manipulative_W3 ~~ SumChron_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -2251,7 +2316,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-```{r model-totcams-SRH, echo = FALSE, results='hide', fig.show='hide'}
+```{r model-totcams-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
 # Regressions
 # Direct effect - log income 
@@ -2293,7 +2358,7 @@ totalCams_W3 ~~ SRH_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE, fit.measures = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -2347,12 +2412,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 ```
 
-```{r path-totcams-SRH, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Self-Reported Health"}
+```{r path-totcams-srh, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Self-Reported Health"}
 # Create final plot
 plot(path_dia5)
 ```
 
-```{r de-totcams-SRH, echo = FALSE}
+```{r de-totcams-srh, echo = FALSE}
 # Create Direct Effects Table 
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == "~") %>%  
@@ -2446,7 +2511,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   kableExtra::landscape()
 ```
 
-```{r create-ie-totcams-SRH, echo = FALSE, results='hide'}
+```{r create-ie-totcams-srh, echo = FALSE, results='hide'}
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == ":=")
 
@@ -2467,7 +2532,7 @@ tab.IE.totCams.srh <- tab.IE.totCams.srh %>%
   slice(match(x, Path))
 ```
 
-```{r ie-totcams-SRH, echo=FALSE}
+```{r ie-totcams-srh, echo=FALSE}
 tab.IE.totCams.srh %>% 
   mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
   mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Total CAMs")) %>%
@@ -2501,7 +2566,7 @@ tab.IE.totCams.srh %>%
 
 ```
 
-```{r fit-totcams-SRH, echo = FALSE}
+```{r fit-totcams-srh, echo = FALSE}
 # Create fit statistics table 
 fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
   as.data.frame() %>% 
@@ -2517,7 +2582,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-```{r model-mb-SRH, echo = FALSE, results='hide', fig.show='hide'}
+```{r model-mb-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
 # Regressions
 # Direct effect - log income 
@@ -2560,7 +2625,7 @@ mindbody_W3 ~~ SRH_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -2619,12 +2684,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 ```
 
-```{r path-mb-SRH, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Self-Reported Health"}
+```{r path-mb-srh, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Self-Reported Health"}
 # Create final plot
 plot(path_dia5)
 ```
 
-```{r de-mb-SRH, echo = FALSE}
+```{r de-mb-srh, echo = FALSE}
 # Create Direct Effects Table 
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == "~") %>%  
@@ -2718,7 +2783,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   kableExtra::landscape()
 ```
 
-```{r create-ie-mb-SRH, echo = FALSE, results='hide'}
+```{r create-ie-mb-srh, echo = FALSE, results='hide'}
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == ":=")
 
@@ -2739,7 +2804,7 @@ tab.IE.mb.srh <- tab.IE.mb.srh %>%
   slice(match(x, Path))
 ```
 
-```{r ie-mb-SRH, echo=FALSE}
+```{r ie-mb-srh, echo=FALSE}
 tab.IE.totCams.srh %>% 
   mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
   mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Mind-Body Medicines")) %>%
@@ -2773,7 +2838,7 @@ tab.IE.totCams.srh %>%
 
 ```
 
-```{r fit-mb-SRH, echo = FALSE}
+```{r fit-mb-srh, echo = FALSE}
 # Create fit statistics table 
 fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
   as.data.frame() %>% 
@@ -2787,7 +2852,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-```{r model-altmed-SRH, echo = FALSE, results='hide', fig.show='hide'}
+```{r model-altmed-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
 # Regressions
 # Direct effect - log income 
@@ -2830,7 +2895,7 @@ altmed_W3 ~~ SRH_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -2889,12 +2954,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 ```
 
-```{r path-altmed-SRH, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Self-Reported Health"}
+```{r path-altmed-srh, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Self-Reported Health"}
 # Create final plot
 plot(path_dia5)
 ```
 
-```{r de-altmed-SRH, echo = FALSE}
+```{r de-altmed-srh, echo = FALSE}
 # Create Direct Effects Table 
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == "~") %>%  
@@ -2988,7 +3053,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   kableExtra::landscape()
 ```
 
-```{r create-ie-altmed-SRH, echo = FALSE, results='hide'}
+```{r create-ie-altmed-srh, echo = FALSE, results='hide'}
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == ":=")
 
@@ -3009,7 +3074,7 @@ tab.IE.altmed.srh <- tab.IE.altmed.srh %>%
   slice(match(x, Path))
 ```
 
-```{r ie-altmed-SRH, echo=FALSE}
+```{r ie-altmed-srh, echo=FALSE}
 tab.IE.altmed.srh %>% 
   mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
   mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Alternative Medicines")) %>%
@@ -3043,7 +3108,7 @@ tab.IE.altmed.srh %>%
 
 ```
 
-```{r fit-altmed-SRH, echo = FALSE}
+```{r fit-altmed-srh, echo = FALSE}
 # Create fit statistics table 
 fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
   as.data.frame() %>% 
@@ -3057,7 +3122,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-```{r model-pna-SRH, echo = FALSE, results='hide', fig.show='hide'}
+```{r model-pna-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
 # Regressions
 # Direct effect - log income 
@@ -3100,7 +3165,7 @@ pna_W3 ~~ SRH_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -3155,12 +3220,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 ```
 
-```{r path-pna-SRH, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Self-Reported Health"}
+```{r path-pna-srh, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Self-Reported Health"}
 # Create final plot
 plot(path_dia5)
 ```
 
-```{r de-pna-SRH, echo = FALSE}
+```{r de-pna-srh, echo = FALSE}
 # Create Direct Effects Table 
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == "~") %>%  
@@ -3254,7 +3319,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   kableExtra::landscape() 
 ```
 
-```{r create-ie-pna-SRH, echo = FALSE, results='hide'}
+```{r create-ie-pna-srh, echo = FALSE, results='hide'}
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == ":=")
 
@@ -3275,7 +3340,7 @@ tab.IE.pna.srh <- tab.IE.pna.srh %>%
   slice(match(x, Path))
 ```
 
-```{r ie-pna-SRH, echo=FALSE}
+```{r ie-pna-srh, echo=FALSE}
 tab.IE.totCams.srh %>% 
   mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
   mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Physical and Nutritional Approaches")) %>%
@@ -3309,7 +3374,7 @@ tab.IE.totCams.srh %>%
 
 ```
 
-```{r fit-pna-SRH, echo = FALSE}
+```{r fit-pna-srh, echo = FALSE}
 # Create fit statistics table 
 fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
   as.data.frame() %>% 
@@ -3325,7 +3390,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-```{r model-manipulative-SRH, echo = FALSE, results='hide', fig.show='hide'}
+```{r model-manipulative-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
 # Regressions
 # Direct effect - log income 
@@ -3368,7 +3433,7 @@ manipulative_W3 ~~ SRH_W3
 
 # Run model and get summary and fit statistics
 set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
+model.summ <- sem(model, data = path.complete)
 summary(model.summ, standardized = TRUE)
 fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
 #modificationindices(model.summ)
@@ -3420,12 +3485,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 ```
 
-```{r path-manipulative-SRH, echo = FALSE, fig.cap="Path Model: SES, Manipulative Treatments, and Self-Reported Health"}
+```{r path-manipulative-srh, echo = FALSE, fig.cap="Path Model: SES, Manipulative Treatments, and Self-Reported Health"}
 # Create final plot
 plot(path_dia5)
 ```
 
-```{r de-manipulative-SRH, echo = FALSE}
+```{r de-manipulative-srh, echo = FALSE}
 # Create Direct Effects Table 
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == "~") %>%  
@@ -3519,7 +3584,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   kableExtra::landscape()
 ```
 
-```{r create-ie-manipulative-SRH, echo = FALSE, results='hide'}
+```{r create-ie-manipulative-srh, echo = FALSE, results='hide'}
 parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
   filter(op == ":=")
 
@@ -3540,7 +3605,7 @@ tab.IE.manipulative.srh <- tab.IE.manipulative.srh %>%
   slice(match(x, Path))
 ```
 
-```{r ie-manipulative-SRH, echo=FALSE}
+```{r ie-manipulative-srh, echo=FALSE}
 tab.IE.manipulative.srh %>% 
   mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
   mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Self-Reported Health \U2192 Manipulative Treatments")) %>%
@@ -3574,7 +3639,7 @@ tab.IE.manipulative.srh %>%
 
 ```
 
-```{r fit-manipulative-SRH, echo = FALSE}
+```{r fit-manipulative-srh, echo = FALSE}
 # Create fit statistics table 
 fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
   as.data.frame() %>% 
@@ -3596,10 +3661,13 @@ stargazer(waves12.chron.income.1, waves12.chron.income.2, waves12.chron.income.3
           title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
-                               "Difference in Chronic Conditions x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 2", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity",
+                               "Difference in Chronic Conditions x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3611,8 +3679,18 @@ stargazer(waves12.chron.income.1, waves12.chron.income.2, waves12.chron.income.3
           notes = c("White is the reference category for race.",
                     "Standard errors shown in parentheses."), 
           notes.align = "r", 
-          label = "tab:waves12-chron-mod-income") 
+          label = "tab:waves12-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
 
+```
+
+```{r plot-waves12-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 2"}
+library(interactions)
+interact_plot(waves12.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r waves23-chron-mod-income, echo = FALSE, results='asis'}
@@ -3621,10 +3699,13 @@ stargazer(waves23.chron.income.1, waves23.chron.income.2, waves23.chron.income.3
           title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
-                               "Difference in Chronic Conditions x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 3", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control", 
+                               "Spirituality", "Religiosity",  
+                               "Difference in Chronic Conditions x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3636,20 +3717,32 @@ stargazer(waves23.chron.income.1, waves23.chron.income.2, waves23.chron.income.3
           notes = c("White is the reference category for race.", 
                     "Standard errors shown in parentheses."), 
           notes.align = "r", 
-          label = "tab:waves23-chron-mod-income") 
+          label = "tab:waves23-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
 
+```
+```{r plot-waves23-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 2 and 3"}
+library(interactions)
+interact_plot(waves23.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r waves13-chron-mod-income, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves13.chron.income.1, waves13.chron.income.2, waves13.chron.income.3, 
+stargazer(waves13.chron.income.1, waves13.chron.income.2, waves13.chron.income.3,
           title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
-                               "Difference in Chronic Conditions x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 3", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3661,8 +3754,18 @@ stargazer(waves13.chron.income.1, waves13.chron.income.2, waves13.chron.income.3
           notes = c("White is the reference category for race.",
                     "Standard errors shown in parentheses."),
           notes.align = "r", 
-          label = "tab:waves13-chron-mod-income")
+          label = "tab:waves13-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 
+```
+
+```{r plot-waves13-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 3"}
+library(interactions)
+interact_plot(waves13.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r waves12-chron-mod-educ, echo = FALSE, results='asis'}
@@ -3671,13 +3774,14 @@ stargazer(waves12.chron.educ.1, waves12.chron.educ.2, waves12.chron.educ.3,
           title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree","Graduate or Professional Degree", "Age at Wave 2",
+                               "Some College/AA Degree","Graduate or Professional Degree", 
+                               "Logged Income", "Age at Wave 2",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
                                "Difference in Chronic Conditions x Some College/AA Degree", 
-                               "Difference in Chronic Conditions x College Graduate", 
                                "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
@@ -3692,13 +3796,15 @@ stargazer(waves12.chron.educ.1, waves12.chron.educ.2, waves12.chron.educ.3,
                     "Standard errors shown in parentheses."), 
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves12-chron-mod-educ")
+          label = "tab:waves12-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 ```{r plot-waves12-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 2"}
 plot_model(waves12.chron.educ.3, 
            type = "pred", 
-           terms = c("DiffChron", "Education_W1.2"), 
+           terms = c("DiffChronCenter", "Education_W1.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
            legend.title = "Education")
@@ -3711,13 +3817,14 @@ stargazer(waves23.chron.educ.1, waves23.chron.educ.2, waves23.chron.educ.3,
           title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree","Graduate or Professional Degree",  "Age at Wave 3",
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 3",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
                                "Difference in Chronic Conditions x Some College/AA Degree", 
-                               "Difference in Chronic Conditions x College Graduate", 
                                "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
@@ -3732,13 +3839,15 @@ stargazer(waves23.chron.educ.1, waves23.chron.educ.2, waves23.chron.educ.3,
                     "Standard errors shown in parentheses."),
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves23-chron-mod-educ")
+          label = "tab:waves23-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 ```{r plot-waves23-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 2 and 3"}
 plot_model(waves23.chron.educ.3, 
            type = "pred", 
-           terms = c("DiffChron", "Education_W2.2"), 
+           terms = c("DiffChronCenter", "Education_W2.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
            legend.title = "Education")
@@ -3747,17 +3856,18 @@ plot_model(waves23.chron.educ.3,
 
 ```{r waves13-chron-mod-educ, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves13.chron.educ.1, waves13.chron.educ.2, waves13.chron.educ.3, 
+stargazer(waves13.chron.educ.1, waves13.chron.educ.2, waves13.chron.educ.3,
           title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree","Graduate or Professional Degree",  "Age at Wave 3",
+                               "Some College/AA Degree","Graduate or Professional Degree", 
+                               "Logged Income", "Age at Wave 3",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in Chronic Conditions x HS Diploma/GED", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
                                "Difference in Chronic Conditions x Some College/AA Degree", 
-                               "Difference in Chronic Conditions x College Graduate", 
                                "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
@@ -3772,13 +3882,15 @@ stargazer(waves13.chron.educ.1, waves13.chron.educ.2, waves13.chron.educ.3,
                     "Standard errors shown in parentheses."), 
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves13-chron-mod-educ")
+          label = "tab:waves13-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 ```{r plot-waves13-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 3"}
 plot_model(waves13.chron.educ.3, 
            type = "pred", 
-           terms = c("DiffChron", "Education_W1.2"), 
+           terms = c("DiffChronCenter", "Education_W1.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
            legend.title = "Education")
@@ -3787,14 +3899,17 @@ plot_model(waves13.chron.educ.3,
 
 ```{r waves12-SRH-mod-income, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves12.SRH.income.1, waves12.SRH.income.2, waves12.SRH.income.3, 
+stargazer(waves12.SRH.income.1, waves12.SRH.income.2, waves12.SRH.income.3,
           title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Logged Income", 
-                               "Difference in SRH x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 2", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3807,8 +3922,18 @@ stargazer(waves12.SRH.income.1, waves12.SRH.income.2, waves12.SRH.income.3,
                     "Standard errors shown in parentheses.", 
                     "SRH: Self-Reported Health."), 
           notes.align = "r", 
-          label = "tab:waves12-SRH-mod-income") 
+          label = "tab:waves12-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
 
+```
+
+```{r plot-waves12-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 1 and 2"}
+library(interactions)
+interact_plot(waves12.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r waves23-SRH-mod-income, echo = FALSE, results='asis'}
@@ -3817,10 +3942,13 @@ stargazer(waves23.SRH.income.1, waves23.SRH.income.2, waves23.SRH.income.3,
           title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Logged Income", 
-                               "Difference in SRH x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 3", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3833,20 +3961,33 @@ stargazer(waves23.SRH.income.1, waves23.SRH.income.2, waves23.SRH.income.3,
                     "Standard errors shown in parentheses.", 
                     "SRH: Self-Reported Health."), 
           notes.align = "r", 
-          label = "tab:waves23-SRH-mod-income") 
+          label = "tab:waves23-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
 
+```
+
+```{r plot-waves23-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 2 and 3"}
+library(interactions)
+interact_plot(waves23.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r waves13-SRH-mod-income, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves13.SRH.income.1, waves13.SRH.income.2, waves13.SRH.income.3, 
+stargazer(waves13.SRH.income.1, waves13.SRH.income.2, waves13.SRH.income.3,
           title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Logged Income", 
-                               "Difference in SRH x Logged Income",
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
                                "Age at Wave 3", "Female", "Non-Hispanic Black", 
-                               "Mexican American and Other Hispanic", "Other Race", "Married", 
-                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity"),
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3859,14 +4000,24 @@ stargazer(waves13.SRH.income.1, waves13.SRH.income.2, waves13.SRH.income.3,
                     "Standard errors shown in parentheses.", 
                     "SRH: Self-Reported Health"), 
           notes.align = "r", 
-          label = "tab:waves13-SRH-mod-income")
+          label = "tab:waves13-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 
+```
+
+```{r plot-waves13-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 1 and 3"}
+library(interactions)
+interact_plot(waves13.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
 ```
 
 ```{r plot-waves12-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 1 and 2"}
 plot_model(waves12.SRH.educ.3, 
            type = "pred", 
-           terms = c("DiffSRH", "Education_W1.2"), 
+           terms = c("DiffSRHCenter", "Education_W1.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in SRH"),
            legend.title = "Education")
@@ -3875,18 +4026,19 @@ plot_model(waves12.SRH.educ.3,
 
 ```{r waves12-SRH-mod-educ, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves12.SRH.educ.1, waves12.SRH.educ.2, waves12.SRH.educ.3, 
+stargazer(waves12.SRH.educ.1, waves12.SRH.educ.2, waves12.SRH.educ.3,  
           title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree","Graduate or Professional Degree",  "Age at Wave 2",
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in SRH x HS Diploma/GED", 
-                               "Difference in SRH x Some College/AA Degree", 
-                               "Difference in SRH x College Graduate", 
-                               "Difference in SRH x Professional or Graduate Degree"),
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3901,13 +4053,15 @@ stargazer(waves12.SRH.educ.1, waves12.SRH.educ.2, waves12.SRH.educ.3,
                     "SRH: Self-Reported Health."), 
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves12-SRH-mod-educ")
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 ```{r plot-waves23-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 2 and 3"}
 plot_model(waves23.SRH.educ.3, 
            type = "pred", 
-           terms = c("DiffSRH", "Education_W2.2"), 
+           terms = c("DiffSRHCenter", "Education_W2.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in SRH"),
            legend.title = "Education")
@@ -3916,18 +4070,19 @@ plot_model(waves23.SRH.educ.3,
 
 ```{r waves23-SRH-mod-educ, echo = FALSE, results='asis'}
 # Create regression results table
-stargazer(waves23.SRH.educ.1, waves23.SRH.educ.2, waves23.SRH.educ.3, 
+stargazer(waves23.SRH.educ.1, waves23.SRH.educ.2, waves23.SRH.educ.3,  
           title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree", "Graduate or Professional Degree", "Age at Wave 2",
+                               "Some College/AA Degree", "Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in SRH x HS Diploma/GED", 
-                               "Difference in SRH x Some College/AA Degree", 
-                               "Difference in SRH x College Graduate", 
-                               "Difference in SRH x Professional or Graduate Degree"),
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3942,13 +4097,15 @@ stargazer(waves23.SRH.educ.1, waves23.SRH.educ.2, waves23.SRH.educ.3,
                     "SRH: Self-Reported Health."), 
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves23-SRH-mod-educ")
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 ```{r plot-waves13-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 1 and 3"}
 plot_model(waves12.SRH.educ.3, 
            type = "pred", 
-           terms = c("DiffSRH", "Education_W1.2"), 
+           terms = c("DiffSRHCenter", "Education_W1.2"), 
            title = "",
            axis.title = c("Difference in CAMs", "Difference in SRH"),
            legend.title = "Education")
@@ -3961,14 +4118,15 @@ stargazer(waves13.SRH.educ.1, waves13.SRH.educ.2, waves13.SRH.educ.3,
           title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
           column.labels = c("Model 1", "Model 2", "Model 3"), 
           covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
-                               "Some College/AA Degree","Graduate or Professional Degree",  "Age at Wave 2",
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
                                "Female", "Non-Hispanic Black", 
                                "Mexican American and Other Hispanic", "Other Race", "Married", 
                                "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
-                               "Difference in SRH x HS Diploma/GED", 
-                               "Difference in SRH x Some College/AA Degree", 
-                               "Difference in SRH x College Graduate", 
-                               "Difference in SRH x Professional or Graduate Degree"),
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
           dep.var.caption  = "", 
           dep.var.labels.include = FALSE,
           model.numbers          = FALSE, 
@@ -3983,7 +4141,9 @@ stargazer(waves13.SRH.educ.1, waves13.SRH.educ.2, waves13.SRH.educ.3,
                     "SRH: Self-Reported Health."), 
           notes.align = "r", 
           float.env = "sidewaystable", 
-          label = "tab:waves13-SRH-mod-educ")
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
 ```
 
 # Results
@@ -3994,63 +4154,65 @@ Table \ref{tab:descriptives-table} shows summary statistics for variables across
 
 ### Mind Body
 
-Table \ref{tab:mindbody-fixed-table} shows results for the level 1 predictors and \ref{tab:mindbody-random-table} shows results for the level 2 predictors for all mind body approaches. Model 1 assesses the association between the use of mind body approaches and logged income. The odds of using mind body approaches at different levels of logged income do not differ significantly. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.465, indicating that income does not explain any of the variance in the model.
+Table \ref{tab:mindbody-fixed-table} shows results for the level 1 predictors and \ref{tab:mindbody-random-table} shows results for the level 2 predictors for all mind body approaches. Model 1 assesses the association between the use of mind body approaches and logged income. The odds of using mind body approaches at different levels of logged income do not differ significantly. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.47, indicating that income does not explain any of the variance in the model.
 
-Model 2 assesses the association between the use of mind body approaches and levels of education. The odds of using mind body approaches increase with each level of education so that the odds of using mind-body approaches are 71% higher for those with some college or an associate's degree (OR = 1.71, 95% CI: 1.26, 2.31, *p* \< 0.050), 125% higher for those with a college degree (OR = 2.25, 95% CI: 1.65, 3.08, *p* \< 0.001), and 136% higher for those with a graduate or professional degree (OR = 2.36, 95% CI: 1.72, 3.25, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.014 and the conditional $R^2$ is 0.462, indicating that education explains approximately 1.4% of the variance in the model. Models 1 and 2 suggest that education has a strong, significant, direct relationship with use of mind-body approaches, while income does not.
+Model 2 assesses the association between the use of mind body approaches and levels of education, using a reference category of less than a high school education. The odds of using mind body approaches increase with each level of education so that the odds of using mind-body approaches are 63% lower for those with less than a high school education (OR = `r round(exp(summ.mb2$coefficients[2]),3)`, 95% CI: `r round(exp(summ.mb2$coefficients[2] - 1.96 * summ.mb2$coefficients[7]),3)`, `r round(exp(summ.mb2$coefficients[2] + 1.96 * summ.mb2$coefficients[7]),3)`, *p* \< 0.001), 50% lower for those with a high school diploma or GED (OR = `r round(exp(summ.mb2$coefficients[3]),3)`, 95% CI: `r round(exp(summ.mb2$coefficients[3] - 1.96 * summ.mb2$coefficients[8]),3)`, `r round(exp(summ.mb2$coefficients[3] + 1.96 * summ.mb2$coefficients[8]),3)`, *p* \< 0.001), and 25% lower for those with some college or an associate's degree (OR = `r round(exp(summ.mb2$coefficients[4]),3)`, 95% CI: `r round(exp(summ.mb2$coefficients[4] - 1.96 * summ.mb2$coefficients[9]),3)`, `r round(exp(summ.mb2$coefficients[4] + 1.96 * summ.mb2$coefficients[9]),3)`, *p* \< 0.01) compared to those with a college degree. There is no significant difference in use of mind-body medicines between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.018 and the conditional $R^2$ is 0.467, indicating that education explains approximately 1.8% of the variance in the model. Models 1 and 2 suggest that education has a strong, significant, direct relationship with use of mind-body approaches, while income does not.
 
-Model 3 includes both logged income and education as predictors of the use of mind body approaches. when accounting for education, logged income has a significant positive effect. For each one unit increase in logged income the odds of using mind body approaches decreases by 11% (OR = 0.89, 95% CI: 0.83, 0.94, *p* \< 0.001). In this model, the odds of using mind body approaches are 82% higher for those with some college or an associate's degree (OR = 1.82, 95% CI: 1.34, 2.47, *p* \< 0.001), are 150% higher for those with a college degree (OR = 2.50, 95% CI: 1.82, 3.44, *p* \< 0.001), and are 167% higher for those with a graduate or professional degree (OR = 2.67, 95% CI: 1.93, 3.70, *p* \< 0.001) compared to those with less than a high school education.The marginal $R^2$ is 0.016 and the conditional $R^2$ is 0.461, indicating that income and education together explain approximately 1.6% of the variance explained in the model.
+Model 3 includes both logged income and education as predictors of the use of mind body approaches. when accounting for education, logged income has a significant positive effect. For each one unit increase in logged income the odds of using mind body approaches decreases by 11% (OR = `r round(exp(summ.mb3$coefficients[2]),3)`, 95% CI: `r round(exp(summ.mb3$coefficients[2] - 1.96 * summ.mb3$coefficients[8]),3)`, `r round(exp(summ.mb3$coefficients[2] + 1.96 * summ.mb3$coefficients[8]),3)`, *p* \< 0.001). In this model, the odds of using mind-body approaches are 67% lower for those with less than a high school education (OR = `r round(exp(summ.mb3$coefficients[3]),3)`, 95% CI: `r round(exp(summ.mb3$coefficients[3] - 1.96 * summ.mb3$coefficients[9]),3)`, `r round(exp(summ.mb3$coefficients[3] + 1.96 * summ.mb3$coefficients[9]),3)`, *p* \< 0.001), 53% lower for those with a high school diploma or GED (OR = `r round(exp(summ.mb3$coefficients[4]),3)`, 95% CI: `r round(exp(summ.mb3$coefficients[4] - 1.96 * summ.mb3$coefficients[10]),3)`, `r round(exp(summ.mb3$coefficients[4] + 1.96 * summ.mb3$coefficients[10]),3)`, *p* \< 0.001), and 28% lower for those with some college or an associate's degree (OR = `r round(exp(summ.mb3$coefficients[5]),3)`, 95% CI: `r round(exp(summ.mb3$coefficients[5] - 1.96 * summ.mb3$coefficients[11]),3)`, `r round(exp(summ.mb3$coefficients[5] + 1.96 * summ.mb3$coefficients[11]),3)`, *p* \< 0.001) compared to those with a college degree. There was no significant difference in mind-body medicine use between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.020 and the conditional $R^2$ is 0.466, indicating that income and education together explain approximately 2% of the variance explained in the model.
 
-Model 4 adds control variables and logged income is no longer a significant predictor of the use of mind body approaches. The effects of education remain significant in this model, and the odds increase with each level of education. The odds of using mind body approaches are 41% higher for those with some college or an associate's degree (OR = 1.41, 95% CI: 1.06, 1.88, *p* \< 0.050), are 107% higher for those with a college degree (OR = 2.07, 95% CI: 1.53, 2.80, *p* \< 0.001), and are 109% higher for those with a graduate or professional degree (OR = 2.09, 95% CI: 1.53, 2.84, *p* \< 0.001), compared to those with less than a high school education. The marginal $R^2$ is 0.218 and the conditional $R^2$ is 0.445, indicating that income, education, and the control variables explain 21.8% of the variance in the model.
+Model 4 adds control variables and logged income is no longer a significant predictor of the use of mind body approaches. The effects of education remain significant in this model, and the odds increase with each level of education. The odds of using mind-body approaches are 61% lower for those with less than a high school education (OR = `r round(exp(summ.mb4$coefficients[3]),3)`, 95% CI: `r round(exp(summ.mb4$coefficients[3] - 1.96 * summ.mb4$coefficients[19]),3)`, `r round(exp(summ.mb4$coefficients[3] + 1.96 * summ.mb4$coefficients[19]),3)`, *p* \< 0.001), 54% lower for those with a high school diploma or GED (OR = `r round(exp(summ.mb4$coefficients[4]),3)`, 95% CI: `r round(exp(summ.mb4$coefficients[4] - 1.96 * summ.mb4$coefficients[20]),3)`, `r round(exp(summ.mb4$coefficients[4] + 1.96 * summ.mb4$coefficients[20]),3)`, *p* \< 0.001), and 33% lower for those with some college or an associate's degree (OR = `r round(exp(summ.mb4$coefficients[5]),3)`, 95% CI: `r round(exp(summ.mb4$coefficients[5] - 1.96 * summ.mb4$coefficients[21]),3)`, `r round(exp(summ.mb4$coefficients[5] + 1.96 * summ.mb4$coefficients[21]),3)`, *p* \< 0.001) compared to those with a college degree. There was no significant difference in mind-body medicine use between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.217 and the conditional $R^2$ is 0.453, indicating that income, education, and the control variables explain 21.7% of the variance in the model. 
 
-As \ref{tab:mindbody-random-table} illustrates, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 1.35 in Model 4 to 2.91 in Model 1. The Intraclass Correlation Coefficient also ranges from 0.29-0.47, indicating that 29-47% of the variation in use of mind-body approaches occurs between-subjects. Thus while income and education significantly predict the use of mind-body approaches, most of the variation in the use of these CAMs is explained by differences between-subjects that the data do not account for rather than by the predictors in the models. Also, it is notable that income has no significant effect without accounting for education, which suggests that income matters for mind-body CAM use within education groups but only when the larger effects of education are taken into account.
+As \ref{tab:mindbody-random-table} illustrates, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 1.42 in Model 4 to 2.91 in Model 1. The Intraclass Correlation Coefficient also ranges from 0.30-0.47, indicating that 30-47% of the variation in use of mind-body approaches occurs between-subjects. Thus while income and education significantly predict the use of mind-body approaches, most of the variation in the use of these CAMs is explained by differences between-subjects that the data do not account for rather than by the predictors in the models. Also, it is notable that income has no significant effect without accounting for education, which suggests that income matters for mind-body CAM use within education groups but only when the larger effects of education are taken into account.
 
 ### Alternative medicine
 
-Table \ref{tab:altmed-fixed-table} shows results for level 1 predictors and \ref{tab:altmed-random-table} shows results for the level 2 predictors for all alternative medicine models. Model 1 assesses the relationship between logged income and the use of alternative medical systems. The odds of using alternative medicines at different levels of logged income do not differ significantly. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.47, indicating that income explains 0% of the variance in the model.
+Table \ref{tab:altmed-fixed-table} shows results for level 1 predictors and \ref{tab:altmed-random-table} shows results for the level 2 predictors for all alternative medicine models. Model 1 assesses the relationship between logged income and the use of alternative medical systems. The odds of using alternative medicines at different levels of logged income do not differ significantly. The marginal $R^2$ is 0.00 and the conditional $R^2$ is 0.462, indicating that income explains 0% of the variance in the model.
 
-Model 2 assesses the association between level of education and the use of alternative medical systems and the odds of using alternative medical systems increase with each level of education for those with some college or higher compared to those with less than a high school education. The odds of using alternative medical systems are 70% higher for those with some college or an associate's degree (OR = 1.70, 95% CI: 1.01, 2.85, *p* \< 0.05), are 131% higher for those with a college degree (OR = 2.31, 95% CI: 1.37, 3.90, *p* \< 0.001), and are 125% higher for those with a graduate or professional degree (OR = 2.25, 95% CI: 1.33, 3.83, *p* \< 0.001), compared to those with less than a high school education. The confidence intervals for having a bachelor's degree and for having a graduate or professional degree are large. The marginal $R^2$ is 0.011 and the conditional $R^2$ is 0.467, indicating that education explains 1.1% of the variance in the model.
+Model 2 assesses the association between level of education and the use of alternative medical systems and the odds of using alternative medical systems tend to increase with education. The odds of using alternative medical systems are 62% lower for those with less than a high school diploma (OR = `r round(exp(summ.am2$coefficients[2]),3)`, 95% CI: `r round(exp(summ.am2$coefficients[2] - 1.96 * summ.am2$coefficients[7]),3)`, `r round(exp(summ.am2$coefficients[2] + 1.96 * summ.am2$coefficients[7]),3)`, *p* \< 0.001), 47% lower for those with a high school diploma or GED (OR = `r round(exp(summ.am2$coefficients[3]),3)`, 95% CI: `r round(exp(summ.am2$coefficients[3] - 1.96 * summ.am2$coefficients[8]),3)`, `r round(exp(summ.am2$coefficients[3] + 1.96 * summ.am2$coefficients[8]),3)`, *p* \< 0.001), and 28% lower for those with some college or an associate's degree (OR = `r round(exp(summ.am2$coefficients[4]),3)`, 95% CI: `r round(exp(summ.am2$coefficients[4] - 1.96 * summ.am2$coefficients[9]),3)`, `r round(exp(summ.am2$coefficients[4] + 1.96 * summ.am2$coefficients[9]),3)`, *p* \< 0.01) compared to those with a college degree. There is not a significant difference in mind-body medicine use between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.014 and the conditional $R^2$ is 0.462, indicating that education explains 1.4% of the variance in the model.
 
-Model 3 includes both logged income and education as predictors of the use of alternative medical systems. When accounting for education, logged income significantly predicts the use of alternative medical systems so that odds decrease by 10% for each additional unit of logged income (OR = 0.90, CI: 0.82, 0.99, *p* \< 0.050). When accounting for the effect of logged income, the odds of using alternative medical systems are 79% higher for those with some college or an associate's degree (OR = 1.79, 95% CI: 1.07, 3.01, *p* \< 0.050), are 153% higher for those with a college degree (OR = 2.53, 95% CI: 1.49, 4.29, *p* \< 0.001), and are 151% higher for those with a graduate or professional degree (OR = 2.51, 95% CI: 1.47, 4.29, *p* \< 0.001) compared to those with less than a high school education. There is not a significant difference in the odds of using alternative medical systems between those with less than a high school education and those with a high school diploma or GED. The confidence intervals of the odds ratios for those with a bachelor's degree and those with a graduate or professional degree are large. The marginal $R^2$ is 0.012 and the conditional $R^2$ is 0.465, indicating that education and income together explain approximately 1.2% of the variance in the model.
+Model 3 includes both logged income and education as predictors of the use of alternative medical systems. When accounting for education, logged income does not significantly predict use of alternative medical systems. When accounting for the effect of logged income, the odds of using alternative medical systems are 65% lower for those with less than a high school diploma (OR = `r round(exp(summ.am3$coefficients[3]),3)`, 95% CI: `r round(exp(summ.am3$coefficients[3] - 1.96 * summ.am3$coefficients[9]),3)`, `r round(exp(summ.am3$coefficients[3] + 1.96 * summ.am3$coefficients[9]),3)`, *p* \< 0.001), 49% lower for those wiht a high school diploma or GED (OR = `r round(exp(summ.am3$coefficients[4]),3)`, 95% CI: `r round(exp(summ.am3$coefficients[4] - 1.96 * summ.am3$coefficients[10]),3)`, `r round(exp(summ.am3$coefficients[4] + 1.96 * summ.am3$coefficients[10]),3)`, *p* \< 0.001), and 30% lower for those with some college or an associate's degree (OR = `r round(exp(summ.am3$coefficients[5]),3)`, 95% CI: `r round(exp(summ.am3$coefficients[5] - 1.96 * summ.am3$coefficients[11]),3)`, `r round(exp(summ.am3$coefficients[5] + 1.96 * summ.am3$coefficients[11]),3)`, *p* \< 0.10) compared to those with a college degree. There is no significant difference between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.460, indicating that education and income together explain approximately 1.5% of the variance in the model.
 
-In model 4 adds control variables. Logged income does not significantly predict the use of alternative medical systems. The effects of education compared to having less than a high school education remain significant for those with a bachelor's degree and those with a graduate or professional degree. The odds of using alternative medical systems are 98% higher for those with a college degree (OR = 1.98, 95% CI: 1.16, 3.40, *p* \< 0.050) and are 74% higher for those with a graduate or professional degree (OR = 1.74, 95% CI: 1.01, 3.02, *p* \< 0.001) compared to those with less than a high school education. The confidence intervals for the odds of using alternative medical systems having a college degree and having a professional or a graduate degree are large. The marginal $R^2$ is 0.093 and the conditional $R^2$ is 0.468, indicating that education, income, and the controls explain 9.3% of the variance in the model.
+Model 4 adds control variables. Logged income does not significantly predict the use of alternative medical systems. The effects of education compared to having a college degree remain significant for those with some college or less education. When accounting for the effect of logged income, the odds of using alternative medical systems are 60% lower for those with less than a high school diploma (OR = `r round(exp(summ.am4$coefficients[3]),3)`, 95% CI: `r round(exp(summ.am4$coefficients[3] - 1.96 * summ.am4$coefficients[19]),3)`, `r round(exp(summ.am4$coefficients[3] + 1.96 * summ.am4$coefficients[19]),3)`, *p* \< 0.001), 50% lower for those with a high school diploma or GED (OR = `r round(exp(summ.am4$coefficients[4]),3)`, 95% CI: `r round(exp(summ.am4$coefficients[4] - 1.96 * summ.am4$coefficients[20]),3)`, `r round(exp(summ.am4$coefficients[4] + 1.96 * summ.am4$coefficients[20]),3)`, *p* \< 0.001), and 36% lower for those with some college or an associate's degree (OR = `r round(exp(summ.am4$coefficients[5]),3)`, 95% CI: `r round(exp(summ.am4$coefficients[5] - 1.96 * summ.am4$coefficients[21]),3)`, `r round(exp(summ.am4$coefficients[5] + 1.96 * summ.am4$coefficients[21]),3)`, *p* \< 0.10) compared to those with a college degree. There is no significant difference between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.092 and the conditional $R^2$ is 0.468, indicating that education, income, and the controls explain 9.2% of the variance in the model.
 
-The results of these models indicate that education significantly predicts the use of alternative medical systems, although education and demographic variables explain a much smaller amount of the variation than unmeasured differences between subjects. As shown in \ref{tab: altmed-random-table}, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 2.32 in Model 4 and 2.81 in Model 1. The ICC also ranges from 0.41-0.46, indicating that 41-46% of the variation in use of alternative medical systems occurs between-subjects. Thus, while education significantly predicts the use of alternative medical systems, most of the variation in the use of these CAMs is explained by differences between subjects that the data do not account for rather the by the predictors in the model.
+The results of these models indicate that education significantly predicts the use of alternative medical systems, although education and demographic variables explain a much smaller amount of the variation than unmeasured differences between subjects. As shown in \ref{tab: altmed-random-table}, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 2.33 in Model 4 and 2.83 in Model 1. The ICC also ranges from 0.41-0.46, indicating that 41-46% of the variation in use of alternative medical systems occurs between-subjects. Thus, while education significantly predicts the use of alternative medical systems, most of the variation in the use of these CAMs is explained by differences between subjects that the data do not account for rather the by the predictors in the model.
 
 ### Physical and nutritional approaches
 
-Table \ref{tab:pna-fixed-table} shows results for the level 1 predictors and Table \ref{tab:pna-random-table} shows results for the level 2 predictor for all physical and nutritional approaches models. Model 1 assesses the relationship between logged income and the use of physical and nutritional approaches. Results show that there is not a significant relationship. The marginal $R^2$ is 0.000 and the conditional $R^2$ is 0.201, indicating that the variance explained in the model is due to the level 2 predictor rather than the level 1 predictors.
+Table \ref{tab:pna-fixed-table} shows results for the level 1 predictors and Table \ref{tab:pna-random-table} shows results for the level 2 predictor for all physical and nutritional approaches models. Model 1 assesses the relationship between logged income and the use of physical and nutritional approaches. Results show for each additional unit of logged income the odds of using physical and nutritional approaches increases by 5% (OR = `r round(exp(summ.pna1$coefficients[2]),3)`, 95% CI: `r round(exp(summ.pna1$coefficients[2] - 1.96 * summ.pna1$coefficients[4]),3)`, `r round(exp(summ.pna1$coefficients[2] + 1.96 * summ.pna1$coefficients[4]),3)`, *p* \< 0.05). The marginal $R^2$ is 0.001 and the conditional $R^2$ is 0.201, indicating that the variance explained in the model is due to the level 2 predictor rather than the level 1 predictors.
 
-Model 2 assesses the association between the use of physical and nutritional approaches and levels of education using less than a high school education as a reference category. The odds of using physical and nutritional approaches increase with each level of education so that the odds of using physical and nutritional approaches are 52% higher for those with some college or an associate's degree (OR = 1.52, 95% CI: 1.18, 1.95, *p* \< 0.001), are 108% higher for those with a college degree (OR = 2.08, 95% CI: 1.67, 2.58, *p* \< 0.001), and are 138% higher for those with a graduate or professional degree (OR = 2.38, 95% CI: 1.91, 2.97, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.206, indicating that education explains 1.5% of the variance in the model.
+Model 2 assesses the association between the use of physical and nutritional approaches and levels of education using less than a high school education as a reference category. The odds of using physical and nutritional approaches increase with each level of education so that the odds of using physical and nutritional approaches are 52% lower for those with less than a high school diploma (OR = `r round(exp(summ.pna2$coefficients[2]),3)`, 95% CI: `r round(exp(summ.pna2$coefficients[2] - 1.96 * summ.pna2$coefficients[7]),3)`, `r round(exp(summ.pna2$coefficients[2] + 1.96 * summ.pna2$coefficients[7]),3)`, *p* \< 0.001), 37% lower for those with a high school diploma or GED (OR = `r round(exp(summ.pna2$coefficients[3]),3)`, 95% CI: `r round(exp(summ.pna2$coefficients[3] - 1.96 * summ.pna2$coefficients[8]),3)`, `r round(exp(summ.pna2$coefficients[3] + 1.96 * summ.pna2$coefficients[8]),3)`, *p* \< 0.001), and 17% lower for those with some college or an associate's degree (OR = `r round(exp(summ.pna2$coefficients[4]),3)`, 95% CI: `r round(exp(summ.pna2$coefficients[4] - 1.96 * summ.pna2$coefficients[9]),3)`, `r round(exp(summ.pna2$coefficients[4] + 1.96 * summ.pna2$coefficients[9]),3)`, *p* \< 0.01) compared to those with a college degree. There is not a significant difference in use of physical and nutritional approaches between those with college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.205, indicating that education explains 1.5% of the variance in the model.
 
-Model 3 includes both logged income and education as predictors of the use of physical and nutritional approaches. When accounting for education, logged income does not significantly predict the use of physical and nutritional approaches. In this model, the odds of using physical and nutritional approaches are 34% higher for those with a high school diploma or GED (OR = 1.34, 95% CI: 0.95, 2.32, *p* \< 0.050), are 77% higher for those with some college or an associate's degree (OR = 1.77, 95% CI: 1.43, 2.19, *p* \< 0.001), are 114% higher for those with a college degree (OR = 2.14, 95% CI: 1.71, 2.67, *p* \< 0.001), and are 146% higher for those with a graduate or professional degree (OR = 2.46, 95% CI: 1.96, 3.09, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.206, indicating that income and education together explain approximately 1.5% of the variance in the model.
+Model 3 includes both logged income and education as predictors of the use of physical and nutritional approaches. When accounting for education, logged income does not significantly predict the use of physical and nutritional approaches. In this model, the odds of using physical and nutritional approaches are 53% lower for those with less than a high school diploma (OR = `r round(exp(summ.pna3$coefficients[3]),3)`, 95% CI: `r round(exp(summ.pna3$coefficients[3] - 1.96 * summ.pna3$coefficients[9]),3)`, `r round(exp(summ.pna3$coefficients[3] + 1.96 * summ.pna3$coefficients[9]),3)`, *p* \< 0.001), 38% lower for those wiht a high school diploma or GED (OR = `r round(exp(summ.pna3$coefficients[4]),3)`, 95% CI: `r round(exp(summ.pna3$coefficients[4] - 1.96 * summ.pna3$coefficients[10]),3)`, `r round(exp(summ.pna3$coefficients[4] + 1.96 * summ.pna3$coefficients[10]),3)`, *p* \< 0.001), and 17% lower for those with some college or an associate's degree (OR = `r round(exp(summ.pna3$coefficients[5]),3)`, 95% CI: `r round(exp(summ.pna3$coefficients[5] - 1.96 * summ.pna3$coefficients[11]),3)`, `r round(exp(summ.pna3$coefficients[5] + 1.96 * summ.pna3$coefficients[11]),3)`, *p* \< 0.10) compared to those with a college degree. There is no significant difference between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.015 and the conditional $R^2$ is 0.205, indicating that income and education together explain approximately 1.5% of the variance in the model.
 
-Model 4 adds control variables and logged income does not significantly predict the use of physical and nutritional approaches. The effects of education remain significant in this model. The odds of using physical and nutritional approaches are 38% higher for those with some college or an associate's degree (OR = 1.38, 95% CI: 1.07, 1.79, *p* \< 0.050), are 68% higher for those with a college degree (OR = 1.68, 95% CI: 1.28, 2.20, *p* \< 0.001), and are 76% higher for those with a graduate or professional degree (OR = 1.76, 95% CI: 1.33, 2.33, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.071 and the conditional $R^2$ is 0.247, indicating that income, education, and the controls altogether explain 5% of the variance explained in the model.
+Model 4 adds control variables and logged income does not significantly predict the use of physical and nutritional approaches. The effects of education remain significant in this model. The odds of using physical and nutritional approaches are 52% lower for those with less than a high school diploma (OR = `r round(exp(summ.pna4$coefficients[3]),3)`, 95% CI: `r round(exp(summ.pna4$coefficients[3] - 1.96 * summ.pna4$coefficients[19]),3)`, `r round(exp(summ.pna4$coefficients[3] + 1.96 * summ.pna4$coefficients[19]),3)`, *p* \< 0.001), 41% lower for those with a high school diploma or GED (OR = `r round(exp(summ.pna4$coefficients[4]),3)`, 95% CI: `r round(exp(summ.pna4$coefficients[4] - 1.96 * summ.pna4$coefficients[20]),3)`, `r round(exp(summ.pna4$coefficients[4] + 1.96 * summ.pna4$coefficients[20]),3)`, *p* \< 0.001), and 22% lower for those with some college or an associate's degree (OR = `r round(exp(summ.pna4$coefficients[5]),3)`, 95% CI: `r round(exp(summ.pna4$coefficients[5] - 1.96 * summ.pna4$coefficients[21]),3)`, `r round(exp(summ.pna4$coefficients[5] + 1.96 * summ.pna4$coefficients[21]),3)`, *p* \< 0.001) compared to those with a college degree. There is no significant difference between those with a college degree and those with a graduate or professional degree. The marginal $R^2$ is 0.065 and the conditional $R^2$ is 0.243, indicating that income, education, and the controls altogether explain 6.5% of the variance explained in the model.
 
 As Table \ref{tab:pna-random-table} demonstrates within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 0.77 in Model 4 to 0.83 in Model 1. The ICC also ranges from 0.19-0.20, indicating that 19-20% of the variation in the use of physical and nutritional approaches occurs between-subjects. While income and education significantly predict the use of physical and nutritional approaches, most of the variation is explained by differences between-subjects that the data do not account for rather than the predictors in the model.
 
 ### Manipulative
 
-Table \ref{tab:pna-fixed-table} shows results for level 1 predictors Table \ref{tab:pna-random-table} shows results for all level 2 predictors for all manipulative treatment models. Model 1 assesses the relationship between logged income and the use of manipulative treatments. The odds of using manipulative treatments are 16% higher for each additional unit of logged income (OR = 1.16, 95% CI: 1.09, 1.23, *p* \< 0.001). The marginal $R^2$ is 0.003 and the conditional $R^2$ is 0.417, indicating that the variance explained in the model is due to the level 2 rather than level 1 effects.
+Table \ref{tab:pna-fixed-table} shows results for level 1 predictors Table \ref{tab:pna-random-table} shows results for all level 2 predictors for all manipulative treatment models. Model 1 assesses the relationship between logged income and the use of manipulative treatments. The odds of using manipulative treatments are 15% higher for each additional unit of logged income (OR = `r round(exp(summ.manipulative1$coefficients[2]),3)`, 95% CI: `r round(exp(summ.manipulative1$coefficients[2] - 1.96 * summ.manipulative1$coefficients[4]),3)`, `r round(exp(summ.manipulative1$coefficients[2] + 1.96 * summ.manipulative1$coefficients[4]),3)`, *p* \< 0.001). The marginal $R^2$ is 0.003 and the conditional $R^2$ is 0.426, indicating that the variance explained in the model is due to the level 2 rather than level 1 effects.
 
-Model 2 assesses the association between the use of manipulative treatments and levels of education using less than a high school education as a reference category. The odds of using manipulative treatments increase with each level so that the odds of using manipulative treatments are 48% higher for those with a high school diploma or GED (OR = 1.38, 95% CI: 1.11, 1.99, *p* \< 0.050), are 84% higher for those with some college or an associate's degree (OR = 1.84, 95% CI: 1.37, 2.45, *p* \< 0.001), are 102% higher for those with a college degree (OR = 2.02, 95% CI: 1.49, 2.73, *p* \< 0.001), and are 133% higher for those with a graduate or professional degree (OR = 2.33, 95% CI: 1.72, 3.17, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.006 and the conditional $R^2$ is 0.420, education does not explain the variance in the model.
+Model 2 assesses the association between the use of manipulative treatments and levels of education using less than a high school education as a reference category. The odds of using manipulative treatments are 50% lower for those with less than a high school diploma (OR = `r round(exp(summ.manipulative2$coefficients[2]),3)`, 95% CI: `r round(exp(summ.manipulative2$coefficients[2] - 1.96 * summ.manipulative2$coefficients[7]),3)`, `r round(exp(summ.manipulative2$coefficients[2] + 1.96 * summ.manipulative2$coefficients[7]),3)`, *p* \< 0.001) and 27% lower for those with a high school diploma or GED (OR = `r round(exp(summ.manipulative2$coefficients[3]),3)`, 95% CI: `r round(exp(summ.manipulative2$coefficients[3] - 1.96 * summ.manipulative2$coefficients[8]),3)`, `r round(exp(summ.manipulative2$coefficients[3] + 1.96 * summ.manipulative2$coefficients[8]),3)`, *p* \< 0.001) compared to those with a college degree. There is not a significant difference in use of physical and nutritional approaches between those with college degree and those with some college or an associate's degree or those with a graduate or professional degree. The marginal $R^2$ is 0.008 and the conditional $R^2$ is 0.429, education does not explain the variance in the model.
 
-Model 3 includes both logged income and education as predictors of the use of manipulative treatments. When accounting for education, logged income significantly predicts the use of manipulative treatments. For each one unit increase in logged income the odds of using manipulative treatments increases by 10% (OR = 1.10, 95% CI: 1.04, 1.18, *p* \<0.050). When accounting for the effect of logged income, the odds of using manipulative treatments are 43% higher for those with a high school diploma or GED (OR = 1.43, 95% CI: 1.07, 1.92, *p* \< 0.050), are 73% higher for those with some college or an associate's degree (OR = 1.73, 95% CI: 1.29, 2.32, *p* \< 0.001), are 84% higher for those with a college degree (OR = 1.84, 95% CI: 1.35, 2.50, *p* \< 0.001), and are 109% higher for those with a graduate or professional degree (OR = 2.09, 95% CI: 1.53, 2.87, *p* \< 0.001) compared to those with less than a high school education. The marginal $R^2$ is 0.008 and the conditional $R^2$ is 0.421, indicating that income and education do not explain the variance in the model.
+Model 3 includes both logged income and education as predictors of the use of manipulative treatments. When accounting for education, logged income significantly predicts the use of manipulative treatments. For each one unit increase in logged income the odds of using manipulative treatments increases by 10% (OR = `r round(exp(summ.manipulative3$coefficients[2]),3)`, 95% CI: `r round(exp(summ.manipulative3$coefficients[2] - 1.96 * summ.manipulative3$coefficients[8]),3)`, `r round(exp(summ.manipulative3$coefficients[2] + 1.96 * summ.manipulative3$coefficients[8]),3)` *p* \<0.010). When accounting for the effect of logged income, the odds of using manipulative treatments are 46% lower for those with less than a high school diploma (OR = `r round(exp(summ.manipulative3$coefficients[3]),3)`, 95% CI: `r round(exp(summ.manipulative3$coefficients[3] - 1.96 * summ.manipulative3$coefficients[9]),3)`, `r round(exp(summ.manipulative3$coefficients[3] + 1.96 * summ.manipulative3$coefficients[9]),3)`, *p* \< 0.001) and 23% lower for those wiht a high school diploma or GED (OR = `r round(exp(summ.manipulative3$coefficients[4]),3)`, 95% CI: `r round(exp(summ.manipulative3$coefficients[4] - 1.96 * summ.manipulative3$coefficients[10]),3)`, `r round(exp(summ.manipulative3$coefficients[4] + 1.96 * summ.manipulative3$coefficients[10]),3)`, *p* \< 0.001) compared to those with a college degree. There is not a significant difference in use of physical and nutritional approaches between those with college degree and those with some college or an associate's degree or those with a graduate or professional degree. The marginal $R^2$ is 0.009 and the conditional $R^2$ is 0.431, indicating that income and education do not explain the variance in the model.
 
-Model 4 adds control variables. Income remains a significant predictors of manipulative treatment use. For each one unit increase in logged income the odds of using alternative medical systems increase by 17% (OR = 1.17, 95% CI: 1.09, 1.26, *p* \< 0.001). The odds of using manipulative treatments are 53% for those with a graduate or professional degree (OR = 1.53, 95% CI: 1.06, 2.22, *p* \< 0.050) compared to those with less than a high school education. The marginal $R^2$ is 0.034 and the conditional $R^2$ is 0.428, indicating that 3.4% of the variance explained in the model is due to income, education, and the controls.
+Model 4 adds control variables. Income remains a significant predictors of manipulative treatment use. For each one unit increase in logged income the odds of using manipulative treatments increase by 16% (OR = `r round(exp(summ.manipulative4$coefficients[2]),3)`, 95% CI: `r round(exp(summ.manipulative4$coefficients[2] - 1.96 * summ.manipulative4$coefficients[18]),3)`, `r round(exp(summ.manipulative4$coefficients[2] + 1.96 * summ.manipulative4$coefficients[18]),3)`, *p* \< 0.001). The odds of using manipulative treatments are 40% lower for those with less than a high school diploma (OR = `r round(exp(summ.manipulative4$coefficients[3]),3)`, 95% CI: `r round(exp(summ.manipulative4$coefficients[3] - 1.96 * summ.manipulative4$coefficients[19]),3)`, `r round(exp(summ.manipulative4$coefficients[3] + 1.96 * summ.manipulative4$coefficients[19]),3)`, *p* \< 0.001) and 22% lower for those with a high school diploma or GED (OR = `r round(exp(summ.manipulative4$coefficients[4]),3)`, 95% CI: `r round(exp(summ.manipulative4$coefficients[4] - 1.96 * summ.manipulative4$coefficients[20]),3)`, `r round(exp(summ.manipulative4$coefficients[4] + 1.96 * summ.manipulative4$coefficients[20]),3)`, *p* \< 0.050) compared to those with a college degree. There is no significant difference between those with a college degree and those with some college or an associate's degree or those with a graduate or professional degree. The marginal $R^2$ is 0.034 and the conditional $R^2$ is 0.440, indicating that 3.4% of the variance explained in the model is due to income, education, and the controls.
 
-As Table \ref{tab:pna-random-table} illustrates, within-in subject variance is 3.29 across all 4 models and between-subject variance ranges from 2.27 in Model 4 to 2.35 in Model 3. The ICC also ranges from 0.41-0.42, indicating that 41-42% of the variation in manipulative treatment use occurs between subjects.
+As Table \ref{tab:pna-random-table} illustrates, within-in subject variance is 3.29 across all 4 models and between-subject variance ranges from 2.39 in Model 4 to 2.44 in Model 3. The ICC also ranges from 0.42-0.43, indicating that 42-43% of the variation in manipulative treatment use occurs between subjects.
 
-Overall, the results in Tables 1-8 reveal that education has consistent, positive effects on the odds of using each type of CAM. While income has less consistent effects, the effect of education suggests a positive relationship between SES and CAM use. Next, I examine the effects of SES on the total number of CAMs that individuals used.
+Overall, the results in Tables \ref{tab:mindbody-fixed-table} - \ref{tab:pna-random-table} reveal that education has consistent, positive effects on the odds of using each type of CAM. While income has less consistent effects, the effect of education suggests a positive relationship between SES and CAM use. Next, I examine the effects of SES on the total number of CAMs that individuals used.
 
 ### Total CAMs
 
-Table \ref{tab:total-fixed-table} shows results for the level 1 predictors for all total CAMs models and Table \ref{tab:total-random-table} shows results for the level 2 predictors. Model 1 assesses the association between CAMs used and income. In Model 1, logged income does not significantly predict the total number of CAMs used. The marginal $R^2$ is 0.000 and the conditional $R^2$ is 0.555, indicating income does not explain the variance in the model.
+Table \ref{tab:total-fixed-table} shows results for the level 1 predictors for all total CAMs models and Table \ref{tab:total-random-table} shows results for the level 2 predictors. Model 1 assesses the association between CAMs used and income. In Model 1, the relationship between logged income and total CAMs used is statistically significant (OR = `r round(exp(summ.tot1$coefficients[2]),3)`, 95% CI: `r round(exp(summ.tot1$coefficients[2] - 1.96 * summ.tot1$coefficients[4]),3)`, `r round(exp(summ.tot1$coefficients[2] + 1.96 * summ.tot1$coefficients[4]),3)`, *p* \< 0.050). The marginal $R^2$ is 0.000 and the conditional $R^2$ is 0.559, indicating income does not explain the variance in the model.
 
-Model 2 assesses the association between total CAMs used and levels of education. The reference category is less than a high school education and the expected count of total CAMs used increases with each level of education. The expected number of CAMs used increases by a factor of 1.18 for those with a high school diploma or GED (IRR = 1.18, 95% CI: 1.17, 1.49, *p* \< 0.001), increases by a factor of 1.65 for those with some college or an associate's degree (IRR = 1.65, 95% CI: 1.47, 1.86, *p* \< 0.001), increases by a factor of 1.90 for those with a college degree (IRR = 1.90, 95% CI: 1.68, 2.15, *p* \< 0.001), and increases by a factor of 2.07 for those with a graduate or professional degree (IRR = 2.07, 95% CI: 1.82, 2.34, *p* \< 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.77. The ICC is 0.55, indicating that 55% of the variance in total CAMs used is between subjects. The marginal $R^2$ is 0.028 and the conditional $R^2$ is 0.558, indicating that 2.8% of the variance explained in the model is due to the fixed effects.
+Model 2 assesses the association between total CAMs used and levels of education. The expected count of total CAMs used increases with each level of education. The expected number of CAMs used decreases by a factor of 0.53 for those with less than a high school education(IRR = `r round(exp(summ.tot2$coefficients[2]),3)`, 95% CI: `r round(exp(summ.tot2$coefficients[2] - 1.96 * summ.tot2$coefficients[7]),3)`, `r round(exp(summ.tot2$coefficients[2] + 1.96 * summ.tot2$coefficients[7]),3)`, *p* \< 0.001), decreases by a factor of 0.69 for those with a high school diploma or GED (OR = `r round(exp(summ.tot2$coefficients[3]),3)`, 95% CI: `r round(exp(summ.tot2$coefficients[3] - 1.96 * summ.tot2$coefficients[8]),3)`, `r round(exp(summ.tot2$coefficients[3] + 1.96 * summ.tot2$coefficients[8]),3)`, *p* \< 0.001), decreases by a factor of .87 for those with some college or an associate's degree (IRR = `r round(exp(summ.tot2$coefficients[4]),3)`, 95% CI: `r round(exp(summ.tot2$coefficients[4] - 1.96 * summ.tot2$coefficients[9]),3)`, `r round(exp(summ.tot2$coefficients[4] + 1.96 * summ.tot2$coefficients[9]),3)`  *p* \< 0.001), and increases by a factor of 1.09 for those with a graduate or professional degree (IRR = `r round(exp(summ.tot2$coefficients[5]),3)`, 95% CI: `r round(exp(summ.tot2$coefficients[5] - 1.96 * summ.tot2$coefficients[10]),3)`, `r round(exp(summ.tot2$coefficients[5] + 1.96 * summ.tot2$coefficients[10]),3)`, *p* \< 0.050) compared to those with a college degree. Within subject variance is 0.64 and between subject variance is 0.77. The ICC is 0.55, indicating that 55% of the variance in total CAMs used is between subjects. The marginal $R^2$ is 0.029 and the conditional $R^2$ is 0.557, indicating that 2.9% of the variance explained in the model is due to the fixed effects.
 
-Model 3 includes both logged income and education as predictors of total CAMs used. When accounting for education, logged income does not significantly predict total CAMs used. When accounting for the effect of logged income, the expected count of total CAMs used increases by a factor of 1.33 for those with a high school diploma or GED (IRR = 1.33, 95% CI: 1.18, 1.50, *p* \< 0.001), increases by a factor of 1.67 for those with some college or an associate's degree (IRR = 1.67, 95% CI: 1.48, 1.88, *p* \< 0.001), increases by a factor of 1.92 for those with a college degree (IRR = 1.92, 95% CI: 1.69, 2.18, *p* \< 0.001), and increases by a factor of 2.09 for those with a graduate or professional degree (IRR = 2.09, 95% CI: 1.84, 2.38, *p* \< 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.77. The ICC is 0.54, indicating that 54% of the variance in total CAMs used is between subjects when including income and education as fixed effects. The marginal $R^2$ is 0.028 and the conditional $R^2$ is 0.558, indicating that 2.8% of the variance explained in the model is due to the fixed effects.
+Model 3 includes both logged income and education as predictors of total CAMs used. When accounting for education, logged income does not significantly predict total CAMs used. When accounting for the effect of logged income, the expected count of total CAMs used decreases by a factor of 0.52 for those with less than a high school diploma (IRR = `r round(exp(summ.tot3$coefficients[3]),3)`, 95% CI: `r round(exp(summ.tot3$coefficients[3] - 1.96 * summ.tot3$coefficients[9]),3)`, `r round(exp(summ.tot3$coefficients[3] + 1.96 * summ.tot3$coefficients[9]),3)`, *p* \< 0.001), decreases by a factor of 0.69 for those with a high school diploma or GED (IRR =  `r round(exp(summ.tot3$coefficients[4]),3)`, 95% CI: `r round(exp(summ.tot3$coefficients[4] - 1.96 * summ.tot3$coefficients[10]),3)`, `r round(exp(summ.tot3$coefficients[4] + 1.96 * summ.tot3$coefficients[10]),3)`, *p* \< 0.001), decrease by a factor of 0.87 for those with some college or an associate's degree (IRR = `r round(exp(summ.tot3$coefficients[5]),3)`, 95% CI: `r round(exp(summ.tot3$coefficients[5] - 1.96 * summ.tot3$coefficients[11]),3)`, `r round(exp(summ.tot3$coefficients[5] + 1.96 * summ.tot3$coefficients[11]),3)`, *p* \< 0.001), and increases by a factor of 1.09 for those with a graduate or professional degree (IRR = `r round(exp(summ.tot3$coefficients[6]),3)`, 95% CI: `r round(exp(summ.tot3$coefficients[6] - 1.96 * summ.tot3$coefficients[12]),3)`, `r round(exp(summ.tot3$coefficients[6] + 1.96 * summ.tot3$coefficients[12]),3)`, *p* \< 0.050) compared to those with a college degree. The marginal $R^2$ is 0.029 and the conditional $R^2$ is 0.557, indicating that 2.9% of the variance explained in the model is due to the fixed effects.
 
-In model 4, control variables are added to model 3. Logged income does not significantly predict the expected count of total CAMs used. The expected count of total CAMs used increases with each level of education. The expected count of total CAMs used increases by a factor of 1.30 for those with a high school diploma or GED (IRR = 1.30, 95% CI: 1.15, 1.46, *p* \< 0.001), increases by a factor of 1.65 for those with some college or an associate's degree (IRR = 1.65, 95% CI: 1.46, 1.86, *p* \< 0.001), increases by a factor of 1.98 for those with a college degree (IRR = 1.98, 95% CI: 1.75, 2.25, *p* \< 0.001), and increases by a factor of 2.06 for those with a graduate or professional degree (IRR = 2.06, 95% CI: 1.82, 2.34, *p* \< 0.001) compared to those with less than a high school education. Within subject variance is 0.64 and between subject variance is 0.72. The ICC is 0.53, indicating that 53% of the variance in the expected count of total CAMs used is between subjects when including controls. The marginal $R^2$ is 0.080 and the conditional $R^2$ is 0.565, indicating that 8% of the variance explained in the model is due to the fixed effects.
+In model 4, control variables are added to model 3. For each one unit increase in logged income the expected count of total CAMs used increases by a factor of 1.03 (IRR = `r round(exp(summ.tot4$coefficients[2]),3)`, 95% CI: `r round(exp(summ.tot4$coefficients[2] - 1.96 * summ.tot4$coefficients[18]),3)`, `r round(exp(summ.tot4$coefficients[2] + 1.96 * summ.tot4$coefficients[18]),3)`, *p* \< 0.010). The expected count of total CAMs used decreases by a factor of 0.56 for those with less than a high school diploma (OR = `r round(exp(summ.tot4$coefficients[3]),3)`, 95% CI: `r round(exp(summ.tot4$coefficients[3] - 1.96 * summ.tot4$coefficients[19]),3)`, `r round(exp(summ.tot4$coefficients[3] + 1.96 * summ.tot4$coefficients[19]),3)`, *p* \< 0.001), decreases by a factor of 0.68 for those with a high school diploma or GED (IRR = `r round(exp(summ.tot4$coefficients[4]),3)`, 95% CI: `r round(exp(summ.tot4$coefficients[4] - 1.96 * summ.tot4$coefficients[20]),3)`, `r round(exp(summ.tot4$coefficients[4] + 1.96 * summ.tot4$coefficients[20]),3)`, *p* \< 0.050) and decreases by a factor of 0.84 for those with some college or and associate's degree(IRR = `r round(exp(summ.tot4$coefficients[5]),3)`, 95% CI: `r round(exp(summ.tot4$coefficients[5] - 1.96 * summ.tot4$coefficients[21]),3)`, `r round(exp(summ.tot4$coefficients[5] + 1.96 * summ.tot4$coefficients[21]),3)`, *p* \< 0.001) compared to those with a college degree. The marginal $R^2$ is 0.152 and the conditional $R^2$ is 0.554, indicating that 15.2% of the variance explained in the model is due to the level 1 predictors.
+
+As shown in Table \ref{tab:total-random-table}, within-in subject variance is 3.29 across all 4 models and between-subject variance ranges from 0.58 in Model 4 to 0.82 in Model 1. The ICC also ranges from 0.47-0.56, indicating that 47-56% of the variation in total CAMs used occurs between subjects.
 
 ## Mediation Models
 
@@ -4084,16 +4246,16 @@ Finally, the relationships between SES, use of manipulative treatments, and self
 
 ## Moderation Models
 
-The following models examine whether income and education moderate the relationship between a change in the number of CAMs used and change in health. I model differences between each combination of waves, first using change in chronic conditions as a predictor then changes in SRH.
+The following models examine the relationship between changes in health and adoption of CAMs and whether income and education moderate this relationship. I model differences between each combination of waves, first using change in chronic conditions as a predictor then changes in SRH.
 
-Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions between any combination of waves (See Tables \@ref(tab:waves12-chron-mod-income), \ref{tab:waves23-chron-mod-income}, and \ref{tab:waves13-chron-mod-income}). In the full models, including controls, difference in chronic conditions has a positive relationship with difference in total CAMs used, indicating that the more chronic conditions one develops the more CAMs they are likely to adopt in the following wave (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[2], 3)`, SE = `r round(waves12.chron.income.3.se[2], 3)`, *p* \< 0.001; Waves 2 and 3: *b* = `r round(waves23.chron.income.3$coefficients[2], 3)`, SE = `r round(waves23.chron.income.3.se[2], 3)`, *p* \< 0.05; Waves 1 and 3: results not significant). Logged income also has a positive effect on difference in CAMs used between waves 1 and 2 and between waves 1 and 3 (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[3], 3)`, SE = `r round(waves12.chron.income.3.se[3], 3)`, *p* \< 0.001; Waves 2 and 3: results not significant; Waves 1 and 3: *b* = `r round(waves13.chron.income.3$coefficients[3], 3)`, SE = `r round(waves13.chron.income.3.se[3], 3)`, *p* \< 0.05), indicating the difference in number of CAMs used between waves is greater for those with higher incomes. The interaction term for logged income and difference in chronic conditions was not significant across all models.
+The effect of changes in chronic conditions on changes in CAM use varies by the waves compared, though when significant the relationship is always positive. Change in chronic conditions is positively related to a change in total CAMs used looking at waves 1 and 2 (See Tables \ref{tab:waves12-chron-mod-income} and \ref{tab:waves12-chron-mod-educ}). When accounting for the effect of logged income, each additional chronic condition is related to a 0.058 increase in total CAMs used at wave 2 (*b* = `r round(waves12.chron.income.1$coefficients[2],3)`, SE = `r round(waves12.chron.income.1.se[2],3)`, *p* \< 0.050). When accounting for the effect of education, the effect of difference in chronic conditions on change in CAM use are the same between waves 1 and 2 (*b* = `r round(waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.050). Looking at differences between waves 2 and 3, difference in chronic conditions does not significantly predict changes in total CAMs used (See Tables \ref{tab:waves23-chron-mod-income} and \ref{tab:waves23-chron-mod-educ}). There is also no significant effect for the wave 1 and 3 comparison (See Tables \ref{tab:waves13-chron-mod-income} and \ref{tab:waves13-chron-mod-educ}). 
 
-Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. Looking at differences between waves 1 and 2, we see that difference in chronic conditions has a significant positive relationship with difference in number of CAMs used (See Table \ref{tab:waves12-chron-mod-educ}; *b* = `r round (waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.001), however this effect becomes nonsignificant when education is added to the model. There is no significant effect for education on difference in CAMs used between waves 1 and 2. There is no significant difference in moderation effects for different levels of education compared to those with less than a high school diploma, though all slopes are positive indicating greater CAM use when new chronic conditions are developed (See Figure \ref{fig:plot-waves12-chron-educ-3}).
+Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions between any combination of waves (See Tables \@ref(tab:waves12-chron-mod-income), \ref{tab:waves23-chron-mod-income}, and \ref{tab:waves13-chron-mod-income}) and Figures \ref{fig:plot-waves12-chron-income-3}, \ref{fig:plot-waves23-chron-income-3}, and \ref{fig:plot-waves13-chron-income-3}). 
 
-Looking at differences between waves 2 and 3, we see that there is no significant effect of change in chronic conditions on changes in number of CAMs used (See Table \ref{tab:waves23-chron-mod-educ}). Education has a significant effect on difference in number of CAMs used. Compared to those with less than a high school education, those with a high school diploma or GED used .563 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[3], 3)`, SE = `r round(waves23.chron.educ.3.se[3],3)`, *p* \< 0.01), those with some college or an AA degree used 0.517 fewer CAMs (*b* = `r round (waves23.chron.educ.3$coefficients[4],4)`, SE = `r round (waves23.chron.educ.3.se[4], 3)`, *p* \< 0.01), those with a college degree use 0.574 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[5],3)`, SE = `r round(waves23.chron.educ.3.se[5],3)`, *p* \< 0.01), and those with a graduate or professional degree used 0.608 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[6],3)`, SE = `r round(waves23.chron.educ.3.se[6],3)`, *p* \< 0.01) in wave 2 compared to wave 3 in the full model including controls. Education only moderates the relationship between difference in chronic conditions and difference in total CAMs used when comparing those with a graduate or professional degree to those with less than a high school education (See Figure \ref{fig:plot-waves23-chron-educ-3}). Those with a graduate or professional degree are more likely to adopt new CAMs when diagnosed with more chronic conditions compared to those with less than a high school diploma (*b* = `r round(waves23.chron.educ.3$coefficients[20],3)`, SE = `r round(waves23.chron.educ.3.se[20],3)`, *p* \< 0.05).
+Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. There was no moderation effect for education on the relationship between changes in chronic conditions and changes in total CAMs used between waves 1 and 2 (Table \ref{tab:waves12-chron-mod-educ}). The moderation effect of education was significantly different for those with some college or an associate's degree (*b* = `r round(waves23.chron.educ.3$coefficients[20],3)`, SE = `r round(waves23.chron.educ.3.se[20],3)`, *p* \< 0.05) and those with a professional or graduate degree (*b* = `r round(waves23.chron.educ.3$coefficients[21],3)`, SE = `r round(waves23.chron.educ.3.se[21])`, *p* \< 0.01). See Table \ref{tab:waves23-chron-mod-educ}. Looking at the plotted regression lines for each education group it is clear that the relationship between a change in chronic conditions and adoption of CAMs is negative for college graduates and positive for those with some college or a graduate or professional degree (See Figure \ref{fig:plot-waves23-chron-educ-3}). Comparing waves 1 and 3, there is a significant difference in the moderation effect of education between those with less than a high school diploma (*b* = `r round(waves13.chron.educ.3$coefficients[18],3)`, SE = `r round(waves13.chron.educ.3.se[18],3)`, *p* \< 0.050) and those with a graduate or professional degree (*b* = `r round(waves13.chron.educ.3$coefficients[21],3)`, SE = `r round(waves13.chron.educ.3.se[21],3)`, *p* \< 0.050) compared to those with a college degree. Similar to the wave 2 and 3 comparison, the plotted regression lines show that the relationship between change in chronic conditions and change in total CAMs used is negative for those with a college degree and positive for those with less than a high school diploma and those with a graduate or professional degree.
 
-Looking at differences between waves 1 and 3, we see that difference in chronic conditions only has a significant effect when education is included in the model (See Table \@ref(tab:waves13-chron-mod-educ)). In the full model including education and controls, for each additional chronic condition developed between waves 1 and 3, respondents are expected to adopt 0.114 CAMs (*b* = `r round(waves13.chron.educ.3$coefficients[2],3)`, SE = `r round(waves13.chron.educ.3.se[2],3)`, *p* \< 0.01). Education does not have an effect on difference in total CAMs used between waves 1 and 3. There are significant interaction effects (See Figure \ref{fig:plot-waves13-chron-educ-3}). In this model, those with less than a high school diploma and those with a graduate or professional degree adopt new CAMs at very similar rates when developing new chronic conditions. There are significant differences in adoption of new CAMs in response to new chronic conditions between those with less than a high school diploma and those with a high school diploma or GED, as well as those with a college degree, though the direction of the relationships is unexpected. There is a negative relationship between difference in chronic conditions and difference in number of CAMs used between waves 1 and 3 for both those with a HS diploma or GED (*b* = `r round(waves13.chron.educ.3$coefficients[17],3)`, SE = `r round(waves13.chron.educ.3.se[17],3)`, *p* \< 0.01) and those with a college degree (*b* = `r round(waves13.chron.educ.3$coefficients[19],3)`, SE = `r round(waves13.chron.educ.3.se[19],3)`, *p* \< 0.01), indicating that each of these education groups utilizes fewer CAMs when developing new chronic conditions, while those with less than a high school diploma adopt more.
-
-No relationships between changes in SRH and changes in total CAMs used were found in any of the between wave comparisons (See Tables \ref{tab:waves12-SRH-mod-income}, \ref{tab:waves23-SRH-mod-income}, \ref{tab:waves13-SRH-mod-income}, \ref{tab:waves12-SRH-mod-educ}, \ref{tab:waves23-SRH-mod-educ}, \ref{tab:waves13-SRH-mod-educ}).
+No relationship between changes in SRH and changes in total CAMs used was found in any of the between wave comparisons (See Tables \ref{tab:waves12-SRH-mod-income}, \ref{tab:waves23-SRH-mod-income}, \ref{tab:waves13-SRH-mod-income}, \ref{tab:waves12-SRH-mod-educ}, \ref{tab:waves23-SRH-mod-educ}, \ref{tab:waves13-SRH-mod-educ}). Similarly there was no moderation effect for income or education on the relationship. 
 
 # Discussion
+
+

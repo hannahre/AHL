@@ -48,7 +48,7 @@ varlist <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam
               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14",
               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", 
               "A1SCHROX", "A1SCHRON", "A1SHLOCS", "aSpiritual",
-             "aReligion", "aSRH")
+             "aReligion", "aSRH", "A1SHHTOT")
 
 wave1 <- M1[varlist] # Subset MIDUS1 - only include CAMs.
 
@@ -88,7 +88,8 @@ wave1 <- dplyr::rename(wave1,
                             #MoEduc_W1 = aMoEduc,
                             Spiritual_W1 = aSpiritual, 
                             Religion_W1 = aReligion, 
-                            SRH_W1 = aSRH)
+                            SRH_W1 = aSRH,
+                            Income_W1 = A1SHHTOT)
 
 # Convert Father education to factor
 #wave1$FaEduc_W1 <- as_factor(wave1$FaEduc_W1, levels = "labels")
@@ -121,6 +122,8 @@ wave1$HLSelf_W1 <- as.numeric(wave1$HLSelf_W1)
 #wave1$HLOther_W1 <- as.numeric(wave1$HLOther_W1)
 # Convert SRH to ordered factor
 wave1$SRH_W1 <- haven::as_factor(wave1$SRH_W1, levels = "labels")
+# Convert Income to numeric
+wave1$Income_W1 <- as.numeric(wave1$Income_W1)
 
 # Restrict to cases not missing on any variables
 #wave1 <- wave1[complete.cases(wave1),]
@@ -138,7 +141,7 @@ M2 <- read_dta(path)
 varlist <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
                "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", 
                "bcam21","bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried",
-               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId", "bSRH")
+               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId", "bSRH", "B1STINC1")
 
 wave2 <- M2[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -176,7 +179,8 @@ wave2 <- dplyr::rename(wave2,
                             HLSelf_W2 = B1SHLOCS,
                             Spiritual_W2 = bSpirit, 
                             Religion_W2 = bReligId, 
-                            SRH_W2 = bSRH)
+                            SRH_W2 = bSRH,
+                            Income_W2 = B1STINC1)
 
 
 # Convert age to numeric
@@ -206,7 +210,12 @@ wave2$HLSelf_W2 <- as.numeric(wave2$HLSelf_W2)
 #wave2$HLOther_W2 <- as.numeric(wave2$HLOther_W2)
 # Convert SRH to ordered factor
 wave2$SRH_W2 <- haven::as_factor(wave2$SRH_W2, levels = "labels")
-
+# Convert Spirituality to numeric
+wave2$Spiritual_W2 <- as.numeric(wave2$Spiritual_W2)
+# Convert Religion to numeric
+wave2$Religion_W2 <- as.numeric(wave2$Religion_W2)
+# Convert income to numeric
+wave2$Income_W2 <- as.numeric(wave2$Income_W2)
 
 # Restrict to cases not missing on any variables
 #wave2 <- wave2[complete.cases(wave2),]
@@ -226,7 +235,7 @@ varlist <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", 
                "ccam21", "CAge", "lnCHhInc", "CEduc", "CRace", 
                "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS", 
-               "C1SSPIRI", "C1SRELID", "cSRH")
+               "C1SSPIRI", "C1SRELID", "cSRH", "C1STINC")
 
 wave3 <- M3[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -264,7 +273,8 @@ wave3 <- dplyr::rename(wave3,
                             totalCams_W3 = totalCams,
                             Spiritual_W3 = C1SSPIRI, 
                             Religion_W3 = C1SRELID, 
-                            SRH_W3 = cSRH)
+                            SRH_W3 = cSRH, 
+                            Income_W3 = C1STINC)
 str(wave3)
 
 # Age and income already set as numeric 
@@ -296,6 +306,12 @@ wave3$HLSelf_W3 <- as.numeric(wave3$HLSelf_W3)
 #wave3$HLOther_W3 <- as.numeric(wave3$HLOther_W3)
 # Convert SRH to ordered factor
 wave3$SRH_W3 <- haven::as_factor(wave3$SRH_W3, levels = "labels")
+# Convert spiritual to numeric
+wave3$Spiritual_W3 <- as.numeric(wave3$Spiritual_W3)
+# Convert religion to numeric
+wave3$Religion_W3 <- as.numeric(wave3$Religion_W3)
+# Convert income to numeric
+wave3$Income_W3 <- as.numeric(wave3$Income_W3)
 
 # Restrict to cases not missing on any variables
 #wave3 <- wave3[complete.cases(wave3),]
@@ -454,6 +470,28 @@ wave12.wide$DiffCams <- wave12.wide$totalCams_W2 - wave12.wide$totalCams_W1
 myvars <- c("DiffCams", "totalCams_W2", "totalCams_W1")
 newdata <- wave12.wide[myvars]
 
+# Order SRH levels
+wave12.wide <- wave12.wide %>%
+  mutate(wave12.wide = factor(SRH_W1, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE)) %>%
+  mutate(wave12.wide = factor(SRH_W2, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+wave12.wide$SRH_W1 <- as.numeric(wave12.wide$SRH_W1)
+# Checked that numbers were assigned correctly - all good. 
+wave12.wide$SRH_W2 <- as.numeric(wave12.wide$SRH_W2)
+
+# Subtract wave 1 self-reported health from wave 2 self-reported health
+wave12.wide$DiffSRH <- wave12.wide$SRH_W2 - wave12.wide$SRH_W1
+
+# Check Calculation 
+myvars <- c("DiffSRH", "SRH_W2", "SRH_W1")
+newdata <- wave12.wide[myvars]
+
 #Drop incomplete cases
 waves12.wide.complete <- wave12.wide[complete.cases(wave12.wide),]
 save(waves12.wide.complete, file = "waves12.wide.complete.rda")
@@ -479,6 +517,28 @@ wave23.wide$DiffCams <- wave23.wide$totalCams_W3 - wave23.wide$totalCams_W2
 myvars <- c("DiffCams", "totalCams_W3", "totalCams_W2")
 newdata <- wave23.wide[myvars]
 
+# Order SRH levels
+wave23.wide <- wave23.wide %>%
+  mutate(wave23.wide = factor(SRH_W2, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE)) %>%
+  mutate(wave23.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+wave23.wide$SRH_W2 <- as.numeric(wave23.wide$SRH_W2)
+# Checked that numbers were assigned correctly - all good. 
+wave23.wide$SRH_W3 <- as.numeric(wave23.wide$SRH_W3)
+
+# Subtract wave 2 self-reported health from wave 3 self-reported health
+wave23.wide$DiffSRH <- wave23.wide$SRH_W3 - wave23.wide$SRH_W2
+
+# Check Calculation 
+myvars <- c("DiffSRH", "SRH_W3", "SRH_W2")
+newdata <- wave23.wide[myvars]
+
 #Drop incomplete cases
 waves23.wide.complete <- wave23.wide[complete.cases(wave23.wide),]
 save(waves23.wide.complete, file = "waves23.wide.complete.rda")
@@ -502,6 +562,28 @@ wave13.wide$DiffCams <- wave13.wide$totalCams_W3 - wave13.wide$totalCams_W1
 
 # Check calculation 
 myvars <- c("DiffCams", "totalCams_W3", "totalCams_W1")
+newdata <- wave13.wide[myvars]
+
+# Order SRH levels
+wave13.wide <- wave13.wide %>%
+  mutate(wave13.wide = factor(SRH_W1, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE)) %>%
+  mutate(wave13.wide = factor(SRH_W3, levels = c("Poor", "Fair", "Good",
+                                                   "Very Good", "Excellent"), 
+                                labels = 1:5, 
+                                ordered = TRUE))
+# Convert to numeric to be used as ordinal variable
+wave13.wide$SRH_W1 <- as.numeric(wave13.wide$SRH_W1)
+# Checked that numbers were assigned correctly - all good. 
+wave13.wide$SRH_W3 <- as.numeric(wave13.wide$SRH_W3)
+
+# Subtract wave 2 self-reported health from wave 3 self-reported health
+wave13.wide$DiffSRH <- wave13.wide$SRH_W3 - wave13.wide$SRH_W1
+
+# Check Calculation 
+myvars <- c("DiffSRH", "SRH_W3", "SRH_W1")
 newdata <- wave13.wide[myvars]
 
 #Drop incomplete cases
