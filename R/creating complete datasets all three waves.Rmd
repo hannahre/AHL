@@ -35,7 +35,7 @@ library(labelled)
 
 # Extract variables and create each wave of data
 
-```{r, echo = FALSE}
+```{r read-in-data, echo = FALSE}
 ################################################################################
 # Wave 1 
 # This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
@@ -48,7 +48,8 @@ varlist <- c("M2ID", "acam1", "acam2", "acam3", "acam4", "acam5", "acam6", "acam
               "acam8", "acam9", "acam10", "acam11", "acam13", "acam14",
               "acam21", "AEduc", "ARace", "ASex", "lnAHhInc", "aMarried", "aHlthIns", "AAge", 
               "A1SCHROX", "A1SCHRON", "A1SHLOCS", "aSpiritual",
-             "aReligion", "aSRH", "A1SHHTOT")
+             "aReligion", "aSRH", "A1SHHTOT", "Diabetes_W1", "Respiratory_W1",
+             "DepAnx_W1", "HighBP_W1", "A1PDEPRE")
 
 wave1 <- M1[varlist] # Subset MIDUS1 - only include CAMs.
 
@@ -89,7 +90,8 @@ wave1 <- dplyr::rename(wave1,
                             Spiritual_W1 = aSpiritual, 
                             Religion_W1 = aReligion, 
                             SRH_W1 = aSRH,
-                            Income_W1 = A1SHHTOT)
+                            Income_W1 = A1SHHTOT,
+                            Depression_W1 = A1PDEPRE)
 
 # Convert Father education to factor
 #wave1$FaEduc_W1 <- as_factor(wave1$FaEduc_W1, levels = "labels")
@@ -124,6 +126,17 @@ wave1$HLSelf_W1 <- as.numeric(wave1$HLSelf_W1)
 wave1$SRH_W1 <- haven::as_factor(wave1$SRH_W1, levels = "labels")
 # Convert Income to numeric
 wave1$Income_W1 <- as.numeric(wave1$Income_W1)
+# Convert diabetes to 0 1 numeric variable
+wave1$Diabetes_W1 <- as.numeric(wave1$Diabetes_W1)
+# Convert respiratory to 0 1 numeric variable
+wave1$Respiratory_W1 <- as.numeric(wave1$Respiratory_W1)
+# Convert depanx to 0 1 numeric variable
+wave1$DepAnx_W1 <- as.numeric(wave1$DepAnx_W1)
+# Convert highbp to 0 1 numeric variable
+wave1$HighBP_W1 <- as.numeric(wave1$HighBP_W1)
+# Convert depression to numeric variable
+wave1$Depression_W1 <- as.numeric(wave1$Depression_W1)
+
 
 # Restrict to cases not missing on any variables
 #wave1 <- wave1[complete.cases(wave1),]
@@ -141,7 +154,9 @@ M2 <- read_dta(path)
 varlist <- c("M2ID", "bcam1", "bcam2", "bcam3", "bcam4", "bcam5", "bcam6", "bcam7", 
                "bcam8", "bcam9", "bcam10", "bcam11", "bcam13", "bcam14", 
                "bcam21","bAge", "lnbHhInc", "bEduc", "bRace", "bSex", "bHlthIns", "bMarried",
-               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId", "bSRH", "B1STINC1")
+               "B1SCHROX", "B1SCHRON", "B1SHLOCS", "bSpirit", "bReligId", "bSRH", "B1STINC1",
+             "Diabetes_W2", "Respiratory_W2", "DepAnx_W2", "ChronicPain_W2",
+             "HighBP_W2", "B1PDEPRE")
 
 wave2 <- M2[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -180,7 +195,8 @@ wave2 <- dplyr::rename(wave2,
                             Spiritual_W2 = bSpirit, 
                             Religion_W2 = bReligId, 
                             SRH_W2 = bSRH,
-                            Income_W2 = B1STINC1)
+                            Income_W2 = B1STINC1,
+                            Depression_W2 = B1PDEPRE)
 
 
 # Convert age to numeric
@@ -216,6 +232,18 @@ wave2$Spiritual_W2 <- as.numeric(wave2$Spiritual_W2)
 wave2$Religion_W2 <- as.numeric(wave2$Religion_W2)
 # Convert income to numeric
 wave2$Income_W2 <- as.numeric(wave2$Income_W2)
+# Convert diabetes to 0 1 numeric
+wave2$Diabetes_W2 <- as.numeric(wave2$Diabetes_W2)
+# Convert Respiratory to 0 1 numeric
+wave2$Respiratory_W2 <- as.numeric(wave2$Respiratory_W2)
+# Convert dep anx to 0 1 numeric
+wave2$DepAnx_W2 <- as.numeric(wave2$DepAnx_W2)
+# Convert chronic pain to 0 1 numeric 
+wave2$ChronicPain_W2 <- as.numeric(wave2$ChronicPain_W2)
+# Convert high bp to 0 1 numeric variable 
+wave2$HighBP_W2 <- as.numeric(wave2$HighBP_W2)
+# Convert depression to numeric variable 
+wave2$Depression_W2 <- as.numeric(wave2$Depression_W2)
 
 # Restrict to cases not missing on any variables
 #wave2 <- wave2[complete.cases(wave2),]
@@ -235,7 +263,8 @@ varlist <- c("M2ID", "ccam1", "ccam2", "ccam3", "ccam4", "ccam5", "ccam6", "ccam
                "ccam8", "ccam9", "ccam10", "ccam11", "ccam13", "ccam14", 
                "ccam21", "CAge", "lnCHhInc", "CEduc", "CRace", 
                "CSex", "cMarried", "cHlthIns", "C1SCHROX","C1SCHRON", "C1SHLOCS", 
-               "C1SSPIRI", "C1SRELID", "cSRH", "C1STINC")
+               "C1SSPIRI", "C1SRELID", "cSRH", "C1STINC", "Diabetes_W3", "Respiratory_W3",
+             "DepAnx_W3", "ChronicPain_W3", "HighBP_W3", "C1PDEPRE")
 
 wave3 <- M3[varlist] # Subset MIDUS2 - only include CAMs.
 
@@ -274,7 +303,8 @@ wave3 <- dplyr::rename(wave3,
                             Spiritual_W3 = C1SSPIRI, 
                             Religion_W3 = C1SRELID, 
                             SRH_W3 = cSRH, 
-                            Income_W3 = C1STINC)
+                            Income_W3 = C1STINC, 
+                            Depression_W3 = C1PDEPRE)
 str(wave3)
 
 # Age and income already set as numeric 
@@ -312,6 +342,18 @@ wave3$Spiritual_W3 <- as.numeric(wave3$Spiritual_W3)
 wave3$Religion_W3 <- as.numeric(wave3$Religion_W3)
 # Convert income to numeric
 wave3$Income_W3 <- as.numeric(wave3$Income_W3)
+# Convert diabetes to 0 1 numeric
+wave3$Diabetes_W3 <- as.numeric(wave3$Diabetes_W3)
+# Convert respiratory to 0 1 numeric
+wave3$Respiratory_W3 <- as.numeric(wave3$Respiratory_W3)
+# Convert DepAnx to 0 1 numeric
+wave3$DepAnx_W3 <- as.numeric(wave3$DepAnx_W3)
+# Convert chronic pain to 0 1 numeric
+wave3$ChronicPain_W3 <- as.numeric(wave3$ChronicPain_W3)
+# Convert high bp to 0 1 numeric variable
+wave3$HighBP_W3 <- as.numeric(wave3$HighBP_W3)
+# Convert depression to numeric variable
+wave3$Depression_W3 <- as.numeric(wave3$Depression_W3)
 
 # Restrict to cases not missing on any variables
 #wave3 <- wave3[complete.cases(wave3),]
@@ -359,7 +401,7 @@ save(wave3, file = "wave3complete.rda")
 ```
 # Create factor dummies 
 
-```{r, echo = FALSE}
+```{r create factor dummies, echo = FALSE}
 # This code chunk creates the factor dummy indices 
 # Factor 1: Mind body practices 
 
@@ -412,7 +454,7 @@ save(wave3, file = "wave3complete.rda")
 
 #Merge 
 
-```{r, echo = FALSE}
+```{r create change variables and merge waves 12, echo = FALSE}
 ##############################################################################
 # Merge mother and father education to each wave
 
@@ -492,10 +534,139 @@ wave12.wide$DiffSRH <- wave12.wide$SRH_W2 - wave12.wide$SRH_W1
 myvars <- c("DiffSRH", "SRH_W2", "SRH_W1")
 newdata <- wave12.wide[myvars]
 
+# Create Diabetes change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffDiabetes = case_when(Diabetes_W1 == 0 & Diabetes_W2 == 1 ~ "New Diabetes Diagnosis", #Developed Diabetes
+                         Diabetes_W1 == 1 & Diabetes_W2 == 1 ~ "Diabetic at Both Waves", #Had diabetes, still has
+                         Diabetes_W1 == 1 & Diabetes_W2 == 0 ~ "Not Diabetic", # No longer has diabetes
+                         Diabetes_W1 == 0 & Diabetes_W2 == 0 ~ "Not Diabetic", # Does not have diabetes
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDiabetes = factor(DiffDiabetes, levels = c("New Diabetes Diagnosis", 
+                                                        "Diabetic at Both Waves",
+                                                        "Not Diabetic")))
+# Check code
+myvars <- c("Diabetes_W1", "Diabetes_W2", "DiffDiabetes")
+newdata <- wave12.wide[myvars]
+
+# Create Respiratory change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffRespiratory = case_when(Respiratory_W1 == 0 & Respiratory_W2 == 1 ~ "New Respiratory Diagnosis", #Developed Respiratory
+                         Respiratory_W1 == 1 & Respiratory_W2 == 1 ~ "Respiratory Issues at Both Waves",
+                         Respiratory_W1 == 1 & Respiratory_W2 == 0 ~ "Respiratory Issues Resolved", 
+                         Respiratory_W1 == 0 & Respiratory_W2 == 0 ~ "No Respiratory Issues", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffRespiratory = factor(DiffRespiratory, levels = c("New Respiratory Diagnosis", 
+                                                        "Respiratory Issues at Both Waves",
+                                                        "Respiratory Issues Resolved",
+                                                        "No Respiratory Issues")))
+# Check code
+myvars <- c("Respiratory_W1", "Respiratory_W2", "DiffRespiratory")
+newdata <- wave12.wide[myvars]
+
+# Create DepAnx change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffDepAnx = case_when(DepAnx_W1 == 0 & DepAnx_W2 == 1 ~ "Developed Depression/Anxiety", 
+                         DepAnx_W1 == 1 & DepAnx_W2 == 1 ~ "Depression/Anxiety at Both Waves",
+                         DepAnx_W1 == 1 & DepAnx_W2 == 0 ~ "Depression/Anxiety Resolved", 
+                         DepAnx_W1 == 0 & DepAnx_W2 == 0 ~ "No Depression/Anxiety", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDepAnx = factor(DiffDepAnx, levels = c("Developed Depression/Anxiety", 
+                                                        "Depression/Anxiety at Both Waves",
+                                                    "Depression/Anxiety Resolved",
+                                                        "No Depression/Anxiety")))
+# Check code
+myvars <- c("DepAnx_W1", "DepAnx_W2", "DiffDepAnx")
+newdata <- wave12.wide[myvars]
+
+# Create blood pressure change variable 
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffHighBP = case_when(HighBP_W1 == 0 & HighBP_W2 == 1 ~ "Developed High Blood Pressure", 
+                         HighBP_W1 == 1 & HighBP_W2 == 1 ~ "High Blood Pressure at Both Waves",
+                         HighBP_W1 == 1 & HighBP_W2 == 0 ~ "High Blood Pressure Resolved", 
+                         HighBP_W1 == 0 & HighBP_W2 == 0 ~ "No High Blood Pressure", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffHighBP = factor(DiffHighBP, levels = c("Developed High Blood Pressure", 
+                                                        "High Blood Pressure at Both Waves",
+                                                    "High Blood Pressure Resolved",
+                                                        "No High Blood Pressure")))
+# Check code
+myvars <- c("HighBP_W1", "HighBP_W2", "DiffHighBP")
+newdata <- wave12.wide[myvars]
+
+# Create mindbody change variable 
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffMindBody = case_when(mindbody_W1 == 0 & mindbody_W2 == 1 ~ "Started using Mind-Body Medicine", 
+                         mindbody_W1 == 1 & mindbody_W2 == 1 ~ "Used Mind-Body Medicine at Both Waves",
+                         mindbody_W1 == 1 & mindbody_W2 == 0 ~ "Stopped Using Mind-Body Medicine", 
+                         mindbody_W1 == 0 & mindbody_W2 == 0 ~ "Never Used Mind-Body Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffMindBody = factor(DiffMindBody, levels = c("Started using Mind-Body Medicine", 
+                                                        "Used Mind-Body Medicine at Both Waves",
+                                                    "Stopped Using Mind-Body Medicine",
+                                                        "Never Used Mind-Body Medicine")))
+# Check code
+myvars <- c("mindbody_W1", "mindbody_W2", "DiffMindBody")
+newdata <- wave12.wide[myvars]
+
+# Create alt med change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffAltMed = case_when(altmed_W1 == 0 & altmed_W2 == 1 ~ "Started using Alternative Medicine", 
+                         altmed_W1 == 1 & altmed_W2 == 1 ~ "Used Alternative Medicine at Both Waves",
+                         altmed_W1 == 1 & altmed_W2 == 0 ~ "Stopped Using Alternative Medicine", 
+                         altmed_W1 == 0 & altmed_W2 == 0 ~ "Never Used Alternative Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffAltMed = factor(DiffAltMed, levels = c("Started using Alternative Medicine", 
+                                                        "Used Alternative Medicine at Both Waves",
+                                                    "Stopped Using Alternative Medicine",
+                                                        "Never Used Alternative Medicine")))
+# Check code
+myvars <- c("altmed_W1", "altmed_W2", "DiffAltMed")
+newdata <- wave12.wide[myvars]
+
+# Create PNA change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffPNA = case_when(pna_W1 == 0 & pna_W2 == 1 ~ "Started using Physical and Nutritional Approaches", 
+                         pna_W1 == 1 & pna_W2 == 1 ~ "Used Physical and Nutritional Approaches at Both Waves",
+                         pna_W1 == 1 & pna_W2 == 0 ~ "Stopped Using Physical and Nutritional Approaches", 
+                         pna_W1 == 0 & pna_W2 == 0 ~ "Never Used Physical and Nutritional Approaches", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffPNA = factor(DiffPNA, levels = c("Started using Physical and Nutritional Approaches", 
+                                                        "Used Physical and Nutritional Approaches at Both Waves",
+                                                    "Stopped Using Physical and Nutritional Approaches",
+                                                        "Never Used Physical and Nutritional Approaches")))
+# Check code
+myvars <- c("pna_W1", "pna_W2", "DiffPNA")
+newdata <- wave12.wide[myvars]
+
+# Create manipulative change variable
+wave12.wide <- wave12.wide %>% 
+  mutate(DiffManipulative = case_when(manipulative_W1 == 0 & manipulative_W2 == 1 ~ "Started using Manipulative Treatments", 
+                         manipulative_W1 == 1 & manipulative_W2 == 1 ~ "Used Manipulative Treatments at Both Waves",
+                         manipulative_W1 == 1 & manipulative_W2 == 0 ~ "Stopped Using Manipulative Treatments", 
+                         manipulative_W1 == 0 & manipulative_W2 == 0 ~ "Never Used Manipulative Treatments", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffManipulative = factor(DiffManipulative, levels = c("Started using Manipulative Treatments", 
+                                                        "Used Manipulative Treatments at Both Waves",
+                                                    "Stopped Using Manipulative Treatments",
+                                                        "Never Used Manipulative Treatments")))
+# Check code
+myvars <- c("manipulative_W1", "manipulative_W2", "DiffManipulative")
+newdata <- wave12.wide[myvars]
+
 #Drop incomplete cases
 waves12.wide.complete <- wave12.wide[complete.cases(wave12.wide),]
 save(waves12.wide.complete, file = "waves12.wide.complete.rda")
+```
 
+```{r create-change-variables-and-merge-waves-23, echo=FALSE}
 #################################################################################
 # Merging waves 2 and 3 for change model dataset 
 # Creating change variables for chronic conditions and CAMs
@@ -539,9 +710,155 @@ wave23.wide$DiffSRH <- wave23.wide$SRH_W3 - wave23.wide$SRH_W2
 myvars <- c("DiffSRH", "SRH_W3", "SRH_W2")
 newdata <- wave23.wide[myvars]
 
+# Create Diabetes change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffDiabetes = case_when(Diabetes_W2 == 0 & Diabetes_W3 == 1 ~ "New Diabetes Diagnosis", #Developed Diabetes
+                         Diabetes_W2 == 1 & Diabetes_W3 == 1 ~ "Diabetic at Both Waves", #Had diabetes, still has
+                         Diabetes_W2 == 1 & Diabetes_W3 == 0 ~ "Not Diabetic", # No longer has diabetes
+                         Diabetes_W2 == 0 & Diabetes_W3 == 0 ~ "Not Diabetic", # Does not have diabetes
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDiabetes = factor(DiffDiabetes, levels = c("New Diabetes Diagnosis", 
+                                                        "Diabetic at Both Waves",
+                                                        "Not Diabetic")))
+# Check code
+myvars <- c("Diabetes_W2", "Diabetes_W3", "DiffDiabetes")
+newdata <- wave23.wide[myvars]
+
+# Create Respiratory change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffRespiratory = case_when(Respiratory_W2 == 0 & Respiratory_W3 == 1 ~ "New Respiratory Diagnosis", #Developed Respiratory
+                         Respiratory_W2 == 1 & Respiratory_W3 == 1 ~ "Respiratory Issues at Both Waves",
+                         Respiratory_W2 == 1 & Respiratory_W3 == 0 ~ "Respiratory Issues Resolved", 
+                         Respiratory_W2 == 0 & Respiratory_W3 == 0 ~ "No Respiratory Issues", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffRespiratory = factor(DiffRespiratory, levels = c("New Respiratory Diagnosis", 
+                                                        "Respiratory Issues at Both Waves",
+                                                        "Respiratory Issues Resolved",
+                                                        "No Respiratory Issues")))
+# Check code
+myvars <- c("Respiratory_W2", "Respiratory_W3", "DiffRespiratory")
+newdata <- wave23.wide[myvars]
+
+# Create DepAnx change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffDepAnx = case_when(DepAnx_W2 == 0 & DepAnx_W3 == 1 ~ "Developed Depression/Anxiety", 
+                         DepAnx_W2 == 1 & DepAnx_W3 == 1 ~ "Depression/Anxiety at Both Waves",
+                         DepAnx_W2 == 1 & DepAnx_W3 == 0 ~ "Depression/Anxiety Resolved", 
+                         DepAnx_W2 == 0 & DepAnx_W3 == 0 ~ "No Depression/Anxiety", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDepAnx = factor(DiffDepAnx, levels = c("Developed Depression/Anxiety", 
+                                                        "Depression/Anxiety at Both Waves",
+                                                    "Depression/Anxiety Resolved",
+                                                        "No Depression/Anxiety")))
+# Check code
+myvars <- c("DepAnx_W2", "DepAnx_W3", "DiffDepAnx")
+newdata <- wave23.wide[myvars]
+
+# Create chronic pain change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffChronicPain = case_when(ChronicPain_W2 == 0 & ChronicPain_W3 == 1 ~ "Developed Chronic Pain", 
+                         ChronicPain_W2 == 1 & ChronicPain_W3 == 1 ~ "Chronic Pain at Both Waves",
+                         ChronicPain_W2 == 1 & ChronicPain_W3 == 0 ~ "Chronic Pain Resolved", 
+                         ChronicPain_W2 == 0 & ChronicPain_W3 == 0 ~ "No Chronic Pain", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffChronicPain = factor(DiffChronicPain, levels = c("Developed Chronic Pain", 
+                                                        "Chronic Pain at Both Waves",
+                                                        "Chronic Pain Resolved",
+                                                        "No Chronic Pain")))
+# Check code
+myvars <- c("ChronicPain_W2", "ChronicPain_W3", "DiffChronicPain")
+newdata <- wave23.wide[myvars]
+
+# Create blood pressure variable 
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffHighBP = case_when(HighBP_W2 == 0 & HighBP_W3 == 1 ~ "Developed High Blood Pressure", 
+                         HighBP_W2 == 1 & HighBP_W3 == 1 ~ "High Blood Pressure at Both Waves",
+                         HighBP_W2 == 1 & HighBP_W3 == 0 ~ "High Blood Pressure Resolved", 
+                         HighBP_W2 == 0 & HighBP_W3 == 0 ~ "No High Blood Pressure", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffHighBP = factor(DiffHighBP, levels = c("Developed High Blood Pressure", 
+                                                        "High Blood Pressure at Both Waves",
+                                                    "High Blood Pressure Resolved",
+                                                        "No High Blood Pressure")))
+# Check code
+myvars <- c("HighBP_W2", "HighBP_W3", "DiffHighBP")
+newdata <- wave23.wide[myvars]
+
+# Create mindbody change variable 
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffMindBody = case_when(mindbody_W2 == 0 & mindbody_W3 == 1 ~ "Started using Mind-Body Medicine", 
+                         mindbody_W2 == 1 & mindbody_W3 == 1 ~ "Used Mind-Body Medicine at Both Waves",
+                         mindbody_W2 == 1 & mindbody_W3 == 0 ~ "Stopped Using Mind-Body Medicine", 
+                         mindbody_W2 == 0 & mindbody_W3 == 0 ~ "Never Used Mind-Body Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffMindBody = factor(DiffMindBody, levels = c("Started using Mind-Body Medicine", 
+                                                        "Used Mind-Body Medicine at Both Waves",
+                                                    "Stopped Using Mind-Body Medicine",
+                                                        "Never Used Mind-Body Medicine")))
+# Check code
+myvars <- c("mindbody_W2", "mindbody_W3", "DiffMindBody")
+newdata <- wave23.wide[myvars]
+
+# Create alt med change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffAltMed = case_when(altmed_W2 == 0 & altmed_W3 == 1 ~ "Started using Alternative Medicine", 
+                         altmed_W2 == 1 & altmed_W3 == 1 ~ "Used Alternative Medicine at Both Waves",
+                         altmed_W2 == 1 & altmed_W3 == 0 ~ "Stopped Using Alternative Medicine", 
+                         altmed_W2 == 0 & altmed_W3 == 0 ~ "Never Used Alternative Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffAltMed = factor(DiffAltMed, levels = c("Started using Alternative Medicine", 
+                                                        "Used Alternative Medicine at Both Waves",
+                                                    "Stopped Using Alternative Medicine",
+                                                        "Never Used Alternative Medicine")))
+# Check code
+myvars <- c("altmed_W2", "altmed_W3", "DiffAltMed")
+newdata <- wave23.wide[myvars]
+
+# Create PNA change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffPNA = case_when(pna_W2 == 0 & pna_W3 == 1 ~ "Started using Physical and Nutritional Approaches", 
+                         pna_W2 == 1 & pna_W3 == 1 ~ "Used Physical and Nutritional Approaches at Both Waves",
+                         pna_W2 == 1 & pna_W3 == 0 ~ "Stopped Using Physical and Nutritional Approaches", 
+                         pna_W2 == 0 & pna_W3 == 0 ~ "Never Used Physical and Nutritional Approaches", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffPNA = factor(DiffPNA, levels = c("Started using Physical and Nutritional Approaches", 
+                                                        "Used Physical and Nutritional Approaches at Both Waves",
+                                                    "Stopped Using Physical and Nutritional Approaches",
+                                                        "Never Used Physical and Nutritional Approaches")))
+# Check code
+myvars <- c("pna_W2", "pna_W3", "DiffPNA")
+newdata <- wave23.wide[myvars]
+
+# Create manipulative change variable
+wave23.wide <- wave23.wide %>% 
+  mutate(DiffManipulative = case_when(manipulative_W2 == 0 & manipulative_W3 == 1 ~ "Started using Manipulative Treatments", 
+                         manipulative_W2 == 1 & manipulative_W3 == 1 ~ "Used Manipulative Treatments at Both Waves",
+                         manipulative_W2 == 1 & manipulative_W3 == 0 ~ "Stopped Using Manipulative Treatments", 
+                         manipulative_W2 == 0 & manipulative_W3 == 0 ~ "Never Used Manipulative Treatments", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffManipulative = factor(DiffManipulative, levels = c("Started using Manipulative Treatments", 
+                                                        "Used Manipulative Treatments at Both Waves",
+                                                    "Stopped Using Manipulative Treatments",
+                                                        "Never Used Manipulative Treatments")))
+# Check code
+myvars <- c("manipulative_W2", "manipulative_W3", "DiffManipulative")
+newdata <- wave23.wide[myvars]
+
 #Drop incomplete cases
 waves23.wide.complete <- wave23.wide[complete.cases(wave23.wide),]
 save(waves23.wide.complete, file = "waves23.wide.complete.rda")
+```
+
+```{r create change variables and merge waves 13, echo=FALSE}
 
 ################################################################################
 # Merging waves 1 and 3 for change model dataset 
@@ -586,10 +903,139 @@ wave13.wide$DiffSRH <- wave13.wide$SRH_W3 - wave13.wide$SRH_W1
 myvars <- c("DiffSRH", "SRH_W3", "SRH_W1")
 newdata <- wave13.wide[myvars]
 
+# Create Diabetes change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffDiabetes = case_when(Diabetes_W1 == 0 & Diabetes_W3 == 1 ~ "New Diabetes Diagnosis", #Developed Diabetes
+                         Diabetes_W1 == 1 & Diabetes_W3 == 1 ~ "Diabetic at Both Waves", #Had diabetes, still has
+                         Diabetes_W1 == 1 & Diabetes_W3 == 0 ~ "Not Diabetic", # No longer has diabetes
+                         Diabetes_W1 == 0 & Diabetes_W3 == 0 ~ "Not Diabetic", # Does not have diabetes
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDiabetes = factor(DiffDiabetes, levels = c("New Diabetes Diagnosis", 
+                                                        "Diabetic at Both Waves",
+                                                        "Not Diabetic")))
+# Check code
+myvars <- c("Diabetes_W1", "Diabetes_W3", "DiffDiabetes")
+newdata <- wave13.wide[myvars]
+
+# Create Respiratory change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffRespiratory = case_when(Respiratory_W1 == 0 & Respiratory_W3 == 1 ~ "New Respiratory Diagnosis", #Developed Respiratory
+                         Respiratory_W1 == 1 & Respiratory_W3 == 1 ~ "Respiratory Issues at Both Waves",
+                         Respiratory_W1 == 1 & Respiratory_W3 == 0 ~ "Respiratory Issues Resolved", 
+                         Respiratory_W1 == 0 & Respiratory_W3 == 0 ~ "No Respiratory Issues", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffRespiratory = factor(DiffRespiratory, levels = c("New Respiratory Diagnosis", 
+                                                        "Respiratory Issues at Both Waves",
+                                                        "Respiratory Issues Resolved",
+                                                        "No Respiratory Issues")))
+# Check code
+myvars <- c("Respiratory_W1", "Respiratory_W3", "DiffRespiratory")
+newdata <- wave13.wide[myvars]
+
+# Create DepAnx change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffDepAnx = case_when(DepAnx_W1 == 0 & DepAnx_W3 == 1 ~ "Developed Depression/Anxiety", 
+                         DepAnx_W1 == 1 & DepAnx_W3 == 1 ~ "Depression/Anxiety at Both Waves",
+                         DepAnx_W1 == 1 & DepAnx_W3 == 0 ~ "Depression/Anxiety Resolved", 
+                         DepAnx_W1 == 0 & DepAnx_W3 == 0 ~ "No Depression/Anxiety", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffDepAnx = factor(DiffDepAnx, levels = c("Developed Depression/Anxiety", 
+                                                        "Depression/Anxiety at Both Waves",
+                                                    "Depression/Anxiety Resolved",
+                                                        "No Depression/Anxiety")))
+# Check code
+myvars <- c("DepAnx_W1", "DepAnx_W3", "DiffDepAnx")
+newdata <- wave13.wide[myvars]
+
+# Create Blood pressure change variable 
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffHighBP = case_when(HighBP_W1 == 0 & HighBP_W3 == 1 ~ "Developed High Blood Pressure", 
+                         HighBP_W1 == 1 & HighBP_W3 == 1 ~ "High Blood Pressure at Both Waves",
+                         HighBP_W1 == 1 & HighBP_W3 == 0 ~ "High Blood Pressure Resolved", 
+                         HighBP_W1 == 0 & HighBP_W3 == 0 ~ "No High Blood Pressure", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffHighBP = factor(DiffHighBP, levels = c("Developed High Blood Pressure", 
+                                                        "High Blood Pressure at Both Waves",
+                                                    "High Blood Pressure Resolved",
+                                                        "No High Blood Pressure")))
+# Check code
+myvars <- c("HighBP_W1", "HighBP_W3", "DiffHighBP")
+newdata <- wave13.wide[myvars]
+
+# Create mindbody change variable 
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffMindBody = case_when(mindbody_W1 == 0 & mindbody_W3 == 1 ~ "Started using Mind-Body Medicine", 
+                         mindbody_W1 == 1 & mindbody_W3 == 1 ~ "Used Mind-Body Medicine at Both Waves",
+                         mindbody_W1 == 1 & mindbody_W3 == 0 ~ "Stopped Using Mind-Body Medicine", 
+                         mindbody_W1 == 0 & mindbody_W3 == 0 ~ "Never Used Mind-Body Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffMindBody = factor(DiffMindBody, levels = c("Started using Mind-Body Medicine", 
+                                                        "Used Mind-Body Medicine at Both Waves",
+                                                    "Stopped Using Mind-Body Medicine",
+                                                        "Never Used Mind-Body Medicine")))
+# Check code
+myvars <- c("mindbody_W1", "mindbody_W3", "DiffMindBody")
+newdata <- wave13.wide[myvars]
+
+# Create alt med change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffAltMed = case_when(altmed_W1 == 0 & altmed_W3 == 1 ~ "Started using Alternative Medicine", 
+                         altmed_W1 == 1 & altmed_W3 == 1 ~ "Used Alternative Medicine at Both Waves",
+                         altmed_W1 == 1 & altmed_W3 == 0 ~ "Stopped Using Alternative Medicine", 
+                         altmed_W1 == 0 & altmed_W3 == 0 ~ "Never Used Alternative Medicine", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffAltMed = factor(DiffAltMed, levels = c("Started using Alternative Medicine", 
+                                                        "Used Alternative Medicine at Both Waves",
+                                                    "Stopped Using Alternative Medicine",
+                                                        "Never Used Alternative Medicine")))
+# Check code
+myvars <- c("altmed_W1", "altmed_W3", "DiffAltMed")
+newdata <- wave13.wide[myvars]
+
+# Create PNA change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffPNA = case_when(pna_W1 == 0 & pna_W3 == 1 ~ "Started using Physical and Nutritional Approaches", 
+                         pna_W1 == 1 & pna_W3 == 1 ~ "Used Physical and Nutritional Approaches at Both Waves",
+                         pna_W1 == 1 & pna_W3 == 0 ~ "Stopped Using Physical and Nutritional Approaches", 
+                         pna_W1 == 0 & pna_W3 == 0 ~ "Never Used Physical and Nutritional Approaches", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffPNA = factor(DiffPNA, levels = c("Started using Physical and Nutritional Approaches", 
+                                                        "Used Physical and Nutritional Approaches at Both Waves",
+                                                    "Stopped Using Physical and Nutritional Approaches",
+                                                        "Never Used Physical and Nutritional Approaches")))
+# Check code
+myvars <- c("pna_W1", "pna_W3", "DiffPNA")
+newdata <- wave13.wide[myvars]
+
+# Create manipulative change variable
+wave13.wide <- wave13.wide %>% 
+  mutate(DiffManipulative = case_when(manipulative_W1 == 0 & manipulative_W3 == 1 ~ "Started using Manipulative Treatments", 
+                         manipulative_W1 == 1 & manipulative_W3 == 1 ~ "Used Manipulative Treatments at Both Waves",
+                         manipulative_W1 == 1 & manipulative_W3 == 0 ~ "Stopped Using Manipulative Treatments", 
+                         manipulative_W1 == 0 & manipulative_W3 == 0 ~ "Never Used Manipulative Treatments", 
+                         TRUE ~ NA_character_ #NAs 
+                         ),
+         DiffManipulative = factor(DiffManipulative, levels = c("Started using Manipulative Treatments", 
+                                                        "Used Manipulative Treatments at Both Waves",
+                                                    "Stopped Using Manipulative Treatments",
+                                                        "Never Used Manipulative Treatments")))
+# Check code
+myvars <- c("manipulative_W1", "manipulative_W3", "DiffManipulative")
+newdata <- wave13.wide[myvars]
+
 #Drop incomplete cases
 waves13.wide.complete <- wave13.wide[complete.cases(wave13.wide),]
 save(waves13.wide.complete, file = "waves13.wide.complete.rda")
+```
 
+```{r reshape-merge-all-three-waves, echo=FALSE}
 ################################################################################
 # Reshaping and merging all three waves 
 

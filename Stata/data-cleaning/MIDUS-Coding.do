@@ -1278,7 +1278,197 @@ save, replace
 	label values cSRH csrh
 	tab C1PA1 cSRH, missing
 	save, replace
-		
+	
+
+	
+* Diabetes 
+
+** Wave 1
+	use MIDUS1.dta, clear
+	codebook A1SA9X
+	* Code as 0 1 variable 
+	recode A1SA9X (1 = 1) (2 = 0) (. = .), gen(Diabetes_W1)
+	label variable Diabetes_W1 "Currently has diabetes"
+	label define yndiabetes 0 "No" 1 "Yes"
+	label values Diabetes_W1 yndiabetes
+	tab Diabetes_W1 A1SA9X, missing
+	save, replace
+	
+** Wave 2
+	use MIDUS2.dta, clear
+	codebook B1SA11X 
+	* Code as 0 1 variable
+	recode B1SA11X (1 = 1) (2 = 0) (. = .), gen(Diabetes_W2)
+	label variable Diabetes_W2 "Currently has diabetes"
+	label define yndiabetes2 0 "No" 1 "Yes"
+	label values Diabetes_W2 yndiabetes2
+	tab Diabetes_W2 B1SA11X, missing
+	save, replace
+	
+** Wave 3
+	use MIDUS3.dta, clear 
+	codebook C1SA11X
+	* Code as 0 1 variable
+	recode C1SA11X (1 = 1) (2 = 0) (. = .), gen(Diabetes_W3)
+	label variable Diabetes_W3 "Currently has diabetes"
+	label define yndiabetes3 0 "No" 1 "Yes"
+	label values Diabetes_W3 yndiabetes3
+	tab Diabetes_W3 C1SA11X, missing
+	save, replace
+	
+	
+* Respiratory
+
+** Wave 1
+	use MIDUS1.dta, clear
+	codebook A1SA9A A1SA9B A1SA9C
+	* Code as 0 1 variable  
+	generate Respiratory_W1 = .
+		replace Respiratory_W1 = 0 if A1SA39A == 2 | A1SA39B == 2 | A1SA39C == 2
+		replace Respiratory_W1 = 1 if A1SA39A == 1 | A1SA39B == 1 | A1SA39C == 1
+	label variable Respiratory_W1 "Currently in has respiratory disease"
+	label define ynresp 0 "No" 1 "Yes"
+	label values Respiratory_W1 ynresp
+	tab A1SA39A Respiratory_W1, missing
+	tab A1SA39B Respiratory_W1, missing
+	tab A1SA39C Respiratory_W1, missing
+	save, replace
+	
+** Wave 2
+	use MIDUS2.dta, clear
+	codebook B1SA11A B1SA11B B1SA11C 
+	* Code as 0 1 variable
+	generate Respiratory_W2 = .
+		replace Respiratory_W2 = 0 if B1SA11A == 2 | B1SA11B == 2 | B1SA11C == 2
+		replace Respiratory_W2 = 1 if B1SA11A == 1 | B1SA11B == 1 | B1SA11C == 1
+	label variable Respiratory_W2 "Currently in has respiratory disease"
+	label define ynresp2 0 "No" 1 "Yes"
+	label values Respiratory_W2 ynresp2
+	tab B1SA11A Respiratory_W2, missing
+	tab B1SA11B Respiratory_W2, missing
+	tab B1SA11C Respiratory_W2, missing
+	save, replace
+	
+** Wave 3 
+	use MIDUS3.dta, clear
+	codebook C1SA11A C1SA11B C1SA11C 
+	* Code 0 1 variable 
+	generate Respiratory_W3 = .
+		replace Respiratory_W3 = 0 if C1SA11A == 2 | C1SA11B == 2 | C1SA11C == 2
+		replace Respiratory_W3 = 1 if C1SA11A == 1 | C1SA11B == 1 | C1SA11C == 1
+	label variable Respiratory_W3 "Currently in has respiratory disease"
+	label define ynresp3 0 "No" 1 "Yes"
+	label values Respiratory_W3 ynresp3
+	tab C1SA11A Respiratory_W3, missing
+	tab C1SA11B Respiratory_W3, missing
+	tab C1SA11C Respiratory_W3, missing
+	save, replace
+	
+	
+* Depression Scale
+
+** Wave 1
+	use MIDUS1.dta, clear
+	codebook A1PDEPRE	
+	
+** Wave 2 
+	use MIDUS2.dta, clear
+	codebook B1PDEPRE	
+	
+** Wave 3
+	use MIDUS3.dta, clear
+	codebook C1PDEPRE	
+
+* Depression/Anxiety
+	
+** Wave 1
+	use MIDUS1.dta, clear
+	codebook A1SA9T
+	* Code as 0 1 variable 
+	recode A1SA9T (1 = 1) (2 = 0) (. = .), gen(DepAnx_W1)
+	label variable DepAnx_W1 "Currently has depression or anxiety"
+	label define yndepanx 0 "No" 1 "Yes"
+	label values DepAnx_W1 yndepanx
+	tab DepAnx_W1 A1SA9T, missing
+	save, replace
+	
+** Wave 2
+	use MIDUS2.dta, clear
+	codebook B1SA11T
+	* Code as 0 1 variable 
+	recode B1SA11T (1 = 1) (2 = 0) (. = .), gen(DepAnx_W2)
+	label variable DepAnx_W2 "Currently has depression or anxiety"
+	label define yndepanx2 0 "No" 1 "Yes"
+	label values DepAnx_W2 yndepanx2
+	tab DepAnx_W2 B1SA11T, missing
+	save, replace
+	
+** Wave 3
+	use MIDUS3.dta, clear
+	codebook C1SA11T
+	* Code as 0 1 variable 
+	recode C1SA11T (1 = 1) (2 = 0) (. = .), gen(DepAnx_W3)
+	label variable DepAnx_W3 "Currently has depression or anxiety"
+	label define yndepanx3 0 "No" 1 "Yes"
+	label values DepAnx_W3 yndepanx3
+	tab DepAnx_W3 C1SA11T, missing
+	save, replace
+	
+* Chronic Pain 
+
+** Wave 2
+	use MIDUS2.dta, clear
+	codebook B1SA15
+	* Code as 0 1 variable
+	recode B1SA15 (1 = 1) (2 = 0) (. = .), gen(ChronicPain_W2)
+	label variable ChronicPain_W2 "Currently has chronic pain"
+	label define ynpain2 0 "No" 1 "Yes"
+	label values ChronicPain_W2 ynpain2
+	tab ChronicPain_W2 B1SA15, missing
+	save, replace
+	
+** Wave 3 
+	use MIDUS3.dta, clear
+	codebook C1SA15
+	* Code as 0 1 variable
+	recode C1SA15 (1 = 1) (2 = 0) (. = .), gen(ChronicPain_W3)
+	label variable ChronicPain_W3 "Currently has chronic pain"
+	label define ynpain3 0 "No" 1 "Yes"
+	label values ChronicPain_W3 ynpain3
+	tab ChronicPain_W3 C1SA15, missing
+	save, replace
+	
+* Blood Pressure
+
+** Wave 1
+	use MIDUS1.dta, clear
+	codebook A1SA9S
+	recode A1SA9S (1 = 1) (2 = 0) (. = .), gen(HighBP_W1)
+	label variable HighBP_W1 "Currently has high blood pressure"
+	label define ynhighbp 0 "No" 1 "Yes"
+	label values HighBP_W1 ynhighbp
+	tab HighBP_W1 A1SA9S, missing
+	save, replace
+	
+** Wave 2
+	use MIDUS2.dta, clear
+	codebook B1SA11S
+	recode B1SA11S (1 = 1) (2 = 0) (. = .), gen(HighBP_W2)
+	label variable HighBP_W2 "Currently has high blood pressure"
+	label define ynhighbp2 0 "No" 1 "Yes"
+	label values HighBP_W2 ynhighbp2
+	tab HighBP_W2 B1SA11S, missing
+	save, replace
+	
+** Wave 3
+	use MIDUS3.dta, clear
+	codebook C1SA11S
+	recode C1SA11S (1 = 1) (2 = 0) (. = .), gen(HighBP_W3)
+	label variable HighBP_W3 "Currently has high blood pressure"
+	label define ynhighbp3 0 "No" 1 "Yes"
+	label values HighBP_W3 ynhighbp3
+	tab HighBP_W3 C1SA11S, missing
+	save, replace
 	
 // Delimit sample to cases not missing on variables in model. 
 	use MIDUS1.dta, clear 
