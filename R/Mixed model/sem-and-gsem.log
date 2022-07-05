@@ -1,0 +1,1901 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.2)  2 JUL 2022 18:41
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**sem-and-gsem.tex
+(./sem-and-gsem.tex
+LaTeX2e <2022-06-01> patch level 3
+L3 programming layer <2022-06-16> (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2022/04/08 v2.17n AMS math features
+\@mathmargin=\skip49
+For additional information on amsmath, use the `?' option.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks16
+\ex@=\dimen139
+)) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen140
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count193
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count194
+\leftroot@=\count195
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count196
+\DOTSCASE@=\count197
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen141
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count198
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count199
+\dotsspace@=\muskip16
+\c@parentequation=\count266
+\dspbrk@lvl=\count267
+\tag@help=\toks17
+\row@=\count268
+\column@=\count269
+\maxfields@=\count270
+\andhelp@=\toks18
+\eqnshift@=\dimen142
+\alignsep@=\dimen143
+\tagshift@=\dimen144
+\tagwidth@=\dimen145
+\totwidth@=\dimen146
+\lineht@=\dimen147
+\@envbody=\toks19
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks20
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks21
+\inpenc@posthook=\toks22
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2022-06-20 v7.00s Hypertext links for LaTeX
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count271
+)
+\@linkdim=\dimen148
+\Hy@linkcounter=\count272
+\Hy@pagecounter=\count273
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2022-06-20 v7.00s Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count274
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2022-06-20 v7.00s Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `unicode' set `true' on input line 4045.
+Package hyperref Info: Hyper figures OFF on input line 4162.
+Package hyperref Info: Link nesting OFF on input line 4167.
+Package hyperref Info: Hyper index ON on input line 4170.
+Package hyperref Info: Plain pages OFF on input line 4177.
+Package hyperref Info: Backreferencing OFF on input line 4182.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4408.
+\c@Hy@tempcnt=\count275
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4746.
+\XeTeXLinkMargin=\dimen149
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count276
+\Field@Width=\dimen150
+\Fld@charsize=\dimen151
+Package hyperref Info: Hyper figures OFF on input line 6024.
+Package hyperref Info: Link nesting OFF on input line 6029.
+Package hyperref Info: Hyper index ON on input line 6032.
+Package hyperref Info: backreferencing OFF on input line 6039.
+Package hyperref Info: Link coloring OFF on input line 6044.
+Package hyperref Info: Link coloring with OCG OFF on input line 6049.
+Package hyperref Info: PDF/A mode OFF on input line 6054.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count277
+\c@Item=\count278
+\c@Hfootnote=\count279
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2022-06-20 v7.00s Hyperref driver for pdfTeX
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+with kernel methods
+)
+\Fld@listcount=\count280
+\c@bookmark@seq@number=\count281
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 286.
+)
+\Hy@SectionHShift=\skip52
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count282
+\Gm@cntv=\count283
+\c@Gm@tempcnt=\count284
+\Gm@bindingoffset=\dimen152
+\Gm@wd@mp=\dimen153
+\Gm@odd@mp=\dimen154
+\Gm@even@mp=\dimen155
+\Gm@layoutwidth=\dimen156
+\Gm@layoutheight=\dimen157
+\Gm@layouthoffset=\dimen158
+\Gm@layoutvoffset=\dimen159
+\Gm@dimlist=\toks24
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2022/06/06 4.5 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count285
+\FV@InFile=\read2
+\FV@TabBox=\box53
+\c@FancyVerbLine=\count286
+\FV@StepNumber=\count287
+\FV@OutFile=\write3
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip53
+\fb@frw=\dimen160
+\fb@frh=\dimen161
+\FrameRule=\dimen162
+\FrameSep=\dimen163
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
+\LTleft=\skip54
+\LTright=\skip55
+\LTpre=\skip56
+\LTpost=\skip57
+\LTchunksize=\count288
+\LTcapwidth=\dimen164
+\LT@head=\box54
+\LT@firsthead=\box55
+\LT@foot=\box56
+\LT@lastfoot=\box57
+\LT@gbox=\box58
+\LT@cols=\count289
+\LT@rows=\count290
+\c@LT@tables=\count291
+\c@LT@chunks=\count292
+\LT@p@ftn=\toks25
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen165
+\lightrulewidth=\dimen166
+\cmidrulewidth=\dimen167
+\belowrulesep=\dimen168
+\belowbottomsep=\dimen169
+\aboverulesep=\dimen170
+\abovetopsep=\dimen171
+\cmidrulesep=\dimen172
+\cmidrulekern=\dimen173
+\defaultaddspace=\dimen174
+\@cmidla=\count293
+\@cmidlb=\count294
+\@aboverulesep=\dimen175
+\@belowrulesep=\dimen176
+\@thisruleclass=\count295
+\@lastruleclass=\count296
+\@thisrulewidth=\dimen177
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
+Package: array 2022/03/10 v2.5f Tabular extension package (FMi)
+\col@sep=\dimen178
+\ar@mcellbox=\box59
+\extrarowheight=\dimen179
+\NC@list=\toks26
+\extratabsurround=\skip58
+\backup@length=\skip59
+\ar@cellbox=\box60
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count297
+\calc@Bcount=\count298
+\calc@Adimen=\dimen180
+\calc@Bdimen=\dimen181
+\calc@Askip=\skip60
+\calc@Bskip=\skip61
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count299
+\calc@Cskip=\skip62
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count300
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
+Package: footnote 1997/01/28 1.13 Save footnotes around boxes
+\fn@notes=\box61
+\fn@width=\dimen182
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen183
+\Gin@req@width=\dimen184
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/rotating.sty
+Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+\c@r@tfl@t=\count301
+\rotFPtop=\skip63
+\rotFPbot=\skip64
+\rot@float@box=\box62
+\rot@mess@toks=\toks27
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip65
+\multirow@cntb=\count302
+\multirow@dima=\skip66
+\bigstrutjot=\dimen185
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen186
+\WF@size=\dimen187
+\c@WF@wrappedlines=\count303
+\WF@box=\box63
+\WF@everypar=\toks28
+Package: wrapfig 2003/01/31  v 3.6
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count304
+\float@exts=\toks29
+\float@box=\box64
+\@float@everytoks=\toks30
+\@floatcapt=\box65
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks31
+\minrowclearance=\skip67
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tabu/tabu.sty
+Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box66
+\sift@deathcycles=\count305
+\@vwid@loff=\dimen188
+\@vwid@roff=\dimen189
+)
+\c@taburow=\count306
+\tabu@nbcols=\count307
+\tabu@cnt=\count308
+\tabu@Xcol=\count309
+\tabu@alloc=\count310
+\tabu@nested=\count311
+\tabu@target=\dimen190
+\tabu@spreadtarget=\dimen191
+\tabu@naturalX=\dimen192
+\tabucolX=\dimen193
+\tabu@Xsum=\dimen194
+\extrarowdepth=\dimen195
+\abovetabulinesep=\dimen196
+\belowtabulinesep=\dimen197
+\tabustrutrule=\dimen198
+\tabu@thebody=\toks32
+\tabu@footnotes=\toks33
+\tabu@box=\box67
+\tabu@arstrutbox=\box68
+\tabu@hleads=\box69
+\tabu@vleads=\box70
+\tabu@cellskip=\skip68
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box71
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip69
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box72
+\UL@hyphenbox=\box73
+\UL@skip=\skip70
+\UL@hook=\toks34
+\UL@height=\dimen199
+\UL@pe=\count312
+\UL@pixel=\dimen256
+\ULC@box=\box74
+Package: ulem 2019/11/18
+\ULdepth=\dimen257
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen258
+\c@nlinenum=\count313
+\TeXr@lab=\toks35
+) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count314
+\l__pdf_internal_box=\box75
+) (./sem-and-gsem.aux)
+\openout1 = `sem-and-gsem.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 136.
+LaTeX Font Info:    ... okay on input line 136.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+Package hyperref Info: Link coloring OFF on input line 136.
+(./sem-and-gsem.out) (./sem-and-gsem.out)
+\@outlinefile=\write4
+\openout4 = `sem-and-gsem.out'.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 138.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 138.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 138.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 138.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (./sem-and-gsem.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 2.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 2.
+[1
+
+{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}])
+\tf@toc=\write5
+\openout5 = `sem-and-gsem.toc'.
+
+<sem-and-gsem_files/figure-latex/path-totcams-chron-1.pdf, id=170, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-chron-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-chron-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-chron-1.pdf  used on input line 154.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[2
+pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.158 \begin{landscape}
+                       \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-chron-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 231.
+
+[3
+pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.232 \end{landscape}
+                     ]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 243.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [4
+pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.264 \end{landscape}
+                     ] [5
+pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.286 \begin{landscape}
+                       \begin{table}
+
+
+
+
+]
+
+LaTeX Warning: Float too large for page by 27.24742pt on input line 373.
+
+[6
+pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.374 \end{landscape}
+                     ]
+Overfull \hbox (109.25589pt too wide) in paragraph at lines 381--404
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-totcams-SRH-1.pdf, id=220, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-SRH-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-SRH-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-SRH-1.pdf  used on input line 414.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[7
+pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.418 \begin{landscape}
+                       \begin{table}
+
+
+] [8
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.418 \begin{landscape}
+                       \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-SRH-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 491.
+
+[9
+pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.492 \end{landscape}
+                     ] [10
+pdfTeX warning (ext4): destination with the same identifier (name{table.7}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.524 \end{landscape}
+                     ]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 547.
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 548.
+[11
+pdfTeX warning (ext4): destination with the same identifier (name{table.8}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.698 \end{verbatim}
+                    
+
+
+
+
+] [12] [13]
+Overfull \hbox (116.28427pt too wide) in paragraph at lines 709--732
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-totcams-diabetes-1.pdf, id=268, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-diabetes-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-diabetes-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-diabetes-1.pdf  used on input line 742.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[14
+pdfTeX warning (ext4): destination with the same identifier (name{table.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.746 \begin{landscape}
+                       \begin{table}] [15
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.746 \begin{landscape}
+                       \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-diabetes-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 819.
+
+[16
+pdfTeX warning (ext4): destination with the same identifier (name{table.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.820 \end{landscape}
+                     ] [17
+pdfTeX warning (ext4): destination with the same identifier (name{table.11}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.852 \end{landscape}
+                     ] [18
+pdfTeX warning (ext4): destination with the same identifier (name{table.12}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1018 \end{verbatim}
+                     
+
+
+
+
+] [19] [20] [21
+pdfTeX warning (ext4): destination with the same identifier (name{table.13}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1103 \end{landscape}
+                      ]
+Overfull \hbox (57.14569pt too wide) in paragraph at lines 1110--1133
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-totcams-chronicpain-1.pdf, id=319, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-chronicpain-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-chronicpain-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-chronicpain-1.pdf  used on input line 1143.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[22
+pdfTeX warning (ext4): destination with the same identifier (name{table.14}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1147 \begin{landscape}
+                        \begin{table}
+
+
+] [23
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1147 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-chronicpain-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 1220.
+
+[24
+pdfTeX warning (ext4): destination with the same identifier (name{table.15}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1221 \end{landscape}
+                      ] [25
+pdfTeX warning (ext4): destination with the same identifier (name{table.16}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1253 \end{landscape}
+                      ] [26
+pdfTeX warning (ext4): destination with the same identifier (name{table.17}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1418 \end{verbatim}
+                     
+
+
+
+
+] [27] [28] [29
+pdfTeX warning (ext4): destination with the same identifier (name{table.18}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1503 \end{landscape}
+                      ]
+Overfull \hbox (76.83936pt too wide) in paragraph at lines 1510--1533
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-totcams-highbp-1.pdf, id=369, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-highbp-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-highbp-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-highbp-1.pdf  used on input line 1543.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[30
+pdfTeX warning (ext4): destination with the same identifier (name{table.19}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1547 \begin{landscape}
+                        \begin{table}
+
+
+] [31
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1547 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-highbp-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 1620.
+
+[32
+pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1621 \end{landscape}
+                      ] [33
+pdfTeX warning (ext4): destination with the same identifier (name{table.21}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1653 \end{landscape}
+                      ] [34
+pdfTeX warning (ext4): destination with the same identifier (name{table.22}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1818 \end{verbatim}
+                     
+
+
+
+
+] [35] [36] [37
+pdfTeX warning (ext4): destination with the same identifier (name{table.23}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1903 \end{landscape}
+                      ]
+Overfull \hbox (114.61719pt too wide) in paragraph at lines 1910--1933
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-totcams-dep-1.pdf, id=420, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-totcams-dep-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-totcams-dep-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-totcams-dep-1.pdf  used on input line 1943.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[38
+pdfTeX warning (ext4): destination with the same identifier (name{table.24}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1947 \begin{landscape}
+                        \begin{table}
+
+
+] [39
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1947 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-totcams-dep-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 2020.
+
+[40
+pdfTeX warning (ext4): destination with the same identifier (name{table.25}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2021 \end{landscape}
+                      ] [41
+pdfTeX warning (ext4): destination with the same identifier (name{table.26}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2053 \end{landscape}
+                      ] [42
+pdfTeX warning (ext4): destination with the same identifier (name{table.27}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2234 \end{verbatim}
+                     
+
+
+
+
+] [43] [44]
+Overfull \hbox (71.39555pt too wide) in paragraph at lines 2245--2268
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-mb-chron-1.pdf, id=466, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-mb-chron-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-mb-chron-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-mb-chron-1.pdf  used on input line 2281.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[45
+pdfTeX warning (ext4): destination with the same identifier (name{table.28}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2285 \begin{landscape}
+                        \begin{table}] [46
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2285 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-mb-chron-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 2358.
+
+[47
+pdfTeX warning (ext4): destination with the same identifier (name{table.29}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2359 \end{landscape}
+                      ] [48
+pdfTeX warning (ext4): destination with the same identifier (name{table.30}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2391 \end{landscape}
+                      ] [49
+pdfTeX warning (ext4): destination with the same identifier (name{table.31}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2413 \begin{landscape}
+                        \begin{table}
+
+
+
+
+] [50
+pdfTeX warning (ext4): destination with the same identifier (name{table.32}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2496 \end{landscape}
+                      ]
+Overfull \hbox (151.06181pt too wide) in paragraph at lines 2503--2526
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-mb-srh-1.pdf, id=509, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-mb-srh-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-mb-srh-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-mb-srh-1.pdf  used on input line 2536.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[51
+pdfTeX warning (ext4): destination with the same identifier (name{table.33}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2540 \begin{landscape}
+                        \begin{table}
+
+
+] [52
+pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2540 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-mb-srh-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 2613.
+
+[53
+pdfTeX warning (ext4): destination with the same identifier (name{table.34}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2614 \end{landscape}
+                      ] [54
+pdfTeX warning (ext4): destination with the same identifier (name{table.35}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2646 \end{landscape}
+                      ] [55
+pdfTeX warning (ext4): destination with the same identifier (name{table.36}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2820 \end{verbatim}
+                     
+
+
+
+
+] [56] [57]
+Overfull \hbox (158.0902pt too wide) in paragraph at lines 2831--2854
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-mb-chronicpain-1.pdf, id=554, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-mb-chronicpain-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-mb-chronicpain-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-mb-chronicpain-1.pdf  used on input line 2864.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[58
+pdfTeX warning (ext4): destination with the same identifier (name{table.37}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2868 \begin{landscape}
+                        \begin{table}] [59
+pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2868 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-mb-chronicpain-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 2941.
+
+[60
+pdfTeX warning (ext4): destination with the same identifier (name{table.38}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2942 \end{landscape}
+                      ] [61
+pdfTeX warning (ext4): destination with the same identifier (name{table.39}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2974 \end{landscape}
+                      ] [62
+pdfTeX warning (ext4): destination with the same identifier (name{table.40}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3138 \end{verbatim}
+                     
+
+
+
+
+] [63] [64] [65
+pdfTeX warning (ext4): destination with the same identifier (name{table.41}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3223 \end{landscape}
+                      ]
+Overfull \hbox (119.70079pt too wide) in paragraph at lines 3230--3253
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-mb-dep-1.pdf, id=605, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-mb-dep-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-mb-dep-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-mb-dep-1.pdf  used on input line 3263.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[66
+pdfTeX warning (ext4): destination with the same identifier (name{table.42}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3267 \begin{landscape}
+                        \begin{table}
+
+
+] [67
+pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3267 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-mb-dep-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 3340.
+
+[68
+pdfTeX warning (ext4): destination with the same identifier (name{table.43}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3341 \end{landscape}
+                      ] [69
+pdfTeX warning (ext4): destination with the same identifier (name{table.44}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3373 \end{landscape}
+                      ] [70
+pdfTeX warning (ext4): destination with the same identifier (name{table.45}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3554 \end{verbatim}
+                     
+
+
+
+
+] [71] [72]
+Overfull \hbox (109.25699pt too wide) in paragraph at lines 3565--3588
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-chron-1.pdf, id=650, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-chron-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-chron-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-chron-1.pdf  used on input line 3601.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[73
+pdfTeX warning (ext4): destination with the same identifier (name{table.46}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3605 \begin{landscape}
+                        \begin{table}] [74
+pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3605 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-chron-1.pdf>] [75
+pdfTeX warning (ext4): destination with the same identifier (name{table.47}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3674 \end{landscape}
+                      ] [76
+pdfTeX warning (ext4): destination with the same identifier (name{table.48}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3706 \end{landscape}
+                      ] [77
+pdfTeX warning (ext4): destination with the same identifier (name{table.49}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3728 \begin{landscape}
+                        \begin{table}
+
+
+
+
+] [78
+pdfTeX warning (ext4): destination with the same identifier (name{table.50}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3811 \end{landscape}
+                      ]
+Overfull \hbox (175.45119pt too wide) in paragraph at lines 3818--3841
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-srh-1.pdf, id=694, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-srh-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-srh-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-srh-1.pdf  used on input line 3851.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[79
+pdfTeX warning (ext4): destination with the same identifier (name{table.51}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3855 \begin{landscape}
+                        \begin{table}
+
+
+] [80
+pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3855 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-srh-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 3928.
+
+[81
+pdfTeX warning (ext4): destination with the same identifier (name{table.52}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3929 \end{landscape}
+                      ] [82
+pdfTeX warning (ext4): destination with the same identifier (name{table.53}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.3961 \end{landscape}
+                      ] [83
+pdfTeX warning (ext4): destination with the same identifier (name{table.54}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4135 \end{verbatim}
+                     
+
+
+
+
+] [84] [85]
+Overfull \hbox (187.47957pt too wide) in paragraph at lines 4146--4169
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-highbp-1.pdf, id=740, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-highbp-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-highbp-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-highbp-1.pdf  used on input line 4179.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[86
+pdfTeX warning (ext4): destination with the same identifier (name{table.55}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4183 \begin{landscape}
+                        \begin{table}] [87
+pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4183 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-highbp-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 4256.
+
+[88
+pdfTeX warning (ext4): destination with the same identifier (name{table.56}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4257 \end{landscape}
+                      ] [89
+pdfTeX warning (ext4): destination with the same identifier (name{table.57}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4289 \end{landscape}
+                      ] [90
+pdfTeX warning (ext4): destination with the same identifier (name{table.58}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4453 \end{verbatim}
+                     
+
+
+
+
+] [91] [92] [93
+pdfTeX warning (ext4): destination with the same identifier (name{table.59}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4538 \end{landscape}
+                      ]
+Overfull \hbox (175.81248pt too wide) in paragraph at lines 4545--4568
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-diabetes-1.pdf, id=790, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-diabetes-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-diabetes-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-diabetes-1.pdf  used on input line 4578.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[94
+pdfTeX warning (ext4): destination with the same identifier (name{table.60}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4582 \begin{landscape}
+                        \begin{table}
+
+
+] [95
+pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4582 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-diabetes-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 4655.
+
+[96
+pdfTeX warning (ext4): destination with the same identifier (name{table.61}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4656 \end{landscape}
+                      ] [97
+pdfTeX warning (ext4): destination with the same identifier (name{table.62}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4688 \end{landscape}
+                      ] [98
+pdfTeX warning (ext4): destination with the same identifier (name{table.63}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4853 \end{verbatim}
+                     
+
+
+
+
+] [99] [100] [101
+pdfTeX warning (ext4): destination with the same identifier (name{table.64}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4938 \end{landscape}
+                      ]
+Overfull \hbox (123.34099pt too wide) in paragraph at lines 4945--4968
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-chronicpain-1.pdf, id=841, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-chronicpain-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-chronicpain-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-chronicpain-1.pdf  used on input line 4978.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[102
+pdfTeX warning (ext4): destination with the same identifier (name{table.65}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4982 \begin{landscape}
+                        \begin{table}
+
+
+] [103
+pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.4982 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-chronicpain-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 5055.
+
+[104
+pdfTeX warning (ext4): destination with the same identifier (name{table.66}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5056 \end{landscape}
+                      ] [105
+pdfTeX warning (ext4): destination with the same identifier (name{table.67}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5088 \end{landscape}
+                      ] [106
+pdfTeX warning (ext4): destination with the same identifier (name{table.68}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5252 \end{verbatim}
+                     
+
+
+
+
+] [107] [108] [109
+pdfTeX warning (ext4): destination with the same identifier (name{table.69}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5337 \end{landscape}
+                      ]
+Overfull \hbox (138.03465pt too wide) in paragraph at lines 5344--5367
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-altmed-dep-1.pdf, id=892, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-altmed-dep-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-altmed-dep-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-altmed-dep-1.pdf  used on input line 5377.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[110
+pdfTeX warning (ext4): destination with the same identifier (name{table.70}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5381 \begin{landscape}
+                        \begin{table}
+
+
+] [111
+pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5381 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-altmed-dep-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 5454.
+
+[112
+pdfTeX warning (ext4): destination with the same identifier (name{table.71}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5455 \end{landscape}
+                      ] [113
+pdfTeX warning (ext4): destination with the same identifier (name{table.72}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5487 \end{landscape}
+                      ] [114
+pdfTeX warning (ext4): destination with the same identifier (name{table.73}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5668 \end{verbatim}
+                     
+
+
+
+
+] [115] [116]
+Overfull \hbox (132.59085pt too wide) in paragraph at lines 5679--5702
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-chron-1.pdf, id=937, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-chron-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-chron-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-chron-1.pdf  used on input line 5715.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[117
+pdfTeX warning (ext4): destination with the same identifier (name{table.74}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5719 \begin{landscape}
+                        \begin{table}] [118
+pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5719 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-chron-1.pdf>] [119
+pdfTeX warning (ext4): destination with the same identifier (name{table.75}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5788 \end{landscape}
+                      ]
+Overfull \hbox (3.71933pt too wide) in paragraph at lines 5795--5819
+ [] 
+ []
+
+[120
+pdfTeX warning (ext4): destination with the same identifier (name{table.76}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5820 \end{landscape}
+                      ] [121
+pdfTeX warning (ext4): destination with the same identifier (name{table.77}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5842 \begin{landscape}
+                        \begin{table}
+
+
+
+
+] [122
+pdfTeX warning (ext4): destination with the same identifier (name{table.78}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5925 \end{landscape}
+                      ]
+Overfull \hbox (216.72815pt too wide) in paragraph at lines 5932--5955
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-srh-1.pdf, id=981, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-srh-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-srh-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-srh-1.pdf  used on input line 5965.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[123
+pdfTeX warning (ext4): destination with the same identifier (name{table.79}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5969 \begin{landscape}
+                        \begin{table}
+
+
+] [124
+pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.5969 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-srh-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 6042.
+
+[125
+pdfTeX warning (ext4): destination with the same identifier (name{table.80}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6043 \end{landscape}
+                      ]
+Overfull \hbox (15.74771pt too wide) in paragraph at lines 6050--6074
+ [] 
+ []
+
+[126
+pdfTeX warning (ext4): destination with the same identifier (name{table.81}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6075 \end{landscape}
+                      ] [127
+pdfTeX warning (ext4): destination with the same identifier (name{table.82}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6249 \end{verbatim}
+                     
+
+
+
+
+] [128] [129]
+Overfull \hbox (223.75653pt too wide) in paragraph at lines 6260--6283
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-highbp-1.pdf, id=1026, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-highbp-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-highbp-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-highbp-1.pdf  used on input line 6293.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[130
+pdfTeX warning (ext4): destination with the same identifier (name{table.83}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6297 \begin{landscape}
+                        \begin{table}] [131
+pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6297 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-highbp-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 6370.
+
+[132
+pdfTeX warning (ext4): destination with the same identifier (name{table.84}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6371 \end{landscape}
+                      ]
+Overfull \hbox (9.08063pt too wide) in paragraph at lines 6378--6402
+ [] 
+ []
+
+[133
+pdfTeX warning (ext4): destination with the same identifier (name{table.85}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6403 \end{landscape}
+                      ] [134
+pdfTeX warning (ext4): destination with the same identifier (name{table.86}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6567 \end{verbatim}
+                     
+
+
+
+
+] [135] [136] [137
+pdfTeX warning (ext4): destination with the same identifier (name{table.87}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6652 \end{landscape}
+                      ]
+Overfull \hbox (212.08945pt too wide) in paragraph at lines 6659--6682
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-diabetes-1.pdf, id=1077, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-diabetes-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-diabetes-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-diabetes-1.pdf  used on input line 6692.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[138
+pdfTeX warning (ext4): destination with the same identifier (name{table.88}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6696 \begin{landscape}
+                        \begin{table}
+
+
+] [139
+pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6696 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-diabetes-1.pdf>]
+
+LaTeX Warning: Float too large for page by 31.6363pt on input line 6769.
+
+[140
+pdfTeX warning (ext4): destination with the same identifier (name{table.89}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6770 \end{landscape}
+                      ] [141
+pdfTeX warning (ext4): destination with the same identifier (name{table.90}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6802 \end{landscape}
+                      ] [142
+pdfTeX warning (ext4): destination with the same identifier (name{table.91}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.6967 \end{verbatim}
+                     
+
+
+
+
+] [143] [144] [145
+pdfTeX warning (ext4): destination with the same identifier (name{table.92}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7052 \end{landscape}
+                      ]
+Overfull \hbox (159.61795pt too wide) in paragraph at lines 7059--7082
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-chronicpain-1.pdf, id=1128, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-chronicpain-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-chronicpain-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-chronicpain-1.pdf  used on input line 7092.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[146
+pdfTeX warning (ext4): destination with the same identifier (name{table.93}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7096 \begin{landscape}
+                        \begin{table}
+
+
+] [147
+pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7096 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-chronicpain-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 7169.
+
+[148
+pdfTeX warning (ext4): destination with the same identifier (name{table.94}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7170 \end{landscape}
+                      ] [149
+pdfTeX warning (ext4): destination with the same identifier (name{table.95}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7202 \end{landscape}
+                      ] [150
+pdfTeX warning (ext4): destination with the same identifier (name{table.96}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7366 \end{verbatim}
+                     
+
+
+
+
+] [151] [152] [153
+pdfTeX warning (ext4): destination with the same identifier (name{table.97}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7451 \end{landscape}
+                      ]
+Overfull \hbox (184.31161pt too wide) in paragraph at lines 7458--7481
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-pna-dep-1.pdf, id=1178, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-pna-dep-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-pna-dep-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-pna-dep-1.pdf  used on input line 7491.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[154
+pdfTeX warning (ext4): destination with the same identifier (name{table.98}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7495 \begin{landscape}
+                        \begin{table}
+
+
+] [155
+pdfTeX warning (ext4): destination with the same identifier (name{figure.22}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7495 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-pna-dep-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 7568.
+
+[156
+pdfTeX warning (ext4): destination with the same identifier (name{table.99}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7569 \end{landscape}
+                      ] [157
+pdfTeX warning (ext4): destination with the same identifier (name{table.100}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7601 \end{landscape}
+                      ] [158
+pdfTeX warning (ext4): destination with the same identifier (name{table.101}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7782 \end{verbatim}
+                     
+
+
+
+
+] [159] [160]
+Overfull \hbox (173.86781pt too wide) in paragraph at lines 7793--7816
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-manipulative-chron-1.pdf, id=1224, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-manipulative-chron-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-manipulative-chron-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-manipulative-chron-1.pdf  used on input line 7829.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[161
+pdfTeX warning (ext4): destination with the same identifier (name{table.102}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7833 \begin{landscape}
+                        \begin{table}] [162
+pdfTeX warning (ext4): destination with the same identifier (name{figure.23}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7833 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-manipulative-chron-1.pdf>] [163
+pdfTeX warning (ext4): destination with the same identifier (name{table.103}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7902 \end{landscape}
+                      ] [164
+pdfTeX warning (ext4): destination with the same identifier (name{table.104}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7934 \end{landscape}
+                      ] [165
+pdfTeX warning (ext4): destination with the same identifier (name{table.105}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.7956 \begin{landscape}
+                        \begin{table}
+
+
+
+
+] [166
+pdfTeX warning (ext4): destination with the same identifier (name{table.106}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8039 \end{landscape}
+                      ]
+Overfull \hbox (165.39499pt too wide) in paragraph at lines 8046--8069
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-manipulative-SRH-1.pdf, id=1267, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-manipulative-SRH-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-manipulative-SRH-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-manipulative-SRH-1.pdf  used on input line 8079.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[167
+pdfTeX warning (ext4): destination with the same identifier (name{table.107}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8083 \begin{landscape}
+                        \begin{table}
+
+
+] [168
+pdfTeX warning (ext4): destination with the same identifier (name{figure.24}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8083 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-manipulative-SRH-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 8156.
+
+[169
+pdfTeX warning (ext4): destination with the same identifier (name{table.108}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8157 \end{landscape}
+                      ] [170
+pdfTeX warning (ext4): destination with the same identifier (name{table.109}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8189 \end{landscape}
+                      ] [171
+pdfTeX warning (ext4): destination with the same identifier (name{table.110}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8363 \end{verbatim}
+                     
+
+
+
+
+] [172] [173]
+Overfull \hbox (172.42337pt too wide) in paragraph at lines 8374--8397
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-manipulative-chronicpain-1.pdf, id=1312, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-manipulative-chronicpain-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-manipulative-chronicpain-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-manipulative-chronicpain-1.pdf  used on input line 8407.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[174
+pdfTeX warning (ext4): destination with the same identifier (name{table.111}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8411 \begin{landscape}
+                        \begin{table}] [175
+pdfTeX warning (ext4): destination with the same identifier (name{figure.25}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8411 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-manipulative-chronicpain-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 8484.
+
+[176
+pdfTeX warning (ext4): destination with the same identifier (name{table.112}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8485 \end{landscape}
+                      ] [177
+pdfTeX warning (ext4): destination with the same identifier (name{table.113}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8517 \end{landscape}
+                      ] [178
+pdfTeX warning (ext4): destination with the same identifier (name{table.114}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8685 \end{verbatim}
+                     
+
+
+
+
+] [179] [180] [181
+pdfTeX warning (ext4): destination with the same identifier (name{table.115}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8770 \end{landscape}
+                      ]
+Overfull \hbox (122.97845pt too wide) in paragraph at lines 8777--8800
+ [] 
+ []
+
+<sem-and-gsem_files/figure-latex/path-manipulative-dep-1.pdf, id=1364, 469.755pt x 325.215pt>
+File: sem-and-gsem_files/figure-latex/path-manipulative-dep-1.pdf Graphic file (type pdf)
+<use sem-and-gsem_files/figure-latex/path-manipulative-dep-1.pdf>
+Package pdftex.def Info: sem-and-gsem_files/figure-latex/path-manipulative-dep-1.pdf  used on input line 8810.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[182
+pdfTeX warning (ext4): destination with the same identifier (name{table.116}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8814 \begin{landscape}
+                        \begin{table}
+
+
+] [183
+pdfTeX warning (ext4): destination with the same identifier (name{figure.26}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8814 \begin{landscape}
+                        \begin{table} <./sem-and-gsem_files/figure-latex/path-manipulative-dep-1.pdf>]
+
+LaTeX Warning: Float too large for page by 22.6363pt on input line 8887.
+
+[184
+pdfTeX warning (ext4): destination with the same identifier (name{table.117}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8888 \end{landscape}
+                      ] [185
+pdfTeX warning (ext4): destination with the same identifier (name{table.118}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8920 \end{landscape}
+                      ] [186
+pdfTeX warning (ext4): destination with the same identifier (name{table.119}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.9103 \end{verbatim}
+                     
+
+
+
+
+] [187] [188]
+Overfull \hbox (109.20132pt too wide) in paragraph at lines 9114--9137
+ [] 
+ []
+
+[189
+pdfTeX warning (ext4): destination with the same identifier (name{table.120}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.9139 \end{document}
+                     ] (./sem-and-gsem.aux)
+Package rerunfilecheck Info: File `sem-and-gsem.out' has not changed.
+(rerunfilecheck)             Checksum: A4CB79FA603117F292A52759D68117C9;3547.
+ ) 
+Here is how much of TeX's memory you used:
+ 14518 strings out of 479997
+ 234673 string characters out of 5886779
+ 607264 words of memory out of 5000000
+ 31906 multiletter control sequences out of 15000+600000
+ 534424 words of font info for 75 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 203i,13n,203p,960b,586s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on sem-and-gsem.pdf (189 pages, 836861 bytes).
+PDF statistics:
+ 1603 PDF objects out of 1728 (max. 8388607)
+ 1312 compressed objects within 14 object streams
+ 503 named destinations out of 1000 (max. 500000)
+ 379 words of extra memory for PDF output out of 10000 (max. 10000000)
+

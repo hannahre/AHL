@@ -1,0 +1,866 @@
+---
+title: "Socioeconomic Status as Moderator of the CAM-Health Relationship"
+output:
+  bookdown::pdf_document2: default
+bibliography: references.bib
+link-citations: true
+header-includes:
+   - \usepackage{rotating, graphicx, longtable}
+   - \extrafloats{200}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+
+```{r, echo = FALSE}
+library(lme4)
+library(lattice)
+library(sjstats)
+library(jtools)
+library(ROCR)
+library(sjPlot)
+library(performance)
+library(XML)
+library(kableExtra)
+library(tidyverse)
+library(caTools)
+library(fastDummies)
+library(semptools)
+library(semoutput)
+library(lavaan)
+library(semPlot)
+library(stargazer)
+library(semTable)
+library(rstatix)
+library(gtsummary)
+library(forcats)
+setwd("C:/Users/hanna/Documents/git/AHL/R/")
+load("waves123.long.rda")
+load("waves123.long.complete.rda")
+load("waves123.wide.rda")
+load("waves12.wide.complete.rda")
+load("waves23.wide.complete.rda")
+load("waves13.wide.complete.rda")
+setwd("C:/Users/hanna/Documents/git/AHL/R/Mixed model")
+# Tutorials
+# https://lmudge13.github.io/sample_code/mixed_effects.html
+# Converting html to pdf https://github.com/gorkang/html2latex/
+```
+
+```{r wave-comp-educ-recodes, echo=FALSE}
+waves12.wide.complete$Education_W1.2 <- factor(waves12.wide.complete$Education_W1, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+
+waves23.wide.complete$Education_W2.2 <- factor(waves23.wide.complete$Education_W2, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+waves13.wide.complete$Education_W1.2 <- factor(waves13.wide.complete$Education_W1, 
+                                              levels = c("College Grad", 
+                                                         "Less than High School", 
+                                                         "HS Diploma/GED", 
+                                                         "Some College/AA Degree", 
+                                                         "Graduate or Professional Degree"))
+
+```
+
+```{r models-waves12-chron-mod-income, echo = FALSE, results='hide'}
+
+# Center diff chron 
+waves12.wide.complete$DiffChronCenter <- scale(waves12.wide.complete$DiffChron, scale = FALSE)
+waves12.wide.complete$DiffChronCenter <- as.numeric(waves12.wide.complete$DiffChronCenter)
+# Center log income 
+waves12.wide.complete$LogIncomeCenter <- scale(waves12.wide.complete$LogIncome_W1, scale = FALSE)
+waves12.wide.complete$LogIncomeCenter <- as.numeric(waves12.wide.complete$LogIncomeCenter)
+# Create interaction term 
+waves12.wide.complete$DiffChronxLogIncome <- waves12.wide.complete$DiffChronCenter*waves12.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves12.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves12.wide.complete)
+
+# Run income model 
+waves12.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves12.wide.complete)
+
+# Add Controls 
+waves12.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+# Extract standard errors
+waves12.chron.income.1.se <- summary(waves12.chron.income.1)$coef[,"Std. Error"]
+waves12.chron.income.2.se <- summary(waves12.chron.income.2)$coef[,"Std. Error"]
+waves12.chron.income.3.se <- summary(waves12.chron.income.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves23-chron-mod-income, echo = FALSE, results='hide'}
+
+# Center diff chron 
+waves23.wide.complete$DiffChronCenter <- scale(waves23.wide.complete$DiffChron, scale = FALSE)
+waves23.wide.complete$DiffChronCenter <- as.numeric(waves23.wide.complete$DiffChronCenter)
+# Center log income 
+waves23.wide.complete$LogIncomeCenter <- scale(waves23.wide.complete$LogIncome_W2, scale = FALSE)
+# Create interaction term 
+waves23.wide.complete$DiffChronxLogIncome <- waves23.wide.complete$DiffChronCenter*waves23.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves23.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves23.wide.complete)
+
+# Run income model 
+waves23.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves23.wide.complete)
+
+# Add Controls 
+waves23.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W2.2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+
+# Extract standard errors
+waves23.chron.income.1.se <- summary(waves23.chron.income.1)$coef[,"Std. Error"]
+waves23.chron.income.2.se <- summary(waves23.chron.income.2)$coef[,"Std. Error"]
+waves23.chron.income.3.se <- summary(waves23.chron.income.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves13-chron-mod-income, echo = FALSE, results='hide'}
+
+# Center diff chron 
+waves13.wide.complete$DiffChronCenter <- scale(waves13.wide.complete$DiffChron, scale = FALSE)
+waves13.wide.complete$DiffChronCenter <- as.numeric(waves13.wide.complete$DiffChronCenter)
+# Center log income 
+waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
+# Create interaction term 
+waves13.wide.complete$DiffChronxLogIncome <- waves13.wide.complete$DiffChronCenter*waves13.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves13.chron.income.1 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter, data = waves13.wide.complete)
+
+# Run income model 
+waves13.chron.income.2 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter, data = waves13.wide.complete)
+
+# Add Controls
+waves13.chron.income.3 <- lm(formula = DiffCams ~ DiffChronCenter + LogIncomeCenter + DiffChronCenter*LogIncomeCenter + Education_W1.2 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+
+waves13.chron.income.1.se <- summary(waves13.chron.income.1)$coef[,"Std. Error"]
+waves13.chron.income.2.se <- summary(waves13.chron.income.2)$coef[,"Std. Error"]
+waves13.chron.income.3.se <- summary(waves13.chron.income.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves12-chron-mod-educ, echo = FALSE, results='hide'}
+
+# Run income model 
+waves12.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2, data = waves12.wide.complete)
+
+# Run income model 
+waves12.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2, data = waves12.wide.complete)
+
+# Add Controls
+waves12.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2 + LogIncome_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+# Extract standard errors
+waves12.chron.educ.1.se <- summary(waves12.chron.educ.1)$coef[,"Std. Error"]
+waves12.chron.educ.2.se <- summary(waves12.chron.educ.2)$coef[,"Std. Error"]
+waves12.chron.educ.3.se <- summary(waves12.chron.educ.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves23-chron-mod-educ, echo = FALSE, results='hide'}
+
+# Run income model 
+waves23.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2, data = waves23.wide.complete)
+
+# Run income model 
+waves23.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2 + DiffChronCenter*Education_W2.2, data = waves23.wide.complete)
+
+# Add Controls
+waves23.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W2.2 + DiffChronCenter*Education_W2.2 + LogIncome_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+
+# Extract standard errors
+waves23.chron.educ.1.se <- summary(waves23.chron.educ.1)$coef[,"Std. Error"]
+waves23.chron.educ.2.se <- summary(waves23.chron.educ.2)$coef[,"Std. Error"]
+waves23.chron.educ.3.se <- summary(waves23.chron.educ.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves13-chron-mod-educ, echo = FALSE, results='hide'}
+
+
+# Run income model 
+waves13.chron.educ.1 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2, data = waves13.wide.complete)
+
+# Run income model 
+waves13.chron.educ.2 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2, data = waves13.wide.complete)
+
+# Add Controls
+waves13.chron.educ.3 <- lm(formula = DiffCams ~ DiffChronCenter + Education_W1.2 + DiffChronCenter*Education_W1.2 + LogIncome_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+
+# Extract standard errors
+waves13.chron.educ.1.se <- summary(waves13.chron.educ.1)$coef[,"Std. Error"]
+waves13.chron.educ.2.se <- summary(waves13.chron.educ.2)$coef[,"Std. Error"]
+waves13.chron.educ.3.se <- summary(waves13.chron.educ.3)$coef[,"Std. Error"]
+
+```
+
+```{r model-waves12-SRH-mod-income, echo = FALSE, results='hide'}
+
+# Center diff SRH 
+waves12.wide.complete$DiffSRHCenter <- scale(waves12.wide.complete$DiffSRH, scale = FALSE)
+waves12.wide.complete$DiffSRHCenter <- as.numeric(waves12.wide.complete$DiffSRHCenter)
+# Create interaction term 
+waves12.wide.complete$DiffSRHxLogIncome <- NA
+waves12.wide.complete$DiffSRHxLogIncome <- waves12.wide.complete$DiffSRHCenter*waves12.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves12.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves12.wide.complete)
+
+# Run income model 
+waves12.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves12.wide.complete)
+
+# Add controls 
+waves12.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+# Extract standard errors
+waves12.SRH.income.1.se <- summary(waves12.SRH.income.1)$coef[,"Std. Error"]
+waves12.SRH.income.2.se <- summary(waves12.SRH.income.2)$coef[,"Std. Error"]
+waves12.SRH.income.3.se <- summary(waves12.SRH.income.3)$coef[,"Std. Error"]
+
+```
+
+```{r models-waves23-SRH-mod-income, echo = FALSE, results='hide'}
+
+# Center diff SRH 
+waves23.wide.complete$DiffSRHCenter <- scale(waves23.wide.complete$DiffSRH, scale = FALSE)
+waves23.wide.complete$DiffSRHCenter <- as.numeric(waves23.wide.complete$DiffSRHCenter)
+# Create interaction term 
+# waves23.wide.complete$DiffSRHxLogIncome <- NA
+waves23.wide.complete$DiffSRHxLogIncome <- waves23.wide.complete$DiffSRHCenter*waves23.wide.complete$LogIncomeCenter
+
+
+# Run income model 
+waves23.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves23.wide.complete)
+
+# Run income model 
+waves23.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves23.wide.complete)
+
+# Add Controls 
+waves23.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W2.2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+
+# Extract standard errors
+waves23.SRH.income.1.se <- summary(waves23.SRH.income.1)$coef[,"Std. Error"]
+waves23.SRH.income.2.se <- summary(waves23.SRH.income.2)$coef[,"Std. Error"]
+waves23.SRH.income.3.se <- summary(waves23.SRH.income.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves13-SRH-mod-income, echo = FALSE, results='hide'}
+
+# Center diff chron 
+waves13.wide.complete$DiffSRHCenter <- scale(waves13.wide.complete$DiffSRH, scale = FALSE)
+waves13.wide.complete$DiffSRHCenter <- as.numeric(waves13.wide.complete$DiffSRHCenter)
+# Center log income 
+waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
+# Create interaction term 
+waves13.wide.complete$DiffSRHxLogIncome <- waves13.wide.complete$DiffSRHCenter*waves13.wide.complete$LogIncomeCenter
+
+# Run income model 
+waves13.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves13.wide.complete)
+
+# Run income model 
+waves13.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves13.wide.complete)
+
+
+# Add Controls
+waves13.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+
+# Extract standard errors
+waves13.SRH.income.1.se <- summary(waves13.SRH.income.1)$coef[,"Std. Error"]
+waves13.SRH.income.2.se <- summary(waves13.SRH.income.2)$coef[,"Std. Error"]
+waves13.SRH.income.3.se <- summary(waves13.SRH.income.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves12-SRH-mod-educ, echo = FALSE, results='hide'}
+
+# Run income model 
+waves12.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves12.wide.complete)
+
+# Run income model 
+waves12.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves12.wide.complete)
+
+# Add Controls
+waves12.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
+
+# Extract standard errors
+waves12.SRH.educ.1.se <- summary(waves12.SRH.educ.1)$coef[,"Std. Error"]
+waves12.SRH.educ.2.se <- summary(waves12.SRH.educ.2)$coef[,"Std. Error"]
+waves12.SRH.educ.3.se <- summary(waves12.SRH.educ.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves23-SRH-mod-educ, echo = FALSE, results='hide'}
+
+# Run income model 
+waves23.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2, data = waves23.wide.complete)
+
+# Run income model 
+waves23.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2, data = waves23.wide.complete)
+
+# Add Controls 
+waves23.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2 + LogIncome_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
+
+# Extract standard errors
+waves23.SRH.educ.1.se <- summary(waves23.SRH.educ.1)$coef[,"Std. Error"]
+waves23.SRH.educ.2.se <- summary(waves23.SRH.educ.2)$coef[,"Std. Error"]
+waves23.SRH.educ.3.se <- summary(waves23.SRH.educ.3)$coef[,"Std. Error"]
+```
+
+```{r models-waves13-SRH-mod-educ, echo = FALSE, results='hide'}
+
+# Run income model 
+waves13.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves13.wide.complete)
+
+# Run income model 
+waves13.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves13.wide.complete)
+
+# Add Controls 
+waves13.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
+
+# Extract standard errors
+waves13.SRH.educ.1.se <- summary(waves13.SRH.educ.1)$coef[,"Std. Error"]
+waves13.SRH.educ.2.se <- summary(waves13.SRH.educ.2)$coef[,"Std. Error"]
+waves13.SRH.educ.3.se <- summary(waves13.SRH.educ.3)$coef[,"Std. Error"]
+```
+
+# Questions and Hypotheses
+
+In this chapter I examine income and education as moderators of the relationship between changes in health and changes in CAM use. First, I examine whether change in health status as measured by changes in chronic conditions and self-reported health predicts a change in CAM use. I expect to find that individuals who experience a decline in health status are more likely to adopt new CAMs (hypothesis #5). Second, I examine whether this relationship is moderated by income and education. I expect to find that individuals with higher incomes are more likely to adopt new CAMs in response to a decline in health compared to those with lower incomes (hypothesis #6). I also expect to find that individuals with higher levels of education are more likely to adopt new CAMs in response to a decline in health compared to those with lower levels of education (hypothesis #7).
+
+Research on SES as a moderator of the relationship between change in health and change in individual health behavior is incredibly limited. Previous research has shown that education is an important moderator of behavior change following a new diagnosis (Margolis 2013) and following a heart attack (Wray et al. 1998). There is also evidence that socioeconomic status moderates behavioral change in cancer survivors (Naik et al. 2016). New diagnosis has been found to increase the likelihood of behavioral change (Clark and Etilé 2002; Falba 2005; Keenan 2009); however, this research typically includes socioeconomic status as a control variable and does not consider socioeconomic status as a possible moderator of this relationship. To my knowledge, socioeconomic status has yet to be examined as a moderator of the relationship between change in health and change in health lifestyles, AHL or THL. Given that social position shapes the structural context within which health lifestyles choices are made (Cockerham 2005; Link and Phelan 2005), I expect that change in AHL following a change in health will be conditioned by socioeconomic status. 
+
+In sum, I will be testing the following hypotheses: 
+
+5.  A decline in health status will result in higher CAM use.
+6.  Those with higher incomes are more likely to adopt new CAMs in the event of a health decline compared to those with lower incomes.
+7.  Those with higher levels of education are more likely to adopt new CAMs in the event of a health decline compared to those with lower levels of education.
+
+# Data
+
+In the final stage of analysis, values across waves were compared in the following combinations: waves 1 and 2, waves 2 and 3, and waves 1 and 3. The *n* varies depending on whether respondents participated in both of the included waves on all variables. The *n* for wave 1 and 2 comparisons is `r nrow(waves12.wide.complete)`, for wave 2 and 3 comparisons is `r nrow(waves23.wide.complete)`, and for wave 1 and 3 comparisons is `r nrow(waves13.wide.complete)`.
+
+# Method
+
+# Results
+
+## Sum of Chronic Conditions 
+
+### Income as Moderator
+
+Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions between any combination of waves (See Tables \@ref(tab:waves12-chron-mod-income), \ref{tab:waves23-chron-mod-income}, and \ref{tab:waves13-chron-mod-income}). In the full models, including controls, difference in chronic conditions has a positive relationship with difference in total CAMs used, indicating that the more chronic conditions one develops the more CAMs they are likely to adopt in the following wave (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[2], 3)`, SE = `r round(waves12.chron.income.3.se[2], 3)`, *p* \< 0.001; Waves 2 and 3: *b* = `r round(waves23.chron.income.3$coefficients[2], 3)`, SE = `r round(waves23.chron.income.3.se[2], 3)`, *p* \< 0.05; Waves 1 and 3: results not significant). Logged income also has a positive effect on difference in CAMs used between waves 1 and 2 and between waves 1 and 3 (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[3], 3)`, SE = `r round(waves12.chron.income.3.se[3], 3)`, *p* \< 0.001; Waves 2 and 3: results not significant; Waves 1 and 3: *b* = `r round(waves13.chron.income.3$coefficients[3], 3)`, SE = `r round(waves13.chron.income.3.se[3], 3)`, *p* \< 0.05), indicating the difference in number of CAMs used between waves is greater for those with higher incomes. The interaction term for logged income and difference in chronic conditions was not significant across all models.
+
+```{r waves12-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.chron.income.1, waves12.chron.income.2, waves12.chron.income.3, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 2", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity",
+                               "Difference in Chronic Conditions x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.",
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          label = "tab:waves12-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
+
+```
+
+```{r plot-waves12-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 2"}
+library(interactions)
+interact_plot(waves12.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+```{r waves23-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.chron.income.1, waves23.chron.income.2, waves23.chron.income.3, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control", 
+                               "Spirituality", "Religiosity",  
+                               "Difference in Chronic Conditions x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          label = "tab:waves23-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
+
+```
+
+```{r plot-waves23-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 2 and 3"}
+library(interactions)
+interact_plot(waves23.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+```{r waves13-chron-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.chron.income.1, waves13.chron.income.2, waves13.chron.income.3,
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.",
+                    "Standard errors shown in parentheses."),
+          notes.align = "r", 
+          label = "tab:waves13-chron-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+
+```
+
+```{r plot-waves13-chron-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 3"}
+library(interactions)
+interact_plot(waves13.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Chronic Conditions", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+### Education as Moderator
+
+Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. Looking at differences between waves 1 and 2, we see that difference in chronic conditions has a significant positive relationship with difference in number of CAMs used (See Table \ref{tab:waves12-chron-mod-educ}; *b* = `r round (waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.001), however this effect becomes nonsignificant when education is added to the model. There is no significant effect for education on difference in CAMs used between waves 1 and 2. There is no significant difference in moderation effects for different levels of education compared to those with less than a high school diploma, though all slopes are positive indicating greater CAM use when new chronic conditions are developed (See Figure \ref{fig:plot-waves12-chron-educ-3}).
+
+Looking at differences between waves 2 and 3, we see that there is no significant effect of change in chronic conditions on changes in number of CAMs used (See Table \ref{tab:waves23-chron-mod-educ}). Education has a significant effect on difference in number of CAMs used. Compared to those with less than a high school education, those with a high school diploma or GED used .563 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[3], 3)`, SE = `r round(waves23.chron.educ.3.se[3],3)`, *p* \< 0.01), those with some college or an AA degree used 0.517 fewer CAMs (*b* = `r round (waves23.chron.educ.3$coefficients[4],4)`, SE = `r round (waves23.chron.educ.3.se[4], 3)`, *p* \< 0.01), those with a college degree use 0.574 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[5],3)`, SE = `r round(waves23.chron.educ.3.se[5],3)`, *p* \< 0.01), and those with a graduate or professional degree used 0.608 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[6],3)`, SE = `r round(waves23.chron.educ.3.se[6],3)`, *p* \< 0.01) in wave 2 compared to wave 3 in the full model including controls. Education only moderates the relationship between difference in chronic conditions and difference in total CAMs used when comparing those with a graduate or professional degree to those with less than a high school education (See Figure \ref{fig:plot-waves23-chron-educ-3}). Those with a graduate or professional degree are more likely to adopt new CAMs when diagnosed with more chronic conditions compared to those with less than a high school diploma (*b* = `r round(waves23.chron.educ.3$coefficients[20],3)`, SE = `r round(waves23.chron.educ.3.se[20],3)`, *p* \< 0.05).
+
+Looking at differences between waves 1 and 3, we see that difference in chronic conditions only has a significant effect when education is included in the model (See Table \@ref(tab:waves13-chron-mod-educ)). In the full model including education and controls, for each additional chronic condition developed between waves 1 and 3, respondents are expected to adopt 0.114 CAMs (*b* = `r round(waves13.chron.educ.3$coefficients[2],3)`, SE = `r round(waves13.chron.educ.3.se[2],3)`, *p* \< 0.01). Education does not have an effect on difference in total CAMs used between waves 1 and 3. There are significant interaction effects (See Figure \ref{fig:plot-waves13-chron-educ-3}). In this model, those with less than a high school diploma and those with a graduate or professional degree adopt new CAMs at very similar rates when developing new chronic conditions. There are significant differences in adoption of new CAMs in response to new chronic conditions between those with less than a high school diploma and those with a high school diploma or GED, as well as those with a college degree, though the direction of the relationships is unexpected. There is a negative relationship between difference in chronic conditions and difference in number of CAMs used between waves 1 and 3 for both those with a HS diploma or GED (*b* = `r round(waves13.chron.educ.3$coefficients[17],3)`, SE = `r round(waves13.chron.educ.3.se[17],3)`, *p* \< 0.01) and those with a college degree (*b* = `r round(waves13.chron.educ.3$coefficients[19],3)`, SE = `r round(waves13.chron.educ.3.se[19],3)`, *p* \< 0.01), indicating that each of these education groups utilizes fewer CAMs when developing new chronic conditions, while those with less than a high school diploma adopt more.
+
+```{r waves12-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.chron.educ.1, waves12.chron.educ.2, waves12.chron.educ.3, 
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree","Graduate or Professional Degree", 
+                               "Logged Income", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.",
+                    "White is the reference category for race.",
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves12-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+```{r plot-waves12-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 2"}
+plot_model(waves12.chron.educ.3, 
+           type = "pred", 
+           terms = c("DiffChronCenter", "Education_W1.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           legend.title = "Education")
+
+```
+
+```{r waves23-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.chron.educ.1, waves23.chron.educ.2, waves23.chron.educ.3, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.",
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses."),
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves23-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+```{r plot-waves23-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 2 and 3"}
+plot_model(waves23.chron.educ.3, 
+           type = "pred", 
+           terms = c("DiffChronCenter", "Education_W2.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           legend.title = "Education")
+
+```
+
+```{r waves13-chron-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.chron.educ.1, waves13.chron.educ.2, waves13.chron.educ.3,
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in Chronic Conditions Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in Chronic Conditions", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree","Graduate or Professional Degree", 
+                               "Logged Income", "Age at Wave 3",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses."), 
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves13-chron-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+```{r plot-waves13-chron-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in Chronic Conditions and Difference in Total CAMs Used Between Waves 1 and 3"}
+plot_model(waves13.chron.educ.3, 
+           type = "pred", 
+           terms = c("DiffChronCenter", "Education_W1.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           legend.title = "Education")
+
+```
+
+## Self-Reported Health
+
+No relationships between changes in SRH and changes in total CAMs used were found in any of the between wave comparisons (See Tables \ref{tab:waves12-SRH-mod-income}, \ref{tab:waves23-SRH-mod-income}, \ref{tab:waves13-SRH-mod-income}, \ref{tab:waves12-SRH-mod-educ}, \ref{tab:waves23-SRH-mod-educ}, \ref{tab:waves13-SRH-mod-educ}).
+
+### Income as Moderator
+
+```{r waves12-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.SRH.income.1, waves12.SRH.income.2, waves12.SRH.income.3,
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 2", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          label = "tab:waves12-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
+
+```
+
+```{r plot-waves12-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 1 and 2"}
+library(interactions)
+interact_plot(waves12.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+```{r waves23-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.SRH.income.1, waves23.SRH.income.2, waves23.SRH.income.3, 
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE, 
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          label = "tab:waves23-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001)) 
+
+```
+
+```{r plot-waves23-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 2 and 3"}
+library(interactions)
+interact_plot(waves23.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+```{r waves13-SRH-mod-income, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.SRH.income.1, waves13.SRH.income.2, waves13.SRH.income.3,
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Income", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Logged Income", 
+                               "Less than High School", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate/Professional Degree",
+                               "Age at Wave 3", "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race",
+                               "Married", "Insured", "Health Locus of Control",
+                               "Spirituality", "Religiosity", 
+                               "Difference in SRH x Logged Income"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health"), 
+          notes.align = "r", 
+          label = "tab:waves13-SRH-mod-income",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+
+```
+
+```{r plot-waves13-SRH-income-3, echo = FALSE, fig.cap= "Income Moderation Effects on Relationship Between Difference in Self-Reported Health and Difference in Total CAMs Used Between Waves 1 and 3"}
+library(interactions)
+interact_plot(waves13.SRH.income.3, pred = DiffSRHCenter, modx = LogIncomeCenter, 
+              x.label = "Difference in Self-Reported Health", 
+              y.label = "Difference in Total CAMs",
+              legend.main = "Logged Income")
+```
+
+### Education as Moderator
+
+```{r plot-waves12-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 1 and 2"}
+plot_model(waves12.SRH.educ.3, 
+           type = "pred", 
+           terms = c("DiffSRHCenter", "Education_W1.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           legend.title = "Education")
+
+```
+
+```{r waves12-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves12.SRH.educ.1, waves12.SRH.educ.2, waves12.SRH.educ.3,  
+          title = "Waves 1 and 2 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+```{r plot-waves23-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 2 and 3"}
+plot_model(waves23.SRH.educ.3, 
+           type = "pred", 
+           terms = c("DiffSRHCenter", "Education_W2.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           legend.title = "Education")
+
+```
+
+```{r waves23-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves23.SRH.educ.1, waves23.SRH.educ.2, waves23.SRH.educ.3,  
+          title = "Waves 2 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree", "Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+```{r plot-waves13-SRH-educ-3, echo=FALSE, fig.cap= "Education Moderation Effects on Relationship Between Difference in SRH and Difference in Total CAMs Used Between Waves 1 and 3"}
+plot_model(waves12.SRH.educ.3, 
+           type = "pred", 
+           terms = c("DiffSRHCenter", "Education_W1.2"), 
+           title = "",
+           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           legend.title = "Education")
+
+```
+
+```{r waves13-SRH-mod-educ, echo = FALSE, results='asis'}
+# Create regression results table
+stargazer(waves13.SRH.educ.1, waves13.SRH.educ.2, waves13.SRH.educ.3, 
+          title = "Waves 1 and 3 Difference in CAMs Regressed on Difference in SRH Moderated by Education", 
+          column.labels = c("Model 1", "Model 2", "Model 3"), 
+          covariate.labels = c("Difference in SRH", "Less than high school", "HS Diploma/GED", 
+                               "Some College/AA Degree","Graduate or Professional Degree",
+                               "Logged Income", "Age at Wave 2",
+                               "Female", "Non-Hispanic Black", 
+                               "Mexican American and Other Hispanic", "Other Race", "Married", 
+                               "Insured", "Health Locus of Control", "Spirituality", "Religiosity", 
+                               "Difference in Chronic Conditions x Less than HS Diploma", 
+                               "Difference in Chronic Conditions x High School Diploma/GED", 
+                               "Difference in Chronic Conditions x Some College/AA Degree", 
+                               "Difference in Chronic Conditions x Professional or Graduate Degree"),
+          dep.var.caption  = "", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE, 
+          keep.stat = c("n", "rsq", "adj.rsq"), 
+          column.sep.width = "3pt", # to reduce column width
+          single.row = TRUE, # to put coefficients and standard errors on same line
+          font.size = "small",
+          header = FALSE,
+          notes = c("College graduate is the reference category for education.", 
+                    "White is the reference category for race.", 
+                    "Standard errors shown in parentheses.", 
+                    "SRH: Self-Reported Health."), 
+          notes.align = "r", 
+          float.env = "sidewaystable", 
+          label = "tab:waves12-SRH-mod-educ",
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(.05, .01, .001))
+```
+
+# Conclusion 

@@ -5,4 +5,66 @@ output: pdf_document
 
 # Conclusion
 
-The conclusion section should specify the key findings of your study, explain their wider significance in the context of the research field and explain how you have filled the knowledge gap that you have identified in the introduction. This is your chance to present to your reader the major take-home messages of your dissertation research. It should be similar in content to the last sentence of your summary abstract. It should not be a repetition of the first paragraph of the discussion. They can be distinguished in their connection to broader issues. The first paragraph of the discussion will tend to focus on the direct scientific implications of your work (i.e. basic science, fundamental knowledge) while the conclusion will tend to focus more on the implications of the results for society, conservation, etc.
+## Summary of Key Findings
+
+### Measurements
+
+### Mediation 
+
+Hypotheses: 
+
+*Hypothesis 1*  CAM use is positively related to SES.
+
+*Hypothesis 1a* CAM use is positively related to income
+Not related to total CAMs used, mind-body medicine,  
+
+*Hypothesis 1b*  CAM use is positively related to education.
+From mediation analyses: education positively related to total CAMs used, mind-body medicines, use of alternative medicines, use of physical and nutritional approaches.   
+
+*Hypothesis 2*  SES is positively related to health. 
+
+*Hypothesis 2a* Income is positively related to health 
+Associated with chronic conditions (negative), positive self-reported health, chronic pain (only wave 1 to wave 2, SEM), less likely to have high blood pressure (only SEM only wave 2), depression/anxiety (wave 1 to wave 2 but not wave 1 to 3), 
+
+*Hypothesis 2b* Education is positively related to health.
+Fewer chronic conditions, better self-reported health, negatively related to diabetes (only wave 1 to wave 3, not wave 1 to wave 2), negatively related to chronic pain, negatively related to high blood pressure (at wave 2 but not wave 3), negatively related to depression/anxiety (not consistent between wave comparisons), 
+
+Income is related to fewer chronic conditions.
+Education is related to fewer chronic conditions. 
+Income is positively related to self-reported health.
+Education is positively related to self-reported health. 
+Income is not related to diabetes diagnosis. 
+Education negatively related to diabetes diagnosis - interesting that only wave 1 to wave 3 relationship, but not wave 1 to wave 2. May not be enough time to see effect? 
+Income negatively related to chronic pain at wave 2, but not wave 3. 
+Education negatively related to chronic pain. 
+Income negatively related to high blood pressure at wave 2 (only SEM). 
+Education negatively related to high blood pressure at wave 2 but not wave 3. 
+
+*Hypothesis 3*  CAM use mediates the relationship between SES and health.
+
+*Hypothesis 3a* CAM use mediates the relationship between income and health. 
+
+*Hypothesis 3b* CAM use mediates the relationship between education and health. 
+- Education positive related to CAM use wave 2, total cams wave 2 positively related to chronic conditions at wave 3. Education negatively related to chronic conditions at wave 3. Total (-) and indirect (+) effects sig. Direct effect is negative. 
+- Education negatively related to chronic pain (direct effect). Educ positively related to total cams, total cams positively related to chronic pain. Indirect is positive. Total effect (not sig) is negative.
+- Education negatively related to depression/anxiety. Educ pos. related to total cams used, total cams positively related to dep/anx. Positive indirect effect. Negative total effect. 
+- Education negatively related to sum of chronic conditions (direct effecT). Educ pos. relate to use of alternative medical systems, alter. med sys positively related to sum of chronic conditions. Positive indirect effect. Total effect not significant.
+- Education -> pna -> chronic conditions. Except pna positively related to chronic conditions... 
+- Education -> pna -> chronic pain... PNA increases log odds of reporting chronic pain. 
+
+
+*Hypothesis 4*  Health mediates the relationship between SES and CAM  
+
+*Hypothesis 4a* Health mediates the relationship between income and CAM use.
+- Income -> chron -> pna: Income negatively related to chron; chron positively related to pna; negative indirect effect. 
+- Results do not support *Hypothesis 4a*. Income has a positive direct effect on SRH at wave 2. In turn, SRH at wave 2 has a negative effect on use of physical and nutritional approaches at wave 3 (SEM: *b* = -0.025, 95% CI: -0.050, -0.005, *p* \< 0.050; GSEM: *b* = -0.121, 95% CI: -0.218, -0.024, *p* \< 0.050), indicating that individuals with lower self reported health at wave 2 are more likely to use physical and nutritional approaches at wave 3. However, the indirect effect is not significant.
+
+*Hypothesis 4b* Health mediates the relationship between education and CAM use. 
+- Education negatively related to sum chron wave 2, sum chron wave 2 positively related to total cams wave 3. Total effect sig. Indirect effect not. 
+- Education and diabetes- does not mediate, but education does have a relationship with diabetes diagnosis at wave 3, just not wave 2 (the mediator). Not enough time to see change? 
+- Education negatively related to chronic pain, chronic pain positively related to CAM use. Sig. total effect but no sig. indirect effect. 
+- high bp: education + total cams. Educ - high bp. High bp - tot cams. Total effect sig. Indirect is not. 
+- high bp: educ + alt med. Educ - high bp. High bp - alt med. Total effect sig. Indirect is not.
+- Educ -> chronic conditions -> pna. 
+- Educ -> srh -> pna: Educ + SRH, SRH - pna (so people who have worse health at wave 2 are more likely to use pna at wave 3). Indirect effect negative. Total effect positive. 
+

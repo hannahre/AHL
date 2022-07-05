@@ -26,7 +26,7 @@ About a third of U.S. adults report the use of any CAMs (Barnes, Bloom, and Nahi
 
 The National Center for Complementary and Integrative Medicine (NCCIM) classifies CAMs into five broad categories: biologically based therapies (including herbal medicine, vitamin use, and special diets), alternative medical systems (including acupuncture and homeopathy), manipulative body-based therapies (including massage therapy, exercise and movement therapies, and chiropractic therapy), mind-body therapies (including hypnosis, imagery techniques, and meditation), and energy healing therapies (use of hands to manipulate and balance energy fields). Barnes et al. (2008) found that 19.9% of adults report using biologically based therapies, 19.2% report using mind-body therapies, 3.4% report using alternative medical systems, 0.5% report using energy healing therapy, and 15.2% report using manipulative and body-based therapies. 
 
-Trends in CAM Use by SES
+# Trends in CAM Use by SES
 
 Those with higher levels of education tend to use CAMs at higher rates (Barnes et al. 2008; Clarke et al. 2015; Honda and Jacobson 2005; Mbizo et al. 2018; Ni, Simile, and Hardy 2002; Upchurch et al. 2018). Clarke et al. (2015) found that in 2002, 18.6% of adults with less than a high school diploma reported CAM use, followed by 18.8% in 2007, and 15.6% in 2012. In 2002, 26.6% of adults with a high school diploma or General Educational Development high school equivalency diploma (GED) reported CAM use, followed by 28.1% in 2007, and 24.4% in 2012. In 2002, 35.6% of adults with some college education reported CAM use, followed by 41.3% in 2007, and 36.5% in 2012. In 2002, 42.1% of adults with a college degree or higher reported CAM use, followed by 46.7% in 2007, and 42.6% in 2012 (Clarke et al. 2015). Barnes et al. (2008) reported the following rates of CAM use in 2007 for six educational categories: 20.8% of adults with less than a high school diploma, 31.0% of adults with a high school diploma or equivalent, 45% of adults with some college, 47.2% of adults with an Associates degree, 49.6% of those with a Bachelors, and 55.4% of those with a Masters, Doctorate, or Professional degree. Hildreth and Elman (2007) also found that use of any CAMs increased by level of education; however, among those that used any CAM in the past year, the authors found a threshold effect. Only those with a college degree or more used significantly more types of CAMs compared to those without a high school diploma.   
 
@@ -160,10 +160,7 @@ investigated for effectiveness, including garlic, ginkgo biloba,
 ginseng, echinacea, St. John's Wort, and ginger.
 
 Garlic is used for medicinal purposes in dried and powdered forms as
-well as extracted
-oils. It's anti-bacterial, anti-viral, anti-fungal, anti-hypertensive,
-blood-glucose lowering anti-thrombotic, anti-mutagenic, and
-anti-platelet activities have been identified [@ernst2005]. Randomized
+well as extracted oils. It's anti-bacterial, anti-viral, anti-fungal, anti-hypertensive, blood-glucose lowering anti-thrombotic, anti-mutagenic, and anti-platelet activities have been identified [@ernst2005]. Randomized
 controlled trials have demonstrated garlic's effectiveness at reducing
 total cholesterol and low-density lipoprotien, though a meta-analysis of
 13 randomized controlled trials found only a small positive effect that
@@ -203,21 +200,7 @@ trials investigating the health benefits of ginseng found evidence that
 ginseng improves glucose metabolism and moderates immune system response
 [@shergis2013]. Ginseng has been found to be assist in maintaining
 homeostasis of the immune system, enhancing resistance to illness or
-microbial
-attacks through the regulation of the immune system [@wee2011]. Thus it
-has been suggested that ginseng has beneficial effects on controlling
-inflammatory diseases and microbial infections [@kang2012]. Ginger has
-also shown promise as a preventive of cancer [@wee2011; @helmes2004].
-Ginseng consumption has been associated with lower risk of stomach,
-lung, liver, pancreas, ovarian, colon, and oral cancer [@yun2003].
-Ginseng may also be effective in treating type 2 diabetes [@wee2011].
-Studies in animals have shown that ginseng possesses anti-hyperglycemic
-activity [@kimura1981; @chung2001; @dey2003]. Studies have also shown
-that ginseng use decreases fasting glucose, reduces body weight, and
-increases glucose utilization and insulin regulation among diabetic
-patients [@sotaniemi1995; @vuksan2008].
-Ginseng may also protect against neurodegenerative diseases such as
-Alzheimer's [@wee2011].
+microbial attacks through the regulation of the immune system [@wee2011]. Thus it has been suggested that ginseng has beneficial effects on controlling inflammatory diseases and microbial infections [@kang2012]. Ginger has also shown promise as a preventive of cancer [@wee2011; @helmes2004]. Ginseng consumption has been associated with lower risk of stomach, lung, liver, pancreas, ovarian, colon, and oral cancer [@yun2003]. Ginseng may also be effective in treating type 2 diabetes [@wee2011]. Studies in animals have shown that ginseng possesses anti-hyperglycemic activity [@kimura1981; @chung2001; @dey2003]. Studies have also shown that ginseng use decreases fasting glucose, reduces body weight, and increases glucose utilization and insulin regulation among diabetic patients [@sotaniemi1995; @vuksan2008]. Ginseng may also protect against neurodegenerative diseases such as Alzheimer's [@wee2011].
 
 Studies on the health benefits of echinacea have largely focused on its
 possible effectiveness in the prevention and treatment of upper
@@ -371,9 +354,7 @@ and response rate at early and late follow up periods. The authors found
 that response rates were significantly higher in the acupuncture group
 compared to the sham acupuncture group at early and late follow up
 periods. The authors also found that acupuncture produced a greater
-reduction in headache intensity and headache
-frequency and greater improvement in physical functioning and response
-rate compared to medication therapy.
+reduction in headache intensity and headache frequency and greater improvement in physical functioning and response rate compared to medication therapy.
 
 Acupuncture has been studied extensively for its possible utility as a
 treatment for depression. Several systematic reviews and meta-analyses
