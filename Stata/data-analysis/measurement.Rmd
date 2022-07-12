@@ -1,17 +1,18 @@
 ---
-title: "Measurement Chapter"
-author: "Hannah Andrews"
-date: "6/28/2021"
+title: "Ch. 2 Alternative Health Lifestyle Measurement"
 output:
   pdf_document: default
+  bookdown::pdf_document2: default
 header-includes:
 - \usepackage{float}
 - \usepackage{sectsty}
 - \usepackage{paralist}
-- \usepackage{setspace}\spacing{1.5}
+- \usepackage{setspace}\spacing{2}
 - \usepackage{fancyhdr}
 - \usepackage{lastpage}
 - \usepackage{dcolumn}
+- \usepackage{rotating, graphicx, longtable}
+- \extrafloats{200}
 always_allow_html: yes
 ---
 
@@ -61,24 +62,18 @@ options(scipen = 999)
 ```
 
 # Introduction 
-*Intro: Why should CAMS fit together? Why should we care? What are the advantages of analyzing this – pros and cons*
 
-The defining of complementary and alternative medicine (CAM) has been fraught. The healing approaches encompassed by the term CAM are diverse. What unites them? In part, they have been defined by biomedicine in opposition to biomedicine (Gale 2014; Sointu 2021). The terms "complementary" and "alternative" themselves indicate difference from some norm, in this case the dominant paradigm of biomedicine. Issues of power struggles between biomedicine and other healing traditions and practices aside, this definition does seem to resonate with CAM users. Studies examining motivations for CAM use have found that some CAM users are motivated to use CAM due to the failure of biomedicine to address their ailments, particularly chronic conditions (cite). CAM users also report turning to CAM due to dissatifcation with interactions with biomedical physicians (cite). 
+Complementary and alternative medicine (CAM) encompasses a wide array of practices aimed at promoting health and wellness. This variation has led to debate about how to define CAM. CAM is often defined as treatment and prevention practices outside of biomedicine, and that are typically not offered in hospitals (Meeker 2000; Ni et al. 2002; Barrett et al. 2003; Wilkinson 2005; Gale 2014; Sointu 2021). On the other hand, CAM is increasingly being taught as part of medical school curriculum and integrative medicine is becoming popular within biomedical institutions (Thorne et al. 2002; Coulter and Willis et al. 2004; Tilden et al. 2004). 
 
-However, motivation for CAM use extends beyond dissatisfaction with biomedicine and biomedical definitions of health. 
-
-In this chapter, I investigate whether there is an underlying construct or constructs driving the use of complementary and alternative medicines. This is in part an answer to the call from health lifestyles perspectives to examine the ways in which individual behaviors coalesce into meaningful behavioral patterns (Cockerham 2005). 
-CAMs are also united by their holistic philosophies and the belief that individuals are experts on their own well-being (cite). 
-
-o	What have others done to group them, including industry/professional groups?
+While many definitions have focused on CAMs' relationship to biomedicine, Goldstein (2003) focuses on five core values and beliefs that unite CAMs. CAMs are defined first by holism, the belief that the whole is greater than the sum of its parts. Holism emphasizes the importance of considering the unique factors that influence the health of each individual, taking into consideration the individual's unique constellation of body and mind as well as environment. Second, CAM is defined by vitalism, the belief that a life force     
 
 There have been attempts by institutional bodies to organize CAMs into domains of similar practices. In the United Kingdom (UK), the House of Lords Select Committee on Science and Technology proposed that CAMs be categorized into three groups for research and policy purposes based on the CAM's claim regarding having its own distinct diagnostic approach (Mills 2001). These groups included (1) professionally organized alternative therapies, which includes therapies such as chiropractic and acupuncture; (2) complementary therapies, which includes therapies such as massage, hypnotherapy, and meditation and (3) alternative disciplines that may be further subdivided into long established and traditional systems of health care such as Ayurvedic medicine and other alternative disciplines such as crystal therapy.
 
 In their Strategic Plan for 2005-2009, the National Center for Complementary and Alternative Medicine (NCCAM) grouped CAMs into four domains: (1) mind-body medicine, including practices such as meditation and yoga; (2) biologically based treatments, including practices such as use of herbs and vitamins and special diets; (3) manipulative and body-based practices, including practices such as chiropractic care and massage; and (4) energy medicine, including practices that involve the use of verifiable energy fields as well as biofields. NCCAM placed whole medical systems (e.g. Ayurveda, traditional Chinese Medicine) into a class of their own due to their use of practices that fall under multiple domains. On their current website, the National Center for Complementary and Integrative Health (NCCIH, formerly NCCAM) classifies CAMs into three domains based on their primary therapeutic input, and a fourth domain for practices that represent a combination of domains. The domains include (1) nutritional approaches, such as special diets, supplements, and herbs; (2) psychological approaches, such as meditation, hypnosis, and relaxation therapies; (3) physical approaches, such as acupuncture and massage; (4) combination approaches, for example practices that combine psychological and physical approaches such as yoga or tai chi. CAMs previously categorized as alternative medical systems involve multiple practices that are not easily fit in the new domains are not included in the classification.
 
-(Can add in critiques of domains within research - See Ayers and Kronenfeld pg. 238)
-
 Clearly there are many ways to justify the conceptual classifications of CAMs. CAMs vary in terms of their therapeutic input, their level of professional organization, and their relation to biomedicine. The question remains whether these classifications of CAMs represent actual patterns of CAM use. To my knowledge, there has been only one test of these proposed CAM domains in the literature. Ayers and Kronenfeld (2010) utilized data from the 2002 National Health Interview Survey (NHIS) to test whether the five domains (including whole medical systems) reflect actual patterns of CAM use using confirmatory factor analysis. After dropping CAMs that did not load properly (hypnosis, biofeedback, and energy healing), the authors found that the CAM domains proposed by NCCAM did not fit the data. The authors then conducted an exploratory factor analysis on the NHIS data. The authors found a well-fitting four factor solution. The four factors include mind-body medicine, alternative medical systems, prayer, and manipulative treatments. Meditation, guided imagery, relaxation, and deep breathing load onto mind-body medicine. Ayurveda, folk medicine, naturopathy, homeopathy, herbal therapy, vitamins, and biofeedback load onto alternative medical systems. Pray for self, asked others to pray for self, prayer groups, and healing rituals load onto prayer. Acupuncture, chiropractic, and massage load onto manipulative therapies. 
+
+In this chapter, I investigate whether there is an underlying construct or constructs driving the use of complementary and alternative medicines. This is in part an answer to the call from health lifestyles perspectives to examine the ways in which individual behaviors coalesce into meaningful behavioral patterns (Cockerham 2005). In the following analyses I utilize exploratory factor analysis and confirmatory factor analysis to identify any possible underlying constructs of CAM utilization.
 
 ```{r, echo = FALSE}
 # Create a table: Rows = CAMs. Columns = category the CAM is assigned to in each system
@@ -191,9 +186,6 @@ kable(domains.df,
 #kable_styling(latex_options = "scale_down")
 ```
 
-o	What are the advantages of using these data to test this?
-MIDUS is representative of non-institutionalzed, English-speaking adults in the continental United States. 
-MIDUS includes data on CAM use for a variety of CAMs. This is important for testing possible underlying constructs or groupings of CAMs. 
 
 ```{r, echo = FALSE, results = 'hide'}
 # This chunk reads in the MIDUS1 Stata .dta file, subsets the data to only include CAMs, and restricts the data to complete cases. 
@@ -622,7 +614,7 @@ It should also be noted that utilization of prayer and spiritual healing were or
 
 # Method
 
-This research utilizes factor analysis to examine the underlying factor structure of CAM utilization. In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data. 
+This research utilizes factor analysis to examine the underlying factor structure of CAM utilization. In this section, I will present factor analysis results. First, I will present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I will present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data. Factor analysis is useful for identifying ways in which variables are patterned and vary together (Child 2006). 
 
 ```{r, echo = FALSE}
 # Create correlation matrix 
@@ -639,7 +631,7 @@ rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy H
 ```
 
 
-```{r tetra-corr, fig.cap = "Tetrachoric Correlation Matrix.",echo = FALSE}
+```{r tetra-corr, , echo = FALSE, fig.cap = "Tetrachoric Correlation Matrix."}
 #corrplot.mixed(het.mat, tl.pos = "lt", tl.col = "black", tl.cex = .8, tl.srt=45, number.cex = .5, lower.col = "black", order = "hclust")
 # col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 # corrplot(het.mat.a, method="color", number.cex = .5, order="hclust", 
@@ -722,60 +714,6 @@ sum(parallel.all.cams$fa.values > .7)
 ```
 ### Results
 
-```{r, echo = FALSE, results = 'hide'}
-# This code chunk runs all models with all CAMs. 
-
-# Create empty data frame to be filled with fit statistics 
-acams_all_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
-# Create counter to be used in the loop to input statistics into successive rows
-counter <- 1
-# Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
-acams_all_fit_table_efa <- foreach::foreach (i=1:6) %:%
-  foreach::foreach(j=c("ml", "minres", "pa")) %:%
-    foreach::foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
-      model_i_j_k <- fa(r = het.mat.a, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 100, fm = j)
-      acams_all_fit_table_efa [counter,"Model"] <- paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation)
-      acams_all_fit_table_efa [counter,"CFI"] <- 1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof))
-      acams_all_fit_table_efa [counter,"TLI"] <- model_i_j_k$TLI
-      acams_all_fit_table_efa [counter,"BIC"] <- model_i_j_k$BIC
-      acams_all_fit_table_efa [counter,"RMSR"] <- model_i_j_k$rms
-      acams_all_fit_table_efa [counter,"RMSEA"] <- model_i_j_k$RMSEA[1]
-      acams_all_fit_table_efa [counter, "Factors"] <- model_i_j_k$factors
-      acams_all_fit_table_efa [counter, "FactorMethod"] <- model_i_j_k$fm
-      acams_all_fit_table_efa [counter, "Rotation"] <- model_i_j_k$rotation
-      return(acams_all_fit_table_efa)
-      counter <- counter + 1 
-    }
-
-# Convert the nested lists created by the nested loops above to a data frame. 
-# 6 columns 72 rows (72 models)
-acams_all_df_unstacked <- unstack(data.frame(d<-unlist(acams_all_fit_table_efa),names(d)))
-acams_all_df_unstacked
-
-# Turn "Model" column into row names
-acams_all_df_rownames <- data.frame(acams_all_df_unstacked[,-5],
-                                  row.names=acams_all_df_unstacked[,5])
-acams_all_df_rownames
-
-# Reorder columns
-col_order <- c("Factors", "FactorMethod", "Rotation", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
-acams_all_df_rownames2 <- acams_all_df_rownames[, col_order]
-acams_all_df_rownames2
-
-str(acams_all_df_rownames2)
-
-# All columns are character vectors.
-# Convert appropriate columns to numeric.
-cols.num <- c("Factors", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
-acams_all_df_rownames2[cols.num] <- sapply(acams_all_df_rownames2[cols.num],as.numeric)
-sapply(acams_all_df_rownames2, class)
-
-# Round numeric values to four decimal places
-acams_all_df <- acams_all_df_rownames2 %>% 
-  mutate_if(is.numeric, 
-            round, 
-            digits = 4)
-```
 ```{r, echo = FALSE, results='hide'}
 # 6 factor maximum likelihood solution had the best fit statistics above. Fit statistics are the same for all rotation methods. Check factor loadings for all rotation methods.
 all.6.ml.varimax <- fa(r = het.mat.a, nfactors = 6, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
@@ -804,7 +742,7 @@ all.5.ml.oblimin$loadings
 
 First, I ran the exploratory factor analysis on all 14 CAMs. After examining one through six factor solutions using different extraction and rotation methods (See Appendix (create appendix for model fit statistics including all CAMs)), I found that the five and six factor maximum likelihood solutions fit the data best; however, biofeedback consistently loaded onto its own factor. Biofeedback is utilized by the smallest number of respondents (48). In light of the few cases reporting use of biofeedback and failure to load with other items, I dropped biofeedback and ran the analysis with the other 13 CAMs. 
 
-```{r, echo = FALSE, results = 'hide'}
+```{r, echo = FALSE, results='hide'}
 # In the 5 and 6 factor solutions, biofeedback is loading on its own factor consistently. It also has the fewest cases reporting use over the last year. 
 # Run analyses dropping biofeedback. 
 
@@ -817,59 +755,6 @@ str(acams.drop.bio)
 # Create new correlation matrix
 het.mat.drop.bio <- hetcor(as.data.frame(acams.drop.bio))$cor
 
-# Create empty data frame to be filled with fit statistics 
-acams_drop_bio_fit_table_efa <- data.frame(Model=0, CFI=0, TLI=0, BIC=0, RMSR=0, RMSEA=0, Factors=0, FactorMethod=0, Rotation=0)  
-# Create counter to be used in the loop to input statistics into successive rows
-counter <- 1
-# Write nested loops to run factor models on 1 through 6 factor solutions using all factoring methods and rotations and input model results into the data frame created above 
-acams_drop_bio_efa_fit <- foreach (i=1:5) %:%
-  foreach(j=c("ml", "minres")) %:%
-    foreach (k=c("varimax", "promax", "oblimin", "cluster")) %do% {
-      model_i_j_k<- fa(r = het.mat.drop.bio, nfactors = i, n.obs=nrow(acams), rotate = k, max.iter = 1000, fm = j)
-      acams_drop_bio_fit_table_efa [counter,"Model"] <- paste0(model_i_j_k$factors, model_i_j_k$fm, model_i_j_k$rotation)
-      acams_drop_bio_fit_table_efa [counter,"CFI"] <- 1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof))
-      acams_drop_bio_fit_table_efa [counter,"TLI"] <- model_i_j_k$TLI
-      acams_drop_bio_fit_table_efa [counter,"BIC"] <- model_i_j_k$BIC
-      acams_drop_bio_fit_table_efa [counter,"RMSR"] <- model_i_j_k$rms
-      acams_drop_bio_fit_table_efa [counter,"RMSEA"] <- model_i_j_k$RMSEA[1]
-      acams_drop_bio_fit_table_efa [counter, "Factors"] <- model_i_j_k$factors
-      acams_drop_bio_fit_table_efa [counter, "FactorMethod"] <- model_i_j_k$fm
-      acams_drop_bio_fit_table_efa [counter, "Rotation"] <- model_i_j_k$rotation
-      return(acams_drop_bio_fit_table_efa)
-      counter <- counter + 1 
-    }
-
-# Convert the nested lists created by the nested loops above to a data frame. 
-# 6 columns 72 rows (72 models)
-acams_drop_bio_df_unstacked <- unstack(data.frame(d<-unlist(acams_drop_bio_efa_fit),names(d)))
-acams_drop_bio_df_unstacked
-
-# Turn "Model" column into row names
-acams_drop_bio_df_rownames <- data.frame(acams_drop_bio_df_unstacked[,-5],
-                                  row.names=acams_drop_bio_df_unstacked[,5])
-acams_drop_bio_df_rownames
-
-# Reorder columns
-col_order <- c("Factors", "FactorMethod", "Rotation", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
-acams_drop_bio_df_rownames2 <- acams_drop_bio_df_rownames[, col_order]
-acams_drop_bio_df_rownames2
-
-str(acams_drop_bio_df_rownames2)
-
-# All columns are character vectors.
-# Convert appropriate columns to numeric.
-cols.num <- c("Factors", "BIC", "TLI", "CFI", "RMSR", "RMSEA")
-acams_drop_bio_df_rownames2[cols.num] <- sapply(acams_drop_bio_df_rownames2[cols.num],as.numeric)
-sapply(acams_drop_bio_df_rownames2, class)
-
-# Round numeric values to four decimal places
-acams_drop_bio_df <- acams_drop_bio_df_rownames2 %>% 
-  mutate_if(is.numeric, 
-            round, 
-            digits = 4)
-```
-
-```{r, echo = FALSE, results='hide'}
 # Maximum likelihood 5 factor solutions have best fit statistics. Review the factor loadings and groupings. 
 drop.bio.5.ml.varimax <- fa(r = het.mat.drop.bio, nfactors = 5, n.obs=nrow(acams), rotate = "varimax", max.iter = 100, fm = "ml")
 drop.bio.5.ml.varimax$loadings
@@ -906,7 +791,7 @@ fa.fit.statistics <- data.frame(Model=0, Chi.Square=0, CFI=0, TLI=0, RMSR=0, RMS
 # Add in fit statistics from the efa model 
 fa.fit.statistics[1, "Model"] <- "Wave 1 Exploratory Factor Analysis"
 fa.fit.statistics[1, "Chi.Square"] <- paste(round(drop.bio.4.ml.cluster$STATISTIC, 3),"(", drop.bio.4.ml.cluster$dof, ")", " p<.001", sep = "")
-fa.fit.statistics[1, "CFI"] <- round(1 - ((model_i_j_k$STATISTIC-model_i_j_k$dof)/(model_i_j_k$null.chisq-model_i_j_k$null.dof)), 2)
+fa.fit.statistics[1, "CFI"] <- round(1 - ((drop.bio.4.ml.cluster$STATISTIC-drop.bio.4.ml.cluster$dof)/(drop.bio.4.ml.cluster$null.chisq-drop.bio.4.ml.cluster$null.dof)), 2)
 fa.fit.statistics[1, "TLI"] <- round(drop.bio.4.ml.cluster$TLI, 2)
 fa.fit.statistics[1, "RMSR"] <- round(drop.bio.4.ml.cluster$rms, 3)
 fa.fit.statistics[1, "RMSEA"] <- round(drop.bio.4.ml.cluster$RMSEA[1], 3)
@@ -981,10 +866,15 @@ CronbachAlpha(f3)
 f4 <- acams.drop.bio[c("aChiropractic", "aMassage")]
 head(f4)
 CronbachAlpha(f4)
+
+round(cor(f1),2)
+alpha(f1)
+alpha(f2)
 ```
 I use Cronbach's alpha to test the internal consistency of each factor. Cronbach's alpha is `r CronbachAlpha(f1)` for Mind-Body Medicine, `r CronbachAlpha(f2)` for Alternative Medical Systems, `r CronbachAlpha(f3)` for Physical and Nutritional Approaches, and `r CronbachAlpha(f4)`. All factors have low internal consistency, though it is also worth noting that a smaller Cronbach's alpha is expected with so few items.  
 
 ## Confirmatory Factor Analysis: All waves
+
 ```{r, echo = FALSE, results='hide'}
 # Run confirmatory factor analysis on the 4 factor ML cluster solution (drop bio)
 
@@ -1048,7 +938,7 @@ fit.stats.2
 summary.fit.2 <- summary(fit.2, fit.measures = TRUE)
 
 # Model Plot 
-semPlot::semPaths(fit, "std")
+#semPlot::semPaths(fit, "std")
 ```
 
 ```{r, echo = FALSE, results='hide'}
@@ -1114,6 +1004,12 @@ summary(c.fit, standardized = TRUE)
 # Helpful link/tutorial: https://benwhalley.github.io/just-enough-r/cfa.html
 # sempaths documentation: https://www.rdocumentation.org/packages/semPlot/versions/1.1.2/topics/semPaths
 ```
+```{r, echo = FALSE}
+# Reliability 
+semTools::reliability(fit)
+```
+
+CAMs at waves 1, 2, and 3, were loaded on the 4 factors identified in the analysis above: Mind-Body Medicine, Alternative Medical Systems, Physical and Nutritional Approaches, and Manipulative Treatments. Standardized loadings are reported in Table \ref{tab:cfa-loadings-table}. Nearly all CAMs have loadings above 0.50 on the appropriate factor. The exception is special diet loading on Physical and Nutritional Approaches at wave 2. Goodness of fit statistics indicate good model fit for all waves. CFI is 0.99 for all waves. TLI is greater than or equal to 0.98. RMSR less than or equal to 0.78. RMSEA is less than or equal to 0.032 for all CFAs. Goodness of fit statistics are reported in Table \ref{tab:gof-table}.  
 
 ```{r gof-table, echo = FALSE}
 # This code chunk adds fit statistics for the CFAs.
@@ -1183,7 +1079,7 @@ linesep<-function(x,y=character()){
 # Set NAs as blank in kable loadings table 
 options(knitr.kable.NA = '')
 ```
-```{r, cfa-loadings-table, echo = FALSE}
+```{r cfa-loadings-table, echo = FALSE}
 # Print loadings table 
 kable(loadings.table,
       booktabs = T,
@@ -1195,3 +1091,9 @@ kable(loadings.table,
       caption = "Confirmatory Factor Analysis Standardized Loadings for All Waves") %>%
   kable_classic(html_font = "CMU Serif")
 ```
+
+# Conclusion 
+
+Results from the exploratory factor analysis revealed a 4 factor structure underlying CAM utilization. 13 CAMs loaded independently onto the identified factors. The four factors identified include Mind-Body Medicine, Alternative Medicine Systems, Physical and Nutritional Approaches, and Manipulative Treatments. Mind-Body Medicine included meditation and relaxation techniques, prayer and spiritual healing, energy healing, imagery techniques, and hypnosis. Alternative Medical Systems included homeopathy, herbal therapy, and acupuncture. Physical and Nutritional Approaches included vitamins, exercise and movement therapy, and special diet. Confirmatory factor analyses across all three waves of the MIDUS data confirmed the that the four factor solution fit the observed data well. 
+
+This study extends efforts to advance the measurement of health lifestyles in the following ways. First, patterns of behavior within CAMs have been largely limited to dummy measures of any CAM use and co-occurrence indices (Barnes et al. 2008; Clarke et al. 2015; Johnson et al. 2018; Rhee et al. 2018). Studies of subgroups of CAM behaviors have made comparisons based on the domains described by the NCCIM (Ellison et al. 2012; Honda and Jacobson 2005; Mbizo et al. 2018). This study extends these efforts by empirically testing the factor structure underlying CAM behaviors. Second, this study extends health lifestyle measurement efforts to a virtually ignored domain of health behaviors, CAMs. Finally, by examining patterns of behaviors rather than single behaviors, this measurement study addresses the call of health lifestyles perspectives to examine the ways in which individual behaviors coalesce into meaningful patterns (Bourdieu 1984; Cockerham 2005).

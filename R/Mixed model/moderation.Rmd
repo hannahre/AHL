@@ -1,12 +1,19 @@
 ---
-title: "Socioeconomic Status as Moderator of the CAM-Health Relationship"
+title: "Ch. 4 Socioeconomic Status as Moderator of the CAM-Health Relationship"
 output:
+  pdf_document: default
   bookdown::pdf_document2: default
-bibliography: references.bib
-link-citations: true
 header-includes:
-   - \usepackage{rotating, graphicx, longtable}
-   - \extrafloats{200}
+- \usepackage{float}
+- \usepackage{sectsty}
+- \usepackage{paralist}
+- \usepackage{setspace}\spacing{2}
+- \usepackage{fancyhdr}
+- \usepackage{lastpage}
+- \usepackage{dcolumn}
+- \usepackage{rotating, graphicx, longtable}
+- \extrafloats{200}
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -331,29 +338,165 @@ waves13.SRH.educ.3.se <- summary(waves13.SRH.educ.3)$coef[,"Std. Error"]
 
 # Questions and Hypotheses
 
-In this chapter I examine income and education as moderators of the relationship between changes in health and changes in CAM use. First, I examine whether change in health status as measured by changes in chronic conditions and self-reported health predicts a change in CAM use. I expect to find that individuals who experience a decline in health status are more likely to adopt new CAMs (hypothesis #5). Second, I examine whether this relationship is moderated by income and education. I expect to find that individuals with higher incomes are more likely to adopt new CAMs in response to a decline in health compared to those with lower incomes (hypothesis #6). I also expect to find that individuals with higher levels of education are more likely to adopt new CAMs in response to a decline in health compared to those with lower levels of education (hypothesis #7).
+In this chapter, I examine income and education as moderators of the relationship between changes in health and changes in CAM use. First, I examine whether change in health status, as measured by changes in chronic conditions and self-reported health, predicts a change in CAM use. I expect that individuals who experience a decline in health status are more likely to adopt new CAMs (*Hypothesis 5*). Second, I examine whether income and education moderate this relationship by influencing the likelihood of using CAMs in response to changes in health status. I expect that individuals with higher incomes are more likely to adopt new CAMs in response to a decline in health compared to those with lower incomes (*Hypothesis 6a*). I also expect that individuals with higher levels of education are more likely to adopt new CAMs in response to a decline in health compared to those with lower levels of education (*Hypothesis 6b*).
 
-Research on SES as a moderator of the relationship between change in health and change in individual health behavior is incredibly limited. Previous research has shown that education is an important moderator of behavior change following a new diagnosis (Margolis 2013) and following a heart attack (Wray et al. 1998). There is also evidence that socioeconomic status moderates behavioral change in cancer survivors (Naik et al. 2016). New diagnosis has been found to increase the likelihood of behavioral change (Clark and Etilé 2002; Falba 2005; Keenan 2009); however, this research typically includes socioeconomic status as a control variable and does not consider socioeconomic status as a possible moderator of this relationship. To my knowledge, socioeconomic status has yet to be examined as a moderator of the relationship between change in health and change in health lifestyles, AHL or THL. Given that social position shapes the structural context within which health lifestyles choices are made (Cockerham 2005; Link and Phelan 2005), I expect that change in AHL following a change in health will be conditioned by socioeconomic status. 
+There is little existing research on SES as a moderator of the relationship between change in health and change in individual health behavior. Previous research has shown that education is an important moderator of behavior change following a new diagnosis (Margolis 2013) or a heart attack (Wray et al. 1998). There is also evidence that socioeconomic status moderates behavioral change in cancer survivors (Naik et al. 2016). A new diagnosis has been found to increase the likelihood of behavioral change (Clark and Etilé 2002; Falba 2005; Keenan 2009), although this research typically includes socioeconomic status as a control variable and does not consider socioeconomic status as a possible moderator of this relationship. To my knowledge, research has yet to examine socioeconomic status as a moderator of the relationship between change in health and change in health lifestyles, AHL or THL. Given that social position shapes the structural context within which indiviuals make health lifestyles choices (Cockerham 2005; Link and Phelan 2005), I expect that SES will condition change in AHL following a change in health.
 
 In sum, I will be testing the following hypotheses: 
 
-5.  A decline in health status will result in higher CAM use.
-6.  Those with higher incomes are more likely to adopt new CAMs in the event of a health decline compared to those with lower incomes.
-7.  Those with higher levels of education are more likely to adopt new CAMs in the event of a health decline compared to those with lower levels of education.
+* *Hypothesis 5*  A decline in health status will result in higher CAM use.
+* *Hypothesis 6*  SES will moderate the relationship between change in health status and change in health behavior.
+  + *Hypothesis 6a* Those with higher incomes are more likely to adopt new CAMs in the event of a health decline compared to those with lower incomes.
+  + *Hypothesis 6b* Those with higher levels of education are more likely to adopt new CAMs in the event of a health decline compared to those with lower levels of education.
 
-# Data
+# Data and Methods
 
-In the final stage of analysis, values across waves were compared in the following combinations: waves 1 and 2, waves 2 and 3, and waves 1 and 3. The *n* varies depending on whether respondents participated in both of the included waves on all variables. The *n* for wave 1 and 2 comparisons is `r nrow(waves12.wide.complete)`, for wave 2 and 3 comparisons is `r nrow(waves23.wide.complete)`, and for wave 1 and 3 comparisons is `r nrow(waves13.wide.complete)`.
+In the following analyses, I compared values across waves in the following combinations: waves 1 and 2, waves 2 and 3, and waves 1 and 3. The *n* for each analysis varies depending on whether respondents participated in both of the included waves on all variables. The *n* for wave 1 and 2 comparisons is `r nrow(waves12.wide.complete)`, for wave 2 and 3 comparisons is `r nrow(waves23.wide.complete)`, and for wave 1 and 3 comparisons is `r nrow(waves13.wide.complete)`.
 
-# Method
+This chapter includes three new variables in the analysis: difference in CAMs, difference in chronic conditions, and difference in SRH across waves. For each wave comparison, I subtracted the value from the first wave from the value at the second wave to create the difference variable. For example, I created the difference in CAMs variable for the wave 1 and 2 comparison by subtracting number of CAMs used at wave 1 from the number of CAMs used at wave 2. A positive value indicates that the respondent used more CAMs, developed more chronic conditions, or reported better SRH. Negative values indicate that the respondent used fewer CAMs, had fewer chronic conditions, or had poorer SRH compared to the previous wave. A value of zero indicates no difference between waves. 
+
+Continuous variables that I used to generate interaction terms (difference in chronic conditions, difference in self-reported health, difference in log income) are centered around the mean for ease of interpretation. 
+
+All other variables are coded in the same way as described in the previous chapter. I used ordinary least squares regression to analyze the data.
 
 # Results
+
+Descriptive statistics for each wave comparison sample can be found in Tables \ref{tab:waves12-descriptives-table} through \ref{tab:waves13-descriptives-table}.
+
+```{r waves12-descriptives-table, echo = FALSE}
+waves12.wide.complete %>% 
+  dplyr::select(DiffCams, DiffChron, DiffSRH, Income_W1, Education_W1, Age_W2, Sex_W1, Race_W2, Marital_W2, HlthInsurance_W2, HLSelf_W2, Spiritual_W2, Religion_W2) %>%
+  gtsummary::tbl_summary(
+    type = list(DiffCams ~ "continuous2",
+                DiffChron ~ "continuous2",
+                DiffSRH ~ "continuous2", 
+                Income_W1 ~ "continuous2", 
+                Age_W2 ~ "continuous2",
+                HLSelf_W2 ~ "continuous2",
+                Spiritual_W2 ~ "continuous2", 
+                Religion_W2 ~ "continuous2"),
+    statistic = list(all_continuous() ~ c("{N_nonmiss}/{N_obs}", 
+                                          "{mean} ({sd})",
+                                          "{min}, {max}"),
+                     all_categorical() ~ "{n}/{N_nonmiss} ({p})%"),
+    digits = all_continuous() ~ 2, 
+    label = list(DiffCams ~ "Difference in Total CAMs Used", 
+                 DiffChron ~ "Difference in Chronic Conditions",
+                 DiffSRH ~ "Difference in Self-Reported Health", 
+                 Income_W1 ~ "Wave 1 Income", 
+                 Education_W1 ~ "Wave 1 Education",
+                 Age_W2 ~ "Wave 2 Age", 
+                 Sex_W1 ~ "Sex", 
+                 Race_W2 ~ "Race",
+                 Marital_W2 ~ "Wave 2 Marital Status",
+                 HlthInsurance_W2 ~ "Wave 2 Health Insurance Status",
+                 HLSelf_W2 ~ "Wave 2 Health Locus of Control",
+                 Spiritual_W2 ~ "Wave 2 Spirituality",
+                 Religion_W2 ~ "Wave 2 Religiosity"),
+    missing_text = "(Missing)") %>% 
+    bold_labels() %>% 
+    as_kable_extra(
+      longtable = TRUE,
+      booktabs=TRUE,
+      caption="Descriptive Statistics Wave 1 2 Comparison",
+      escape = F) %>%
+  kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped", "repeat_header"),
+                font_size = 7) 
+
+```
+
+```{r waves23-descriptives-table, echo = FALSE}
+waves23.wide.complete %>% 
+  dplyr::select(DiffCams, DiffChron, DiffSRH, Income_W2, Education_W2, Age_W3, Sex_W2, Race_W2, Marital_W3, HlthInsurance_W3, HLSelf_W3, Spiritual_W3, Religion_W3) %>%
+  gtsummary::tbl_summary(
+    type = list(DiffCams ~ "continuous2",
+                DiffChron ~ "continuous2",
+                DiffSRH ~ "continuous2", 
+                Income_W2 ~ "continuous2", 
+                Age_W3 ~ "continuous2",
+                HLSelf_W3 ~ "continuous2",
+                Spiritual_W3 ~ "continuous2", 
+                Religion_W3 ~ "continuous2"),
+    statistic = list(all_continuous() ~ c("{N_nonmiss}/{N_obs}", 
+                                          "{mean} ({sd})",
+                                          "{min}, {max}"),
+                     all_categorical() ~ "{n}/{N_nonmiss} ({p})%"),
+    digits = all_continuous() ~ 2, 
+    label = list(DiffCams ~ "Difference in Total CAMs Used", 
+                 DiffChron ~ "Difference in Chronic Conditions",
+                 DiffSRH ~ "Difference in Self-Reported Health", 
+                 Income_W2 ~ "Wave 2 Income", 
+                 Education_W2 ~ "Wave 2 Education",
+                 Age_W3 ~ "Wave 3 Age", 
+                 Sex_W2 ~ "Sex", 
+                 Race_W2 ~ "Race",
+                 Marital_W3 ~ "Wave 3 Marital Status",
+                 HlthInsurance_W3 ~ "Wave 3 Health Insurance Status",
+                 HLSelf_W3 ~ "Wave 3 Health Locus of Control",
+                 Spiritual_W3 ~ "Wave 3 Spirituality",
+                 Religion_W3 ~ "Wave 3 Religiosity"),
+    missing_text = "(Missing)") %>% 
+    bold_labels() %>% 
+    as_kable_extra(
+      longtable = TRUE,
+      booktabs=TRUE,
+      caption="Descriptive Statistics Wave 2 3 Comparison",
+      escape = F) %>%
+  kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped", "repeat_header"),
+                font_size = 7) 
+
+```
+
+```{r waves13-descriptives-table, echo = FALSE}
+waves13.wide.complete %>% 
+  dplyr::select(DiffCams, DiffChron, DiffSRH, Income_W1, Education_W1, Age_W3, Sex_W1, Race_W3, Marital_W3, HlthInsurance_W3, HLSelf_W3, Spiritual_W3, Religion_W3) %>%
+  gtsummary::tbl_summary(
+    type = list(DiffCams ~ "continuous2",
+                DiffChron ~ "continuous2", 
+                DiffSRH ~ "continuous2", 
+                Income_W1 ~ "continuous2", 
+                Age_W3 ~ "continuous2",
+                HLSelf_W3 ~ "continuous2",
+                Spiritual_W3 ~ "continuous2", 
+                Religion_W3 ~ "continuous2"),
+    statistic = list(all_continuous() ~ c("{N_nonmiss}/{N_obs}", 
+                                          "{mean} ({sd})",
+                                          "{min}, {max}"),
+                     all_categorical() ~ "{n}/{N_nonmiss} ({p})%"),
+    digits = all_continuous() ~ 2, 
+    label = list(DiffCams ~ "Difference in Total CAMs Used", 
+                 DiffChron ~ "Difference in Chronic Conditions",
+                 DiffSRH ~ "Difference in Self-Reported Health", 
+                 Income_W1 ~ "Wave 1 Income", 
+                 Education_W1 ~ "Wave 1 Education",
+                 Age_W3 ~ "Wave 3 Age", 
+                 Sex_W1 ~ "Sex", 
+                 Race_W3 ~ "Race",
+                 Marital_W3 ~ "Wave 3 Marital Status",
+                 HlthInsurance_W3 ~ "Wave 3 Health Insurance Status",
+                 HLSelf_W3 ~ "Wave 3 Health Locus of Control",
+                 Spiritual_W3 ~ "Wave 3 Spirituality",
+                 Religion_W3 ~ "Wave 3 Religiosity"),
+    missing_text = "(Missing)") %>% 
+    bold_labels() %>% 
+    as_kable_extra(
+      longtable = TRUE,
+      booktabs=TRUE,
+      caption="Descriptive Statistics Wave 1 3 Comparison",
+      escape = F) %>%
+  kable_classic(html_font = "CMU Serif") %>%
+  kable_styling(latex_options = c("striped", "repeat_header"),
+                font_size = 7) 
+
+```
 
 ## Sum of Chronic Conditions 
 
 ### Income as Moderator
 
-Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions between any combination of waves (See Tables \@ref(tab:waves12-chron-mod-income), \ref{tab:waves23-chron-mod-income}, and \ref{tab:waves13-chron-mod-income}). In the full models, including controls, difference in chronic conditions has a positive relationship with difference in total CAMs used, indicating that the more chronic conditions one develops the more CAMs they are likely to adopt in the following wave (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[2], 3)`, SE = `r round(waves12.chron.income.3.se[2], 3)`, *p* \< 0.001; Waves 2 and 3: *b* = `r round(waves23.chron.income.3$coefficients[2], 3)`, SE = `r round(waves23.chron.income.3.se[2], 3)`, *p* \< 0.05; Waves 1 and 3: results not significant). Logged income also has a positive effect on difference in CAMs used between waves 1 and 2 and between waves 1 and 3 (Waves 1 and 2: *b* = `r round(waves12.chron.income.3$coefficients[3], 3)`, SE = `r round(waves12.chron.income.3.se[3], 3)`, *p* \< 0.001; Waves 2 and 3: results not significant; Waves 1 and 3: *b* = `r round(waves13.chron.income.3$coefficients[3], 3)`, SE = `r round(waves13.chron.income.3.se[3], 3)`, *p* \< 0.05), indicating the difference in number of CAMs used between waves is greater for those with higher incomes. The interaction term for logged income and difference in chronic conditions was not significant across all models.
+Tables \@ref{tab:waves12-chron-mod-income} through \ref{tab:waves13-chron-mod-income} present the OLS results for the sum of chronic conditions, and the results do not support *Hypothesis 6a*. Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions in any combination of waves. Figures \ref{fig:plot-waves12-chron-income-3} through \ref{fig:plot-waves13-chron-income-3} show plots of the regression lines for average income and 1 standard deviation above and below the mean to give a general sense of the interaction. There is a main effect for difference in chronic conditions on difference in CAMs in the wave 1 and 2 comparison, which suggests more CAM use in response to an increase in chronic health conditions among individuals with higher income (*b* = `r round(waves12.chron.income.1$coefficients[2],3)`, SE = `r round(waves12.chron.income.1.se[2],3)`, *p* \< 0.001). This offers some support for *Hypothesis 5*, which posited that individuals would use more CAMs in response to a new diagnosis or worsening health status. However, this effect does not appear in other wave comparisons.  
 
 ```{r waves12-chron-mod-income, echo = FALSE, results='asis'}
 # Create regression results table
@@ -377,7 +520,8 @@ stargazer(waves12.chron.income.1, waves12.chron.income.2, waves12.chron.income.3
           font.size = "small",
           header = FALSE, 
           notes = c("White is the reference category for race.",
-                    "Standard errors shown in parentheses."), 
+                    "Standard errors shown in parentheses.", 
+                    "College degree is the reference category for education."), 
           notes.align = "r", 
           label = "tab:waves12-chron-mod-income",
           star.char = c("*", "**", "***"),
@@ -415,7 +559,8 @@ stargazer(waves23.chron.income.1, waves23.chron.income.2, waves23.chron.income.3
           font.size = "small",
           header = FALSE,
           notes = c("White is the reference category for race.", 
-                    "Standard errors shown in parentheses."), 
+                    "Standard errors shown in parentheses.", 
+                    "College degree is the referecne category for education."), 
           notes.align = "r", 
           label = "tab:waves23-chron-mod-income",
           star.char = c("*", "**", "***"),
@@ -453,7 +598,8 @@ stargazer(waves13.chron.income.1, waves13.chron.income.2, waves13.chron.income.3
           font.size = "small",
           header = FALSE,
           notes = c("White is the reference category for race.",
-                    "Standard errors shown in parentheses."),
+                    "Standard errors shown in parentheses.", 
+                    "College degree is the referecne category for education."),
           notes.align = "r", 
           label = "tab:waves13-chron-mod-income",
           star.char = c("*", "**", "***"),
@@ -471,11 +617,12 @@ interact_plot(waves13.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCe
 
 ### Education as Moderator
 
-Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. Looking at differences between waves 1 and 2, we see that difference in chronic conditions has a significant positive relationship with difference in number of CAMs used (See Table \ref{tab:waves12-chron-mod-educ}; *b* = `r round (waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.001), however this effect becomes nonsignificant when education is added to the model. There is no significant effect for education on difference in CAMs used between waves 1 and 2. There is no significant difference in moderation effects for different levels of education compared to those with less than a high school diploma, though all slopes are positive indicating greater CAM use when new chronic conditions are developed (See Figure \ref{fig:plot-waves12-chron-educ-3}).
+Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. Looking at differences between waves 1 and 2, we see that difference in chronic conditions has a significant positive relationship with difference in number of CAMs used (See Table \ref{tab:waves12-chron-mod-educ}; *b* = `r round (waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.001). This supports *Hypothesis 5*. There is no significant difference in moderation effects for different levels of education compared to those with a college degree, though all slopes are positive indicating greater CAM use when new chronic conditions are developed (See Figure \ref{fig:plot-waves12-chron-educ-3}).
 
-Looking at differences between waves 2 and 3, we see that there is no significant effect of change in chronic conditions on changes in number of CAMs used (See Table \ref{tab:waves23-chron-mod-educ}). Education has a significant effect on difference in number of CAMs used. Compared to those with less than a high school education, those with a high school diploma or GED used .563 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[3], 3)`, SE = `r round(waves23.chron.educ.3.se[3],3)`, *p* \< 0.01), those with some college or an AA degree used 0.517 fewer CAMs (*b* = `r round (waves23.chron.educ.3$coefficients[4],4)`, SE = `r round (waves23.chron.educ.3.se[4], 3)`, *p* \< 0.01), those with a college degree use 0.574 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[5],3)`, SE = `r round(waves23.chron.educ.3.se[5],3)`, *p* \< 0.01), and those with a graduate or professional degree used 0.608 fewer CAMs (*b* = `r round(waves23.chron.educ.3$coefficients[6],3)`, SE = `r round(waves23.chron.educ.3.se[6],3)`, *p* \< 0.01) in wave 2 compared to wave 3 in the full model including controls. Education only moderates the relationship between difference in chronic conditions and difference in total CAMs used when comparing those with a graduate or professional degree to those with less than a high school education (See Figure \ref{fig:plot-waves23-chron-educ-3}). Those with a graduate or professional degree are more likely to adopt new CAMs when diagnosed with more chronic conditions compared to those with less than a high school diploma (*b* = `r round(waves23.chron.educ.3$coefficients[20],3)`, SE = `r round(waves23.chron.educ.3.se[20],3)`, *p* \< 0.05).
+Table \ref{tab:waves23-chron-mod-educ} shows results for the wave 2 and 3 comparison. Model 1 includes difference in chronic conditions and education as predictors. Model 2 adds the interaction term. Model 3 adds controls. Looking at Model 1, we see that there is no significant main effect for change in chronic conditions on change in number of CAMs used. In Model 3, we see that the effect of difference in chronic conditions on difference in number of CAMs used is higher by 0.130 for respondents with some college/AA degree compared to those with a college degree (*b* = `r round(waves23.chron.educ.3$coefficients[20],3)`, SE = `r round(waves23.chron.educ.3.se[20], 3)`, *p* \< 0.050). For those with a graduate/professional degree compared to those with a college degree, the effect of difference in chronic conditions on difference in CAMs is higher by 0.174 (*b* = `r round(waves23.chron.educ.3$coefficients[21],3)`, SE = `r round(waves23.chron.educ.3.se[21],3)`, *p* \< 0.010). Figure \ref{fig:plot-waves23-chron-educ-3} shows the slopes for each level of education. The figure shows that among college graduates, the relationship between difference in chronic conditions and difference in CAMs is negative. College graduates who develop new chronic conditions use fewer CAMs. With the exception of college graduates, it does appear that as education level increases, the relationship between a change in chronic conditions and a change in CAMs becomes more steeply positive, providing some support for *Hypothesis 6b*. However, the impact of education as a moderator is non-linear.  
 
-Looking at differences between waves 1 and 3, we see that difference in chronic conditions only has a significant effect when education is included in the model (See Table \@ref(tab:waves13-chron-mod-educ)). In the full model including education and controls, for each additional chronic condition developed between waves 1 and 3, respondents are expected to adopt 0.114 CAMs (*b* = `r round(waves13.chron.educ.3$coefficients[2],3)`, SE = `r round(waves13.chron.educ.3.se[2],3)`, *p* \< 0.01). Education does not have an effect on difference in total CAMs used between waves 1 and 3. There are significant interaction effects (See Figure \ref{fig:plot-waves13-chron-educ-3}). In this model, those with less than a high school diploma and those with a graduate or professional degree adopt new CAMs at very similar rates when developing new chronic conditions. There are significant differences in adoption of new CAMs in response to new chronic conditions between those with less than a high school diploma and those with a high school diploma or GED, as well as those with a college degree, though the direction of the relationships is unexpected. There is a negative relationship between difference in chronic conditions and difference in number of CAMs used between waves 1 and 3 for both those with a HS diploma or GED (*b* = `r round(waves13.chron.educ.3$coefficients[17],3)`, SE = `r round(waves13.chron.educ.3.se[17],3)`, *p* \< 0.01) and those with a college degree (*b* = `r round(waves13.chron.educ.3$coefficients[19],3)`, SE = `r round(waves13.chron.educ.3.se[19],3)`, *p* \< 0.01), indicating that each of these education groups utilizes fewer CAMs when developing new chronic conditions, while those with less than a high school diploma adopt more.
+Table \ref{tab:waves13-chron-mod-educ} shows results for the wave 1 and 3 comparison. 
+There is no main effect for difference in chronic conditions on difference in CAMs used between waves 1 and 3. Model 3 includes main effects, the interaction term, and controls. Results show significant differences in the magnitude of the effect of difference in chronic conditions on difference in CAMs used for respondents with less than a HS diploma (*b* = `r round(waves13.chron.educ.3$coefficients[18],3)`, SE = `r round(waves13.chron.educ.3.se[18],3)`, *p* \< 0.050) and respondents with a graduate/professional degree compared to those with a college degree (*b* = `r round(waves13.chron.educ.3$coefficients[21],3)`, SE = `r round(waves13.chron.educ.3.se[21],3)`, *p* \< 0.050) compared to respondents with a college degree. A plot of the slopes for each education level does not support *Hypothesis 6b* (See Figure \ref{fig:plot-waves13-chron-educ-3}). Again, the slope for college graduates is negative, indicating that college graduates used fewer CAMs when they developed a new chronic condition. The slopes for respondents with less than a high school diploma and respondents with a graduate or professional degree are the steepest slopes and nearly identical, indicating these groups are the most likely to adopt new CAMs when developing a chronic condition. This suggests a curvilinear relationship between SES and adoption of CAM use in response to a changes in chronic conditions.   
 
 ```{r waves12-chron-mod-educ, echo = FALSE, results='asis'}
 # Create regression results table
@@ -515,7 +662,7 @@ plot_model(waves12.chron.educ.3,
            type = "pred", 
            terms = c("DiffChronCenter", "Education_W1.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           axis.title = c("Difference in Chronic Conditions", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -558,7 +705,7 @@ plot_model(waves23.chron.educ.3,
            type = "pred", 
            terms = c("DiffChronCenter", "Education_W2.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           axis.title = c("Difference in Chronic Conditions", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -601,7 +748,7 @@ plot_model(waves13.chron.educ.3,
            type = "pred", 
            terms = c("DiffChronCenter", "Education_W1.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in Chronic Conditions"),
+           axis.title = c("Difference in Chronic Conditions", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -736,7 +883,7 @@ plot_model(waves12.SRH.educ.3,
            type = "pred", 
            terms = c("DiffSRHCenter", "Education_W1.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           axis.title = c("Difference in SRH", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -780,7 +927,7 @@ plot_model(waves23.SRH.educ.3,
            type = "pred", 
            terms = c("DiffSRHCenter", "Education_W2.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           axis.title = c("Difference in SRH", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -824,7 +971,7 @@ plot_model(waves12.SRH.educ.3,
            type = "pred", 
            terms = c("DiffSRHCenter", "Education_W1.2"), 
            title = "",
-           axis.title = c("Difference in CAMs", "Difference in SRH"),
+           axis.title = c("Difference in SRH", "Difference in CAMs"),
            legend.title = "Education")
 
 ```
@@ -864,3 +1011,5 @@ stargazer(waves13.SRH.educ.1, waves13.SRH.educ.2, waves13.SRH.educ.3,
 ```
 
 # Conclusion 
+
+This chapter examined the relationship between change in health status and change in use of CAM. Results provided some support for *Hypothesis 5*. A change in chronic conditions was positively related to a change in number of CAMs used in some wave comparisons. Results did not support *Hypothesis 6a*. Income does not moderate the relationship between change in health and change in CAM use. Support for *Hypothesis 6b* was mixed. The relationship between difference in chronic conditions and change in CAMs use varied across levels of education; however, this was not always in the expected direction. 

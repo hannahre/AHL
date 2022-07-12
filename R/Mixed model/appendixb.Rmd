@@ -1,14 +1,19 @@
 ---
-title: "SEM and GSEM with all health outcomes"
-author: "Hannah Andrews"
-date: "2/9/2022"
+title: "Ch. 3 Alternative Health Lifestyle as Mediator of the SES-Health Relationship"
 output:
   bookdown::pdf_document2: default
 bibliography: references.bib
 link-citations: true
 header-includes:
-   - \usepackage{rotating, graphicx, longtable}
-   - \extrafloats{200}
+- \usepackage{float}
+- \usepackage{sectsty}
+- \usepackage{paralist}
+- \usepackage{setspace}\spacing{2}
+- \usepackage{fancyhdr}
+- \usepackage{lastpage}
+- \usepackage{dcolumn}
+- \usepackage{rotating, graphicx, longtable}
+- \extrafloats{200}
 ---
 
 ```{r setup, include=FALSE}
@@ -42,9 +47,7 @@ library(semTable)
 library(rstatix)
 library(gtsummary)
 library(forcats)
-library(sjmisc)
 library(haven)
-library(Statamarkdown)
 setwd("C:/Users/hanna/Documents/git/AHL/R/")
 load("waves123.long.rda")
 load("waves123.long.complete.rda")
@@ -110,17 +113,6 @@ path.waves123.wide <- path.waves123.wide %>%
                                 ordered = TRUE))
 # Convert to numeric to be used as ordinal variable
 path.waves123.wide$SRH_W3 <- as.numeric(path.waves123.wide$SRH_W3)
-
-# Convert to numeric
-path.waves123.wide$Sex_W1 <- as.numeric(path.waves123.wide$Sex_W1)
-# Convert to numeric
-path.waves123.wide$Marital_W2 <- as.numeric(path.waves123.wide$Marital_W2)
-# Convert to numeric
-path.waves123.wide$HlthInsurance_W2 <- as.numeric(path.waves123.wide$HlthInsurance_W2)
-# Convert to numeric
-path.waves123.wide$Marital_W3 <- as.numeric(path.waves123.wide$Marital_W3)
-# Convert to numeric 
-path.waves123.wide$HlthInsurance_W3 <- as.numeric(path.waves123.wide$HlthInsurance_W3)
 ```
 
 ```{r listwise-delete-path-data, echo =FALSE}
@@ -142,11 +134,11 @@ knitr::opts_chunk$set(engine.path=list(stata=stataexe))
 
 ```
 
-# Total CAMs
+# Total CAMs 
 
-## Sum of Chronic Conditions
+## Chronic Conditions
 
-### SEM
+### SEM Results
 
 ```{r model-totcams-chron, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -414,7 +406,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
+### GSEM Results
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -610,13 +602,15 @@ totcamchron.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## SRH
 
-### SEM
+## Self-Reported Health 
+
+### SEM Results
 
 ```{r model-totcams-SRH, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -884,7 +878,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
+### GSEM Results
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -1080,13 +1074,14 @@ ietotcamsrh.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Diabetes
+## Diabetes 
 
-### SEM
+### SEM Results 
 
 ```{r model-totcams-diabetes, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -1358,7 +1353,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
+### GSEM Results
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -1557,13 +1552,14 @@ ietotcamsdiabetes.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Chronic Pain
+## Chronic Pain 
 
-### SEM
+### SEM Results
 
 ```{r model-totcams-chronicpain, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -1660,6 +1656,14 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path diagram depicting the relationships between SES, total CAMs used, and chronic pain can be seen in Figure \ref{fig:path-totcams-chronicpain}. Results from the SEM analysis can be found in Tables \ref{tab:de-totcams-chronicpain}, \ref{tab:ie-totcams-chronicpain}, and \ref{tab:fit-totcams-chronicpain}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-totcams-chronicpain} and \ref{tab:ie-gsem-totcams-chronicpain}. Model fit indices indicate overall good model fit (CFI = `r round(fit.totcams.chronicpain[9], 3)`; TLI = `r round(fit.totcams.chronicpain[10], 3)`; RMSEA = `r round(fit.totcams.chronicpain[23],3)`; SRMR = `r round(fit.totcams.chronicpain[29],3)`; \$\\chi\$^2^(`r round(fit.totcams.chronicpain[4], 3)`)=`r round(fit.totcams.chronicpain[3], 3)`, *p* \<.001.).
+
+Income at wave 1 is negatively related to chronic pain at wave 2 in the SEM analysis (*b* = -0.032, 95% CI: -0.058, -0.005, *p* \< 0.050) but not the GSEM analysis. Neither analysis shows a significant association between income at wave 1 and chronic pain at wave 3. Similarly, income is not related to total CAMs used at wave 3. 
+
+Education at wave 1 is negatively related to chronic pain at wave 3 (SEM: *b* = -0.023, 95% CI: -0.041, -0.002, *p* \< 0.050; GSEM: *b* = -0.095, 95% CI: -0.186, -0.004, *p* \< 0.050). Education is positively related to total CAMs used at wave 2 (SEM: *b* = 0.275, 95% CI: 0.197, 0.350, *p* \< 0.001; GSEM: *b* = 0.139, 95% CI: 0.110, 0.168, *p* \< 0.001). Total CAMs at wave 2 is positively related to chronic pain at wave 3 (SEM: *b* = 0.011, 95% CI: 0.001, 0.021, *p* \< 0.050; GSEM: *b* = 0.058, 95% CI: 0.010, 0.106, *p* \< 0.050). Results from the GSEM show a significant positive indirect effect for education on chronic pain via total CAMs (*b* = 0.008, 95% CI: 0.001, 0.015, *p* \< 0.050). The total effect is negative but not significant. (Meaning?) 
+
+Education at wave 1 is positively related to total CAMs used at wave 3 (SEM: *b* = 0.099, 95% CI: 0.027, 0.163, *p* \< 0.010; GSEM: *b* = 0.059, 95% CI: 0.028, 0.090, *p* \< 0.001). Education at wave 1 is negatively related to chronic pain at wave 2 (SEM: *b* = -0.027, 95% CI: -0.045, -0.008, *p* \< 0.010; GSEM: *b* = -0.096, 95% CI: -0.183, -0.009, *p* \< 0.050). Chronic pain at wave 2 is positively related to total CAMs used at wave 3 (GSEM: *b* = 0.070, 95% CI: 0.003, 0.138, *p* \< 0.050). This indicates that individuals with lower education are more likely to experience chronic pain, and those with chronic pain are more likely to utilize CAMs. While the total effect for education on total CAMs via chronic pain is positive and significant (SEM: *b* 0.096, 95% CI: 0.027, 0.163, *p* \< 0.010; GSEM: *b* = 0.052, 95% CI: 0.020, 0.084, *p* \< 0.010), the indirect effect is not significant.
 
 ```{r path-totcams-chronicpain, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Chronic Pain"}
 # Create final plot
@@ -1834,8 +1838,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -2033,13 +2035,12 @@ ietotcamschronicpain.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## High BP
-
-### SEM
+#### High Blood Pressure 
 
 ```{r model-totcams-highbp, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -2136,6 +2137,14 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path diagram depicting the relationships between SES, total CAMs used, and high blood pressure can be seen in Figure \ref{fig:path-totcams-highbp}. Results from the SEM analysis can be found in Tables \ref{tab:de-totcams-highbp}, \ref{tab:ie-totcams-highbp}, and \ref{tab:fit-totcams-highbp}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-totcams-highbp} and \ref{tab:ie-gsem-totcams-highbp}. Model fit indices indicate good model fit (CFI = `r round(fit.totcams.highbp[9], 3)`; TLI = `r round(fit.totcams.highbp[10], 3)`; RMSEA = `r round(fit.totcams.highbp[23],3)`; SRMR = `r round(fit.totcams.highbp[29],3)`; \$\\chi\$^2^(`r round(fit.totcams.highbp[4], 3)`)=`r round(fit.totcams.highbp[3], 3)`, *p* \<.001.).
+
+Income at wave 1 has a negative effect on high blood pressure at wave 2 (SEM: *b* = -0.026, 95% CI: -0.049, -0.002, *p* \< 0.050) but does not have a significant effect on high blood pressure at wave 3. Income also does not have a significant effect on total CAMs used at wave 3. 
+
+Education similarly has a negative effect on high blood pressure at wave 2 (SEM: *b* = -0.024, 95% CI: -0.040, -0.008, *p* \< 0.010; GSEM: *b* = -0.115, 95% CI: -0.210, -0.020, *p* \< 0.050), but not on high blood pressure at wave 3. 
+
+Education is positively related to total CAMs used at wave 3 (SEM: *b* = 0.092, 95% CI: 0.023, 0.156, *p* \< 0.010; GSEM: *b* = 0.056, 95% CI: 0.025, 0.086, *p* \< 0.001). Education at wave 1 is negatively related to high blood pressure at wave 2, as mentioned above. High blood pressure at wave 2 is negatively related to total CAMs used at wave 3 (SEM: *b* = -0.191, 95% CI: -0.354, -0.026, *p* \< 0.050; GSEM: *b* = -0.079, 95% CI: -0.157, 0.000, *p* \< 0.050). This indicates that individuals with higher levels of education are less likely to experience high blood pressure, and individuals with high blood pressure tend to use fewer CAMs. While the total effect of education on total CAMs via high blood pressure is positive and significant (SEM: *b* = 0.096, 95% CI: 0.026, 0.163, *p* \< 0.010; GSEM: *b* = 0.065, 95% CI: 0.032, 0.097, *p* \< 0.001) the indirect effect is not significant. 
 
 ```{r path-totcams-highbp, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and High Blood Pressure"}
 # Create final plot
@@ -2310,8 +2319,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -2509,13 +2516,12 @@ ietotcamshighbp.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Depression
-
-### SEM
+#### Depression/Anxiety
 
 ```{r model-totcams-dep, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -2613,6 +2619,14 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 ```
 
+The path diagram representing relationships between SES, total CAMs used, and depression/anxiety can be seen in Figure \ref{fig:path-totcams-dep}. Results from the SEM analysis can be found in Tables \ref{tab:de-totcams-dep}, \ref{tab:ie-totcams-dep}, and \ref{tab:fit-totcams-dep}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-totcams-depression} and \ref{tab:ie-gsem-totcams-depression}. Model fit indices indicate overall good model fit (CFI = `r round(fit.totcams.dep[9], 3)`; TLI = `r round(fit.totcams.dep[10], 3)`; RMSEA = `r round(fit.totcams.dep[23],3)`; SRMR = `r round(fit.totcams.dep[29],3)`; \$\\chi\$^2^(`r round(fit.totcams.dep[4], 3)`)=`r round(fit.totcams.dep[3], 3)`, *p* \<.001.).
+
+Income at wave 1 has a significant negative effect on depression/anxiety at wave 2 (SEM: *b* = -0.024, 95% CI: -0.047, -0.003, *p* \< 0.050; GSEM: *b* -0.148, 95% CI: -0.292, -0.005, *p* \< 0.050); however, results from the SEM and GSEM analyses show no effect for income on depression/anxiety at wave 3. Results also show no effect for income at wave 1 on total CAMs used at waves 2 or 3. 
+
+Education at wave 1 is negatively associated with depression and anxiety at wave 3 (SEM: *b* = -0.018, 95% CI: -0.034, -0.004, *p* \< 0.050; GSEM: *b* = -0.123, 95% CI: -0.237, -0.009, *p* \< 0.050). Education at wave 1 is positively related to total CAMs used at wave 2 (SEM: *b* = 0.275, 95% CI: 0.197, 0.350, *p* \< 0.001; GSEM: *b* = 0.139, 95% CI: 0.110, 0.168, *p* \< 0.001). Total CAMs used at wave 2 has a positive effect on depression/anxiety at wave 3 (SEM: *b* = 0.009, 95% CI: 0.001, 0.017, *p* \< 0.050; GSEM: *b* = 0.065, 95% CI: 0.008, 0.123, *p* \< 0.050). This indicates that individuals with lower levels of education report using fewer total CAMs, and that individuals who use more CAMs are more likely to report experiencing depression and anxiety. GSEM results show a significant positive indirect effect for the effect of education on depression and anxiety mediated by total CAMs used (*b* = 0.009, 95% CI: 0.009, 0.017, *p* \< 0.050) and a negative total effect (*b* = -0.114, 95% CI: -0.227, -0.001, *p* \< 0.050). 
+
+Results do not provide evidence that depression and anxiety mediate the relationship between education and total CAMs used. While education has a positive direct effect on total CAMs used at wave 3 (SEM: *b* = 0.096, 95% CI: 0.027, 0.162, *p* \< 0.010; GSEM: *b* = 0.057, 95% CI: 0.026, 0.088, *p* \< 0.001), education at wave 1 does not have a significant effect on depression and anxiety at wave 2. 
+
 ```{r path-totcams-dep, echo = FALSE, fig.cap="Path Model: SES, Total CAMs, and Depression"}
 # Create final plot
 plot(path_dia5)
@@ -2624,8 +2638,8 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   filter(op == "~") %>%  
   select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
   as.data.frame() %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "Depression_W2", "Depression Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Depression_W3", "Depression Wave 3")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "DepAnx_W2", "Depression/Anxiety Wave 2")) %>%
+  mutate(Indicator = replace(Indicator, Indicator == "DepAnx_W3", "Depression/Anxiety Wave 3")) %>%
   mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
   mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
   mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
@@ -2658,8 +2672,8 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
   mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
   mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Depression_W2", "Depression Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Depression_W3", "Depression Wave 3")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "DepAnx_W2", "Depression/Anxiety Wave 2")) %>%
+  mutate(Outcome = replace(Outcome, Outcome == "DepAnx_W3", "Depression/Anxiety Wave 3")) %>%
   mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
   mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
   mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
@@ -2699,7 +2713,7 @@ parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %
   dplyr::relocate("Significance Level", .after = "p-value") %>% 
   knitr::kable(digits = 3, 
                booktabs=TRUE, 
-               caption="Direct Effects: SES, Total CAMs, and Depression",
+               caption="Direct Effects: SES, Total CAMs, and Depression/Anxiety",
                escape = F, 
                col.names = c("Outcome", "Indicator", "\\textit{b}", "Lower CI", 
                              "Upper CI", "\\textit{p}-value", " ", "$\\beta$")) %>%
@@ -2739,14 +2753,14 @@ tab.IE.totCams.dep <- tab.IE.totCams.dep %>%
 
 ```{r ie-totcams-dep, echo=FALSE}
 tab.IE.totCams.dep %>% 
-  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Total CAMs \U2192 Depression")) %>% 
+  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Total CAMs \U2192 Depression/Anxiety")) %>% 
   add_significance(p.col = "p-value",
                    output.col = "Significance Level",
                    cutpoints = c(0, 0.001, 0.01, 0.05, 1),
@@ -2754,7 +2768,7 @@ tab.IE.totCams.dep %>%
   dplyr::relocate("Significance Level", .after = "p-value") %>%
   knitr::kable(digits = 3, 
                booktabs=TRUE, 
-               caption="Indirect and Total Effects: SES, Total CAMs, and Depression",                
+               caption="Indirect and Total Effects: SES, Total CAMs, and Depression/Anxiety",                
                escape = F, 
                col.names = c("Path", "\\textit{b}", "Lower CI", 
                              "Upper CI", "\\textit{p}-value", " ", "$\\beta$")) %>%
@@ -2778,7 +2792,7 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   t() %>%  
   knitr::kable(digits = 3, 
                booktabs=TRUE, 
-               caption="Fit Statistics: SES, Depression, and Total CAMs Path Model",                
+               caption="Fit Statistics: SES, Depression/Anxiety, and Total CAMs Path Model",                
                escape = F,
                col.names=c("$\\chi^2$","df","\\textit{p}-value", "CFI", 
                            "TLI", "RMSEA", "SRMR")) %>%  
@@ -2786,8 +2800,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -2963,14 +2975,14 @@ rownames(ietotcamsdepression.table) <- NULL
 
 ```{r ie-gsem-totcams-depression, echo = FALSE}
 ietotcamsdepression.table %>% 
-  mutate(Path = replace(Path, Path == "_nl_1", "Indirect Effect: Income \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "_nl_2", "Total Effect: Income \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "_nl_3", "Indirect Effect: Income \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_4", "Total Effect: Income \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_5", "Indirect Effect: Education \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "_nl_6", "Total Effect: Education \U2192 Depression \U2192 Total CAMs")) %>%
-  mutate(Path = replace(Path, Path == "_nl_7", "Indirect Effect: Education \U2192 Total CAMs \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_8", "Total Effect: Education \U2192 Total CAMs \U2192 Depression")) %>%
+  mutate(Path = replace(Path, Path == "_nl_1", "Indirect Effect: Income \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "_nl_2", "Total Effect: Income \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "_nl_3", "Indirect Effect: Income \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_4", "Total Effect: Income \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_5", "Indirect Effect: Education \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "_nl_6", "Total Effect: Education \U2192 Depression/Anxiety \U2192 Total CAMs")) %>%
+  mutate(Path = replace(Path, Path == "_nl_7", "Indirect Effect: Education \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_8", "Total Effect: Education \U2192 Total CAMs \U2192 Depression/Anxiety")) %>%
   add_significance(p.col = "p-value",
                    output.col = "Significance Level",
                    cutpoints = c(0, 0.001, 0.01, 0.05, 1),
@@ -2980,7 +2992,7 @@ ietotcamsdepression.table %>%
                booktabs=TRUE, 
                escape = F, 
                col.names = c("Path", "\\textit{b}", "se", "\\textit{p}-value"," ", "Lower CI", "Upper CI"),
-               caption="GSEM Indirect and Total Effects: SES, Total CAMs, and Depression") %>%
+               caption="GSEM Indirect and Total Effects: SES, Total CAMs, and Depression/Anxiety") %>%
   kable_classic(html_font = "CMU Serif") %>%
   kable_styling(latex_options = c("striped")) %>% 
   footnote(general = c("\\\\textit{b} = unstandardized coefficient"),
@@ -2988,15 +3000,16 @@ ietotcamsdepression.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-# Mind body
+### Mind-Body Medicines 
 
-## Sum of Chronic Conditions
+In the following section I will present results from models testing whether use of mind-body medicines mediates the relationship between SES and several health outcomes (sum of chronic conditions, self-reported health, chronic pain, and depression/anxiety). Models also test whether health condition mediates the relationship between SES and use of mind-body medicine. 
 
-### SEM
+#### Chronic Conditions 
 
 ```{r model-mb-chron, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -3094,6 +3107,14 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The model testing the relationships between SES, use of mind-body medicines, and health can be seen in Figure \ref{fig:path-mb-chron}. Results from the SEM analysis can be found in Tables \ref{tab:de-mb-chron}, \ref{tab:ie-mb-chron}, and \ref{tab:fit-mb-chron}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-mindbody-chron} and \ref{tab:ie-gsem-mindbody-chron}. Most goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.mb.chron[4],3)`) = `r round(fit.mb.chron[3],3)`, *p* \< 0.001; CFI = `r round(fit.mb.chron[9], 3)`; TLI = `r round(fit.mb.chron[10],3)`; RMSEA = `r round(fit.mb.chron[23],3)`, SRMR = `r round(fit.mb.chron[29],3)`). 
+
+Results do not provide evidence for mind-body medicine use as a mediator of the relationship between income and health, or for health as a mediator for the relationship between income and mind-body medicine use. GSEM results show that income at wave 1 has a significant negative direct effect on sum of chronic conditions at wave 3 (GSEM: *b* = -0.060, 95% CI: -0.089, -0.032, *p* \< 0.001); however, income at wave 1 is not significantly related to use of mind-body medicines at wave 2. Logged income at wave 1 does not have a significant direct effect on mind-body medicine use at wave 3. 
+
+Results do not provide evidence for mind-body medicine as a mediator of the relationship between education and sum of chronic conditions. Education has a negative direct effect on sum of chronic conditions at wave 3 (SEM: *b* = `r round(est.mb.chron$est[4], 3)`, 95% CI: `r round(est.mb.chron$ci.lower[4],3)`, `r round(est.mb.chron$ci.upper[4],3)`, *p* \< 0.01; GSEM: *b* -0.034, 95% CI: -0.058, -0.011, *p* \< 0.010) and a significant positive relationship with use of mind-body medicines at wave 2 (SEM: *b* = 0.069, 95% CI: 0.051, 0.085, *p* \< 0.001; GSEM: *b* = 0.340, 95% CI: 0.247, 0.432, *p* \< 0.001). However, mind-body medicine is not significantly related to sum of chronic conditions.  
+
+Education at wave 1 has a positive direct effect on use of mind-body medicines at wave 3 (*b* = `r round(est.mb.chron$est[3],3)`, 95% CI: `r round(est.mb.chron$ci.lower[3],3)`, `r round(est.mb.chron$ci.upper[3],3)`, *p* \< 0.001; GSEM: *b* = 0.230, 95% CI: 0.128, 0.332, *p* \< 0.001) but this relationship is not mediated by sum of chronic conditions at wave 2. While education at wave 1 has a significant negative effect on sum of chronic conditions at wave 2 (SEM: *b* = -0.161, 95% CI: -0.264, -0.057, *p* \< 0.010; GSEM: *b* = -0.046, 95% CI: -0.073, -0.019, *p* \< 0.001), sum of chronic conditions at wave 2 does not predict use of mind-body medicines at wave 3. 
 
 ```{r path-mb-chron, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicine, and Chronic Conditions"}
 # Create final plot
@@ -3261,8 +3282,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -3458,13 +3477,12 @@ mindbodychron.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## SRH
-
-### SEM
+#### Self-Reported Health 
 
 ```{r model-mb-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -3567,6 +3585,14 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+Next the relationships between SES, use of mind-body medicines, and self-reported health were examined. The path diagram can be seen in Figure \ref{fig:path-mb-srh}. Results from the SEM analysis can be found in Tables \ref{tab:de-mb-srh}, \ref{tab:ie-mb-srh}, and \ref{tab:fit-mb-srh}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-mb-srh} and \ref{tab:ie-gsem-mb-srh}. Goodness of fit indices indicate poor model fit (\$\\chi\$^2^(`r round(fit.mb.SRH[4],3)`) = `r round(fit.mb.SRH[3],3)`, *p* \< 0.001; CFI = `r round(fit.mb.SRH[9], 3)`; TLI = `r round(fit.mb.SRH[10],3)`; RMSEA = `r round(fit.mb.SRH[23],3)`, SRMR = `r round(fit.mb.SRH[29],3)`. 
+
+SEM and GSEM analyses do not provide evidence for mind-body medicine and self-reported health as mediators. Logged income at wave 1 has a positive direct effect on SRH at wave 3 (*b* = `r round(est.mb.SRH$est[2], 3)`, 95% CI: `r round(est.mb.SRH$ci.lower[2],3)`, `r round(est.mb.SRH$ci.upper[2],3)`, *p* \< 0.001; GSEM: *b* = 0.070, 95% CI: 0.025, 0.115, *p* \< 0.010) but this effect is not mediated by use of mind-body medicine at wave 2. Logged income at wave 1 does not have a direct effect on use of mind-body medicines at wave 3. 
+
+Education has a positive direct effect on SRH at wave 3 (*b* = `r round(est.mb.SRH$est[4], 3)`, 95% CI: `r round(est.mb.SRH$ci.lower[4],3)`, `r round(est.mb.SRH$ci.upper[4],3)`, *p* \< 0.001; GSEM: *b* = 0.070, 95% CI: 0.025, 0.115, *p* \< 0.010), but the relationship is not mediated by use of mind-body medicines at wave 2.  While education has a positive direct effect on mind-body medicine use at wave 2 (SEM: *b* 0.069, 95% CI: 0.051, 0.085, *p* \< 0.001; GSEM: *b* = 0.340, 95% CI: 0.247, 0.432, *p* \< 0.001), mind-body medicine does not significantly predict sum of chronic conditions. 
+
+Education has a positive direct effect on use of mind-body medicines at wave 3 (*b* = `r round(est.mb.chron$est[3],3)`, 95% CI: `r round(est.mb.chron$ci.lower[3],3)`, `r round(est.mb.chron$ci.upper[3],3)`, *p* \< 0.01; GSEM: *b* = 0.235, 95% CI: 0.131, 0.339, *p* \< 0.001) but the relationship is not mediated by SRH at wave 2. While education has a positive direct effect on SRH at wave 2 (SEM: *b* = 0.163, 95% CI: 0.126, 0.200, *p* \< 0.001; GSEM: *b* = 0.177, 95% CI: 0.133, 0.220, *p* \< 0.001), SRH at wave 2 does not significantly predict use of mind-body medicines at wave 3. 
 
 ```{r path-mb-srh, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Self-Reported Health"}
 # Create final plot
@@ -3735,8 +3761,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -3932,13 +3956,12 @@ iembsrh.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape() 
 
 ```
 
-## Chronic Pain 
-
-### SEM
+#### Chronic Pain 
 
 ```{r model-mb-chronicpain, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -4035,6 +4058,16 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path diagram depicting the relationships tested between SES, mind-body medicines, and chronic pain can be found in Figure \ref{fig:path-mb-chronicpain}. Results from the SEM analysis can be found in Tables \ref{tab:de-mb-chronicpain}, \ref{tab:ie-mb-chronicpain}, and \ref{tab:fit-mb-chronicpain}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-mb-chronicpain} and \ref{tab:ie-gsem-mb-chronicpain}. Goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.mb.chronicpain[4],3)`) = `r round(fit.mb.chronicpain[3],3)`, *p* \< 0.001; CFI = `r round(fit.mb.chronicpain[9], 3)`; TLI = `r round(fit.mb.chronicpain[10],3)`; RMSEA = `r round(fit.mb.chronicpain[23],3)`, SRMR = `r round(fit.mb.chronicpain[29],3)`.
+
+Results do not support *Hypotheses 1a and 4a* given the lack of association between income and use of mind-body medicines. Results from SEM analyses show some support for *Hypothesis 2a*. Income at wave 1 is negatively associated with chronic pain at wave 2 (SEM: *b* = -0.032, 95% CI: -0.058, -0.005, *p* \< 0.050), but is not related to chronic pain at wave 3. *Hypothesis 3a* is thus not supported, given the lack of association between income and the health outcome chronic pain.
+
+Results show support for *Hypothesis 1b*. Education at wave 1 is positively associated with use of mind-body medicine at wave 3 (SEM: *b* = 0.039, 95% CI: 0.023, 0.056, *p* \< 0.001;  GSEM: *b* = 0.228, 95% CI: 0.126, 0.330, *p* \< 0.001). Results do not show support for *Hypothesis 4b*. Education is negatively related to chronic pain at wave 2 (SEM: *b* = -0.027, 95% CI: -0.045, -0.008, *p* \< 0.010; GSEM: *b* = -0.096, 95% CI: -0.183, -0.009, *p* \< 0.050). Chronic pain, however, does not predict use of mind-body medicines at wave 3. 
+
+Results from SEM analyses show support for *Hypothesis 2b*. Education at wave 1 is negatively related to chronic pain at wave 3 (SEM: *b* = -0.021, 95% CI: -0.039, -0.001, *p* \< 0.050). GSEM analyses show a significant negative relationship between education at wave 1 and chronic pain at wave 2 (*b* = -0.096, 95% CI: -0.183, -0.009, *p* \< 0.050) but not chronic pain at wave 3. 
+
+Results from SEM and GSEM analyses do not show support for *Hypothesis 3b*. While education is positively associated with use of mind-body medicines at wave 2 (SEM: *b* = 0.069, 95% CI: 0.052, 0.086, *p* \< 0.001; GSEM: *b* = 0.341, 95% CI: 0.247, 0.432, *p* \< 0.001), mind-body medicine does not significantly predict chronic pain at wave 3. Thus mind-body medicine is not a mediator for the relationship between education and chronic pain. 
 
 ```{r path-mb-chronicpain, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Chronic Pain"}
 # Create final plot
@@ -4209,8 +4242,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -4408,13 +4439,12 @@ iemindbodychronicpain.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Depression
-
-### SEM 
+#### Depression and Anxiety
 
 ```{r model-mb-dep, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -4510,6 +4540,12 @@ path_dia4 <- change_node_label(path_dia3,
 
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 ```
+
+The path diagram depicting the structural model testing the relationships between SES, use of mind-body medicines, and depression/anxiety can be seen in Figure \ref{fig:path-mb-dep}. Results from the SEM analysis can be found in Tables \ref{tab:de-mb-dep}, \ref{tab:ie-mb-dep}, and \ref{tab:fit-mb-dep}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-mb-depression} and \ref{tab:ie-gsem-mb-depression}. Goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.mb.dep[4],3)`) = `r round(fit.mb.dep[3],3)`, *p* \< 0.001; CFI = `r round(fit.mb.dep[9], 3)`; TLI = `r round(fit.mb.dep[10],3)`; RMSEA = `r round(fit.mb.dep[23],3)`, SRMR = `r round(fit.mb.dep[29],3)`.
+
+Results do not provide support for *Hypothesis 1a*. Income does not predict use of mind-body medicines. Results do show some support for *Hypothesis 2a*. Income at wave 1 is negatively associated with depression/anxiety at wave 2 (SEM: *b* = -0.024, 95% CI: -0.047, -0.003, *p* \< 0.050; GSEM: *b* = -0.148, 95% CI: -0.292, -0.005, *p* \< 0.050), but not depression/anxiety at wave 3. Results do not show support for *Hypothesis 3a* given that income at wave 1 is not associated with use of mind-body medicines at wave 2 or depression/anxiety at wave 3. Results do not show support for *Hypothesis 4a* given that income is not associated with use of mind-body medicines at wave 3. 
+
+Results provide support for *Hypothesis 1b*. Education at wave 1 is positively related to use of mind-body medicines at wave 3 (SEM: *b* = 0.039, 95% CI: 0.022, 0.056, *p* \< 0.001; GSEM: *b* = 0.227, 95% CI: 0.125, 0.329, *p* \< 0.001). Results also show support for *Hypothesis 2b*. Education at wave 2 has a significant negative effect on depression/anxiety at wave 3 (SEM: *b* = -0.018, 95% CI: -0.034, -0.003, *p* \< 0.050; GSEM: *b* = -0.115, 95% CI: -0.229, -0.002, *p* \< 0.050). Results do not show support for *Hypothesis 3b*. While education at wave 1 is negatively related to depression/anxiety at wave 3, and education at wave 1 is positively associated with use of mind-body medicines at wave 2 (SEM: *b* = 0.069, 95% CI: 0.051, 0.085, *p* \< 0.001; GSEM: *b* = 0.340, 95% CI: 0.247, 0.432, *p* \< 0.001), use of mind-body medicines at wave 2 is not significantly associated with depression/anxiety at wave 3. Similarly, results do not show support for *Hypothesis 4b*. Education at wave 1 is not significantly related to depression/anxiety at wave 2, and depression/anxiety at wave 2 is not significantly related to use of mind-body medicines at wave 3. 
 
 ```{r path-mb-dep, echo = FALSE, fig.cap="Path Model: SES, Mind-Body Medicines, and Depression/Anxiety"}
 # Create final plot
@@ -4685,8 +4721,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM 
-
 ```{stata, include=FALSE}
 use path.dta, clear
 
@@ -4858,14 +4892,14 @@ rownames(iemindbodydepression.table) <- NULL
 
 ```{r ie-gsem-mb-depression, echo = FALSE}
 iemindbodydepression.table %>% 
-  mutate(Path = replace(Path, Path == "_nl_1", "Indirect Effect: Income \U2192 Depression \U2192 Mind-Body Medicine")) %>%
-  mutate(Path = replace(Path, Path == "_nl_2", "Total Effect: Income \U2192 Depression \U2192 Mind-Body Medicine")) %>%
-  mutate(Path = replace(Path, Path == "_nl_3", "Indirect Effect: Income \U2192 Mind-Body Medicine \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_4", "Total Effect: Income \U2192 Mind-Body Medicine \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_5", "Indirect Effect: Education \U2192 Depression \U2192 Mind-Body Medicine")) %>%
-  mutate(Path = replace(Path, Path == "_nl_6", "Total Effect: Education \U2192 Depression \U2192 Mind-Body Medicine")) %>%
-  mutate(Path = replace(Path, Path == "_nl_7", "Indirect Effect: Education \U2192 Mind-Body Medicine \U2192 Depression")) %>%
-  mutate(Path = replace(Path, Path == "_nl_8", "Total Effect: Education \U2192 Mind-Body Medicine \U2192 Depression")) %>%
+  mutate(Path = replace(Path, Path == "_nl_1", "Indirect Effect: Income \U2192 Depression/Anxiety \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "_nl_2", "Total Effect: Income \U2192 Depression/Anxiety \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "_nl_3", "Indirect Effect: Income \U2192 Mind-Body Medicine \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_4", "Total Effect: Income \U2192 Mind-Body Medicine \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_5", "Indirect Effect: Education \U2192 Depression/Anxiety \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "_nl_6", "Total Effect: Education \U2192 Depression/Anxiety \U2192 Mind-Body Medicine")) %>%
+  mutate(Path = replace(Path, Path == "_nl_7", "Indirect Effect: Education \U2192 Mind-Body Medicine \U2192 Depression/Anxiety")) %>%
+  mutate(Path = replace(Path, Path == "_nl_8", "Total Effect: Education \U2192 Mind-Body Medicine \U2192 Depression/Anxiety")) %>%
   add_significance(p.col = "p-value",
                    output.col = "Significance Level",
                    cutpoints = c(0, 0.001, 0.01, 0.05, 1),
@@ -4875,7 +4909,7 @@ iemindbodydepression.table %>%
                booktabs=TRUE, 
                escape = F, 
                col.names = c("Path", "\\textit{b}", "se", "\\textit{p}-value"," ", "Lower CI", "Upper CI"),
-               caption="GSEM Indirect and Total Effects: SES, Mind-Body Medicines, and Depression") %>%
+               caption="GSEM Indirect and Total Effects: SES, Mind-Body Medicines, and Depression/Anxiety") %>%
   kable_classic(html_font = "CMU Serif") %>%
   kable_styling(latex_options = c("striped")) %>% 
   footnote(general = c("\\\\textit{b} = unstandardized coefficient"),
@@ -4883,15 +4917,17 @@ iemindbodydepression.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-# Alt Med
+### Alternative Medical Systems
 
-## Sum of Chronic Conditions 
+In the following section I review results from path analyses testing simultaneously testing whether use of alternative medical systems mediates the relationship between SES and several health outcomes (sum of chronic conditions, SRH, high blood pressure, diabetes, chronic pain, depression) and whether health condition mediates the relationship between SES and use of alternative medical systems. 
 
-### SEM 
+#### Chronic Conditions
+
 
 ```{r model-altmed-chron, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -4993,6 +5029,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+The path diagram depicting the model testing relationships between SES, use of alternative medical systems, and health can be seen in Figure \ref{fig:path-altmed-chron}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-chron}, \ref{tab:ie-altmed-chron}, and \ref{tab:fit-altmed-chron}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-chron} and \ref{tab:ie-gsem-altmed-chron}. Most goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.altmed.chron[4],3)`) = `r round(fit.altmed.chron[3],3)`, *p* \< 0.001; CFI = `r round(fit.altmed.chron[9], 3)`; TLI = `r round(fit.altmed.chron[10],3)`; RMSEA = `r round(fit.altmed.chron[23],3)`, SRMR = `r round(fit.altmed.chron[29],3)`).
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of alternative medical systems. Results show some support for *Hypothesis 2a*. Income at wave 1 is negatively related to sum of chronic conditions at wave 2 (SEM: -0.228, 95% CI: -0.358, -0.063, *p* \< 0.010; GSEM: *b* = -0.070, 95% CI: -0.104, -0.035, *p* \< 0.001) and sum of chronic conditions at wave 3 (GSEM: *b* = -0.060, 95% CI: -0.088, -0.032, *p* \< 0.001). Results do not show support for *Hypothesis 3a*. As stated above, income at wave 1 significantly predicts sum of chronic conditions at wave 3; however, income does not significantly predict use of alternative medical systems. Therefore, use of alternative medical systems does not mediate the relationship between income and sum of chronic conditions. Results do not show support for *Hypothesis 4a* given the lack of association between income and use of alternative medical systems. 
+
+Results show support for *Hypothesis 1b*. Education at wave 1 is positively associated with use of alternative medical systems at wave 3 (SEM: *b* = 0.013, 95% CI: 0.024, 0.029, *p* \< 0.050; GSEM: *b* = 0.157, 95% CI: 0.011, 0.303, *p* \< 0.050). Results also show support for *Hypothesis 2b*. Education at wave 1 is negatively associated with sum of chronic conditions at wave 3 (SEM: -0.168, 95% CI: -0.269, -0.060, *p* \< 0.010; GSEM: *b* = -0.035, 95% CI: -0.058, -0.012, *p* \< 0.010). Results support *Hypothesis 3b*. As stated, education at wave 1 is negatively associated with sum of chronic conditions at wave 3. Education at wave 1 is positively associated with use of alternative medical systems at wave 2 (SEM: *b* = 0.027, 95% CI: 0.013, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI: 0.142, 0.407, *p* \< 0.001). In turn, sum of chronic conditions at wave 3 is positively associated with use of alternative medical systems at wave 2 (GSEM: *b* = 0.109, 95% CI: 0.035, 0.183, *p* \< 0.010). GSEM analyses show a significant, positive indirect effect for education on chronic conditions mediated by use of alternative medical systems (*b* = 0.030, 95% CI: 0.005, 0.055, *p* \< 0.050), though the total effect is not significant. Results do not support *Hypothesis 4b*. As stated above, education at wave 1 is positively associate with use of alternative medical systems at wave 3. Education at wave 1 is negatively associated with sum of chronic conditions at wave 2 (SEM: *b* = -0.140, 95% CI: -0.245, -0.056, *p* \< 0.010; GSEM: *b* = -0.046, 95% CI: -0.073, -0.019, *p* \< 0.001). Sum of chronic conditions at wave 2 is not significantly related to use of alternative medical systems at wave 3. Therefore, the relationship between education and use of alternative medical systems is not mediated by chronic conditions.
 
 ```{r path-altmed-chron, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Chronic Conditions"}
 # Create final plot
@@ -5162,8 +5204,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM 
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -5357,13 +5397,12 @@ altmedchron.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## SRH
-
-### SEM
+#### Self-Reported Health
 
 ```{r model-altmed-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -5466,6 +5505,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+The next model investigates the relationship between SES, use of alternative medicines, and sum of chronic conditions. The path model can be seen in Figure \ref{fig:path-altmed-srh}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-srh}, \ref{tab:ie-altmed-srh}, and \ref{tab:fit-altmed-srh}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-srh} and \ref{tab:ie-gsem-altmed-srh}. Most goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.altmed.SRH[4],3)`) = `r round(fit.altmed.SRH[3],3)`, *p* \< 0.001; CFI = `r round(fit.altmed.SRH[9], 3)`; TLI = `r round(fit.altmed.SRH[10],3)`; RMSEA = `r round(fit.altmed.SRH[23],3)`, SRMR = `r round(fit.altmed.SRH[29],3)`). 
+
+Results do not support *Hypothesis 1a*. Income does not predict use of alternative medical systems at waves 2 or 3. Results support *Hypothesis 2a*. Income at wave 1 is positively associated with SRH at wave 3 (SEM: *b* = 0.105, 95% CI: 0.058, 0.153, *p* \< 0.001; GSEM: *b* = 0.105, 95% CI: 0.047, 0.164, *p* \< 0.011) and at wave 3 (SEM: *b* = 0.138, 95% CI: 0.094, 0.190, *p* \< 0.001; GSEM: *b* = 0.171, 95% CI: 0.113, 0.230, *p* \< 0.001). Results do not support *Hypothesis 3a*. While income is significantly related SRH at wave 3, the relationship is not mediated by use of alternative medical systems. Results do not support *Hypothesis 4a* given the lack of association between income and use of alternative medical systems. 
+
+Results support *Hypothesis 1b*. Education is positively associated with use of alternative medical systems at waves 2 (SEM: *b* = 0.027, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI 0.142, 0.407, *p* \< 0.001) and 3 (SEM: *b* = 0.013, 95% CI: 0.002, 0.024, *p* \< 0.050; GSEM: *b* = 0.158, 95% CI: 0.010, 0.305, *p* \< 0.050). Results also support *Hypothesis 2b*. Education at wave 1 is positively associated with SRH at waves 2 (SEM: *b* = 0.163, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.177, 95% CI: 0.133, 0.220, *p* \< 0.001)and 3 (SEM: *b* = 0.062, 95% CI: 0.025, 0.093, *p* \< 0.001; GSEM: *b* = 0.069, 95% CI: 0.025, 0.114). Results do not support *Hypothesis 3b*. Use of alternative medical systems does not mediate the relationship between education and SRH. Results do not support *Hypothesis 4b*. SRH does not mediate the relationship between education and use of alternative medical systems. 
 
 ```{r path-altmed-srh, echo = FALSE, fig.cap="Path Model: SES, Alternative Medical Systems, and Self-Reported Health"}
 # Create final plot
@@ -5634,8 +5679,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -5831,13 +5874,12 @@ iealtmedsrh.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape() 
 
 ```
 
-## Blood Pressure 
-
-### SEM
+#### High Blood Pressure
 
 ```{r model-altmed-highbp, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -5934,6 +5976,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path model representing relationships between SES, use of alternative medical systems, and high blood pressure can be seen in Figure \ref{fig:path-altmed-highbp}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-srh}, \ref{tab:ie-altmed-srh}, and \ref{tab:fit-altmed-srh}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-srh} and \ref{tab:ie-gsem-altmed-srh}. Goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.altmed.highbp[4],3)`) = `r round(fit.altmed.highbp[3],3)`, *p* \< 0.001; CFI = `r round(fit.altmed.highbp[9], 3)`; TLI = `r round(fit.altmed.highbp[10],3)`; RMSEA = `r round(fit.altmed.highbp[23],3)`, SRMR = `r round(fit.altmed.highbp[29],3)`.
+
+Results do not support *Hypothesis 1a*. Income does not significantly predict use of alternative medical systems. Results provide weak support for *Hypothesis 2a*. Income at wave 1 is negatively associated with having high blood pressure at wave 2 in the SEM analysis (SEM: *b* = -0.026, 95% CI: -0.049, -0.002, *p* \< 0.050). Given the lack of association between income and high blood pressure, results do not support *Hypothesis 3a*. Given the lack of association between income and use of alternative medical systems, results do not support *Hypothesis 4a*. 
+
+Results support *Hypothesis 1b*. Education is positively associated with use of alternative medical systems at wave 2 (SEM: *b* = 0.027, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI: 0.142, 0.407, *p* \< 0.001) and wave 3 (GSEM: *b* = 0.148, 95% CI: 0.002, 0.295, *p* \< 0.050). Results support *Hypothesis 2b*. Education at wave 1 is negatively related to having high blood pressure at wave 2 (SEM: *b* = -0.024, 95% CI: -0.040, -0.008, *p* \< 0.010; GSEM: *b* = -0.115, 95% CI: -0.210, -0.021, *p* \< 0.050). Results do not support *Hypothesis 3b*. Education at wave 1 is not significantly related to high blood pressure at wave 3, and use of alternative medical systems is not significantly related to high blood pressure. Results do not support *Hypothesis 4b*. As stated above, education is positively associated with use of alternative medical systems at wave 3. Education is also negatively related to high blood pressure at wave 2. In the GSEM analysis, high blood pressure at wave 2 is negatively related to use of alternative medical systems at wave 3 (GSEM: *b* = -0.469, 95% CI: -0.872, -0.651, *p* \< 0.050). Further analyses show that while the total effect of education on alternative medical systems mediated by high blood pressure is statistically significant (GSEM: *b* = 0.202, 95% CI: 0.044, 0.361, *p* \< 0.050). 
 
 ```{r path-altmed-highbp, echo = FALSE, fig.cap="Path Model: SES, Alternative Medical Systems, and High Blood Pressure"}
 # Create final plot
@@ -6108,8 +6156,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -6307,13 +6353,12 @@ iealtmedhighbp.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Diabetes
-
-### SEM
+#### Diabetes 
 
 ```{r model-altmed-diabetes, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -6410,6 +6455,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+A path model representing the relationships between SES, use of alternative medical systems, and diabetes can be found in Figure \ref{fig:path-altmed-diabetes}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-diabetes}, \ref{tab:ie-altmed-diabetes}, and \ref{tab:fit-altmed-diabetes}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-diabetes} and \ref{tab:ie-gsem-altmed-diabetes}. Model fit indices indicate good model fit (CFI = `r round(fit.altmed.diabetes[9], 3)`; TLI = `r round(fit.altmed.diabetes[10], 3)`; RMSEA = `r round(fit.altmed.diabetes[23],3)`; SRMR = `r round(fit.altmed.diabetes[29],3)`; \$\\chi\$^2^(`r round(fit.altmed.diabetes[4], 3)`)=`r round(fit.altmed.diabetes[3], 3)`, *p* \<.001.).
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of alternative medical systems. Results also do not support *Hypothesis 2a*. Income is not significantly related to diabetes. Lack of association also indicates lack of support for *Hypotheses 3a* and *4a*. 
+
+Results support *Hypothesis 1b*. Education is positively related to use of alternative medical systems at wave 2 (SEM: *b* = 0.027, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI: 0.142, 0.407, *p* \< 0.001) and wave 3 (SEM: *b* = 0.012, 95% CI: 0.001, 0.023, *p* \< 0.050; GSEM: *b* = 0.153, 95% CI: 0.007, 0.300, *p* \< 0.050). Results support *Hypothesis 2b*. Education at wave 1 is negatively associated with diabetes at wave 3 (SEM: -0.016, 95% CI: -0.025, -0.003, *p* \< 0.010; GSEM: *b* = -0.206, 95% CI: -0.360, -0.051, *p* \< 0.010). Results do not support *Hypothesis 3b*. As stated, education is negatively associated with diabetes at wave 3. Education is positively associated with use of alternative medical systems at wave 2. Use of alternative medical systems at wave 2 does not predict diabetes diagnosis at wave 3. Results do not support *Hypothesis 4b*. While education is significantly related to use of alternative medical systems at wave 3, this relationship is not mediated by diabetes diagnosis. 
 
 ```{r path-altmed-diabetes, echo = FALSE, fig.cap="Path Model: SES, Alternative Medical Systems, and Diabetes"}
 # Create final plot
@@ -6584,8 +6635,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM 
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -6784,13 +6833,13 @@ iealtmeddiabetes.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Chronic Pain 
 
-### SEM
+#### Chronic Pain 
 
 ```{r model-altmed-chronicpain, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -6887,6 +6936,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path diagram depicting the relationships between SES, use of alternative medical systems, and chronic pain can be seen in Figure \ref{fig:path-altmed-chronicpain}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-chronicpain}, \ref{tab:ie-altmed-chronicpain}, and \ref{tab:fit-altmed-chronicpain}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-chronicpain} and \ref{tab:ie-gsem-altmed-chronicpain}. Most model fit indices indicate overall good model fit (CFI = `r round(fit.altmed.chronicpain[9], 3)`; TLI = `r round(fit.altmed.chronicpain[10], 3)`; RMSEA = `r round(fit.altmed.chronicpain[23],3)`; SRMR = `r round(fit.altmed.chronicpain[29],3)`; \$\\chi\$^2^(`r round(fit.altmed.chronicpain[4], 3)`)=`r round(fit.altmed.chronicpain[3], 3)`, *p* \<.001.).
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of alternative medical systems. Results provide weak support for *Hypothesis 2a*. Income at wave 1 is significantly related to chronic pain at wave 2 in the SEM analysis (SEM: *b* = -0.032, 95% CI: -0.058, -0.005, *p* \< 0.050). Results do not support *Hypothesis 3a*. Income at wave 1 is not significantly related to chronic pain at wave 3, therefore use of alternative medical systems does not mediate this relationship. Income is also not significantly related to use of alternative medical systems, thus results do not support *Hypothesis 4a*.  
+
+Results support *Hypothesis 1b*. Education is positively related to use of alternative medical systems at waves 2 (SEM: *b* = 0.027, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI: 0.142, 0.407, *p* \< 0.001) and 3 (SEM: *b* = 0.012, 95% CI: 0.001, 0.024, *p* \< 0.050; GSEM: *b* = 0.160, 95% CI: 0.133, 0.306, *p* \< 0.050). Results support *Hypothesis 2b*. Education is negatively associated with chronic pain at wave 2 (SEM: -0.027, 95% CI: -0.045, -0.008, *p* \< 0.010; GSEM: *b* = -0.096, 95% CI: -0.182, -0.009, *p* \< 0.050) and wave 3 (SEM: *b* = -0.021, 95% CI: -0.058, -0.005, *p* \< 0.050). Results do not support *Hypothesis 3b*. Education is negatively related to chronic pain at wave 3, and positively associated with use of alternative medical systems at wave, but use of alternative medical systems does not significantly predict chronic pain. Therefore, use of alternative medical systems does not mediate the relationship between education and chronic pain. Results do not support *Hypothesis 4b*. Education is positively associated with use of alternative medical systems, however the relationship is not mediated by chronic pain. 
 
 ```{r path-altmed-chronicpain, echo = FALSE, fig.cap="Path Model: SES, Alternative Medical Systems, and Chronic Pain"}
 # Create final plot
@@ -7061,8 +7116,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -7260,13 +7313,12 @@ iealtmedchronicpain.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Depression
-
-### SEM 
+#### Depression and Anxiety 
 
 ```{r model-altmed-dep, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -7363,6 +7415,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+The path diagram depicting the structural model testing the relationships between SES, use of alternative medical systems, and depression/anxiety can be seen in Figure \ref{fig:path-altmed-dep}. Results from the SEM analysis can be found in Tables \ref{tab:de-altmed-dep}, \ref{tab:ie-altmed-dep}, and \ref{tab:fit-altmed-dep}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-altmed-depression} and \ref{tab:ie-gsem-altmed-depression}. Goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.altmed.dep[4],3)`) = `r round(fit.altmed.dep[3],3)`, *p* \< 0.001; CFI = `r round(fit.altmed.dep[9], 3)`; TLI = `r round(fit.altmed.dep[10],3)`; RMSEA = `r round(fit.altmed.dep[23],3)`, SRMR = `r round(fit.altmed.dep[29],3)`. 
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of alternative medical systems. Results support *Hypothesis 2a*. Income at wave 1 is negatively related to depression and anxiety at wave 2 (SEM: *b* = -0.024, 95% CI: -0.047, -0.003, *p* \< 0.050; GSEM: *b* = -0.148, 95% CI: -0.292, -0.005, *p* \< 0.050). Results do not support *Hypotheses 3a or *4a* due to lack of association between income and use of alternative medical systems.
+
+Results support *Hypothesis 1b*. Education is positively associated with use of alternative medical systems at waves 2 (SEM: *b* = 0.027, 95% CI: 0.014, 0.040, *p* \< 0.001; GSEM: *b* = 0.275, 95% CI: 0.142, 0.407, *p* \< 0.001) and 3 (SEM: *b* = 0.012, 95% CI: 0.001, 0.023, *p* \< 0.050; GSEM: *b* = 0.154, 95% CI: 0.008, 0.300, *p* \< 0.050). Results provide some support *Hypothesis 2b*. Education at wave 1 is negatively associated with depression and anxiety at wave 3 in the SEM analysis (SEM: *b* = -0.017, 95% CI: -0.033, -0.002, *p* \< 0.050). Results do not support *Hypothesis 3b* given the lack of association between use of alternative medical systems and depression/anxiety. Results to not support *Hypothesis 4b* due to lack association between depression and anxiety and use of alternative medical systems. 
 
 ```{r path-altmed-dep, echo = FALSE, fig.cap="Path Model: SES, Alternative Medical Systems, and Depression/Anxiety"}
 # Create final plot
@@ -7537,8 +7595,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM 
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -7737,15 +7793,16 @@ iealtmeddepression.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-# PNA
+### Physical and Nutritional Approaches
 
-## Sum of Chronic Conditions
+In the following section, I will presents from path analyses testing whether use of physical and nutritional approaches mediates the relationship between SES and several health outcomes (sum of chronic conditions, SRH, high blood pressure, chronic pain, and depression). Models also test whether health condition mediates the relationship between SES and use of physical and nutritional approaches. 
 
-### SEM 
+#### Chronic Conditions 
 
 ```{r model-pna-chron, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -7847,6 +7904,18 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+The model testing the relationships between SES, use of physical and nutritional approaches, and sum of chronic conditions can be seen in Figure \ref{fig:path-pna-chron}. Results from the SEM analysis can be found in Tables \ref{tab:de-pna-chron}, \ref{tab:ie-pna-chron}, and \ref{tab:fit-pna-chron}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-pna-chron} and \ref{tab:ie-gsem-pna-chron}. Most goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.pna.chron[4],3)`) = `r round(fit.pna.chron[3],3)`, *p* \< 0.001; CFI = `r round(fit.pna.chron[9], 3)`; TLI = `r round(fit.pna.chron[10],3)`; RMSEA = `r round(fit.pna.chron[23],3)`, SRMR = `r round(fit.pna.chron[29],3)`). 
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of physical and nutritional approaches. Results support *Hypothesis 2a*. There is a significant negative relationship between income at wave 1 and sum of chronic conditions at wave 2 (SEM: *b* = -0.228, 95% CI: -0.358, -0.063, *p* \< 0.010; GSEM: *b* = -0.070, 95% CI: -0.104, -0.035, *p* \< 0.001) and wave 3 (GSEM: *b* = -0.062, 95% CI: -0.090, -0.034, *p* \< 0.001). Results do not support *Hypothesis 3a*. The GSEM analysis shows a significant negative total effect for income on chronic conditions mediated by use of physical and nutritional approaches (*b* = -0.047, 95% CI: -0.081, -0.013, *p* \< 0.010), but the indirect effect coefficient is not significant. There is evidence of an indirect effect of income on physical and nutritional approaches via chronic conditions. SEM (*b* = -0.005, 95% CI: -0.009, -0.002, *p* \< 0.050) and GSEM (*b* = -0.007, 95% CI: -0.011, -0.002, *p* \< 0.010) analyses indicate a significant negative indirect effect. As stated above income has a negative relationship with chronic conditions at wave 2. In turn, chronic conditions has a positive relationship with use of physical and nutritional approaches at wave 3 (GSEM: 0.093, 95% CI: 0.049, 0.138, *p* \< 0.001). This supports *Hypothesis 4a*. (Suppression effect?)
+
+Education has a positive direct effect on use of physical and nutritional approaches at wave 2 (SEM: *b* = 0.041, 95% CI: 0.022, 0.060, *p* \< 0.001; GSEM: *b* = 0.179, 95% CI: 0.095, 0.263, *p* \< 0.001) and wave 3 (SEM: *b* = 0.033, 95% CI: 0.013, 0.051, *p* \< 0.001; GSEM: 0.0158, 95% CI: 0.068, 0.248, *p* \< 0.001), supporting *Hypothesis 1b*. Education has a negative direct effect on sum of chronic conditions at wave 3 (SEM: *b* = `r round(est.pna.chron$est[4], 3)`, 95% CI: `r round(est.pna.chron$ci.lower[4],3)`, `r round(est.pna.chron$ci.upper[4],3)`, *p* \< 0.001; GSEM: *b* = -0.040, 95% CI: -0.063, -0.017, *p* \< 0.001), supporting *Hypothesis 2b*. 
+
+Results support *Hypothesis 3b*. Education has a positive indirect effect on chronic conditions via use of physical and nutritional approaches (SEM: *b* = 0.013, 95% CI: 0.003, 0.028, *p* \< 0.050; GSEM: *b* = 0.029, 95% CI: 0.013, 0.045, *p* \< 0.001). Looking at each path individually, we see that education has a positive effect on use of physical and nutritional approaches at wave 2. In turn, use of physical and nutritional approaches has a positive effect on sum of chronic conditions at wave 3 (SEM: *b* = 0.316, 95% CI: 0.095, 0.595, *p* \< 0.050; GSEM: *b* = 0.162, 95% CI: 0.111, 0.212, *p* \< 0.001), indicating that people who use more physical and nutritional approaches report having more chronic conditions. 
+
+The relationship is mediated by use of physical and nutritional approaches (*b* = `r round(est.pna.chron$est[155], 3)`, 95% CI: `r round(est.pna.chron$ci.lower[155],3)`, `r round(est.pna.chron$ci.upper[155],3)`, *p* \< 0.05). For each additional level of education completed sum of chronic conditions at wave 3 is expected to increase by 0.014 via education's effect on the use of physical and nutritional approaches. 
+
+Education at wave 1 has a positive direct effect on use of physical and nutritional approaches at wave 3 (*b* = `r round(est.pna.chron$est[3],3)`, 95% CI: `r round(est.pna.chron$ci.lower[3],3)`, `r round(est.pna.chron$ci.upper[3],3)`, *p* \< 0.05). This relationship is partially mediated by sum of chronic conditions (*b* = `r round(est.pna.chron$est[154], 3)`, 95% CI: `r round(est.pna.chron$ci.lower[154],3)`, `r round(est.pna.chron$ci.upper[154],3)`, *p* \< 0.05). For each additional level of education completed the log odds of using physical and nutritional approaches decrease by 0.002 via education's effect on sum of chronic conditions at wave 2. Looking at the direct effects of chronic conditions on use of physical and nutritional approaches (*b* = `r round(est.pna.chron$est[6],3)`, 95% CI: `r round(est.pna.chron$ci.lower[6],3)`, `r round(est.pna.chron$ci.upper[6],3)`, *p* \< 0.001) and physical and nutritional approaches on sum of chronic conditions (*b* = `r round(est.pna.chron$est[8],3)`, 95% CI: `r round(est.pna.chron$ci.lower[8],3)`, `r round(est.pna.chron$ci.upper[8],3)`, *p* \< 0.01) we see that the relationship is positive in both causal directions. Respondents with more chronic conditions use more physical and nutritional approaches and respondents who use physical and nutritional approaches have more chronic conditions. This supports *Hypothesis 4b*. 
 
 ```{r path-pna-chron, echo = FALSE, fig.cap="Path Model: SES, Alternative Medicines, and Chronic Conditions"}
 # Create final plot
@@ -8016,8 +8085,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM 
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -8211,13 +8278,12 @@ pnachron.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## SRH
-
-### SEM
+#### Self-Reported Health 
 
 ```{r model-pna-srh, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -8320,6 +8386,16 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+The next model investigates the relationship between SES, use of physical and nutritional approaches, and SRH. The path model can be seen in Figure \ref{fig:path-pna-srh}. Results from the SEM analysis can be found in Tables \ref{tab:de-pna-srh}, \ref{tab:ie-pna-srh}, and \ref{tab:fit-pna-srh}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-pna-srh} and \ref{tab:ie-gsem-pna-srh}. Most goodness of fit indices indicate poor model fit (\$\\chi\$^2^(`r round(fit.pna.SRH[4],3)`) = `r round(fit.pna.SRH[3],3)`, *p* \< 0.001; CFI = `r round(fit.pna.SRH[9], 3)`; TLI = `r round(fit.pna.SRH[10],3)`; RMSEA = `r round(fit.pna.SRH[23],3)`, SRMR = `r round(fit.pna.SRH[29],3)`). 
+
+Results do not support *Hypothesis 1a*. There is not a significant relationship between income and use of physical and nutritional approaches. Results support *Hypothesis 2a*. There is a positive relationship between income at wave 1 and SRH at wave 2 (SEM: *b* = 0.105, 95% CI: 0.058, 0.153, *p* \< 0.001; GSEM: *b* = 0.105, 95% CI: 0.047, 0.164, *p* \< 0.001) and wave 3 (SEM: *b* = 0.140, 95% CI: 0.096, 0.192, *p* \< 0.001; GSEM: *b* = 0.175, 95% CI: 0.117, 0.233, *p* \< 0.001). Results do not support *Hypothesis 3a*. Both SEM (*b* = 0.138, 95% CI: 0.095, 0.191, *p* \< 0.001) and GSEM (*b* = 0.164, 95% CI: 0.103, 0.224, *p* \< 0.001) indicate a significant, positive total effect for income on self-reported health via physical and nutritional approaches, but the indirect effect is not significant. Results do not support *Hypothesis 4a*. Income has a positive direct effect on SRH at wave 2. In turn, SRH at wave 2 has a negative effect on use of physical and nutritional approaches at wave 3 (SEM: *b* = -0.025, 95% CI: -0.050, -0.005, *p* \< 0.050; GSEM: *b* = -0.121, 95% CI: -0.218, -0.024, *p* \< 0.050), indicating that individuals with lower self reported health at wave 2 are more likely to use physical and nutritional approaches at wave 3. However, the indirect effect is not significant. 
+
+Results support *Hypothesis 1b*. There is a positive relationship between education and use of physical and nutritional approaches at wave 2 (SEM: *b* = 0.041, 95% CI: 0.022, 0.060, *p* \< 0.001; GSEM: *b* = 0.179, 95% CI: 0.095, 0.263, *p* \< 0.001) and wave 3 (SEM: *b* = 0.034, 95% CI: 0.013, 0.054, *p* \< 0.001; GSEM: *b* = 0.162, 95% CI: 0.071, 0.253, *p* \< 0.001). Results support *Hypothesis 2b*. There is a positive relationship between education and SRH at wave 2 (SEM: *b* = 0.163, 95% CI: 0.126, 0.200, *p* \< 0.001; GSEM: *b* = 0.177, 95% CI: 0.133, 0.220, *p* \< 0.001) and wave 3 (SEM: *b* = 0.065, 95% CI: 0.028, 0.097, *p* \< 0.001; GSEM: *b* = 0.073, 95% CI: 0.029, 0.118, *p* \< 0.010). 
+
+Results support *Hypothesis 3b*. GSEM analyses find a significant a significant negative indirect effect for education on SRH health via education's effect on use of physical and nutritional approaches (*b* = -0.022, 95% CI: -0.042, -0.002, *p* \< 0.050). This indicates with each additional level of education completed, self-reported health decreases via education's effect on use of physical and nutritional approaches. Looking at each of the paths that make up this effect, we see that education has a positive effect on use of physical and nutritional approaches. In turn, there is a negative relationship between use of physical and nutritional approaches at wave 2 and self-reported health at wave 3 (GSEM: *b* = -0.121, 95% CI: -0.218, -0.024, *p* \< 0.050), indicating that individuals who use physical and nutritional approaches at wave 2 report worse SRH at wave 3. GSEM analyses also identify a positive total effect for education on self-reported health on mediated by physical and nutritional approaches (*b* = 0.051, 95% CI: 0.005, 0.098, *p* \< 0.050). 
+
+Results support *Hypothesis 4b*. GSEM analysis results show a negative indirect effect for education on use of physical and nutritional approaches mediated by SRH (GSEM: *b* = -0.020, 95% CI: -0.041, -0.0003, *p* \< 0.050). This indicates that for each additional level of education, use of physical and nutritional approaches decreases via education's effect on self-reported health. Looking at each relevant path, we see that education has a positive effect on self-reported health. Self-reported health at wave 2 then has a negative effect on use of physical and nutritional approaches at wave 3 (GSEM: *b* = -0.116, 95% CI: -0.226, -0.006, *p* \< 0.050) indicating that those who reported poor health at wave 2 are more likely to use physical and nutritional approaches at wave 3. The total effect of education on use physical and nutritional approaches is positive (GSEM: *b* = 0.142, 95% CI: 0.052, 0.231, *p* \< 0.010). 
 
 ```{r path-pna-srh, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Self-Reported Health"}
 # Create final plot
@@ -8488,8 +8564,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -8685,13 +8759,12 @@ iepnasrh.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Blood Pressure 
-
-### SEM
+#### High Blood Pressure
 
 ```{r model-pna-highbp, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -8788,6 +8861,12 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+Figure \ref{fig:path-pna-highbp} represents the model testing relationship between SES, use of physical and nutritional approaches, and high blood pressure. Results from the SEM analysis can be found in Tables \ref{tab:de-pna-highbp}, \ref{tab:ie-pna-highbp}, and \ref{tab:fit-pna-highbp}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-pna-highbp} and \ref{tab:ie-gsem-pna-highbp}. Model fit indices indicate good model fit (CFI = `r round(fit.pna.highbp[9], 3)`; TLI = `r round(fit.pna.highbp[10], 3)`; RMSEA = `r round(fit.pna.highbp[23],3)`; SRMR = `r round(fit.pna.highbp[29],3)`; \$\\chi\$^2^(`r round(fit.pna.highbp[4], 3)`)=`r round(fit.pna.highbp[3], 3)`, *p* \<.001.).
+
+Results do not support *Hypothesis 1a*. There is not a relationship between income and use of physical and nutritional approaches. Results show weak support for *Hypothesis 2a*. There is a negative relationship between income at wave 1 and high blood pressure at wave 2 in the SEM analysis (SEM: *b* = -0.026, 95% CI: -0.049, -0.002, *p* \< 0.050). Results do not support *Hypotheses 3a* and *4a*. Use of physical and nutritional approaches does not mediate the relationship between income and high blood pressure. High blood pressure does not mediate the relationship between income and use of physical and nutritional approaches. 
+
+Results support *Hypothesis 1b*. There is a positive relationship between education at wave 1 and use of physical and nutritional approaches at wave 2 (SEM: *b* = 0.031, 95% CI: 0.011, 0.050, *p* \< 0.010; GSEM: *b* = 0.179, 95% CI: 0.095, 0.263, *p* \< 0.001) and wave 3 (SEM: *b* = 0.042, 95% CI: 0.022, 0.060, *p* \< 0.001; GSEM: *b* = 0.147, 95% CI: 0.058, 0.236, *p* \< 0.010). *Hypothesis 2b*. There is a negative relationship between education and high blood pressure at wave 2 (SEM: *b* = -0.024, 95% CI: -0.040, -0.008, *p* \< 0.010; GSEM: *b* = -0.115, 95% CI: -0.210, -0.021, *p* \< 0.050). Results do not support *Hypothesis 3b*. There is no indirect effect for education at wave 1 on high blood pressure at wave 3 mediated by use of physical and nutritional approaches at wave 2. Results do not support *Hypothesis 4b*. There is no indirect effect for education at wave 1 on use of physical and nutritional approaches at wave 3 mediated by high blood pressure at wave 2. 
 
 ```{r path-pna-highbp, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and High Blood Pressure"}
 # Create final plot
@@ -8962,8 +9041,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -9161,490 +9238,12 @@ iepnahighbp.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
-
-```
-
-## Diabetes
-
-### SEM
-
-```{r model-pna-diabetes, echo = FALSE, results='hide', fig.show='hide'}
-model <- '
-# Regressions
-# Direct effect - log income 
-pna_W3 ~ a*LogIncome_W1 
-Diabetes_W3 ~ b*LogIncome_W1
-# Direct Effect - Education
-pna_W3 ~ c*Education_W1
-Diabetes_W3 ~ d*Education_W1
-# Mediator effects - Income 
-Diabetes_W2 ~ e*LogIncome_W1 
-pna_W3 ~ f*Diabetes_W2
-pna_W2 ~ g*LogIncome_W1
-Diabetes_W3 ~ h*pna_W2
-# Mediator effects - Education
-pna_W2 ~ i*Education_W1
-Diabetes_W2 ~ j*Education_W1 
-# Control for previous wave
-pna_W3 ~ pna_W2
-Diabetes_W3 ~ Diabetes_W2
-# Indirect effect 
-ef := e*f
-gh := g*h
-jf := j*f
-ih := i*h
-# total effect
-total1 := a + (e*f)
-total2 := b + (g*h)
-total3 := c + (j*f)
-total4 := d + (i*h)
-# Controls
-pna_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-Diabetes_W2 ~ Sex_W1 + Age_W2 + Marital_W2 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-pna_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-Diabetes_W3 ~ Age_W3 + Sex_W1 + Marital_W3 + MexicanHispanic_W2 + Black_W2 + OtherRace_W2
-# Covariances
-pna_W2 ~~ Diabetes_W2
-pna_W3 ~~ Diabetes_W3
-'
-
-# Run model and get summary and fit statistics
-set.seed(1234)
-model.summ <- sem(model, data = path.complete, se = "bootstrap")
-summary(model.summ, standardized = TRUE, fit.measures = TRUE)
-fitMeasures(model.summ, c("cfi", "rmsea", "srmr"))
-#modificationindices(model.summ)
-
-# Create object with model fit measures
-fit.pna.diabetes <- lavInspect(model.summ, what = "fit")
-
-# Create object with parameter estimates
-est.pna.diabetes <- parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized = TRUE)
-
-
-m <- matrix(NA, 4, 3)
-m[1, 1] <- "LogIncome_W1"
-m[4, 1] <- "Education_W1"
-m[2, 2] <- "pna_W2"
-m[3, 2] <- "Diabetes_W2"
-m[1, 3] <- "pna_W3"
-m[4, 3] <- "Diabetes_W3"
-
-# Drop controls from path diagram
-path_dia <- semptools::drop_nodes(
-                object = semPlotModel(model.summ),
-                nodes = c("Age_W3", "Sex_W1", "Marital_W3", "HlthInsurance_W3", "HLSelf_W3", "Spiritual_W3", "Religion_W3", "MexicanHispanic_W2", "Black_W2", "OtherRace_W2", "Age_W2", "Marital_W2", "HlthInsurance_W2", "HLSelf_W2", "Spiritual_W2", "Religion_W2"))
-
-# Create path diagram
-path_dia2 <- semPaths(path_dia, whatLabels = "std",
-           sizeMan = 8,
-           edge.label.cex = .8,
-           edge.color = "black",
-           style = "ram",
-           layout = m, 
-           exoCov = FALSE,
-           nCharNodes = 0, nCharEdges = 0)
-
-# Create list to rearrange positions of node edges that were blocking each other
-my_position_list <- c("pna_W3 ~ Education_W1" = .20, 
-                      "Diabetes_W3 ~ LogIncome_W1" = .75)
-# Change label position
-path_dia3 <- set_edge_label_position(path_dia2, my_position_list)
-
-path_dia4 <- change_node_label(path_dia3,
-                           c(LogIncome_W1 = "Income W1",
-                             Education_W1 = "Education W1",
-                             pna_W2 = "PNA W2",
-                             Diabetes_W2 = "Diabetes W2", 
-                             pna_W3 = "PNA W3",
-                             Diabetes_W3 = "Diabetes W3"),
-                           label.cex = 1.1)
-
-path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
-
-```
-
-```{r path-pna-diabetes, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Diabetes"}
-# Create final plot
-plot(path_dia5)
-```
-
-```{r de-pna-diabetes, echo = FALSE}
-# Create Direct Effects Table 
-parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
-  filter(op == "~") %>%  
-  select(Outcome=lhs, Indicator=rhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper, 'p-value'=pvalue, Beta=std.all) %>%
-  as.data.frame() %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "Diabetes_W2", "Diabetes Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Diabetes_W3", "Diabetes Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W2", "Total CAMs Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "totalCams_W3", "Total CAMs Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W2", "Sum Chron Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "SumChron_W3", "Sum Chron Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "SRH_W2", "SRH Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "SRH_W3", "SRH Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "LogIncome_W1", "Logged Income Wave 1")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Education_W1", "Education Wave 1")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Sex_W1", "Sex")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Age_W2", "Age Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Age_W3", "Age Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Marital_W2", "Married Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Marital_W3", "Married Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W2", "Spirituality Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Spiritual_W3", "Spirituality Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Religion_W2", "Religiosity Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Religion_W3", "Religiosity Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "Black_W2", "Black")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "OtherRace_W2", "Other Race")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Diabetes_W2", "Diabetes Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Diabetes_W3", "Diabetes Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W2", "Total CAMs Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "totalCams_W3", "Total CAMs Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W2", "Sum Chron Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "SumChron_W3", "Sum Chron Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "SRH_W2", "SRH Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "SRH_W3", "SRH Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "LogIncome_W1", "Logged Income Wave 1")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Education_W1", "Education Wave 1")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Sex_W1", "Sex")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Age_W2", "Age Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Age_W3", "Age Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Marital_W2", "Married Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Marital_W3", "Married Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W2", "Health Insurance Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "HlthInsurance_W3", "Health Insurance Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W2", "Health Locus of Control Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "HLSelf_W3", "Health Locus of Control Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W2", "Spirituality Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Spiritual_W3", "Spirituality Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Religion_W2", "Religiosity Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Religion_W3", "Religiosity Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "MexicanHispanic_W2", "Mexican American/Hispanic")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "Black_W2", "Black")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "OtherRace_W2", "Other Race")) %>% 
-  add_significance(p.col = "p-value",
-                   output.col = "Significance Level",
-                   cutpoints = c(0, 0.001, 0.01, 0.05, 1),
-                   symbols = c("***", "**", "*", " ")) %>% 
-  dplyr::relocate("Significance Level", .after = "p-value") %>% 
-  knitr::kable(digits = 3, 
-               booktabs=TRUE, 
-               caption="Direct Effects: SES, Physical and Nutritional Approaches, and Diabetes",
-               escape = F, 
-               col.names = c("Outcome", "Indicator", "\\textit{b}", "Lower CI", 
-                             "Upper CI", "\\textit{p}-value", " ", "$\\beta$")) %>%
-  kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped"),
-                font_size = 7) %>% 
-  footnote(general = c("\\\\textit{b} = unstandardized coefficient. 
-                       $\\\\beta$ = standardized coefficient."),
-           symbol = c("$p<.05.$", "$p<.01.$", "$p<.001.$"),
-           symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
-           threeparttable = TRUE, 
-           footnote_as_chunk = TRUE, 
            escape = F) %>%  
   kableExtra::landscape()
-```
-
-```{r create-ie-pna-diabetes, echo = FALSE, results='hide'}
-parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
-  filter(op == ":=")
-
-# Create Indirect Effects Table 
-
-# Convert output to dataframe with desired rows and columns 
-tab.IE.pna.diabetes <- parameterEstimates(model.summ, boot.ci.type = "bca.simple", standardized=TRUE) %>% 
-  filter(op == ":=") %>% 
-  select('Path'=lhs, B=est, 'Lower CI'= ci.lower, 'Upper CI'= ci.upper,'p-value'=pvalue, Beta=std.all) %>%
-  as.data.frame() 
-
-
-# create a vector rows in desired order
-x <- c("ef", "total1", "gh", "total2", "jf", "total3", "ih", "total4")
-
-# Reorder rows
-tab.IE.pna.diabetes <- tab.IE.pna.diabetes %>%
-  slice(match(x, Path))
-```
-
-```{r ie-pna-diabetes, echo=FALSE}
-tab.IE.pna.diabetes %>% 
-  mutate(Path = replace(Path, Path == "ef", "Indirect Effect: Income \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "total1", "Total Effect: Income \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "gh", "Indirect Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "total2", "Total Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "jf", "Indirect Effect: Education \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "total3", "Total Effect: Education \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "ih", "Indirect Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "total4", "Total Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%   
-  add_significance(p.col = "p-value",
-                   output.col = "Significance Level",
-                   cutpoints = c(0, 0.001, 0.01, 0.05, 1),
-                   symbols = c("***", "**", "*", " ")) %>% 
-  dplyr::relocate("Significance Level", .after = "p-value") %>%
-  knitr::kable(digits = 3, 
-               booktabs=TRUE, 
-               caption="Indirect and Total Effects: SES, Physical and Nutritional Approaches, and Diabetes",                
-               escape = F, 
-               col.names = c("Path", "\\textit{b}", "Lower CI", 
-                             "Upper CI", "\\textit{p}-value", " ", "$\\beta$")) %>%
-  kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
-  footnote(general = c("\\\\textit{b} = unstandardized coefficient. 
-                       $\\\\beta$ = standardized coefficient."),
-           symbol = c("$p<.05.$", "$p<.01.$", "$p<.001.$"),
-           symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
-           threeparttable = TRUE, 
-           footnote_as_chunk = TRUE, 
-           escape = F) %>%  
-  kableExtra::landscape() 
 
 ```
 
-```{r fit-pna-diabetes, echo = FALSE}
-# Create fit statistics table 
-fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr")) %>%
-  as.data.frame() %>% 
-  t() %>%  
-  knitr::kable(digits = 3, 
-               booktabs=TRUE, 
-               caption="Fit Statistics: SES, Diabetes, and Physical and Nutritional Approaches Path Model",                
-               escape = F,
-               col.names=c("$\\chi^2$","df","\\textit{p}-value", "CFI", 
-                           "TLI", "RMSEA", "SRMR")) %>%  
-  kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
-  add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
-```
-
-### GSEM 
-
-```{stata, include=FALSE}
-use path.dta, clear
-
-rename (LogIncome_W1 Education_W1 Sex_W1 SumChron_W2 Age_W2 Marital_W2 HlthInsurance_W2 HLSelf_W2 Spiritual_W2 Religion_W2 MexicanHispanic_W2 Black_W2 OtherRace_W2 SumChron_W3 Age_W3 Marital_W3 HlthInsurance_W3 HLSelf_W3 Spiritual_W3 Religion_W3) (logincome_W1 education_W1 sex_W1 sumchron_W2 age_W2 marital_W2 hlthinsurance_W2 hlself_W2 spiritual_W2 religion_W2 mexicanhispanic_W2 black_W2 otherrace_W2 sumchron_W3 age_W3 marital_W3 hlthinsurance_W3 hlself_W3 spiritual_W3 religion_W3)
-
-rename(totalCams_W2 totalCams_W3)(totalcams_W2 totalcams_W3)
-
-rename(SRH_W2 SRH_W3)(srh_W2 srh_W3)
-
-rename(Diabetes_W1 Diabetes_W2 Diabetes_W3 Respiratory_W1 Respiratory_W2 Respiratory_W3 DepAnx_W1 DepAnx_W2 DepAnx_W3 HighBP_W1 HighBP_W2 HighBP_W3) (diabetes_W1 diabetes_W2 diabetes_W3 respiratory_W1 respiratory_W2 respiratory_W3 depanx_W1 depanx_W2 depanx_W3 highbp_W1 highbp_W2 highbp_W3)
-
-set seed 1234
-
-gsem(pna_W2 <- logincome_W1 education_W1 sex_W1 age_W2 marital_W2 hlthinsurance_W2 hlself_W2 spiritual_W2 religion_W2 mexicanhispanic_W2 black_W2 otherrace_W2, logit) (diabetes_W2 <- logincome_W1 education_W1 sex_W1 age_W2 marital_W2 hlthinsurance_W2 hlself_W2 mexicanhispanic_W2 black_W2 otherrace_W2, logit) (pna_W3 <- logincome_W1 education_W1 diabetes_W2 pna_W2 age_W3 sex_W1 marital_W3 hlthinsurance_W3 hlself_W3 spiritual_W3 religion_W3 mexicanhispanic_W2 black_W2 otherrace_W2, logit) (diabetes_W3 <- logincome_W1 education_W1 diabetes_W2 pna_W2 age_W3 sex_W1 marital_W3 hlthinsurance_W3 hlself_W3 mexicanhispanic_W2 black_W2 otherrace_W2, logit)
-
-regsave using pnadiabetes, pval ci replace
-
-nlcom (_b[diabetes_W2:logincome_W1]*_b[pna_W3:diabetes_W2]) (_b[pna_W3:logincome_W1] + _b[diabetes_W2:logincome_W1]*_b[pna_W3:diabetes_W2]) (_b[pna_W2:logincome_W1]*_b[diabetes_W3:pna_W2]) (_b[diabetes_W3:logincome_W1] + _b[pna_W2:logincome_W1]*_b[diabetes_W3:pna_W2]) (_b[diabetes_W2:education_W1]*_b[pna_W3:diabetes_W2]) (_b[pna_W3:education_W1] + _b[diabetes_W2:education_W1]*_b[pna_W3:diabetes_W2]) (_b[pna_W2:education_W1]*_b[diabetes_W3:pna_W2]) (_b[diabetes_W3:education_W1] + _b[pna_W2:education_W1]*_b[diabetes_W3:pna_W2]), post
-
-esttab using "iepnadiabetes.csv", cells("b se p ci_l ci_u")  replace
-```
-
-```{r read-in-pna-diabetes-gsem-results, echo=FALSE}
-path <- ("C:/Users/hanna/Documents/git/AHL/R/Mixed Model/pnadiabetes.dta")
-pnadiabetes <- read_dta(path)
-
-# Convert to data frame
-pnadiabetes <- as.data.frame(pnadiabetes)
-
-# Add indicator column 
- 
-# Split name column into firstname and last name
-pnadiabetes <-  pnadiabetes %>% separate(var, 
-                                   sep = "[:]",
-                                   c('Outcome', 'Indicator'))
-
-# Drop last column 
-pnadiabetes <- subset(pnadiabetes, select = -c(N) )
-```
-
-```{r de-gsem-pna-diabetes, echo = FALSE}
-pnadiabetes %>%
-  mutate(Indicator = replace(Indicator, Indicator == "diabetes_W2", "Diabetes Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "diabetes_W3", "Diabetes Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W2", "Mind Body Wave 2")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "mindbody_W3", "Mind Body Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "altmed_W2", "Alt Med Wave 2")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "altmed_W3", "Alt Med Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "pna_W2", "PNA Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "pna_W3", "PNA Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W2", "Manipulative Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "manipulative_W3", "Manipulative Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "totalcams_W2", "Total Cams Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "totalcams_W3", "Total Cams Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "sumchron_W2", "Sum Chron Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "sumchron_W3", "Sum Chron Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "srh_W2", "SRH Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "srh_W3", "SRH Wave 3")) %>% 
-  mutate(Indicator = replace(Indicator, Indicator == "logincome_W1", "Logged Income Wave 1")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "education_W1", "Education Wave 1")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "sex_W1", "Sex")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "age_W2", "Age Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "age_W3", "Age Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "marital_W2", "Married Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "marital_W3", "Married Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "hlthinsurance_W2", "Health Insurance Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "hlthinsurance_W3", "Health Insurance Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "hlself_W2", "Health Locus of Control Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "hlself_W3", "Health Locus of Control Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "spiritual_W2", "Spirituality Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "spiritual_W3", "Spirituality Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "religion_W2", "Religiosity Wave 2")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "religion_W3", "Religiosity Wave 3")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "mexicanhispanic_W2", "Mexican American/Hispanic")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "black_W2", "Black")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "otherrace_W2", "Other Race")) %>%
-  mutate(Indicator = replace(Indicator, Indicator == "_cons", "Constant")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "diabetes_W2", "Diabetes Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "diabetes_W3", "Diabetes Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W2", "Mind Body Wave 2")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "mindbody_W3", "Mind Body Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "altmed_W2", "Alt Med Wave 2")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "altmed_W3", "Alt Med Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "pna_W2", "PNA Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "pna_W3", "PNA Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W2", "Manipulative Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "manipulative_W3", "Manipulative Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "totalcams_W2", "Total CAMs Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "totalcams_W3", "Total CAMs Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "sumchron_W2", "Sum Chron Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "sumchron_W3", "Sum Chron Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "srh_W2", "SRH Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "srh_W3", "SRH Wave 3")) %>% 
-  mutate(Outcome = replace(Outcome, Outcome == "logincome_W1", "Logged Income Wave 1")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "education_W1", "Education Wave 1")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "sex_W1", "Sex")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "age_W2", "Age Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "age_W3", "Age Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "marital_W2", "Married Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "marital_W3", "Married Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "hlthinsurance_W2", "Health Insurance Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "hlthinsurance_W3", "Health Insurance Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "hlself_W2", "Health Locus of Control Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "hlself_W3", "Health Locus of Control Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "spiritual_W2", "Spirituality Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "spiritual_W3", "Spirituality Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "religion_W2", "Religiosity Wave 2")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "religion_W3", "Religiosity Wave 3")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "mexicanhispanic_W2", "Mexican American/Hispanic")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "black_W2", "Black")) %>%
-  mutate(Outcome = replace(Outcome, Outcome == "otherrace_W2", "Other Race")) %>%  
-  mutate(Outcome = replace(Outcome, Outcome == "_cons", "Constant")) %>%
-  add_significance(p.col = "pval",
-                   output.col = "Significance Level",
-                   cutpoints = c(0, 0.001, 0.01, 0.05, 1),
-                   symbols = c("***", "**", "*", " ")) %>% 
-  dplyr::relocate("Significance Level", .after = "pval") %>% 
-  knitr::kable(digits = 3,
-             booktabs=TRUE,
-             caption="GSEM Direct Effects: SES, Physical and Nutritional Approaches, and Diabetes",
-             escape = F,
-             col.names = c("Outcome", "Indicator", "\\textit{b}", "Std. Error", 
-                           "\\textit{p}-value", " ", "Lower CI", "Upper CI")) %>%
-  kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped"),
-                font_size = 5) %>% 
-  footnote(general = c("\\\\textit{b} = unstandardized coefficient."),
-           symbol = c("$p<.05.$", "$p<.01.$", "$p<.001.$"),
-           symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
-           threeparttable = TRUE, 
-           footnote_as_chunk = TRUE, 
-           escape = F) %>% 
-  kableExtra::landscape() 
-```
-
-```{r read-in-iepnadiabetes-table, echo = FALSE}
-# Import indirect and total effects table
-iepnadiabetes.table <- read.csv(
-  file = "C:/Users/hanna/Documents/git/AHL/R/Mixed model/iealtmeddiabetes.csv",
-  header = TRUE,
-  sep = ","
-)
-
-# Remove = from entire dataframe
-iepnadiabetes.table[] <- lapply(iepnadiabetes.table, gsub, pattern='=', replacement='')
-
-# Remove last row 
-iepnadiabetes.table <- head(iepnadiabetes.table, - 1) 
-
-# Rename columns
-iepnadiabetes.table <- iepnadiabetes.table %>% 
-  rename(
-    Path = X.,
-    "b" = X..1.,
-    se = X..1,
-    "p-value" = X..2,
-    "Lower CI" = X..3, 
-    "Upper CI" = X..4
-    )
-
-# Remove first two rows
-iepnadiabetes.table <- iepnadiabetes.table[-c(1,2), ]
-
-# convert p-value to numeric
-iepnadiabetes.table$`p-value` <- as.numeric(iepnadiabetes.table$`p-value`)
-
-# Remove row names
-rownames(iepnadiabetes.table) <- NULL
-```
-
-```{r ie-gsem-pna-diabetes, echo = FALSE}
-iepnadiabetes.table %>% 
-  mutate(Path = replace(Path, Path == "_nl_1", "Indirect Effect: Income \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "_nl_2", "Total Effect: Income \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "_nl_3", "Indirect Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "_nl_4", "Total Effect: Income \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "_nl_5", "Indirect Effect: Education \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "_nl_6", "Total Effect: Education \U2192 Diabetes \U2192 Physical and Nutritional Approaches")) %>%
-  mutate(Path = replace(Path, Path == "_nl_7", "Indirect Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  mutate(Path = replace(Path, Path == "_nl_8", "Total Effect: Education \U2192 Physical and Nutritional Approaches \U2192 Diabetes")) %>%
-  add_significance(p.col = "p-value",
-                   output.col = "Significance Level",
-                   cutpoints = c(0, 0.001, 0.01, 0.05, 1),
-                   symbols = c("***", "**", "*", " ")) %>% 
-  dplyr::relocate("Significance Level", .after = "p-value") %>%
-  knitr::kable(digits = 3, 
-               booktabs=TRUE, 
-               escape = F, 
-               col.names = c("Path", "\\textit{b}", "se", "\\textit{p}-value"," ", "Lower CI", "Upper CI"),
-               caption="GSEM Indirect and Total Effects: SES, Physical and Nutritional Approaches, and Diabetes") %>%
-  kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
-  footnote(general = c("\\\\textit{b} = unstandardized coefficient"),
-           symbol = c("$p<.05.$", "$p<.01.$", "$p<.001.$"),
-           symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
-           threeparttable = TRUE, 
-           footnote_as_chunk = TRUE, 
-           escape = F) 
-
-```
-
-## Chronic Pain 
-
-### SEM
+#### Chronic Pain 
 
 ```{r model-pna-chronicpain, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -9741,6 +9340,16 @@ path_dia4 <- change_node_label(path_dia3,
 path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .05))
 
 ```
+
+Figure \ref{fig:path-pna-chronicpain} depicts the path model testing the relationships between SES, use of physical and nutritional approaches, and chronic pain. Results from the SEM analysis can be found in Tables \ref{tab:de-pna-chronicpain}, \ref{tab:ie-pna-chronicpain}, and \ref{tab:fit-pna-chronicpain}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-pna-chronicpain} and \ref{tab:ie-gsem-pna-chronicpain}. Most model fit indices indicate overall good model fit (CFI = `r round(fit.pna.chronicpain[9], 3)`; TLI = `r round(fit.pna.chronicpain[10], 3)`; RMSEA = `r round(fit.pna.chronicpain[23],3)`; SRMR = `r round(fit.pna.chronicpain[29],3)`; \$\\chi\$^2^(`r round(fit.pna.chronicpain[4], 3)`)=`r round(fit.pna.chronicpain[3], 3)`, *p* \<.001.). 
+
+Results do not support *Hypothesis 1a*. Income is not significantly related to use of physical and nutritional approaches. Results show weak support for *Hypothesis 2a*. There is a negative relationship between income at wave 1 and chronic pain at wave 2 for the SEM analysis only (SEM: *b* = 0.032, 95% CI: -0.058, -0.005, *p* \< 0.050). Neither SEM or GSEM analyses report a significant indirect effect for income on chronic pain via use of physical and nutritional approaches (*Hypothesis 3a*) or for income on physical and nutritional approaches via chronic pain (*Hypothesis 4a*). 
+
+Results support *Hypothesis 1b*. There is a positive relationship between education and use of physical and nutritional approaches at wave 2 (SEM: *b* = 0.042, 95% CI: 0.023, 0.060, *p* \< 0.001; GSEM: *b* = 0.179, 95% CI: 0.095, 0.263, *p* \< 0.001) and wave 3 (SEM: *b* = 0.031, 95% CI: 0.011, 0.050, *p* \< 0.010; GSEM: 0.149, 95% CI: 0.060, 0.238, *p* \< 0.010). 
+
+Results support *Hypothesis 3b*. Results from the GSEM analyses reveal a positive indirect effect for education on chronic pain mediated by use of physical and nutritional approaches (GSEM: *b* = 0.052, 95% CI: 0.009, 0.095, *p* \< 0.050). This indicates that for each additional level of education completed, chronic pain increases the log odds of experiencing chronic pain increase via education's effect on use of physical and nutritional approaches. Looking at each path separately, we see that education at wave 1 has a positive relationship with use of physical and nutritional approaches at wave 2 so that for each additional level of education completed the log odds of using physical and nutritional approaches increases by 0.179. There is a positive relationship between using physical and nutritional approaches at wave 1 and reporting chronic pain at wave 3, so that using physical and nutritional approaches at wave 2 increases the log odds of reporting chronic pain at wave 3 by 0.292 (GSEM: *b* = 0.292, 95% CI: 0.093, 0.490, *p* \< 0.010). The GSEM analyses reports a non-significant total effect for education on chronic pain mediated by use of physical and nutritional approaches. 
+
+Results do not support *Hypothesis 4b*. Neither SEM or GSEM results show a significant indirect effect for education on use of physical and nutritional approaches mediated by chronic pain. 
 
 ```{r path-pna-chronicpain, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Systems, and Chronic Pain"}
 # Create final plot
@@ -9915,8 +9524,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -10114,13 +9721,12 @@ iepnachronicpain.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
-## Depression
-
-### SEM 
+#### Depression/Anxiety 
 
 ```{r model-pna-dep, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -10219,6 +9825,12 @@ path_dia5 <- mark_sig(path_dia4, model.summ, alpha = c("(n.s.)" = 1.00, "*" = .0
 
 
 ```
+
+Figure \ref{fig:path-pna-dep} represents the structural model testing the relationships between SES, use of physical and nutritional approaches, and depression/anxiety. Results from the SEM analysis can be found in Tables \ref{tab:de-pna-dep}, \ref{tab:ie-pna-dep}, and \ref{tab:fit-pna-dep}. Results from the GSEM analysis can be found in Tables \ref{tab:de-gsem-pna-depression} and \ref{tab:ie-gsem-pna-depression}. Most goodness of fit indices indicate good model fit (\$\\chi\$^2^(`r round(fit.pna.dep[4],3)`) = `r round(fit.pna.dep[3],3)`, *p* \< 0.001; CFI = `r round(fit.pna.dep[9], 3)`; TLI = `r round(fit.pna.dep[10],3)`; RMSEA = `r round(fit.pna.dep[23],3)`, SRMR = `r round(fit.pna.dep[29],3)`.  
+
+Results do not support *Hypothesis 1a*. There is not a significant relationship between use of physical and nutritional approaches and income. Results support *Hypothesis 2a*. There is a negative relationship between income at wave 1 and depression/anxiety at wave 2 (SEM: *b* = -0.024, 95% CI: -0.047, -0.003, *p* \< 0.050; GSEM: *b* = -0.148, 95% CI: -0.292, -0.005, *p* \< 0.050). Results do not support *Hypothesis 3a*. There is not a significant indirect effect for income on depression/anxiety mediated by use of physical and nutritional approaches. Results also do not support *Hypothesis 4a*. There is not a significant indirect effect for income on use of physical and nutritional approaches mediated by depression/anxiety. 
+
+Results support *Hypothesis 1b*. There is a positive relationship between education at wave 1 and use of physical and nutritional approaches at wave 2 (SEM: *b* = 0.042, 95% CI: 0.022, 0.060, *p* \< 0.001; GSEM: *b* = 0.179, 95% CI: 0.095, 0.263, *p* \< 0,001) and wave 3 (SEM: *b* = 0.030, 95% CI: 0.010, 0.049, *p* \< 0.010; GSEM: *b* = 0.145, 95% CI: 0.056, 0.234, *p* \< 0.010). There is weak evidence for *Hypothesis 2b*. There is a negative relationship between education and depression and anxiety, but only in between waves 1 and 3 in the SEM analysis (SEM: *b* = -0.017, 95% CI: -0.033, -0.003, *p* \< 0.050). Results also do not show significant indirect effects for use of physical and nutritional approaches as a mediator of the relationship between education and depression/anxiety (*Hypothesis 3b*) or depression/anxiety as a mediator of the relationship between education and use of physical and nutritional approaches.
 
 ```{r path-pna-dep, echo = FALSE, fig.cap="Path Model: SES, Physical and Nutritional Approaches, and Depression/Anxiety"}
 # Create final plot
@@ -10393,8 +10005,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   kable_styling(latex_options = c("striped")) %>% 
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
-
-### GSEM 
 
 ```{stata, include=FALSE}
 use path.dta, clear
@@ -10592,16 +10202,14 @@ iepnadepression.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
 
+### Manipulative Treatments
 
-# Manipulative
-
-## Sum of Chronic Conditions 
-
-### SEM 
+I ran SEM and GSEM models testing for mediation in the relationships between SES, manipulative treatments, and several health outcomes (number of chronic conditions, SRH, chronic pain, and depression/anxiety). Results can be see in Tables \ref{tab:de-manipulative-chron} through \ref{tab:ie-gsem-manipulative-depression}. Figures of path models can be seen in Figures \ref{fig:path-manipulative-chron} through \ref{fig:path-manipulative-dep}. Income and education did not significantly predict use of manipulative treatments in any models, therefore further mediation analysis is not necessary. 
 
 ```{r model-manipulative-chron, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -10874,8 +10482,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
-
 ```{stata, include=FALSE}
 use path.dta, clear
 
@@ -11068,13 +10674,10 @@ manipulativechron.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
-
-## SRH 
-
-### SEM
 
 ```{r model-manipulative-SRH, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -11341,8 +10944,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
-
 ```{stata, include=FALSE}
 use path.dta, clear
 
@@ -11378,6 +10979,9 @@ manipulativesrh <-  manipulativesrh %>% separate(var,
                                    c('Outcome', 'Indicator'))
 
 # Drop last column 
+manipulativesrh <- subset(manipulativesrh, select = -c(N) )
+
+# Drop last rows 
 manipulativesrh <- slice(manipulativesrh, 1:(n() - 8))
 ```
 
@@ -11534,13 +11138,10 @@ iemanipulativesrh.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
-
-## Chronic Pain 
-
-### SEM
 
 ```{r model-manipulative-chronicpain, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -11812,8 +11413,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM
-
 ```{stata, include=FALSE}
 use path.dta, clear
 
@@ -12010,13 +11609,10 @@ iemanipulativechronicpain.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
-
-## Depression
-
-### SEM 
 
 ```{r model-manipulative-dep, echo = FALSE, results='hide', fig.show='hide'}
 model <- '
@@ -12291,8 +11887,6 @@ fitMeasures(model.summ, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea",  "srmr
   add_footnote(c("CFI = Comparitive Fit Index.", "TLI = Tucker Lewis-Index.", "RMSEA = root mean square error of approximation.", "SRMR = standardized root mean square residual."), notation = "none")
 ```
 
-### GSEM 
-
 ```{stata, include=FALSE}
 use path.dta, clear
 
@@ -12329,7 +11923,8 @@ manipulativedepression <-  manipulativedepression %>% separate(var,
                                    c('Outcome', 'Indicator'))
 
 # Drop last column 
-manipulativedepression <- slice(manipulativedepression, 1:(n() - 14))
+manipulativedepression <- subset(manipulativedepression, select = -c(N) )
+
 ```
 
 ```{r de-gsem-manipulative-depression, echo = FALSE}
@@ -12489,6 +12084,12 @@ iemanipulativedepression.table %>%
            symbol_manual = c("$^{*}$", "$^{**}$", "$^{***}$"),
            threeparttable = TRUE, 
            footnote_as_chunk = TRUE, 
-           escape = F) 
+           escape = F) %>%  
+  kableExtra::landscape()
 
 ```
+
+
+# Conclusion
+
+This chapter examined the relationship between SES and CAM use, as well as possible mediation models for the relationships between SES, CAM use, and health. Higher levels of education were consistently associated with greater levels of CAM use across analyses. The relationship between income and CAM use was less consistent, most often becoming non-significant when the influence of education was accounted for. Both income and education were overall related to better health outcomes across analyses, confirming the well established SES gradient in health. CAM use did not mediate the relationship between income and health. Given the inconsistent relationship between income and CAM use in  analyses, this is to be expected. CAM use was largely not a significant mediator of the relationship between education and health. When analyses showed a mediation effect, it was in the opposite of the expected direction. Total CAMs used at wave 2 was associated with an increase in reported chronic conditions, incidence of chronic pain, and incidence of depression and anxiety at wave 3. Use of alternative medical systems at wave 2 was associated with an increase in chronic conditions at wave 3, and use of physical and nutritional approaches at wave 2 was associated with an increase in chronic conditions and increase in log odds of reporting chronic pain at wave 3.  
