@@ -730,7 +730,7 @@ William Cockerham and colleagues [@cockerham1997; @cockerham2005;
 @cockerham2007; @cockerham2013; @cockerham1993; @cockerham2002]
 developed Health Lifestyle Theory by synthesizing, among other works,
 Max Weber's Economy and Society [@weber1978] and Pierre Bourdieu'
-Distinction [@bourdieu1984]. @cockerham1997[p. 321] defines health
+Distinction [@bourdieu1984]. @cockerham1997 [p. 321] defines health
 lifestyles as "collective patterns of health-related behavior based on
 choices from options available to people according to their life
 chances." His precise theoretical model can be divided into two primary
@@ -904,15 +904,28 @@ ranged from 7.9 to 10.3 years.
 
 # Contributions
 
-This dissertation...
-
-This dissertation will advance the literature on health lifestyles in
-several ways. First, to this point in time, studies on health lifestyles
-have not included CAMs, which are utilized by a substantial portion of
-the US population. Second, most studies on CAM use have utilized
-cross-sectional or trend data. This study will utilize longitudinal data
-across three time points. This will allow me to examine when CAM use
-changes for individuals over time, how CAM use changes, and for whom
-those changes occur with respect to health. Additionally, this
-longitudinal design will allow me to establish health lifestyles as a
-mechanism for the relationship between SES and health.
+This dissertation addresses the following overarching question: Do CAMs
+form a lifestyle that contributes to the SES-health relationship?
+Findings advance the literature on health lifestyles and the SES-health
+gradient in several ways. First, to this point in time, studies on
+health lifestyles have not included CAMs, which are utilized by a
+substantial portion of the US population. This dissertation empirically
+examines patterns in CAM use to identify dimensions of alternative
+health lifestyles. Second, this dissertation examines relationships
+between dimensions of alternative health lifestyle and two components of
+SES, income and education. Findings show that education, but not income,
+is associated with use of more dimensions of alternative health
+lifestyle. I discuss the implications of these findings for Health
+Lifestyle Theory, Human Capital Theory, and Health Commodity Theory.
+Third, I empirically analyze the role of alternative health lifestyles'
+(AHL) in producing the socioeconomic gradient in health using
+longitudinal data. Findings show that higher SES is associated with
+greater CAM use and better health. I investigate whether this is a
+spurious relationship or if CAMs actually contribute to better health.
+Findings show that CAM use does not contribute to the SES health
+gradient. I discuss implications for theories on social stratification
+and health. Fourth, I examine how SES moderates CAM use in response to a
+decline in health status, a critical point for shaping health
+disparities across the life course. Findings show that resources
+associated with high SES do not shape access to CAMs among the
+chronically ill.

@@ -21,44 +21,45 @@ bibliography: references.bib
 ---
 
 This dissertation explored several questions on the topic of socioeconomic status, health, and health lifestyles.
-First, this research sought to advance the measurement of health lifestyles.
-Health lifestyles research has demonstrated that health behaviors cluster together into distinct patterns [@andrews2017; @berrigan2003; @burke1997; @cockerham2007; @dodd2010; @mize2017; @patterson1994; @saintonge2017; @schuit2002; @devries2008]. Complementary and alternative medicines (CAMs) represent a class of health behaviors utilized by a large portion of the population [@clarke2015] that have not been studied in the health lifestyles literature. The ways in which CAMs cluster to form discernible lifestyle patterns has been largely assumed based on the CAM domains created by the National Center for Complementary and Integrative Health (NCCIH), formerly the National Center for Complementary and Alternative Medicine (NCCAM). Previous research has relied on the domains created by the NCCIH despite having to assign some CAMs to multiple domains under this classification [@ni2002; @barnes2004]. There has been one empirical test of the domains set forth by NCCAM, revealing that the domains did not reflect observed patterns of use [@ayers2010]. Utilizing data from the 2002 National Health Interview Survey, @ayers2010 identify a revised CAM classification system. This dissertation added to this line of inquiry and answered the call from health lifestyles research to investigate the ways in which health behaviors cluster to form discernible patterns [@cockerham2005] by investigating patterns of CAM use in a nationally representative, longitudinal data set.
+First, this research aimed to contribute a systematic measurement of health lifestyles.
+Health lifestyles research has demonstrated that health behaviors often cluster together to form patterns [@andrews2017; @berrigan2003; @burke1997; @cockerham2007; @dodd2010; @mize2017; @patterson1994; @saintonge2017; @schuit2002; @devries2008]. Complementary and alternative medicines (CAMs) represent a class of health behaviors that a large portion of the population uses, but which have not been studied in the health lifestyles literature [@clarke2015]. Meanwhile, the CAM domains created by the National Center for Complementary and Integrative Health (NCCIH), formerly the National Center for Complementary and Alternative Medicine (NCCAM), assume that CAMs cluster to form discernible health lifestyles. Previous research has relied on the domains created by the NCCIH despite having to assign some CAMs to multiple domains under this classification [@barnes2004; @ni2002]. One existing empirical test of the domains set forth by NCCAM revealed that the domains did not reflect observed patterns of use [@ayers2010]. Utilizing data from the 2002 National Health Interview Survey, @ayers2010 identify a revised CAM classification system. This dissertation contributed to this literature on CAM use and health lifestyles by investigating how discernible clusters of CAM use form patterns in a nationally representative, longitudinal data set [@cockerham2005].
 
-Second, I examined the association between patterns of CAM use and socioeconomic status (SES).
-@cockerham2005 synthesizes the sociological theories of @weber1978 and @bourdieu1984 to raise the question of whether the choices people make with regard to health behavior are shaped by structural variables, such as social class position.
-Previous research has observed that patterns of health behavior (i.e. health lifestyles) are the product of structural variables [@saintonge2017; @lee2018; @falkstedt2016; @daw2017].
+A second contribution of this dissertation is its tests of the association between patterns of CAM use and socioeconomic status (SES).
+@cockerham2005 synthesizes the sociological theories of @weber1978 and @bourdieu1984 to raise the question of whether structural variables, such as social class position, shape the choices people make with regard to health behavior.
+Previous research has observed that structural variables influence patterns of health behavior (i.e. health lifestyles) [@saintonge2017; @lee2018; @falkstedt2016; @daw2017].
 Furthermore, theoretical perspectives on the components of SES assert that health lifestyles are a function of income and education.
 Health Commodity Theory [@ross2000] argues that SES promotes health through purchasing power, asserting that the income component of SES is responsible for SES's positive effect on health behavior.
 Human Capital Theory [@mirowsky2003] focuses on how healthy lifestyle flows from years of formal education and the increased human capital and sense of personal control associated with education.
 I extended previous research on the relationship between health lifestyle and structural variables by examining the association between alternative health lifestyles (i.e. CAM domains) and two components of SES, income and education.
 
-Third, I investigated alternative health lifestyles' (AHL) role in the producing the socioeconomic gradient in health.
+A third contribution of this research is the empirical analysis of alternative health lifestyles' (AHL) role in producing the socioeconomic gradient in health.
 It has been well-established that higher socioeconomic status is associated with better health [@adler1994], and that health behaviors play an important role in this association [@adler2008; @brunello2016; @burdette2008; @lantz1998; @lantz2001].
-Fundamental causes theory notes that the association between SES and health has endured across changing historical contexts and advancements in public health, evidence that social conditions associated with SES are a root cause of health [@link2008].
-As the theories and research cited above indicate, the social conditions associated with higher SES tend to promote healthier lifestyles, accounting for some of this association.
+Fundamental causes theory notes that the association between SES and health has endured across changing historical contexts and advancements in public health, providing evidence that social conditions associated with SES are a root cause of health [@link2008].
+However, the health lifestyle theories and research cited above suggests that the social conditions associated with higher SES tend to promote healthier lifestyles, which is a potential mechanism that may account for some of this association.
 This research empirically tested socioeconomic differences in use of AHL as both prevention and treatment of general health and chronic diseases.
 
-Finally, this dissertation examined the relationship between change in health status and change in AHL, and the role of SES.
+Finally, this dissertation examined the relationship between change in health status and change in AHL, and the influence of SES on that relationship.
+An individual's response to a change in health status contributes to health and wellness across the lifespan as people develop chronic conditions.
 In the case of worsening health, are high SES individuals more likely to adopt healthier lifestyles?
 Poor health status is a significant predictor of CAM use, with poorer health status being associated with greater CAM use.
-Individuals who use CAM are twice as likely to self-report having poor health [@astin1998]. Similarly, CAM use is positively related to having a chronic condition [@astin1998; @thorne2002]. Previous research on SES as a moderator for the relationship between change in health and change in health behavior is limited, though previous studies have found that SES moderates health behavior change following a new diagnosis [@margolis2013], having a heart attack [@wray1998], and among cancer patients [@naik2016]. Generally speaking, a new diagnosis increases the likelihood of a change in health behavior [@clark2002; @falba2005; @keenan2009]. Given that social position shapes the structural context in which health lifestyle choices are made [@cockerham2005; @link1995], it follows that the decision to change health behavior in the event of declining health will be shaped by SES.
-This dissertation addressed the question of SES as moderator of health lifestyle style change following a change in health by comparing changes in CAM use across three waves of data.
+Individuals who use CAM are twice as likely to self-report having poor health [@astin1998]. Similarly, CAM use is positively related to having a chronic condition [@astin1998; @thorne2002]. Previous research on SES as a moderator for the relationship between change in health and change in health behavior is limited, though previous studies have found that SES moderates health behavior change after a new diagnosis [@margolis2013], after a heart attack [@wray1998], and among cancer patients [@naik2016]. Generally, a new diagnosis increases the likelihood of a change in health behavior [@clark2002; @falba2005; @keenan2009]. Given that social position shapes the structural context in which individuals make health lifestyle choices [@cockerham2005; @link1995], it follows that SES should shape the decision to change health behavior in the event of declining health.
+This dissertation addressed the question of SES as moderator of health lifestyle style change after a change in health by comparing changes in CAM use across three waves of data.
 
 ## Summary of Key Findings
 
 ### AHL Measurement
 
-Chapter 2 of this dissertation utilized exploratory and confirmatory factor analyses to discover whether distinct CAMs share common variance and form patterns, providing evidence for the dimensions of an alternative health lifestyle.
-After dropping biofeedback for failure to load properly onto a factor with other CAMs, a four factor solution using maximum likelihood with cluster rotation was identified using the remaining 13 CAMs in an exploratory factor analysis on wave 1 data.
-Prayer or spiritual healing, energy healing, imagery techniques, relaxation and meditation techniques, and hypnosis loaded onto Mind-Body Practices.
+In Chapter 2, I utilized exploratory and confirmatory factor analyses to discover whether distinct CAMs share common variance and form patterns, providing evidence for the dimensions of an alternative health lifestyle.
+After dropping biofeedback for failure to load properly onto a factor with other CAMs, an exploratory factor analysis identified a four factor solution using maximum likelihood with cluster rotation in wave 1 data.
+Prayer/spiritual healing, energy healing, imagery techniques, relaxation and meditation techniques, and hypnosis loaded onto Mind-Body Practices.
 Homeopathy, herbal therapy, and acupuncture loaded onto Alternative Medical Treatments.
 Use of vitamins, exercise and movement therapy, and special diets loaded onto Physical and Nutritional Approaches.
 Massage and chiropractic care loaded onto Manipulative treatments.
 In the exploratory factor analysis, each CAM loaded highly on only one factor.
-The four factor solution was replicated using confirmatory factor analyses on all three waves of data.
-In the confirmatory factor analyses each CAM loaded highly on the appropriate factor and goodness of fit indices indicate good model fit.
+Confirmatory factor analyses on all three waves of data replicated the four factor solution and supported its validity.
+In the confirmatory factor analyses, each CAM loaded highly on the appropriate factor and goodness of fit indices indicate good model fit.
 
-The factor structure identified in the factor analysis is similar to previous classifications from government institutions as well as the classification identified by @ayers2010 with some distinctions.
+This factor structure is similar to previous classifications from government institutions as well as the classification identified by @ayers2010 with some distinctions.
 To review, NCCAM grouped CAMs into four domains: mind-body medicine, biologically based treatments, manipulative and body-based practices, and energy medicine, placing whole medical systems into a class of their own due to their use of practices that fall under multiple domains.
 Later, as the NCCIH, this organization grouped CAMs into four domains based on their primary therapeutic input.
 These domains were nutritional approaches, psychological approaches, physical approaches, and approaches that utilize a combination of the three, removing alternative medical systems from the classification altogether.
@@ -68,23 +69,23 @@ In their empirical test of patterns of CAM use, @ayers2010 identified four CAM d
 Consistent with the NCCAM classification and @ayers2010, the current analysis identified manipulative based treatments, mind-body medicine, and alternative medical systems as their own categories.
 Chiropractic care and massage are consistently categorized together and as manipulative treatments in these previous classifications, with the exception of the NCCIH definition which considers massage and chiropractic care to be physical approaches.
 Acupuncture is classified as a physical approach by the NCCIH and a manipulative treatment by @ayers2010.
-In the current analysis, acupuncture was found to load with homeopathy and herbal therapy as an alternative medical system, consistent with the NCCAM classification.
-Herbal therapy was categorized by NCCAM as a biologically based practice and as a physical approach by NCCIH.
+In the current analysis, acupuncture loaded with homeopathy and herbal therapy as an alternative medical system, consistent with the NCCAM classification.
+NCCAM categorized herbal therapy as a biologically based practice and NCCIH categorized it as a physical approach.
 In @ayers2010's classification, and the current study, herbal therapy falls under alternative medical systems.
 The CAMs included in mind-body medicines are largely consistent with these previous classifications with some exceptions.
-Prayer and spiritual healing is classified as its own domain by @ayers2010.
-Energy healing is not classified as a mind-body medicine in the previous classifications.
-The fourth domain identified in the current analysis, physical and nutritional approaches, most closely aligns with the biologically based practices in the NCCAM classification and a combination of the physical and nutritional categories in the NCCIH classification system.
+@ayers2010 classified prayer and spiritual healing as its own domain.
+The previous classifications did not classify energy healing as a mind-body medicine.
+The fourth domain that I identified, physical and nutritional approaches, most closely aligns with the biologically based practices in the NCCAM classification and a combination of the physical and nutritional categories in the NCCIH classification system.
 @ayers2010 do not identify a similar domain, instead classifying vitamin use as an alternative medical system.
-Diet and exercise/movement therapy were not included in their analysis analysis.
+Diet and exercise/movement therapy were not included in their analysis.
 
-The difficulty of defining CAM and classifying domains has been noted by previous studies on CAM utilization [@goldstein2003; @goldstein2004; @grzywacz2005; @ni2002].
-The current analysis contributes to these efforts, but further steps should be taken in future research.
-The similarities between the classification identified in the current analysis and previous efforts support the idea that the wide array of treatments and practices under the umbrella of CAM can be divided across different dimensions.
-Notably, the assumptions behind the different classification systems differ, with institutions basing their systems on assumptions about similar theoretical underpinnings of health and illness and the current study along with @ayers2010 relying on patterns of covariation in usage data to classify CAMs.
-Future research might test the different classifications within the same data set to further compare how they stand up to one another in predicting observed patterns of use.
+Previous studies on CAM utilization have noted the difficulty of defining CAM and classifying domains [@goldstein2003; @goldstein2004; @grzywacz2005; @ni2002].
+The current analysis contributes to these efforts, but future research should take further steps.
+The similarities between the classification that this study identified and previous efforts support the idea that the wide array of treatments and practices under the umbrella of CAM form coherent patterns across different dimensions.
+Notably, the assumptions behind the different classification systems differ; institutions base their systems on assumptions about similar theoretical underpinnings of health and illness shared by different CAMs, while the current study and that by @ayers2010 rely on patterns of covariation in usage data to classify CAMs.
+Future research might test the different classifications within the same data set to further compare their ability to predict patterns of use.
 Additionally, the indicators in the current data as well as data utilized by @ayers2010 are binary indicators of any use of each CAM in the past year.
-More precise measures of use measuring frequency may aid in further refining previously identified CAM domains.
+More precise measures of use, including frequency of use, may aid in further refining previously identified CAM domains.
 Finally, future research would benefit from a more complete list of CAMs.
 The current study included 13 CAMs.
 @ayers2010 included 20 CAMs.
@@ -92,42 +93,42 @@ It would be beneficial to our understanding of the dimensions of CAM to examine 
 
 The identification of an underlying factor structure among the different CAM behaviors is in line with previous research indicating that health behaviors cluster to form discernible health lifestyles.
 The present analysis indicates that CAM use, like other health behaviors, is patterned.
-The analysis identified four dimensions of an AHL: use of mind-body medicine, use of alternative medical systems, use of physical and nutritional approaches, and use of manipulative treatments.
-While each of these factors represents a unique dimension of AHL, they are united by their aim toward promoting health and preventing disease [@goldstein2003]. The next step in analysis was to examine the association of each of these dimensions with two structural variables, income and education. @cockerham2005 defines health lifestyles as "collective patterns of health-related behavior based on choices from options available to people according to their life chances (p. 55)," drawing on the work of @weber1978 to assert that health lifestyles are associated with status groups. Individuals from similar status groups tend to share similar life chances, and to make similar life choices due to their shared socialization and experience. Status groups are stratified by their patterns of consumption, and patterns of consumption serve to distinguish status groups [@bourdieu1984].
-Thus, it is expected that individuals of similar socioeconomic backgrounds will practice similar AHLs.
+The analysis identified four types of CAM: mind-body medicine, alternative medical systems, physical and nutritional approaches, and manipulative treatments.
+They are united by their aim toward promoting health and preventing disease [@goldstein2003], and can form important parts of an AHL. The next step in analysis was to examine the association of each of these dimensions with two structural variables, income and education. @cockerham2005 defines health lifestyles as "collective patterns of health-related behavior based on choices from options available to people according to their life chances (p. 55)," drawing on the work of @weber1978 to assert that health lifestyles are associated with status groups. Individuals from similar status groups tend to share similar life chances, and to make similar life choices due to their shared socialization and experience. Status groups are stratified by their patterns of consumption, and patterns of consumption serve to distinguish status groups [@bourdieu1984].
+Thus, I expected individuals of similar socioeconomic backgrounds to share similar AHLs.
 
 ### AHL and The Socioeconomic Gradient in Health
 
-Ch.
-3 analyses were conducted in two steps.
-In the first step, data from all three waves of MIDUS data were analyzed using generalized linear mixed models (GLMMs) to test the relationship between AHL and SES.
-In the second step, structural equation modeling (SEM) and generalized structural equal model (GSEM) were used to test two mediation models: (1) AHL as a mediator for the relationship between SES and health and (2) health as a mediator for the relationship between SES and AHL.
-Analyses are conducted in this way to account for use of AHL to prevent ill health and to treat ill health.
-As a preventive treatment, it is expected that previous AHL influences later health outcomes.
-As a treatment for ill health, it is expected that ill health at an earlier time point would predict AHL at a later time point.
-Analyses were broken down into a series of hypotheses representing each step in examining mediation processes.
+In Chapter 3, I conducted analyses in two steps.
+In the first step, I analyzed data from all three waves of MIDUS data using generalized linear mixed models (GLMMs) to test the relationship between SES and CAM use.
+In the second step, I used structural equation modeling (SEM) and generalized structural equal models (GSEM) to test two mediation models: (1) AHL as a mediator for the relationship between SES and health and (2) health as a mediator for the relationship between SES and AHL.
+I conducted analyses in this way to account, first, for use of AHL to prevent ill health and, second, to treat ill health.
+As a preventive treatment, I expect that previous AHL influences later health outcomes.
+As a treatment for ill health, I expect that ill health at an earlier time point predicts AHL at a later time point.
+I broke down the analyses into a series of hypotheses representing each step in examining mediation processes.
 I will review results relevant to each hypothesis below.
 
 -   *Hypothesis 1* SES is positively related to CAM use.
     -   *Hypothesis 1a* Income will be positively related to CAM use.
     -   *Hypothesis 1b* Education will be positively related to CAM use.
 
-In the GLMM results, income increased the odds of using manipulative treatments and was associated with an increase in the expected number of total CAMs used.
-These results were not replicated in the SEM analyses.
+In the GLMM results, income was associated with higher odds of using manipulative treatments and with a higher expected number of total CAMs used.
+However, the SEM analyses did not repliceate these results.
 There are a few distinctions between the two analyses that may account for this.
-First, the GLMM analyses used a larger sample of the data.
+First, the GLMM analyses used a larger sub-sample from the data.
 GLMM allowed for the retention of all observations that participated in at least two time points or waves.
-The SEM analysis was restricted to participants with complete data on all variables at all three waves.
+The SEM analysis was restricted to participants with complete data on all variables in all three waves.
 Second, the GLMMs tested associations between variables within the same time point whereas the SEM analysis tested associations between time points.
-For example, the association between income at wave 1 and manipulative treatments at waves 2 and 3 was tested in the SEM analyses.
+For example, the SEM analyses tested the association between income at wave 1 and manipulative treatments at waves 2 and 3.
 It appears that current income is a stronger predictor of AHL than previous income.
 Education, on the other hand, was consistently positively related to total CAMs used and each dimension of AHL except manipulative treatments in the GLMM analyses.
-These results were replicated in the SEM analyses, with education at wave 1 being related to AHL at waves 2 and 3 with the exception of manipulative treatments.
-It is notable that when a significant effect was observed in the GLMM analyses for income, it disappeared with the addition education to the model.
+The SEM analyses replicated these results, with education at wave 1 being related to AHL at waves 2 and 3 with the exception of manipulative treatments.
+It is notable that when the GLMM analyses showed a significant effect for income, it disappeared with the addition education to the model.
 This indicates that the effect of income on AHL can be attributed to the influence of education.
-
-Analyses provide weak support for *Hypothesis 1a* and strong support for *Hypothesis 1b*.
+Thus, the analyses provide weak support for *Hypothesis 1a* and strong support for *Hypothesis 1b*.
 Previous research has similarly found inconsistent patterns in CAM use by income, typically either no statistically significant relationship [@arcury2007; @hildreth2007] or a positive relationship [@mbizo2018; @clarke2015; @ni2002]. On the other hand, education has been found to be consistently positively related to CAM use [@barnes2008; @clarke2015; @honda2005; @mbizo2018; @upchurch2018].
+
+*Hypothesis 2* focused on the well-known relationship between SES and health outcomes.
 
 -   *Hypothesis 2* SES is positively related to health.
     -   *Hypothesis 2a* Income will be positively related to health.
@@ -135,56 +136,55 @@ Previous research has similarly found inconsistent patterns in CAM use by income
 
 SEM and GSEM analyses show that overall income is positively related to health.
 Recall that SEM and GSEM analyses utilized the longitudinal aspect of data, using income at wave 1 to predict health outcomes at waves 2 and 3.
-Income was associated with fewer chronic conditions and better self-reported health consistently.
+Income was consistently associated with fewer chronic conditions and better self-reported health.
 Income at wave 1 was negatively associated with chronic pain, high blood pressure, and depression and anxiety at wave 2 but not wave 3.
 This could indicate that the reach of income's effect on future health is limited.
-Education was similarly positively related to health outcomes.
+Education was also positively related to health outcomes.
 Education at wave 1 was related to fewer chronic conditions, better self-reported health, and lower incidence of chronic pain at waves 2 and 3.
 Education at wave 1 was negatively related to high blood pressure at wave 2.
 Finally, education at wave 1 was negatively related to having experienced depression or anxiety at wave 3, though this association was not present in GSEM results.
 
-These results support *Hypothesis 2* and are aligned with evidence from previous research that there is a socioeconomic gradient in health, with higher SES being associated with better health outcomes [@adler1994; @link2008; @lleras-muney2005; @bleich2012; @herd2007].
-These results further support fundamental causes theory, which states that socioeconomic status is a fundamental cause of health.
-Fundamental causes observes that the relationship between SES and health is enduring.
-This theory suggests that SES's enduring effect on health across historical and geographical contexts can be accounted for by the flexible resources associated with SES, namely sources of knowledge, money, power, prestige, and beneficial social connections, that can be leveraged in a variety of circumstances to favor better health.
+These results support *Hypothesis 2* and align with evidence from previous research that demonstrates a socioeconomic gradient in health, with higher SES being associated with better health outcomes [@adler1994; @link2008; @lleras-muney2005; @bleich2012; @herd2007].
+These results further support Fundamental Causes Theory (FCT), which states that socioeconomic status is a fundamental cause of health.
+FCT observes that the relationship between SES and health is enduring, possibly due to higher stress of living with greater resource scarcity, to epi-genetic effects, or to the ability of those with high SES to leverage resources such as knowledge, money, power, prestige, and beneficial social connections, to favor better health.
+However, incorporating insights from HLT suggests that lifestyle patterns may account for some of the SES-health relationship.
+In short, people with more resources (knowledge, money, etc.) may be more likely to engage in lifestyle behaviors that prevent disease and improve health and well-being.
+These lifestyle behaviors may include CAM use.
 
 -   *Hypothesis 3* CAM use will mediate the relationship between SES and health, with SES being positively related to CAM use, and CAM use being positively related to health.
 
     -   *Hypothesis 3a* CAM use will mediate the relationship between income and health, with income being positively related to CAM use, and CAM use being related to better health.
     -   *Hypothesis 3b* CAM use will mediate the relationship between education and health, with education being positively related to CAM use, and CAM use being related to better health.
 
-Income was consistently unrelated to AHL, thus *Hypothesis 3a* was not supported.
-AHL significantly mediated the relationship between education and health in 6 models.
+The mediation analyses in Chapter 3 illustrated, however, that income was consistently unrelated to CAM use, thus failing to support *Hypothesis 3a*.
+In contrast, AHL significantly mediated the relationship between education and health in 6 models, but the relationship did not support the prediction of HLT.
 Total CAMs used mediated the relationship between education and number of chronic conditions, chronic pain, and depression/anxiety.
 Alternative medicines mediated the relationship between education and number of chronic conditions.
 Physical and nutritional approaches mediated the relationship between education and number of chronic conditions and chronic pain.
 Across all 6 models, education at wave 1 is associated with better health at wave 3 and positively associated with AHL at wave 2.
-Consistently, however, AHL at wave 2 predicted worse health at wave 3.
-This pattern was observed in models without a significant mediation effect as well.
+However, AHL at wave 2 consistently predicted worse health at wave 3, suggesting that the effect of education is not due to a higher likelihood of using CAM among high-SES groups.
+Models without a significant mediation effect showed a similar pattern.
 
 -   *Hypothesis 4* Health will mediate the relationship between SES and CAM use, with SES being positively related to health, and individuals who report poor health being more likely to utilize CAMs.
 
     -   *Hypothesis 4a* Health will mediate the relationship between income and CAM use, with income being positively associated with health, and individuals with poor health being more likely to utilize CAMs.
     -   *Hypothesis 4b* Health will mediate the relationship between education and CAM use, with education being positively associated with health, and individuals with poor health being more likely to utilize CAMs.
 
-Results show limited support for *Hypothesis 4*.
+However, the results in Chapter 4 show limited support for *Hypothesis 4*.
 Three models showed a mediation effect for health in the relationship between SES and AHL.
 Chronic conditions mediated the relationship between income and use of physical and nutritional approaches, as well as the relationship between education and use of physical and nutritional approaches.
 Self-reported health mediated the relationship between education and use of physical and nutritional approaches.
-In each of these models, lower income and lower education at wave 1 were associated with worse health at wave 2, and worse health at wave 2 was associated with greater odds of using physical and nutritional approaches at wave 3.
-The indirect effects were negative.
-The direct and total effect in the income model were not significant.
+In each of these models, lower income and lower education at wave 1 were associated with worse health at wave 2, as expected, and worse health at wave 2 was associated with greater odds of using physical and nutritional approaches at wave 3, suggesting that individuals turn to CAM use to address pre-existing health concerns.
+The indirect effects were negative and the direct and total effects in the income model were not significant.
 The total and direct effects in the education models were positive and significant.
 Including health as a mediator thus reduces the total effect of education on the odds of using physical and nutritional approaches.
 
 ### SES as a Moderator of the CAM-Health Relationship
 
-Ch.
-4 examined SES as a moderator of the relationship between CAM and change in health status.
+Chapter 4 examined SES as a moderator of the relationship between CAM and change in health status.
 Previous research has demonstrated that poor health status is associated with increased use of CAM.
 While there is some evidence that SES may moderate behavior change in the event of a change in health status, studies on this topic have been limited.
-Ch.
-4 analyses tested two hypotheses:
+Chapter 4 analyses tested two hypotheses:
 
 -   *Hypothesis 5* A decline in health status will result in higher CAM use.
 -   *Hypothesis 6* SES will moderate the relationship between change in health status and change in health behavior.
@@ -192,14 +192,15 @@ Ch.
     -   *Hypothesis 6b* Those with higher levels of education are more likely to adopt new CAMs in the event of a health decline compared to those with lower levels of education.
 
 Results provided limited support for *Hypothesis 5*.
-A decline in health status was associated with higher CAM use in one model.
+A decline in health status was associated with higher CAM use in only one model.
+Results failed to support *Hypothesis 6a*, since there was no direct relationship between income and CAM use and no indirect effect in the SEM models.
 Results provided mixed support for *Hypothesis 6b*.
 Education moderated the relationship between change in health status and change in CAM use, though the effect was not always in the expected direction.
-In two models, college graduates adopted fewer CAMs when health declined.
+In two models, college graduates adopted fewer CAMs when their health declined.
 Respondents with a graduate or professional degree with the most likely to adopt new CAMs when diagnosed with new chronic conditions in wave 1 and 2 and wave 2 and 3 comparisons.
-In the wave 1 and 3 comparison, the slopes for those with less than a high school diploma and those with a graduate or professional degree were nearly identical, reflecting the highest likelihoods of adopting new CAMs when diagnosed with more chronic conditions compared to other education categories.
+In the wave 1 and 3 comparison, the slopes for those with less than a high school diploma and those with a graduate or professional degree were nearly identical, suggesting that both the most and the least educated were the most likely to adopt new CAMs when diagnosed with more chronic conditions compared to other education categories.
 
-# Contributions
+# Contributions and Implications for Future Research
 
 This dissertation research contributes to the study of CAMs and health lifestyles by identifying patterns of CAM utilization in a nationally representative sample.
 Exploratory and confirmatory factor analyses identified 4 dimensions of CAM.
@@ -209,11 +210,11 @@ Empirical tests have shown that the NCCIM domains do not reflect actual patterns
 Health lifestyle perspectives have emphasized the need to examine patterns of health behaviors, as opposed to examining behaviors individually.
 This research extends health lifestyle measurement to a virtually ignored domain of health behaviors, CAMs, to begin to understand alternative health lifestyles.
 
-Education is associated with most dimensions of AHL and with greater overall CAM use.
+This study finds that education is associated with most dimensions of AHL and with greater overall CAM use.
 Health lifestyles theory and human capital theory offer explanations as to why education has this effect.
 These theories speak to the possible roles of structure and agency in shaping AHLs.
 Health lifestyles research has found that health behaviors tend to coalescence into patterns (i.e. health lifestyles) that reflect social positions and group identities [@bourdieu1984; @cockerham2005; @lawrence2017; @saintonge2017].
-Health lifestyles theory incorporates the work of @weber1978 and @bourdieu1984 to explain the association between lifestyles and people from similar status and class backgrounds.
+Health lifestyles theory incorporates the work of @weber1978 and @bourdieu1984 to explain the association between lifestyles and status and class backgrounds.
 First, health lifestyles are based on choices available according to life chances.
 People of similar status share similar life chances, or opportunities and resources.
 Second, people of similar status share similar dispositions to act (i.e. habitus) and therefore tend to make similar choices.
@@ -224,52 +225,73 @@ Members of each group tend to make similar choices from the options available to
 While agency plays a role in health lifestyles theory, the explanation for education's influence on AHL is largely based on education's role as a structural variable.
 Human capital theory, on the other hand, emphasizes education's impact on health lifestyle through its ability to increase effective agency [@mirowsky2003]. @mirowsky2003 argue that education increases control over one's life by increasing both learned effectiveness and sense of personal control. Greater effective agency enables the construction of a healthier lifestyle. Lifestyles research tends to view health related behavior as a routinized feature of everyday life, carried out more or less unconsciously [@williams1995].
 In contrast, @mirowsky2003 see health behaviors as disparate, having nothing in common besides promoting health.
-In the authors' view it is the individual who intentionally constructs a lifestyle from disparate behaviors with the aim of achieving better health.
+In their view it is the individual who intentionally constructs a lifestyle from disparate behaviors with the aim of achieving better health.
 
 The previous paragraphs reviewed explanations for why people of similar education backgrounds develop similar health lifestyles, but why are the highly educated drawn toward healthy behaviors, and why CAM specifically?
 Educated individuals may be drawn to CAM due to CAM's position on personal responsibility and health.
 The generally held belief regarding health in late modernity is that health is a personal achievement gained though lifestyle choices [@clarke2003; @giddens1991].
 This puts pressure on the individual to make healthy lifestyle choices.
-As has been stated previously, the well-educated are in a better structural position to make healthy lifestyle choices.
-Furthermore, do to education's influence on sense of personal control [@mirowsky2003], the well-educated may be more motivated to purse better health through lifestyle choices.
-CAM's view on personal responsibility and control over health may resonate with the sense of control developed through education and with the belief that heath is a matter of personal achievement.
-CAM emphasizes the responsibility of the individual in healing and promoting wellness [@goldstein2003], and sense of control over health is cited by CAM users as a motivation for use [@greene2009].
-Users of CAM are viewed as active participants alongside practitioners in the healing process.
-This is in opposition to the passive-patient role expected in conventional medicine, and has been cited by users as a motivation for CAM use [@sirois2002].
+As I have stated previously, the well-educated are in a better structural position to make healthy lifestyle choices.
+Furthermore, due to education's influence on sense of personal control [@mirowsky2003], the well-educated may be more motivated to pursue better health through lifestyle choices.
+CAM's view on personal responsibility and control over health may resonate with the sense of control developed through education and with the belief that health is a matter of personal achievement.
+CAM emphasizes the responsibility of the individual in healing and promoting wellness [@goldstein2003], and CAM users cite sense of control over health as a motivation for use [@greene2009].
+Most types of CAM view users as active participants alongside practitioners in the healing process.
+This is contrary to the passive-patient role expected in conventional medicine, and has been cited by users as a motivation for CAM use [@sirois2002].
 
-This dissertation does not support the prediction generated by health lifestyles theory that AHL mediates the relationship between SES and health.
-This raises two points for consideration.
-First, results support fundamental causes theory, which states that SES is a fundamental cause of health [@link1995].
-The defining feature of a fundamental cause is access to flexible and widely transferable resources such as money, knowledge, power, prestige, and interpersonal resources that can be activated to avoid disease risk and influence outcomes when disease occurs.
-Fundamental causes are persistently linked to health due to a multitude of mechanisms.
+Future research may extend our understanding of alternative health lifestyle and its relationship with SES by identifying subgroups of CAM users.
+While this research found that education is associated with various dimensions of alternative health lifestyle, there are many people who do not use CAM at all.
+In early explorations of the MIDUS data, I observed subgroups of CAM users: those who do not use CAM at all, those who use many different CAMs, and clusters in between who use various combinations of CAMs.
+Examining the socioeconomic characteristics of subgroups of CAM users and non-users would contribute to our understanding of the alternative health lifestyles characteristic of different status groups.
+
+Income was associated with greater odds of using manipulative treatments, but was not associated with other dimensions of alternative health lifestyle.
+Future research might investigate whether there is a threshold effect with regard to income's influence on CAM use.
+This study measured income continuously.
+Previous research using categorical variables ....
+
+This dissertation does not support the HLT prediction that AHL mediates the relationship between SES and health.
+This raises two possibilities.
+First, results support FCT, which states that SES is a fundamental cause of health [@link1995].
+As a fundamental cause, SES influences the stress-level of daily life and access to flexible and widely transferable resources such as money, knowledge, power, prestige, and interpersonal resources that individuals can use to avoid disease risk and influence outcomes when disease occurs.
+SES as a fundamental cause is persistently linked to health due to multiple mechanisms.
 @link1995 warn against the focus on proximate causes of diseases, such as health behaviors, for a few reasons.
-First, single mechanism or proximate causes can explain the association between SES in health because a multitude of mechanisms are generate by the social conditions associated with SES.
-Second, the proximate causes associated with disease outcomes will change, yet the association will persist.
-Efforts would be better spent addressing the conditions that generate the proximate causes in the first place.
-This suggests that future research and efforts to address the socioeconomic gradient in health should focus on the social conditions associated with socioeconomic status.
+First, single mechanisms or proximate causes cannot explain the association between SES and health because the social conditions associated with SES have multiple implications for health.
+Second, even when the proximate causes associated with disease outcomes change, the association with SES persists.
+According to FCT, it would be better to address the social conditions associated with SES.
 
-The second point to consider is how health is defined.
+Secondly, it is important to consider the definition of health and the health outcomes that surveys like MIDUS measure.
 The socioeconomic gradient in health is actually concerned with the presence of sickness, not health.
-Fields such as biomedicine, public health, and epidemiology similarly define health as the presence or absence of disease.
-This dissertation measured health in the same way.
-However this is definition is narrow, and fails to account for aspects of physical as well as mental and social well-being.
-In contrast, CAM emphasizes wellness, a broader definition of health [@goldstein2003].
+Fields such as biomedicine, public health, and epidemiology similarly define health as the presence or absence of disease, and this dissertation measured health in the same way.
+However, this definition is narrow, and fails to account for aspects of physical as well as mental and social well-being.
+More specifically, the available measures of health outcomes in the MIDUS surveys do not correspond to the emphasis in CAM on wellness, which encompasses a broader definition of health [@goldstein2003].
 CAM users report general wellness as their motivation for CAM use [@rhee2018].
 The concept of wellness integrates multiple domains of health including physical, psychological (mental, emotional, intellectual), social, and spiritual [@schuster2004].
 Wellness "accommodates the idea of health as the ability to function and deal with internal/external stressors, as well as life quality among those with functional limitations, disabilities, or challenges [@schuster2004, p. 351]." Future studies on the role of AHL in the relationship between SES and health should examine differences in health taking the broader view of wellness.
 
+This dissertation revealed two interesting findings regarding SES as a moderator for changes in CAM use in the event of a change in health status.
+First, economic constraints do not shape access to CAM use among the chronically ill.
+In terms of HLT, this implies that an actors' choice to use CAMs when experiencing a new illness is not determined by their life chances.
+Under FCT, these findings indicate that CAM use is not a mechanism by which SES will produce differences in health among the chronically ill because the flexible resources associated with high SES do not determined its use.
+To the extent that CAMs are able to improve wellness among the chronically ill, they may prove helpful for reducing the effect of income on illness experience.
+Second, the development of a new chronic condition changes the effect of resources associated with education on CAM use.
+Notably, the lowest education groups are as likely as the highest education group to adopt CAMs when faced with a new chronic condition.
+This indicates that the advantages of higher education outlined in Human Capital Theory (human capital and learned effectiveness) are not important adopting CAMs among the chronically ill.
+Altogether, these findings indicate that CAMs are an accessible means for managing chronic illness.
+I would like to note that this does not imply that CAMs are a viable replacement for conventional treatment for chronic illness, and patterns of CAM use do not indicate that CAM is used this way.
+Conventional medicine use is high among CAM users [@sirois2008].
+
 # Limitations
 
-This dissertation was affected by several limitations of the data.
-First, many of the measurements lacked precision.
+There were several limitations of the data that influenced the results in this dissertation.
+First, many of the measurements lacked precision because of the data that the MIDUS surveys collected.
 Each of the CAM measures indicates whether the respondent used the CAM or class of CAMs at all in the past year, but does not measure frequency of use.
 This means that someone who meditated once in the past year and someone who meditated everyday appear the same in the data.
 Measures of frequency of use may offer a more detailed understanding of CAM utilization patterns and their relationship with various health outcomes.
 Similarly, measures of chronic illness simply indicated the presence of absence of disease.
-Measures of symptoms and symptom severity would have been useful in developing a picture of the effectiveness of AHL in addressing the experience of chronic illness.
+Measures of symptom frequency and severity would have been useful in developing a picture of the effectiveness of AHL in addressing the experience of chronic illness.
+Research cited in previous chapters indicates that CAM users are likely to use CAMs to address symptoms, not to cure an underlying condition.
 Second, the MIDUS data included a limited number of CAMs.
 A more complete list of CAMs would be beneficial for developing a valid measure of AHL.
-Third, this data lacked a measure of positive health or wellness.
+Third, these data lacked a measure of positive health or wellness.
 CAM emphasizes improving wellness over a narrower definition of health, and users have reported wellness as a motivation for CAM use.
-Fourth, while the longitudinal nature of the data allowed me to tease out the relationships between SES, AHL, and health over time, there was considerable attrition.
+Finally, while the longitudinal nature of the data allowed me to tease out the relationships between SES, AHL, and health over time, there was considerable attrition in the sample across waves.
 This may have impacted results.
