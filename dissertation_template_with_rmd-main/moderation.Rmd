@@ -1,24 +1,7 @@
 ---
-title: "Ch. 4 Socioeconomic Status as Moderator of the CAM-Health Relationship"
-output:
-  pdf_document: default
-  bookdown::pdf_document2: default
-header-includes:
-- \usepackage{float}
-- \usepackage{sectsty}
-- \usepackage{paralist}
-- \usepackage{setspace}\spacing{2}
-- \usepackage{fancyhdr}
-- \usepackage{lastpage}
-- \usepackage{dcolumn}
-- \usepackage{rotating, graphicx, longtable}
-- \extrafloats{200}
+title: ""
+bibliography: references.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-
-```
 
 ```{r, echo = FALSE}
 library(lme4)
@@ -42,20 +25,18 @@ library(semTable)
 library(rstatix)
 library(gtsummary)
 library(forcats)
-setwd("C:/Users/hanna/Documents/git/AHL/R/")
 load("waves123.long.rda")
 load("waves123.long.complete.rda")
 load("waves123.wide.rda")
 load("waves12.wide.complete.rda")
 load("waves23.wide.complete.rda")
 load("waves13.wide.complete.rda")
-setwd("C:/Users/hanna/Documents/git/AHL/R/dissertation_template_with_rmd-main")
 # Tutorials
 # https://lmudge13.github.io/sample_code/mixed_effects.html
 # Converting html to pdf https://github.com/gorkang/html2latex/
 ```
 
-```{r wave-comp-educ-recodes, echo=FALSE}
+```{r wave-comp-educ-recodes2, echo=FALSE}
 waves12.wide.complete$Education_W1.2 <- factor(waves12.wide.complete$Education_W1, 
                                               levels = c("College Grad", 
                                                          "Less than High School", 
@@ -208,134 +189,9 @@ waves13.chron.educ.3.se <- summary(waves13.chron.educ.3)$coef[,"Std. Error"]
 
 ```
 
-```{r model-waves12-SRH-mod-income, echo = FALSE, results='hide'}
+# Chapter 4 Socioeconomic Status as Moderator of the CAM-Health Relationship
 
-# Center diff SRH 
-waves12.wide.complete$DiffSRHCenter <- scale(waves12.wide.complete$DiffSRH, scale = FALSE)
-waves12.wide.complete$DiffSRHCenter <- as.numeric(waves12.wide.complete$DiffSRHCenter)
-# Create interaction term 
-waves12.wide.complete$DiffSRHxLogIncome <- NA
-waves12.wide.complete$DiffSRHxLogIncome <- waves12.wide.complete$DiffSRHCenter*waves12.wide.complete$LogIncomeCenter
-
-# Run income model 
-waves12.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves12.wide.complete)
-
-# Run income model 
-waves12.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves12.wide.complete)
-
-# Add controls 
-waves12.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
-
-# Extract standard errors
-waves12.SRH.income.1.se <- summary(waves12.SRH.income.1)$coef[,"Std. Error"]
-waves12.SRH.income.2.se <- summary(waves12.SRH.income.2)$coef[,"Std. Error"]
-waves12.SRH.income.3.se <- summary(waves12.SRH.income.3)$coef[,"Std. Error"]
-
-```
-
-```{r models-waves23-SRH-mod-income, echo = FALSE, results='hide'}
-
-# Center diff SRH 
-waves23.wide.complete$DiffSRHCenter <- scale(waves23.wide.complete$DiffSRH, scale = FALSE)
-waves23.wide.complete$DiffSRHCenter <- as.numeric(waves23.wide.complete$DiffSRHCenter)
-# Create interaction term 
-# waves23.wide.complete$DiffSRHxLogIncome <- NA
-waves23.wide.complete$DiffSRHxLogIncome <- waves23.wide.complete$DiffSRHCenter*waves23.wide.complete$LogIncomeCenter
-
-
-# Run income model 
-waves23.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves23.wide.complete)
-
-# Run income model 
-waves23.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves23.wide.complete)
-
-# Add Controls 
-waves23.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W2.2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
-
-# Extract standard errors
-waves23.SRH.income.1.se <- summary(waves23.SRH.income.1)$coef[,"Std. Error"]
-waves23.SRH.income.2.se <- summary(waves23.SRH.income.2)$coef[,"Std. Error"]
-waves23.SRH.income.3.se <- summary(waves23.SRH.income.3)$coef[,"Std. Error"]
-```
-
-```{r models-waves13-SRH-mod-income, echo = FALSE, results='hide'}
-
-# Center diff chron 
-waves13.wide.complete$DiffSRHCenter <- scale(waves13.wide.complete$DiffSRH, scale = FALSE)
-waves13.wide.complete$DiffSRHCenter <- as.numeric(waves13.wide.complete$DiffSRHCenter)
-# Center log income 
-waves13.wide.complete$LogIncomeCenter <- scale(waves13.wide.complete$LogIncome_W1, scale = FALSE)
-# Create interaction term 
-waves13.wide.complete$DiffSRHxLogIncome <- waves13.wide.complete$DiffSRHCenter*waves13.wide.complete$LogIncomeCenter
-
-# Run income model 
-waves13.SRH.income.1 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter, data = waves13.wide.complete)
-
-# Run income model 
-waves13.SRH.income.2 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter, data = waves13.wide.complete)
-
-
-# Add Controls
-waves13.SRH.income.3 <- lm(formula = DiffCams ~ DiffSRHCenter + LogIncomeCenter + DiffSRHCenter*LogIncomeCenter + Education_W1.2 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
-
-# Extract standard errors
-waves13.SRH.income.1.se <- summary(waves13.SRH.income.1)$coef[,"Std. Error"]
-waves13.SRH.income.2.se <- summary(waves13.SRH.income.2)$coef[,"Std. Error"]
-waves13.SRH.income.3.se <- summary(waves13.SRH.income.3)$coef[,"Std. Error"]
-```
-
-```{r models-waves12-SRH-mod-educ, echo = FALSE, results='hide'}
-
-# Run income model 
-waves12.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves12.wide.complete)
-
-# Run income model 
-waves12.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves12.wide.complete)
-
-# Add Controls
-waves12.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W2 + Sex_W1 + Race_W2 + Marital_W2 + HlthInsurance_W2 + HLSelf_W2 + Spiritual_W2 + Religion_W2, data = waves12.wide.complete)
-
-# Extract standard errors
-waves12.SRH.educ.1.se <- summary(waves12.SRH.educ.1)$coef[,"Std. Error"]
-waves12.SRH.educ.2.se <- summary(waves12.SRH.educ.2)$coef[,"Std. Error"]
-waves12.SRH.educ.3.se <- summary(waves12.SRH.educ.3)$coef[,"Std. Error"]
-```
-
-```{r models-waves23-SRH-mod-educ, echo = FALSE, results='hide'}
-
-# Run income model 
-waves23.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2, data = waves23.wide.complete)
-
-# Run income model 
-waves23.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2, data = waves23.wide.complete)
-
-# Add Controls 
-waves23.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W2.2 + DiffSRHCenter*Education_W2.2 + LogIncome_W2 + Age_W3 + Sex_W2 + Race_W2 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves23.wide.complete)
-
-# Extract standard errors
-waves23.SRH.educ.1.se <- summary(waves23.SRH.educ.1)$coef[,"Std. Error"]
-waves23.SRH.educ.2.se <- summary(waves23.SRH.educ.2)$coef[,"Std. Error"]
-waves23.SRH.educ.3.se <- summary(waves23.SRH.educ.3)$coef[,"Std. Error"]
-```
-
-```{r models-waves13-SRH-mod-educ, echo = FALSE, results='hide'}
-
-# Run income model 
-waves13.SRH.educ.1 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2, data = waves13.wide.complete)
-
-# Run income model 
-waves13.SRH.educ.2 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2, data = waves13.wide.complete)
-
-# Add Controls 
-waves13.SRH.educ.3 <- lm(formula = DiffCams ~ DiffSRHCenter + Education_W1.2 + DiffSRHCenter*Education_W1.2 + LogIncome_W1 + Age_W3 + Sex_W1 + Race_W3 + Marital_W3 + HlthInsurance_W3 + HLSelf_W3 + Spiritual_W3 + Religion_W3, data = waves13.wide.complete)
-
-# Extract standard errors
-waves13.SRH.educ.1.se <- summary(waves13.SRH.educ.1)$coef[,"Std. Error"]
-waves13.SRH.educ.2.se <- summary(waves13.SRH.educ.2)$coef[,"Std. Error"]
-waves13.SRH.educ.3.se <- summary(waves13.SRH.educ.3)$coef[,"Std. Error"]
-```
-
-# Questions and Hypotheses
+## Questions and Hypotheses
 
 In this chapter, I examine SES as a moderator of the relationship between changes in health and changes in CAM use. A change in health status, such as the development of a new chronic condition, represents a crucial point in predicting future health and wellness. Differences in response to a change in health status by SES may contribute to socioeconomic disparities in health and wellness across the lifespan as people develop chronic conditions [@margolis2013].
 
@@ -354,7 +210,7 @@ In sum, I will be testing the following hypotheses:
     -   *Hypothesis 6a* Those with higher incomes are more likely to adopt new CAMs in the event of a health decline compared to those with lower incomes.
     -   *Hypothesis 6b* Those with higher levels of education are more likely to adopt new CAMs in the event of a health decline compared to those with lower levels of education.
 
-# Data and Methods
+## Data and Methods
 
 In the following analyses, I compared values across waves in the following combinations: waves 1 and 2, waves 2 and 3, and waves 1 and 3. The *n* for each analysis varies depending on whether respondents participated in both of the included waves on all variables. The *n* for wave 1 and 2 comparisons is `r nrow(waves12.wide.complete)`, for wave 2 and 3 comparisons is `r nrow(waves23.wide.complete)`, and for wave 1 and 3 comparisons is `r nrow(waves13.wide.complete)`.
 
@@ -364,7 +220,7 @@ Continuous variables that I used to generate interaction terms (difference in ch
 
 All other variables are coded in the same way as described in the previous chapter. I used ordinary least squares regression to analyze the data.
 
-# Results
+## Results
 
 Descriptive statistics for each wave comparison sample can be found in Tables \ref{tab:waves12-descriptives-table} through \ref{tab:waves13-descriptives-table}.
 
@@ -497,11 +353,11 @@ waves13.wide.complete %>%
 
 ```
 
-## Sum of Chronic Conditions
+### Sum of Chronic Conditions
 
-### Income as Moderator
+#### Income as Moderator
 
-Tables \@ref{tab:waves12-chron-mod-income} through \ref{tab:waves13-chron-mod-income} present the OLS results for the sum of chronic conditions, and the results do not support *Hypothesis 6a*. Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions in any combination of waves. Figures \ref{fig:plot-waves12-chron-income-3} through \ref{fig:plot-waves13-chron-income-3} show plots of the regression lines for average income and 1 standard deviation above and below the mean to give a general sense of the interaction. There is a main effect for difference in chronic conditions on difference in CAMs in the wave 1 and 2 comparison, which suggests more CAM use in response to an increase in chronic health conditions among individuals with higher income (*b* = `r round(waves12.chron.income.1$coefficients[2],3)`, SE = `r round(waves12.chron.income.1.se[2],3)`, *p* \< 0.001). This offers some support for *Hypothesis 5*, which posited that individuals would use more CAMs in response to a new diagnosis or worsening health status. However, this effect does not appear in other wave comparisons.
+Tables \ref{tab:waves12-chron-mod-income} through \ref{tab:waves13-chron-mod-income} present the OLS results for the sum of chronic conditions, and the results do not support *Hypothesis 6a*. Income does not moderate the relationship between changes in total CAMs used and differences in chronic conditions in any combination of waves. Figures \ref{fig:plot-waves12-chron-income-3} through \ref{fig:plot-waves13-chron-income-3} show plots of the regression lines for average income and 1 standard deviation above and below the mean to give a general sense of the interaction. There is a main effect for difference in chronic conditions on difference in CAMs in the wave 1 and 2 comparison, which suggests more CAM use in response to an increase in chronic health conditions among individuals with higher income (*b* = `r round(waves12.chron.income.1$coefficients[2],3)`, SE = `r round(waves12.chron.income.1.se[2],3)`, *p* \< 0.001). This offers some support for *Hypothesis 5*, which posited that individuals would use more CAMs in response to a new diagnosis or worsening health status. However, this effect does not appear in other wave comparisons.
 
 ```{r waves12-chron-mod-income, echo = FALSE, results='asis'}
 # Create regression results table
@@ -620,7 +476,7 @@ interact_plot(waves13.chron.income.3, pred = DiffChronCenter, modx = LogIncomeCe
               legend.main = "Logged Income")
 ```
 
-### Education as Moderator
+#### Education as Moderator
 
 Findings on whether education moderates the relationship between difference in chronic conditions and difference in total CAMs used were mixed between wave comparisons. Looking at differences between waves 1 and 2, we see that difference in chronic conditions has a significant positive relationship with difference in number of CAMs used (See Table \ref{tab:waves12-chron-mod-educ}; *b* = `r round (waves12.chron.educ.1$coefficients[2],3)`, SE = `r round(waves12.chron.educ.1.se[2],3)`, *p* \< 0.001). This supports *Hypothesis 5*. There is no significant difference in moderation effects for different levels of education compared to those with a college degree, though all slopes are positive indicating greater CAM use when new chronic conditions are developed (See Figure \ref{fig:plot-waves12-chron-educ-3}).
 
@@ -757,11 +613,11 @@ plot_model(waves13.chron.educ.3,
 
 ```
 
-## Self-Reported Health
+### Self-Reported Health
 
-There were no significant relationships between changes in SRH and changes in total CAMs used in any between-wave comparisons. Results are available in Appendix B.
+There were no significant relationships between changes in SRH and changes in total CAMs used in any between-wave comparisons. Results are available in Appendix C.
 
-# Conclusion
+## Conclusion
 
 This chapter examined the relationship between change in health status and change in use of CAM. Results provided some support for *Hypothesis 5*. A change in chronic conditions was positively related to a change in number of CAMs used in some wave comparisons. Results did not support *Hypothesis 6a*. Income does not moderate the relationship between change in health and change in CAM use. Support for *Hypothesis 6b* was mixed. The relationship between difference in chronic conditions and change in CAMs use varied across levels of education; however, this was not always in the expected direction.
 

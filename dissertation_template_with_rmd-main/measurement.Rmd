@@ -1,24 +1,9 @@
 ---
-title: "Ch. 2 Alternative Health Lifestyle Measurement"
-output:
-  pdf_document:
-    latex_engine: xelatex
-header-includes:
-- \usepackage{float}
-- \usepackage{sectsty}
-- \usepackage{paralist}
-- \usepackage{setspace}\spacing{2}
-- \usepackage{fancyhdr}
-- \usepackage{lastpage}
-- \usepackage{dcolumn}
-- \usepackage{rotating, graphicx, longtable}
-- \extrafloats{200}
-always_allow_html: yes
+title: ""
 bibliography: references.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```{r, echo = FALSE}
 library(foreign)
 library(expss)
 library(Hmisc)
@@ -61,6 +46,8 @@ library(DescTools)
 library(foreach)
 options(scipen = 999)
 ```
+
+# Chapter 2: Alternative Health Lifestyle Measurement
 
 This chapter addresses the question of whether complementary and alternative medicines consitute a health lifestyle. Complementary and alternative medicine (CAM) encompasses a wide array of practices aimed at promoting health and wellness. This variation has led to debate about how to define CAM. CAM is often defined as treatment and prevention practices outside of biomedicine, and that are typically not offered in hospitals [@barrett2003; @dcrus2005; @gale2014; @meeker2000; @ni2002; @sointu2021]. On the other hand, CAM is increasingly being taught as part of medical school curriculum and integrative medicine is becoming popular within biomedical institutions [@coulter2004; @thorne2002; @tilden2004].
 
@@ -181,9 +168,8 @@ kable(domains.df,
                   "Ayers and Kronenfeld (2010)"),
       caption = "CAM Classifications According to Institutions and Previous Research") %>%
   kable_classic(html_font = "CMU Serif") %>% 
-  kableExtra::landscape()
-
-#kable_styling(latex_options = "scale_down")
+  kableExtra::landscape() %>%  
+  kable_styling(latex_options = "scale_down")
 ```
 
 ```{r, echo = FALSE, results = 'hide'}
@@ -572,13 +558,13 @@ all.freqs[,1] <- NULL
 all.freqs.ordered <- arrange(all.freqs, M1.Frequency)
 ```
 
-# Data
+## Data
 
 The data for the exploratory factor analysis come from Wave 1 of the Midlife in the United States (MIDUS) dataset. These data were collected between 1995 and 1996. The analyses include all cases with no missing values on the complementary and alternative medicine (CAM) items (*n* = 6157).
 
 MIDUS includes 15 questions about whether respondents have used a specific type of CAM in the previous 12 months. These CAMs include: biofeedback, hypnosis, acupuncture, energy healing, homeopathy, imagery techniques, vitamins, herbal therapy, massage, special diet, chiropractic, relaxation and meditation techniques, exercise and movement therapy, prayer, and spiritual healing.In the first wave, respondents indicated simply whether they had used each CAMs in the previous 12 months. At Waves 2 and 3, respondents indicated the frequency of use (a lot, often, sometimes, rarely, or never). To maintain consistency between waves, I dichotomized responses at Waves 2 and 3 so that 0 indicates that the respondent never used the CAM in the past year and 1 indicates any use of the CAM in the past year.
 
-## Measures Description
+### Measures Description
 
 Descriptive statistics for each CAM item are presented in Table \ref{tab:ch1-descriptives}. At Wave 1, biofeedback was the least used CAM (0.8%), followed by hypnosis (1.2%), acupuncture (1.2%), and energy healing (1.5%). Fewer than 100 people report using each of these CAMs. The most frequently utilized CAMs were prayer or spiritual healing (30%), exercise and movement therapy (17.5%), relaxation techniques (13.2%), and chiropractic care (12.0%). At Wave 2, special diet (34.5%) is one of the most frequently reported CAMs. Note however that the diet measure changed between Waves 1 and 2. The original survey question asks respondents whether they have used a special diet to treat health problems or promote wellness. At Wave 2, the wording asks about more specific diets, such as vegetarian, macrobiotic, or Ayurvedic diets. Other frequencies at Waves 2 and 3 are to Wave 1.
 
@@ -593,7 +579,8 @@ kable(all.freqs.ordered,
                     "Wave 3 Percent"),
       caption = "Descriptive Statistics for CAM Use in the Last 12 Months at each Wave") %>%
   kable_classic(html_font = "CMU Serif") %>% 
-  kableExtra::landscape() %>% 
+  kableExtra::landscape() %>%
+  kable_styling(latex_options = c("striped", "scale_down")) %>% 
   add_footnote(c("Wave 1 n = 6157", "Wave 2 n = 3834", "Wave 3 n = 2675"), notation="number") 
 ```
 
@@ -614,7 +601,7 @@ table.pray.spirit.c %>%
 
 The surveys also separated prayer and spiritual healing. Upon inspection of the data, I found that nearly all respondents who reported using spiritual healing also reported using prayer. Tables 3-5 illustrate cross-tabulations of prayer and spiritual healing in each MIDUS wave. Out of 196 respondents that report using spiritual healing, only 11 (5.6%) report using spiritual healing but not prayer for health or healing purposes. Given that these are survey data, it is impossible to know exactly how the respondents interpreted the questions and how their interpretations affected the data, but it appears that the two questions measured the same behavior for most respondents. As a result, I combined these variables into a prayer/spiritual healing variable that codes all respondents that report using prayer or spiritual healing as 1.
 
-# Method
+## Method
 
 This research utilizes factor analysis to examine the underlying factor structure of CAM utilization. Factor analysis is useful for identifying how groups of variables forms patterns and vary together [@child2006]. It is a statistical technique that reduces a large number of variables into a smaller number of factors. Factor analysis extracts the common variance among multiple variables into a common factor score, and the factor scores operate as an index that can be used for further analysis. In this section, I present factor analysis results. First, I present results from the exploratory factor analysis conducted using the Wave 1 data. Second, I present results from the confirmatory factor analysis conducted on the solution found in the exploratory factor analysis using Wave 2 and Wave 3 data.
 
@@ -642,9 +629,9 @@ rownames(het.mat.a) <- c("Acupuncture", "Biofeedback", "Chiropractic", "Energy H
 corrplot(het.mat.a, method = "number", number.cex = .5, order = "hclust", tl.col = "black")
 ```
 
-# Exploratory Factor Analysis
+## Exploratory Factor Analysis
 
-## Assumption Testing
+### Assumption Testing
 
 ```{r, echo = FALSE, results='hide'}
 # This code chunk explores inter-item correlations 
@@ -700,7 +687,7 @@ KMO(het.mat.a)
 kmo <- round(KMO(het.mat.a)$MSA, 2)
 ```
 
-The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Tetrachoric correlations between CAM items can be see in Figure \ref{fig:tetra-corr}. Next, I examined the Kaiser-Meyer-Olkin measure of sampling adequacy, which was `r kmo`, and therefore above the recommended value of at least 0.6. The Kaiser-Meyer-Olkin (KMO) test is a measure of data factorability. The KMO statistic indicates the proportion of variance that might be caused by underlying factors [@kaiser1974]. Next, I tested factorability with Bartlett's Test of Sphericity [@bartlett1950]. Bartlett's Test tests the null hypothesis that the observed correlation matrix is an identity matrix. An identity matrix consists of 1s on the diagonals and 0s in all other calls. An identity correlation matrix indicates that the variables are unrelated and not suitable for factor analysis. The Bartlett's Test of Sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* \<.01) indicating that the correlations between variables are higher than would be expected by chance.
+The factorability of the 14 CAM items was examined. First, it was observed that all items correlated with at least one other item with a correlation of .3, suggesting factorability. Tetrachoric correlations between CAM items can be see in Figure \ref{fig:tetra-corr}. Next, I examined the Kaiser-Meyer-Olkin measure of sampling adequacy, which was `r kmo`, and therefore above the recommended value of at least 0.6. The Kaiser-Meyer-Olkin (KMO) test is a measure of data factorability. The KMO statistic indicates the proportion of variance that might be caused by underlying factors [@kaiser1974]. Next, I tested factorability with Bartlett's Test of Sphericity [@bartlett1950]. Bartlett's Test tests the null hypothesis that the observed correlation matrix is an identity matrix. An identity matrix consists of 1s on the diagonals and 0s in all other cells. An identity correlation matrix indicates that the variables are unrelated and not suitable for factor analysis. The Bartlett's Test of Sphericity was significant ($\chi$^2^(`r bartlett$df`) = `r bart.chisq`, *p* \<.01) indicating that the correlations between variables are higher than would be expected by chance.
 
 ```{r, echo = FALSE, results = 'hide', fig.show='hide'}
 # This code chunk runs a parallel test 
@@ -717,7 +704,7 @@ sum(parallel.all.cams$fa.values > 1.0)
 sum(parallel.all.cams$fa.values > .7)
 ```
 
-## Results
+### Results
 
 ```{r, echo = FALSE, results='hide'}
 # 6 factor maximum likelihood solution had the best fit statistics above. Fit statistics are the same for all rotation methods. Check factor loadings for all rotation methods.
@@ -805,7 +792,7 @@ fa.fit.statistics[1, "RMSEA"] <- round(drop.bio.4.ml.cluster$RMSEA[1], 3)
 
 I ran one through five factor models using various extraction and rotation methods. While the five factor maximum likelihood solutions fit the data best, the four factor maximum likelihood solution with cluster rotation fit the data nearly as well and produced more interpretable factors. As a result, I chose the four factor maximum likelihood solution with cluster rotation the final measurement model. The four factors in the final model account for `r round(drop.bio.4.ml.cluster$Vaccounted["Cumulative Var","ML3"],2)` of the variance in the data.
 
-I evaluated model fit using the $\chi$^2^ statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). In the case of factor analysis, a significant $\chi$^2^ indicates a poor fitting model. However, the $\chi$^2^ is sensitive to large sample sizes and may erroneously indicate that a model is a poor fit (Byrne 1989). The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. The $\chi$^2^ for the model presented here indicates poor fit $\chi$^2^(`r round(drop.bio.4.ml.cluster$dof, 3)`)=`r round(drop.bio.4.ml.cluster$STATISTIC, 3)`, *p*\<.001. I use a combination of absolute and relative fit indices to assess model fit (Chen 2007). The comparative fit index (CFI) and Tucker-Lewis index (TLI) are relative fit indices that compare the fit of the hypothesized model to a baseline model (i.e. the worst fitting model). Values above 0.90 indicate good fit. The root mean square error of approximation (RMSEA) is an index of the difference between the observed covariance matrix per degrees of freedom and the hypothesized covariance matrix. Values below 0.08 indicate good fit. The standardized root mean square residual (SRMR) an index of the average of standardized residuals between the observed and hypothesized covariance matrix. Values below 0.08 indicate good fit. The CFI (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`), TLI (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`), and RMSR (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`) indicate good model fit. The CFI is above the desired cutoff of 0.90 . The TLI is just below the desired cutoff of 0.90 However, the RMSEA is slightly higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`).
+I evaluated model fit using the $\chi$^2^ statistic, root mean square of approximation (RMSEA), root mean square residual (RMSR), comparative fit index (CFI), and Tucker-Lewis index (TLI). In the case of factor analysis, a significant $\chi$^2^ indicates a poor fitting model. However, the $\chi$^2^ is sensitive to large sample sizes and may erroneously indicate that a model is a poor fit (Byrne 1989). The normed $\chi$^2^ ($\chi$^2^/*df*) minimizes this sensitivity. The $\chi$^2^ for the model presented here indicates poor fit $\chi$^2^(`r round(drop.bio.4.ml.cluster$dof, 3)`)=`r round(drop.bio.4.ml.cluster$STATISTIC, 3)`, *p*\<.001. I use a combination of absolute and relative fit indices to assess model fit (Chen 2007). The comparative fit index (CFI) and Tucker-Lewis index (TLI) are relative fit indices that compare the fit of the hypothesized model to a baseline model (i.e. the worst fitting model). Values above 0.90 indicate good fit. The root mean square error of approximation (RMSEA) is an index of the difference between the observed covariance matrix per degrees of freedom and the hypothesized covariance matrix. Values below 0.08 indicate good fit. The standardized root mean square residual (SRMR) an index of the average of standardized residuals between the observed and hypothesized covariance matrix. Values below 0.08 indicate good fit. The CFI (CFI=`r round(drop.bio.4.ml.cluster.cfi, 3)`), TLI (TFI= `r round(drop.bio.4.ml.cluster$TLI, 3)`), and RMSR (RMSR= `r round(drop.bio.4.ml.cluster$rms, 3)`) indicate good model fit. The CFI is above the desired cutoff of 0.90. The TLI is just below the desired cutoff of 0.90 However, the RMSEA is slightly higher than the desirable 0.08 cutoff (RMSEA= `r round(drop.bio.4.ml.cluster$RMSEA[1],3)`).
 
 ```{r, echo = FALSE}
 # Import organized loadings table from excel
@@ -883,7 +870,7 @@ alpha(f2)
 
 Next I assess the validity and reliability of the four factor. Construct validation refers to whether a test reasonably measures the intended theoretical construct and can be tested through convergent and discriminant validity [@brown2015]. When testing constructs developed with factor analysis, convergent validity refers to whether the observed measures are interrelated, and discriminant validity refers to whether the theoretical factors are distinct and not intercorrelated [@brown2015]. Factor loadings are an indicator of convergent validity. If all factor loadings are above 0.5, the factor is considered to have convergent validity. All items in the current four factor model load above 0.5 on the appropriate factors, indicating the four factors have convergent validity. A model demonstrates discriminant validity when all items load strongly onto only one factor. All items in the four factor model load strongly (above 0.5) on only one factor. This indicates that all items loaded onto each factor measure the same underlying theoretical construct and each factor measures a distinct underlying theoretical construct.
 
-Reliability is tested with Cronbach's alpha. Cronbach's alpha is `r CronbachAlpha(f1)` for Mind-Body Medicine, `r CronbachAlpha(f2)` for Alternative Medical Systems, `r CronbachAlpha(f3)` for Physical and Nutritional Approaches, and `r CronbachAlpha(f4)`. This is unsurprising as Cronbach's alpha is known to underestimate the internal consistency of scales with fewer than ten items [@herman2015]. The Spearman-Brown prophecy formula (SB formula) is used to calculate the reliability of a scale when the number of items is changed [@devet2017] that has been used in previous research to justify use of scales with low Cronbach's alpha due to a small number of items [@vangriethuijsen2015]. The SB formula shows that slight increases in the number of items would lead to acceptable values for Cronbach's alpha values. Adding 2.34 items to the mind-body factor, 2.08 items to the alternative medical systems factor, 3.26 items to the physical and nutritional approaches factor, and 3.47 items to the manipulative treatments factor would led acceptable Cronbach's alpha values. Thus, the low Cronbach's alpha scores can be attributed to the small number of items and do not raise concerns about reliability of the factors.
+Reliability is tested with Cronbach's alpha. Cronbach's alpha is `r CronbachAlpha(f1)` for Mind-Body Medicine, `r CronbachAlpha(f2)` for Alternative Medical Systems, `r CronbachAlpha(f3)` for Physical and Nutritional Approaches, and `r CronbachAlpha(f4)`. This is unsurprising as Cronbach's alpha is known to underestimate the internal consistency of scales with fewer than ten items [@herman2015]. The Spearman-Brown prophecy formula (SB formula) is used to calculate the reliability of a scale when the number of items is changed [@devet2017], and has been used in previous research to justify use of scales with low Cronbach's alpha due to a small number of items [@vangriethuijsen2015]. The SB formula shows that slight increases in the number of items would lead to acceptable Cronbach's alpha values. Adding 2.34 items to the mind-body factor, 2.08 items to the alternative medical systems factor, 3.26 items to the physical and nutritional approaches factor, and 3.47 items to the manipulative treatments factor would led acceptable Cronbach's alpha values. Thus, the low Cronbach's alpha scores can be attributed to the small number of items and do not raise concerns about reliability of the factors.
 
 ## Confirmatory Factor Analysis
 
@@ -1108,7 +1095,7 @@ kable(loadings.table,
 
 To examine the reliability of the factors that the exploratory factor analysis identified, I loaded the CAMs at waves 1, 2, and 3 on the 4 factors: Mind-Body Medicine, Alternative Medical Systems, Physical and Nutritional Approaches, and Manipulative Treatments. Standardized loadings are reported in Table \ref{tab:cfa-loadings-table}. Nearly all CAMs have loadings above 0.50 on the appropriate factor. The exception is special diet, which loads at 0.42 on Physical and Nutritional Approaches at wave 2.
 
-# Conclusion
+## Conclusion
 
 Results from the exploratory factor analysis revealed a 4-factor structure underlying CAM utilization. Thirteen CAMs loaded independently onto the identified factors. The four factors include Mind-Body Medicine, Alternative Medicine Systems, Physical and Nutritional Approaches, and Manipulative Treatments. Mind-Body Medicine included meditation and relaxation techniques, prayer and spiritual healing, energy healing, imagery techniques, and hypnosis. Alternative Medical Systems included homeopathy, herbal therapy, and acupuncture. Physical and Nutritional Approaches included vitamins, exercise and movement therapy, and special diet. Confirmatory factor analyses across all three waves of the MIDUS data confirmed that the four factor solution fit the observed data well.
 

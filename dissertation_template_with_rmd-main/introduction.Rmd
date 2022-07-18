@@ -1,5 +1,5 @@
 ---
-title: "Ch. 1 Introduction"
+title: ""
 output:
   pdf_document:
     latex_engine: xelatex
@@ -13,919 +13,150 @@ header-includes:
 - \usepackage{dcolumn}
 - \usepackage{rotating, graphicx, longtable}
 - \extrafloats{200}
-editor_options: 
-  markdown: 
-    wrap: 72
-bibliography: references.bib
 ---
 
-# Introduction
-
-The association between greater socioeconomic resources and better
-health is well documented. Higher socioeconomic status is associated
-with better self-reported health [@link2008; @meyer2014], better mental
-health [@hill2014; @ross2006], lower mortality risk [@bosworth2018;
-@duncan2002; @laaksonen2007; @link2008; @lleras-muney2005; @ross2012],
-lower infant mortality rates [@bleich2012], lower rates of obesity
-[@bleich2012; @cutler2006; @cutler2010; @mirowsky1998; @ross1999], fewer
-chronic conditions [@bleich2012; @herd2007; @link2008], and fewer
-functional limitations [@herd2007]. Health behaviors are responsible for
-part of this association [@adler1994; @adler2008; @brunello2016;
-@burdette2008; @lantz1998; @lantz2001]. Higher socioeconomic status is
-associated with increased physical activity, better diet, healthier
-alcohol consumption, non-smoking, more frequent seatbelt use,
-utilization of preventive healthcare, and use of smoke detectors
-[@bleich2012; @cutler2010; @meyer2014; @pampel2010]. The study of health
-behaviors has made significant contributions to our understanding of
-associations between social statuses and health [@pampel2010], and there
-is now substantial evidence that health behaviors cluster to form
-discernible health lifestyles [@andrews2017; @berrigan2003; @burke1997;
-@cockerham2007; @dodd2010; @mize2017; @patterson1994; @saintonge2017;
-@schuit2002; @devries2008].
-
-These health lifestyles are patterns of health behaviors that co-occur
-more than would be expected if health behaviors were independent
-[@berrigan2003]. Studies utilizing a variety of methods to identify
-behavior patterns have found that health behaviors cluster into health
-lifestyles, and sometimes do so in counterintuitive ways [@andrews2017;
-@burdette2017; @dodd2010; @hill2007; @lawrence2017; @mize2017;
-@mollborn2014; @patterson1994; @saintonge2017; @devries2008]. Recent
-latent class analyses of multiple health behaviors have confirmed the
-existence of distinct, multi-dimensional health lifestyles
-[@burdette2017; @lawrence2017; @mize2017; @saintonge2017]. Within this
-new research stream, however, the study of health lifestyles has largely
-focused on behaviors of traditional concern to public health. The most
-common combination of behaviors within lifestyles research is alcohol
-use, smoking, diet, and exercise. An entire subset of health behaviors,
-the use of complementary and alternative medicines (CAMs), has been
-virtually ignored.
-
-In sum, SES consistently explains disparities in health outcomes, and
-part of this association is explained by variations in health behaviors.
-Recent studies have found that SES is related to patterns of health
-behavior, but have failed to examine SES patterns in CAM use. As will be
-discussed below, previous research has identified associations between
-SES and overall CAM use, however SES associations with patterns of CAMs
-have been neglected. The overarching research question addressed by this
-dissertation is whether CAMs form a lifestyle that contributes to the
-SES-health relationship. Chapter 2 addresses the question of whether
-patterns in CAM use form a discernible alternative health lifestyle.
-Chapter 3 addresses the question of whether alternative health lifestyle
-is associated with SES, and whether alternative health lifestyle
-contributes to better health for those with higher SES. Chapter 4
-addresses the question of whether SES moderates behavioral response to a
-change in health status, a critical moment in shaping future health and
-wellness. I will address these questions using data from the Midlife in
-the United States (MIDUS) study, a longitudinal, nationally
-representative data set of U.S. adults.
-
-In the sections below, I review research on CAM use, its association
-with socioeconomic status, its association with health, and motivations
-for using CAMs. Following a review of relevant theoretical perspectives
-on health lifestyles and SES, I discuss the contributions of this
-dissertation to the literature on health lifestyles and SES.
-
-# General CAM Use
-
-About a third of U.S. adults report the use of any CAMs [@barnes2008;
-@clarke2015], and CAM use appears to be increasing with younger cohorts
-[@kessler2001]. @clarke2015 found that out of the 20 CAM behaviors
-included in the National Health Interview Survey (NHIS) CAM Supplement
-collected in 2002, 2007, and 2012, the use of nonvitamin, nonmineral
-dietary supplements was highest across all three time points, followed
-by deep breathing exercises. The use of yoga, tai chi, and qi gong
-became more popular over time, and meditation ranked in the top 5 most
-popular approaches at each time point. The use of other CAMs, including
-Ayurveda, biofeedback, guided imagery hypnosis, and energy health
-therapy, have not changed significantly over time.
-
-The National Center for Complementary and Integrative Medicine (NCCIM)
-classifies CAMs into five broad categories: biologically based therapies
-(including herbal medicine, vitamin use, and special diets), alternative
-medical systems (including acupuncture and homeopathy), manipulative
-body-based therapies (including massage therapy, exercise and movement
-therapies, and chiropractic therapy), mind-body therapies (including
-hypnosis, imagery techniques, and meditation), and energy healing
-therapies (use of hands to manipulate and balance energy fields).
-@barnes2008 found that 19.9% of adults report using biologically based
-therapies, 19.2% report using mind-body therapies, 3.4% report using
-alternative medical systems, 0.5% report using energy healing therapy,
-and 15.2% report using manipulative and body-based therapies.
-
-# Trends in CAM Use by SES
-
-Those with higher levels of education tend to use CAMs at higher rates
-[@barnes2008; @clarke2015; @honda2005; @mbizo2018; @ni2002;
-@upchurch2018]. For example, @clarke2015 found that 15.6%-18.8% of
-adults with less than a high school diploma reported CAM use in 2002,
-2007, and 2012 surveys. In contrast, 24.4%-28.1% of adults with a high
-school diploma or GED, 35.6-41.3% of adults with some college education,
-and 42.1%-46.7% of adults iwth a college degree or high reported CAM use
-[@clarke2015]. @barnes2008 reported the following rates of CAM use in
-2007 for six educational categories: 20.8% of adults with less than high
-school, 31.0% of adults with a high school diploma or equivalent, 45% of
-adults with some college, 47.2% of adults with an Associates degree,
-49.6% of those with a Bachelors, and 55.4% of those with a Masters,
-Doctorate, or Professional degree. @hildreth2007 also found that use of
-any CAMs increased by level of education; however, among those that used
-any CAM in the past year, the authors found a threshold effect. Only
-those with a college degree or more used significantly more types of
-CAMs compared to those without a high school diploma.
-
-Findings on the rate of CAM use by income have been mixed across
-studies. @mbizo2018 found that significant differences in overall CAM
-use across five income categories. Overall CAM use increased by income
-across the first four income categories; however, the highest income
-category (\$75,000+) only reported greater use than the lowest income
-category (\<\$20,000). Among those who have utilized CAMs in the past
-year, @hildreth2007 did not find a significant association between
-income and any CAM use or number of CAMs utilized. @clarke2015 found
-that CAM use was higher for non-poor adults (measured as poverty-income
-ratio), followed by near poor, and lowest among the poor across 2002,
-2007, and 2012. CAM use ranged from 20.6%-26.6% among the poor, from
-25.5%-27.7% among the near poor, and 36.8%-40.3% among the not poor.
-Similarly, @ni2002 found that those making less than \$20,000 per year
-reported less CAM use than those making \$20,000 per year or more.
-
-# CAM Efficacy
-
-Evidence of efficacy varies across CAMs and across health conditions.
-CAM efficacy is important because if CAMs are not effective for
-improving health then they are unlikely to mediate the SES-health
-relationship. In the following sections, I will review evidence of CAM
-efficacy for four categories of CAMs that I can measure using the MIDUS
-surveys. (These categories reflect the factors identified in an
-exploratory factor analysis that will be reviewed in Chapter 2).
-Categories of CAMs include mind-body medicine, alternative medical
-systems, physical and nutritional approaches, and manipulative
-treatments.
-
-## Mind-Body Medicines
-
-Mind-body medicines or practices represent an array of techniques that
-aim to connect the body and mind to improve health and wellness.
-Mind-body medicines include prayer or spiritual healing, energy healing,
-imagery techniques, relaxation and meditation techniques, and hypnosis.
-
-The MIDUS surveys ask respondents if they have used energy healing in
-the past year. Evidence for the efficacy of energy healing is weak. For
-example, Reiki is a form of energy healing that involves noninvasive,
-nonmanipulative touch. It is performed by a practitioner who has been
-"attuned" by a Reiki master. When performed, the practitioner lightly
-lays their hands on or just above the body, working in a slow
-progression about the body. In a review of clinical studies conducted
-between 1998 and 2016, @mcmanus2017 identified 13 studies that compared
-the effects of Reiki to a sham Reiki/placebo. Eight of the 13 studies
-found that Reiki was more effective than a placebo for producing
-physical relaxation [@witte2001; @baldwin2006; @baldwin2008;
-@díaz-rodríguez2011; @salles2014] and for reducing pain, depression, and
-anxiety among chronically ill patients [@dressen1998]. Studies have also
-found that Reiki decreases depression among older adults living in
-nursing homes compared to a placebo and control group [@erdogan2016].
-
-The MIDUS surveys also ask about use of imagery techniques, also known
-as guided imagery or mental imagery. Imagery techniques involve
-imagining a scene or experience in the "mind's eye" absent external
-stimuli, and are often used to reduce stress [@clarke2015]. Experimental
-studies have also found imagery techniques can reduce pain perception
-and increase pain tolerance [@milling2003; @alden2001]. Studies on the
-effectiveness of imagery techniques for treating asthma symptoms have
-yielded mixed results. @freeman2005 found that biologically target
-imagery techniques resulted in significant improvement across several
-asthma related outcomes, while @epstein2004 found no significant effect.
-In other words, the use of imagery techniques may or may not mediate the
-SES-health relationship, but its effects are likely weak.
-
-Meditation is a Buddhist practice that aims to increase awareness of the
-present moment and one's experience. It has been investigated as a
-possible treatment for chronic pain, showing promising evidence of its
-effectiveness. In a randomized controlled trial of 282 participants,
-@morone2017 found that an 8 week mindfulness based stress reduction
-program effectively reduced self-reported pain disability among adults
-with low back pain, though the effects of the program did not hold at
-the 6 month follow-up. @garland2014 tested the effectiveness of an 8
-week mindfulness intervention program for treating chronic pain in
-opioid-abusing patients in a randomized controlled trial. The authors
-found that the treatment groups experienced significantly lower pain
-severity and pain interference, and that the mindfulness intervention
-was more effective than enrollment in a support group. @cherkin2016
-compared a mindfulness based stress reduction program, cognitive
-behavioral therapy, and usual care in a study of 342 adults ages 20 to
-70 years old with chronic low back pain. The authors found that the
-mindfulness intervention was more effective at improving back pain and
-functional limitations at 26 weeks compared to usual care. Research has
-also examined mindfulness techniques as a possible treatment for
-headaches, although mindfulness techniques did not reduce the frequency,
-length, or pain intensity of headaches compared to usual care
-[@anheyer2019]. Research ha similarly studied the utility of imagery
-techniques as a treatment for pain and has found them to be possibly
-effective treating pain in postoperative orthopedic patients
-[@carpenter2017] and cancer patients [@depaolis2019].
-
-Research has also found mind-body practices to be largely effective for
-treating anxiety, depression, and stress [@breedvelt2019;
-@cillessen2019]. In a sample of adults experiencing moderate sleep
-disturbances, @black2015 found that mindfulness meditation improved
-depression symptoms in addition to improving sleep and fatigue.
-Meditation also reduces anxiety and depression in patients with chronic
-heart failure [@sullivan2009; @jayadevappa2007], patients experiencing
-acute depression [@strauss2014], and patients with treatment resistant
-depression [@eisendrath2016]. Imagery techniques also decrease anxiety
-and depression in the general population[@klaus2000; @nguyen2018] as
-well as in patients with cancer [@depaolis2019; @mahdizadeh2019],
-chronic heart failure [@chang2004], and undergoing hemodialysis
-[@beizaee2018].
-
-Despite the mixed results of studies of the efficacy of individual
-mind-body CAMs for improving health, the effectiveness of a combination
-of techniques on well-being as a whole is unknown. Does the use of one
-or more mind-body techniques improve health and well-being? Also, does
-the use of mind-body CAMs play a role in the better health outcomes of
-higher SES groups?
-
-## Alternative Medicines
-
-Alternative medicines or alternative medical systems reflect CAMs based
-on complete systems of theory and practice. The MIDUS surveys ask
-respondents about use of homeopathy, herbal therapy, and acupuncture.
-
-Homeopathy is a medical system that originated in Germany more than 200
-years ago. There are two underlying theories to homeopathy. The first is
-"like cures like," which posits that a disease may be treated with a
-substance that "produces similar symptoms in healthy people." The second
-is the "law of minimum dose," which posits that lower doses of
-medication increase effectiveness. Homeopathic treatments consist of
-plant products, minerals, and animal products. Treatments are
-individualized to suit each person. Systematic reviews and meta-analyses
-of randomized controlled trials have found little to no support for
-homeopathy's effectiveness.In large, high quality trials homeopathy
-fails to outperform the placebo @shang2005. A review by @altunç2007 did
-not find evidence for homeopathy's effectiveness for treating asthma,
-upper respiratory infection, conjunctivitis, or warts. Some studies
-found support homeopathy's effective treatment of acute otitis media and
-postoperative pain-agitation syndrome, though these results need to be
-replicated. Similarly, a review of 11 independent systematic reviews did
-not provide strong evidence for the effectiveness of homeopathy
-[@ernst2002]. Indeed the more rigorous the trial the smaller the effects
-sizes became. Despite the lack of evidence, practitioners and users of
-homeopathy swear by its effectiveness and present plenty of anecdotal
-evidence. @ernst2008 posits that the answer to this contradiction is
-likely either due to a placebo effect or the fact that sometimes
-symptoms simply improve on their own regardless of treatment. Given the
-weak evidence from clinical trials for homeopathy's effectiveness it is
-unlikely that homeopathy contributes to the SES-health relationship.
-
-Herbal therapy refers to the use of plants to improve health and treat
-disease. With regards to efficacy, it is not possible to make
-generalizations about herbal therapy's overall effectiveness. Each herb
-must be tested for its own effectiveness in treatment and prevention of
-specific diseases [@ernst2005]. Most have not been subjected to
-extensive clinical testing, though some of the more popular herbal
-medicines have been investigated for effectiveness. For example,
-garlic's anti-bacterial, anti-viral, anti-fungal, anti-hypertensive,
-blood-glucose lowering anti-thrombotic, anti-mutagenic, and
-anti-platelet activities have been identified [@ernst2005]. Research has
-found weak evidence that garlic reduces total cholesterol and
-low-density lipoprotein [@stevinson]. With regard to blood pressure,
-there is evidence garlic has a small anti-hypertensive effect
-[@silagy1994], reduces blood pressure [@ried2008], and may prevent the
-development of arteriosclerosis [@breithaupt-grögler1997]. Studies have
-further identified uses for garlic eradicating brain cancer cells
-[@das2007] and decreasing the odds of developing lung cancer [@jin2013].
-
-Ginkgo biloba has been promoted as a supplement for conditions including
-anxiety, allergies, dementia, eye problems, peripheral artery disease,
-and tinnitus [@ernst1999], though overall evidence for ginkgo in
-treating health conditions is weak
-[@nationalcenterforcomplementaryandalternativemedicine]. Ginkgo biloba
-has been shown to be effective in delaying clinical deterioration of
-dementia in patients and to bring about symptom improvement
-[@ernst1999], though it has not been determined whether the herb also
-improves cognitive function in healthy individuals [@canter2007].
-
-Ginseng has been the subject of many studies on effectiveness for a
-variety of health purposes. Research has found that ginseng improves
-glucose metabolism and moderates immune system response [@shergis2013],
-assists in maintaining homeostasis of the immune system, and enhances
-resistance to illness or microbial attacks through the regulation of the
-immune system [@wee2011], suggesting beneficial effects for controlling
-inflammatory diseases and microbial infections [@kang2012]. Ginger has
-also shown promise as a preventive of cancer [@wee2011; @helmes2004] and
-is associated with lower risk of stomach, lung, liver, pancreas,
-ovarian, colon, and oral cancer [@yun2003]. Ginseng may also be
-effective in treating type 2 diabetes [@wee2011; @kimura1981;
-@chung2001; @dey2003; @sotaniemi1995; @vuksan2008] and protecting
-against neurodegenerative diseases such as Alzheimer's [@wee2011].
-
-Studies on the health benefits of echinacea have largely focused on its
-possible effectiveness in the prevention and treatment of upper
-respiratory tract infections. It is believed that echinacea stimulates
-the immune system
-[@nationalcenterforcomplementaryandalternativemedicine]. There is
-evidence that echinacea may protect against upper respiratory infections
-[@melchart1999] but does not reduce the duration of infection
-[@barrett2010; @karsch-völk2014; @david2019] or severity
-[@melchart1999].
-
-St. John's Wort has most commonly been recommended for treating
-depression, though it has also been suggested as treatment for
-menopausal symptoms, attention-deficit hyperactivity disorder (ADHD),
-somatic symptom disorder, and obsessive-compulsive disorder (OCD)
-[@nationalcenterforcomplementaryandalternativemedicine]. Research has
-found evidence that St. John's Wort is as effective as antidepressants
-in treating depression and is associated with fewer adverse events
-[@apaydin2016; @ng2017]. @geller2007 found St. John's Wort to be
-effective in treating mood and anxiety in menopausal women. There is
-also evidence that hyperforin and hypericin, found in St. John's Wort,
-have anticancer properties [@you2018; @klemow2011].
-
-The efficacy of ginger root in treating and preventing has been studied
-for many health outcomes. Oxidative stress is associated with numerous
-diseases, thus ginger's antioxidant properties have been put forth as a
-possible explanation for associated health benefits [@aeschbach1994;
-@ahmad2000; @halvorsen2002]. Ginger root has been found to decrease
-inflammation, swelling, and pain [@young2005; @minghetti2007;
-@eldershaw1992; @ueki2008] and has been proposed as a possible treatment
-against inflammation, osteoarthritis, and rheumatism [@reginster2000],
-though evidence of its effectiveness has been inconsistent
-[@marcus2001]. Ginger's anticarcinogenic activities have been explored
-for the possible prevention and suppression of lymphoma, hepatoma,
-colorectal cancer, breast cancer, skin cancer, liver cancer, and bladder
-cancer [@bode2011]. Furthermore evidence suggests that the various
-properties of ginger may be effective in treating cardiovascular disease
-[@nicoll2009], asthma [@chen2009], and symptoms of diabetes [@bode2011;
-@daily2015].
-
-The MIDUS surveys ask respondents whether they use herbal therapy, but
-do not include information on which herbs are used at what dosage or for
-what purpose. Thus, while there is evidence to support specific herb's
-usefulness in treating specific diseases, it may or may not contribute
-to the SES-health relationship observed in the MIDUS data. In the
-analyses that follow I try to account for this by including specific
-disease outcomes that have been the subject of herbal therapy trials.
-
-The final alternative medical system included in the MIDUS data is
-acupuncture. Acupuncture is a traditional Chinese medicine in which the
-practitioner stimulates specific points in the body typically through
-the insertion of thin needles. One of the primary applications studied
-for acupuncture has been chronic pain. A meta-analysis of 29 clinical
-trials found that acupuncture decreases pain compared to no acupuncture
-and sham acupuncture (when needles are inserted into patients' skin but
-not as deep as in acupuncture or in the body points specified by
-acupuncture) [@vickers2014]. Acupuncture is associated with modest
-improvements pain and function among patients with chronic knee pain
-[@hinman2015] and a reduction in pain and disability among patients with
-chronic neck pain [@becker-witt2004]. Acupuncture is widely used for
-treating low back pain, the second most frequently reported reason for
-seeing a physician [@manheimer2005]. Acupuncture is significantly more
-effective in producing short-term relief of chronic low back pain
-compared to sham acupuncture and no treatment [@manheimer2005]. A
-randomized controlled trial by @cherkin2009 found similar reductions in
-back-related dysfunction for traditional as well as sham acupuncture.
-These results indicate that placement of the needling sites may be
-unimportant in producing effects, raising questions about the mechanisms
-by which acupuncture influences outcomes. It is possible the results
-represent a placebo effect. The current research available on
-acupuncture's effectiveness in treating chronic headaches demonstrates
-that acupuncture is associated with improvement in clinical outcomes
-compared to usual care, medical therapy, and sham acupuncture
-[@coeytaux2016; @linde2015; @linde2016; @sun2008].
-
-Acupuncture has been studied extensively for its possible utility as a
-treatment for depression. Several systematic reviews and meta-analyses
-have been published examining acupuncture's effectiveness in treating
-depression compared to no treatment, usual care, sham acupuncture, and
-antidepressant medication. Some meta-analyses have found that
-acupuncture is moderately more effective compared to no treatment in
-reducing depression symptoms [@smith2018; @zhang2010] while others have
-not found this effect [@leo2007; @mukaino2005]. Studies have provided
-support for acupuncture's effectiveness over usual care [@armour2019;
-@smith2018]. Evidence of acupuncture's effectiveness in reducing
-depression symptoms compared to sham acupuncture has been mixed with
-some studies finding acupuncture to be more effective [@smith2018],
-others finding inconclusive evidence [@mukaino2005], and others finding
-no significant difference in effects [@zhang2010; @leo2007]. @smith2018
-found acupuncture to be slightly more beneficial compared to medication
-therapy, though the authors note that there was substantial variation
-across studies depending on the class of medication and mode of
-acupuncture stimulation. Compared to medication, @zhang2010 found that
-acupuncture led to better improvements in symptom severity in patients
-with post-stroke depression. In the overall meta-analysis, the
-effectiveness of acupuncture was comparable to antidepressants alone.
-@mukaino2005 and @leo2007's analyses showed similar patterns. Results
-from @armour2019's meta-analysis showed that acupuncture resulted in
-significantly greater reductions in depression severity when used as an
-additional therapy to anti-depressant medication. @mukaino2005 on the
-other hand report that evidence of acupuncture as an effective adjunct
-therapy to antidepressant medication is inconclusive. Given the evidence
-from the studies cited, acupuncture may contribute to socioeconomic
-variations in chronic pain and depression.
-
-While there is substantial evidence for the effectiveness of some
-alternative medical systems, evidence for others is weak. The mixed
-results cited above make it unclear what the combined effect of using
-alternative medical systems will be on the SES-health relationship. The
-analyses in the following chapters will examine whether the use of one
-or multiple alternative medical systems improves health and well-being
-for higher SES groups.
-
-## Physical and Nutritional Approaches
-
-Physical and nutritional approaches represent another subset of CAMs.
-MIDUS surveys include measures of vitamin supplementation, exercise and
-movement therapy, and special diet. Below I review evidence from
-randomized controlled trials and epidemiological studies on the
-effectiveness of each approach in preventing and treating various health
-conditions. The evidence below guides the selection of disease outcomes
-for analyses of the role of AHL in the SES-health relationship.
-
-The MIDUS surveys ask respondents about general vitamin use, but do not
-provide information on the usage of specific vitamins. There are many
-different vitamins in use in the United States. To gain some sense of
-the effectiveness of vitamin supplementation, I focus on the use and
-effectiveness of multivitamin and multimineral (MVMM) supplements.
-Studies in this literature have investigated the use of MVMM
-supplementation in the prevention and treatment of cardiovascular
-disease (CVD), cancer, stroke, infection, and blood pressure, as well as
-it's relationship to all-cause mortality. Studies have found no
-association between MVMM supplementation and stroke mortality or stroke
-incidence [@kim2018]. MVMM supplementation significantly reduces
-infection episodes in young and middle-aged adults [@stephen2006] and
-lowers systolic and diastolic blood pressure in patients with chronic
-disease [@li2018]. Sporadic MVMM supplementation is associated with
-increased usual intake of micronutrients, with a greater effect observed
-in regular users [@wallace2019]. Prevention trials have found some
-evidence of a reduced risk of all-cause mortality associated with MVMM
-supplementation [@macpherson2013], though some studies have only
-observed this effect in men [@hercberg2004].
-
-Evidence of a relationship between MVMM supplementation and CVD
-incidence is overall weak. @alexander2013 review results from 12 cohort
-studies and 3 primary prevention randomized controlled trials of the
-effect of MVMM supplementation on CVD incidence in healthy adults. The
-results of 2 randomized controlled trials show that MVMM is associated
-with a lowered incidence of CVD, however the observational
-epidemiological studies did not confirm this association. @kim2018 found
-that MVMM was associated with lower risk of cardiovascular heart disease
-(CHD) incidence, though this relationship did not hold in subgroup
-analyses of randomized controlled trials.In a review of 26 studies,
-@fortmann2013 report that a majority of the studies did not show a
-preventive effect of MVMM supplementation on CVD incidence in healthy
-populations. In a recommendation statement published in the Annals of
-Internal Medicine in 2014, the U.S. Preventive Services Task Force
-concluded that the current evidence was not sufficient to assess the
-benefits and harms of MVMM supplementation for the prevention of CVD
-[@moyer2014].
-
-While some preventive effects against cancer have been found for MVMM
-supplementation, this in some studies this effect is only observed in
-men[@hercberg2004; @gaziano2012]. Two randomized controlled trials of
-generally healthy adults reviewed by @alexander2013 found a lower
-incidence of cancer in the MVMM supplementation group, though this
-association was not confirmed in the observational epidemiological
-studies reviewed. Similarly, a majority of the studies reviewed by
-@fortmann2013 did not find a preventive effect of MVMM supplementation
-on cancer incidence in healthy populations.
-
-The MIDUS surveys ask respondents whether they've utilized exercise or
-movement therapy, including yoga. In the following paragraphs, I review
-studies on the effects of yoga and physical exercise on health. Yoga is
-a practice rooted in India that combines physical postures, breathing
-techniques, and meditation to promote physical and mental well-being.
-Yoga's effectiveness in promoting health has been examined for several
-health outcomes, including headaches, pain, brain structure, and mental
-health. Yoga is associated with a reduction in headache frequency,
-headache duration, and pain intensity in patients suffering from
-tension-type headaches [@anheyer2020]. Yoga has a positive effect on
-neck pain intensity, neck pain-related functional disability, and mood
-among patients with chronic, nonspecific neck pain [@li2019]. In a
-review of 11 studies on the effects of yoga on brain structure,
-@gothe2019 found that yoga has a positive effect on the structure and
-function of the hippocampus, amygdala, prefrontal cortex, cingulate
-cortex, and brain networks including the default mode network. The
-authors conclude that yoga may be a promising intervention for
-mitigating age-relate and neurodegenerative declines. Research has found
-that yoga significantly reduces depression symptoms compared to
-psychoeducation [@vollbehr2018] and usual care [@cramer2013]. The
-evidence for yoga's effects on anxiety are mixed [@cramer2013;
-@vollbehr2018]. Most type of yoga have a positive effect on stress
-reduction in health populations [@wang2020] and is associate with a
-significant increase in psychological well-being compared to no
-intervention [@hendriks2017].
-
-There is an abundance of evidence for the positive effect of exercise on
-health. Physical inactivity is associated with an increased risk of
-chronic disease [@anderson2019] including cancer [@magnusson1998] and
-diabetes [@uusitupa2000]. Physical activity has been found to reduce
-risk of declining health in overweight and obese populations independent
-of weight reduction [@he2004]. In combination with adherence to a
-Mediterranean diet, moderate alcohol use, and non-smoking, physical
-activity is associated with a 50% lower rate of all-cause and
-cause-specific mortality [@knoops2004]. In patients with type 2
-diabetes, physical activity has been found to decrease systolic blood
-pressure, in turn reducing the risk for diabetes-related complications,
-diabetes-related death, and myocardial infarction [@adler2000]. Among
-cancer patients, physical activity is related to better health-related
-quality of life [@calle2002] and reduced risk and disease burden
-conveyed by co-morbid conditions [@penedo2004]. Physical activity is
-associated with a reduced risk of adverse cardiovascular events
-[@wessel2004; @blumenthal2004]. Consistent physical activity has been
-shown to prevent the onset of depression [@paffenbargerjr1994] and to
-reduce depression and anxiety symptoms [@ross1988; @stephens1988;
-@babyak2000].
-
-The final physical and nutritional approach included in the MIDUS survey
-is special diet. There are a plethora of dietary patterns and popular
-diets observed in the general population. Generally, dietary patterns
-characterized by fruit, vegetable, whole grain, fish, and poultry
-consumption tend to be related to increased micronutrient intake and
-lower disease risk [@kant2004]. More healthful diets are inversely
-related to all-cause mortality and cardiovascular disease risk, though a
-systematic review of dietary studies notes that risk reduction is modest
-and tends to be attenuated when controls are introduced [@kant2004]. Low
-salt diets are associated with a reduction in death from cardiovascular
-disease, and tends to be recommended for heart failure and chronic
-kidney disease [@suckling2015]. Over the last couple of decades, many
-different diets have gained popularity. The effectiveness of any given
-popular diet is something that requires further study, however a
-randomized controlled trial of overweight and obese adults comparing
-four popular diets (Atkins, Zone, Weight Watchers, and Ornish) found
-that diet adherence was a better predictor of weight loss and reduction
-of cardiac risk factors than the type of diet used [@dansinger2005].
-Plant-based and vegetarian diets have been associated with reduced risk
-of negative health outcomes, including lower cholesterol, diabetes,
-heart disease, and cancer [@oussalah2020; @mcevoy2012].
-
-While there is strong evidence for the effectiveness of some physical
-and nutritional approaches in promoting health, it is unclear what their
-effects will be taken together. Analyses in the following chapters will
-examine whether use of one or more physical and nutritional approaches
-play a role in the SES-health relationship.
-
-## Manipulative Treatments
-
-Manipulative treatments are treatments in which practitioners physically
-manipulate the systems and structures of the body, such as bones,
-joints, and soft tissues, to improve physical ailments. Manipulative
-treatments are based on the belief that the systems and structures of
-the body are dependent on each other and self-regulating. The MIDUS
-survey asks respondents whether they use two manipulative treatments:
-massage and chiropractic care. Evidence indicates that manipulative
-treatments may constribute to SES differences in chronic pain and
-depression and anxiety.
-
-Massage has been examined as a possible treatment for a variety of pain
-conditions. Research has shown that massage is more effective in
-treating pain compared to sham controls, no treatment, and active
-controls (e.g. joint manipulation, physical therapy, acupuncture)
-[@crawford2016]. Among patients with fibromyalgia, massage has been
-shown to significantly improve pain after 5 weeks of treatment
-[@li2014]. Research has found that massage relieves pain in the short
-term in patients with low back pain [@furlan2015; @kumar2013]. Massage
-therapy is effective in treating both neck and should pain compared to
-inactive therapy [@kong2013]. Compared to active therapies, massage
-shows short effects for relieving shoulder pain but not neck pain. In
-patients with headaches, massage is associated with a greater reduction
-in headache pain compared to a placebo [@moraska2015] and a reduction in
-migraine frequency [@happe2016]. Massage therapy has similarly been
-associated with improvement in depression and anxiety symptoms
-[@hou2010; @li2014; @crawford2016], showing similar effectiveness to
-psychotherapy in meta-analyses [@moyer2004].
-
-Chiropractic care has been examined as a possible treatment for several
-health outcomes. @salehi2015 reviewed 11 systematic reviews that were
-specifically concerned with chiropractic care effectiveness and included
-evidence from clinical trials focused on as specific disease. Results
-showed that chiropractic care may effectively improve neck pain,
-shoulder and neck trigger points, and sports injuries. The authors found
-no conclusive evidence for chiropractic care's effectiveness in treating
-asthma, infant colic, autism spectrum disorder, gastrointestinal
-problems, fibromyalgia, back pain, carpal tunnel syndrome.
-
-# Motivations for CAM Use
-
-With such variation in efficacy, what motivates CAM use? A range of
-motivations have been considered by previous literature, including
-perceptions of effectiveness and safety, congruence with spiritual
-philosophy and health beliefs, a sense of control over one's health,
-dissatisfaction with conventional medicine, and treatment of specific
-conditions, particularly chronic pain [@barnes2008; @ernst2000;
-@greene2009; @sirois2002]. Whereas the effectiveness of CAMs has been
-mixed in clinical trials, CAM users report both physical and
-psychological health benefits, such as improved physical functioning,
-relief of negative physical symptoms, improved coping and resilience,
-and decreased symptoms of depression and anxiety [@greene2009].
-Perceived effectiveness of CAMs among users appears to be amplified by a
-motivation toward general health and wellness. Drawing on 2012 National
-Health Interview Survey data, @rhee2018 found that compared to
-individuals who use CAMs for treatment only, individuals who utilize
-CAMs for general wellness in addition to the treatment of specific
-conditions report a better sense of control over their health and
-improved overall health. This may indicate that CAM use has particularly
-positive perceived benefits for those who are consciously motivated
-toward general health and well-being.
-
-# Theoretical Perspectives on Health Lifestyles and Socioeconomic Status
-
-In this section, I discuss theoretical perspectives on health lifestyles
-and socioeconomic status. I first discuss two general theories of
-stratification and health. Then, I discuss theoretical perspectives
-relevant to the components of socioeconomic status. All theories point
-to similar conclusions, namely that higher SES is associated with
-resources that can be leveraged to gain better health. Health behaviors
-are one pathway through which the resources associated with SES are
-utilized to improve health and well-being. Some theories argue that high
-SES individuals experience better health in part due to patterns of
-health behaviors associated with their status group. These theories
-predict that health promoting behaviors will cluster at higher rates
-within high SES groups. CAMs are a subset of health behaviors that are
-more common among high SES individuals and promote health. This
-dissertation investigates whether this is a spurious relationship or
-patterns of CAM use in high SES groups contribute to better health.
-
-## Fundamental Causes
-
-In response to epidemiology's focus on proximate, individual-level risk
-factors, @link1995 developed the theory of fundamental causes to draw
-attention to social conditions as the root cause of health disparities.
-Link and Phelan observe that the association between socioeconomic
-status and health has persisted across changing historical contexts
-involving extraordinary advancements in public health, advancements
-which were fully expected to eradicate socioeconomic health disparities
-(e.g. mass immunization and public sanitation improvements). Link and
-Phelan that the association between SES and health endures because SES
-is a fundamental cause of health. There are four defining features of a
-fundamental social cause of health disparities. First, a fundamental
-cause influences multiple disease outcomes. Second, a fundamental cause
-affects health through a multiplicity of mechanisms. Third, fundamental
-social causes involve access to flexible resources (e.g. knowledge,
-money, power, prestige, and social connections) that can be leveraged
-toward protective behaviors and environments that favor better health.
-Fourth, the association between a fundamental social cause and health
-endures over time because the intervening mechanisms by which it affects
-health are replaced. As some diseases are eradicated, new ones take
-their place. As risk factors, and therefore the mechanisms that had
-produced the association between SES and health from the mid-20th
-century, disappeared, new risk factors took their place. As risk factors
-and mechanisms changed, individuals with higher SES were better situated
-to leverage their resources (e.g. knowledge, money, power, prestige, and
-social connections) toward protective behaviors and environments that
-favor better health. Thus, the association between SES and health is not
-attributable to any one set of mechanisms, but to the flexibility with
-which socioeconomic resources may be employed in pursuit of better
-health [@link2008; @lutfey2005].
-
-The flexible resources associated with high SES operate at two levels:
-individual and contextual. At the individual level, flexible resources
-can be defined as the "cause of causes" or "risks of risk." At this
-level flexible resources influence individuals' knowledge of, access to,
-and social support for engaging in behaviors that promote or protect
-health. At the contextual level, the resources associated with high SES
-shape access to contexts that are characterized by health promoting
-factors and low-risk profiles. For example, the economic resources
-associated with high SES shape access to high SES neighborhoods with low
-crime, low noise and environmental pollution, and more green spaces.
-Education credentials associated with high SES shape access to desirable
-and safe work environments. At the contextual level, high SES
-individuals benefit passively from their social position, without
-actively constructing a healthy situation. Research on epigenetics
-[@landecker2013] and stressful life conditions [@house2000; @turner1995]
-demonstrate how SES operates on a contextual level to promote health.
-This dissertation focuses on how the flexible resources associated with
-high SES operate on the individual level to reproduce health advantages
-through health behaviors.
-
-@freese2010 extend fundamental causes theory by explicating four
-metamechanisms by which fundamental causes influence health. The first
-metamechanism is "means," and refers to processes in which the
-individual intentional leverages their socioeconomic resources to
-enhance or protect health. The second mechanism, "spillovers," refers to
-situations in which the individual benefits from the health promoting
-efforts of others in their network without taking purposeful action of
-their own. This metamechanism operates on the contextual level described
-above. The third metamechanism, habitus, refers to internalized
-dispositions to act produced through socialization processes. People of
-the same social class tend to share habitus. The high SES habitus tends
-to be more beneficial to health compared to other class habiti. The
-habitus concept is explored in full in the following section. The
-habitus metamechanism is similar to the means metamechanism in that
-health is produced through the individual's behaviors, but in the case
-of habitus actions are not consciously aimed toward health. Action flows
-from class preferences unthinkingly. The fourth mechanism, institutions,
-refers to the ways in which institutions contribute to SES health
-disparities through differential treatment according to SES. For
-example, variation in aspects of medical care and educational resources
-offered to low and high SES patients [@lutfey2005].
-
-In sum, fundamental causes theory asserts that SES is a fundamental
-cause of health inequalities. High SES individuals have access to
-flexible resources that operate through a multiplicity of mechanisms to
-generate an SES health advantage across an array of heath outcomes. The
-following theories elaborate on the relationship between SES and one of
-those mechanisms, health behaviors.
-
-## Health Lifestyle Theory
-
-William Cockerham and colleagues [@cockerham1997; @cockerham2005;
-@cockerham2007; @cockerham2013; @cockerham1993; @cockerham2002]
-developed Health Lifestyle Theory by synthesizing, among other works,
-Max Weber's Economy and Society [@weber1978] and Pierre Bourdieu'
-Distinction [@bourdieu1984]. @cockerham1997 [p. 321] defines health
-lifestyles as "collective patterns of health-related behavior based on
-choices from options available to people according to their life
-chances." His precise theoretical model can be divided into two primary
-components: structural influences and the habitus.
-
-@weber1978's contribution to the structural component of health
-lifestyle theory begins with his assertion that lifestyles are formed in
-status groups. Status groups are aggregates of people with similar
-status and class backgrounds whose association features a sharing of
-similar lifestyles. Social statuses or structural locations within
-systems of stratification direct our exposure to specific elements of
-culture like health-related beliefs, norms, and customs through
-socialization and experience. The idea is that people with common social
-backgrounds will subscribe to the same elements of culture because they
-tend to have similar socialization experiences. The most powerful
-structural variable involved in this process is class circumstances,
-along with age, race, gender, and the influence of collectivities (e.g.,
-family, work, and religion) and living conditions. Common socialization
-experiences and common elements of culture within the context of these
-structural variables (what Bourdieu calls "fields") eventually shape our
-life choices (agency). At the same time, our social positions also drive
-our life chances (structure) by regulating our access to resources
-through basic social stratification processes. People have lifestyle
-choices, but those choices are constrained by what is available to them
-given their social position. The final feature of the structural
-component is the dialectical interplay of agency (choices) and structure
-(chances). @cockerham2005 [p. 61] explains that people "align their
-goals, needs, and desires with their probabilities for realizing them
-and choose a lifestyle according to their assessments of the reality of
-their resources and class circumstances."
-
-The repetitive interplay of choices (agency) and chances (structure)
-through socialization and experience leads to the development of habitus
-or internalized dispositions toward behavior or action. The modern
-concept of the habitus was refined by @bourdieu1984 and represents
-perhaps his most lasting contribution to sociological theory. According
-to @cockerham2005 [p. 61], "the habitus serves as a cognitive map or set
-of perceptions that routinely guides and evaluates a person's choices
-and options. It provides enduring dispositions toward acting deemed
-appropriate by a person in particular social situations and settings."
-Once the habitus is formed, health-related practices like smoking,
-exercise, and dietary behavior become "integrated into routine
-behavioral repertories that can be acted out more or less unthinkingly"
-[@cockerham2005, p. 62]. The final element of the habitus component is
-the reproduction of health lifestyles through feedback processes. When
-health lifestyles are formed and enacted, "they tend to reproduce or
-modify the habitus from which they are derived" [@cockerham2005, p.63].
-In other words, when we carry out our lifestyles, we either reinforce or
-alter our dispositions and practices.
-
-Health lifestyle theory proposes health lifestyles as a mechanism by
-which SES shapes health inequalities. Due to its effect on life chances,
-life choices, and, in turn, the habitus, high SES produces similar
-health promoting lifestyles among its members. This dissertation
-examines whether SES similarly influences the formation of alternative
-health lifestyles consisting of CAMs, and whether an alternative health
-lifestyle contributes to the SES-health relationship.
-
-## Human Capital Theory
-
-John Mirowsky and Catherine Ross [@mirowsky1998; @mirowsky2003]
-developed their Human Capital Theory by synthesizing the works of
-@becker1964 in economics and @rotter1966 in psychology. In contrast to
-Cockerham's General Theory (which can be applied to any system of
-stratification), Mirowsky and Ross' theory is focused exclusively on
-explaining how healthy lifestyles flow from years of formal education.
-Mirowsky and Ross' theoretical model can be divided into two primary
-components: the human capital component and the learned-effectiveness
-component.
-
-The first component, drawing primarily from @becker1964, argues that
-"formal education indicates investment in 'human capital' - the
-productive capacity developed, embodied, and stocked in human beings
-themselves" [@mirowsky2003, p. 51]. The idea is relatively
-straightforward: The process of formal education nurtures knowledge,
-skills, and abilities that help people to solve problems and to be
-productive in their own lives. Some of the more important elements of
-education include health-related knowledge and skills associated with
-reading, writing, researching, critical thinking, and communicating.
-
-The second component, drawing primarily from @rotter1966, argues that
-formal educational attainment, human capital investment, and the
-development of skills and abilities tends to foster a healthy lifestyle
-by promoting a general sense of learned-effectiveness or personal
-control over one's life. According to @mirowsky2003 [p. 64], "education
-raises the sense of personal control because it helps people
-successfully prevent problems, or solve them if prevention fails, to
-achieve their goals, and shape their own lives." Through years of formal
-education, skill development, and structured problem solving, people
-learn that they can organize their lives, achieve goals, and actively
-manage the good and bad things that happen to them. The sense of control
-then contributes to a healthy lifestyle by cultivating a proactive or
-agentic orientation toward one's health. @mirowsky2003 [p. 66] explain
-that "people with a sense of personal control know more about health,
-they are more likely to initiate preventive behaviors like quitting
-smoking, exercising, or maintaining a normal weight."
-
-## Health Commodity Theory
-
-The Health Commodity Theory was initially described by @ross2000 in the
-context of explaining the link between socioeconomic status (SES) and
-health. A commodity is something of value that can be bought and sold.
-Health commodity theory argues that SES promotes health through
-purchasing power. Similar to fundamental social causes theory
-[@link2010], health commodity theory is structural and materialistic.
-That is, health commodity theory tends to reduce the complex association
-between SES and health to mechanisms linked to financial resources or
-things people can buy like health care, pharmaceuticals, and healthier
-foods. Ultimately, the defining question is "who gets what?"
-
-Health Lifestyle Theory and Human Capital Theory take the same general
-form. Both theories argue that social structure shapes and clusters
-health related behavior through social psychological processes. While
-Cockerham emphasizes the mechanisms of socialization and habitus
-(internalized behavior norms), Mirowsky and Ross stress the development
-of human capital (skills and abilities) and the sense of personal
-control (beliefs about one's personal effectiveness). Health commodity
-theory competes with these social psychological theories by emphasizing
-a direct link between social structure and health-related behavior.
-Although health lifestyle theory and human capital theory acknowledge
-the role of resource stratification in explaining broader structural
-disparities in health lifestyles, they also recognize more elaborate
-downstream social psychological processes. If the predictions of health
-commodity theory are correct, income should partially mediate or explain
-educational variations in health lifestyles. Under these conditions, the
-effects of education on health-related behavior would be partially due
-to the fact that people with higher levels of education tend to earn
-more money. This fact would minimize (not eliminate) the explanatory
-power of processes related to socialization and habitus, human capital,
-and the sense of personal control.
-
-# Data
-
-For this dissertation, I utilize data from all three waves of the
-Midlife in the United States (MIDUS) study, a national longitudinal
-study of health and well-being. The first wave of MIDUS was collected in
-1995-1996 by the MacArthur Foundation Research Network on Successful
-Midlife Development. The purpose of the study was to examine the role of
-behavioral, psychological, and social factors in producing health and
-well-being across age groups. Respondents at all three waves completed
-telephone and mail in questionnaires which comprise the survey project.
-This dissertation uses the survey projects, which are currently
-available across all three waves. Data collection for MIDUS I began with
-a national random digit dialing sample (RDD) (n=3,487). Households were
-randomly selected from working telephone banks. One household member
-between the ages of 25 and 74 was selected for participation. MIDUS I
-was expanded to also include an oversample of five metropolitan areas
-(n=757), siblings of individuals from the RDD sample (n=950), and a
-national RDD sample of twin pairs (n=1,914). Respondents were asked to
-complete a telephone survey and two mail-in self-administered
-questionnaires (SAQs). Response rates for the telephone survey ranged
-from 60-70% across subsamples (n=7,108). Response rates for the SAQs
-averaged 89% (n=6,329).
-
-In 2004-2006, the Institute on Aging at the University of
-Wisconsin-Madison conducted MIDUS II, a follow-up on MIDUS I
-respondents, with funding from the National Institute on Aging. Of the
-7,108 participants in MIDUS I, 75% completed the telephone survey for
-MIDUS II (n=4963), adjusted for mortality. Of those that completed the
-telephone survey, 81% completed the two SAQs (n=4032). Completion time
-between MIDUS I and MIDUS II ranged from 7.8 to 10.4 years.
-
-Data collection for MIDUS III began in 2013. Survey project (telephone
-and mail in questionnaires) data collection ended in 2014, however, data
-collection for other projects within this wave continues today. Of the
-4,963 MIDUS II participants contacted, 66% were eligible for
-participation at MIDUS III and completed the telephone survey (n=3,294).
-Of those that completed the telephone survey, 83% completed the SAQs at
-MIDUS III (n=2,732). Completion time between MIDUS II and MIDUS III
-ranged from 7.9 to 10.3 years.
-
-# Contributions
-
-This dissertation addresses the following overarching question: Do CAMs
-form a lifestyle that contributes to the SES-health relationship?
-Findings advance the literature on health lifestyles and the SES-health
-gradient in several ways. First, to this point in time, studies on
-health lifestyles have not included CAMs, which are utilized by a
-substantial portion of the US population. This dissertation empirically
-examines patterns in CAM use to identify dimensions of alternative
-health lifestyles. Second, this dissertation examines relationships
-between dimensions of alternative health lifestyle and two components of
-SES, income and education. Findings show that education, but not income,
-is associated with use of more dimensions of alternative health
-lifestyle. I discuss the implications of these findings for Health
-Lifestyle Theory, Human Capital Theory, and Health Commodity Theory.
-Third, I empirically analyze the role of alternative health lifestyles'
-(AHL) in producing the socioeconomic gradient in health using
-longitudinal data. Findings show that higher SES is associated with
-greater CAM use and better health. I investigate whether this is a
-spurious relationship or if CAMs actually contribute to better health.
-Findings show that CAM use does not contribute to the SES health
-gradient. I discuss implications for theories on social stratification
-and health. Fourth, I examine how SES moderates CAM use in response to a
-decline in health status, a critical point for shaping health
-disparities across the life course. Findings show that resources
-associated with high SES do not shape access to CAMs among the
-chronically ill.
+# Chapter 1: Introduction
+
+The association between greater socioeconomic resources and better health is well documented. Higher socioeconomic status is associated with better self-reported health [@link2008; @meyer2014], better mental health [@hill2014; @ross2006], lower mortality risk [@bosworth2018; @duncan2002; @laaksonen2007; @link2008; @lleras-muney2005; @ross2012], lower infant mortality rates [@bleich2012], lower rates of obesity [@bleich2012; @cutler2006; @cutler2010; @mirowsky1998; @ross1999], fewer chronic conditions [@bleich2012; @herd2007; @link2008], and fewer functional limitations [@herd2007]. Health behaviors are responsible for part of this association [@adler1994; @adler2008; @brunello2016; @burdette2008; @lantz1998; @lantz2001]. Higher socioeconomic status is associated with increased physical activity, better diet, healthier alcohol consumption, non-smoking, more frequent seatbelt use, utilization of preventive healthcare, and use of smoke detectors [@bleich2012; @cutler2010; @meyer2014; @pampel2010]. The study of health behaviors has made significant contributions to our understanding of associations between social statuses and health [@pampel2010], and there is now substantial evidence that health behaviors cluster to form discernible health lifestyles [@andrews2017; @berrigan2003; @burke1997; @cockerham2007; @dodd2010; @mize2017; @patterson1994; @saintonge2017; @schuit2002; @devries2008].
+
+These health lifestyles are patterns of health behaviors that co-occur more than would be expected if health behaviors were independent [@berrigan2003]. Studies utilizing a variety of methods to identify behavior patterns have found that health behaviors cluster into health lifestyles, and sometimes do so in counterintuitive ways [@andrews2017; @burdette2017; @dodd2010; @hill2007; @lawrence2017; @mize2017; @mollborn2014; @patterson1994; @saintonge2017; @devries2008]. Recent latent class analyses of multiple health behaviors have confirmed the existence of distinct, multi-dimensional health lifestyles [@burdette2017; @lawrence2017; @mize2017; @saintonge2017]. Within this new research stream, however, the study of health lifestyles has largely focused on behaviors of traditional concern to public health. The most common combination of behaviors within lifestyles research is alcohol use, smoking, diet, and exercise. An entire subset of health behaviors, the use of complementary and alternative medicines (CAMs), has been virtually ignored.
+
+In sum, SES consistently explains disparities in health outcomes, and part of this association is explained by variations in health behaviors. Recent studies have found that SES is related to patterns of health behavior, but have failed to examine SES patterns in CAM use. As will be discussed below, previous research has identified associations between SES and overall CAM use, however SES associations with patterns of CAMs have been neglected. The overarching research question addressed by this dissertation is whether CAMs form a lifestyle that contributes to the SES-health relationship. Chapter 2 addresses the question of whether patterns in CAM use form a discernible alternative health lifestyle. Chapter 3 addresses the question of whether alternative health lifestyle is associated with SES, and whether alternative health lifestyle contributes to better health for those with higher SES. Chapter 4 addresses the question of whether SES moderates behavioral response to a change in health status, a critical moment in shaping future health and wellness. I will address these questions using data from the Midlife in the United States (MIDUS) study, a longitudinal, nationally representative data set of U.S. adults.
+
+In the sections below, I review research on CAM use, its association with socioeconomic status, its association with health, and motivations for using CAMs. Following a review of relevant theoretical perspectives on health lifestyles and SES, I discuss the contributions of this dissertation to the literature on health lifestyles and SES.
+
+## General CAM Use
+
+About a third of U.S. adults report the use of any CAMs [@barnes2008; @clarke2015], and CAM use appears to be increasing with younger cohorts [@kessler2001]. @clarke2015 found that out of the 20 CAM behaviors included in the National Health Interview Survey (NHIS) CAM Supplement collected in 2002, 2007, and 2012, the use of nonvitamin, nonmineral dietary supplements was highest across all three time points, followed by deep breathing exercises. The use of yoga, tai chi, and qi gong became more popular over time, and meditation ranked in the top 5 most popular approaches at each time point. The use of other CAMs, including Ayurveda, biofeedback, guided imagery hypnosis, and energy health therapy, have not changed significantly over time.
+
+The National Center for Complementary and Integrative Medicine (NCCIM) classifies CAMs into five broad categories: biologically based therapies (including herbal medicine, vitamin use, and special diets), alternative medical systems (including acupuncture and homeopathy), manipulative body-based therapies (including massage therapy, exercise and movement therapies, and chiropractic therapy), mind-body therapies (including hypnosis, imagery techniques, and meditation), and energy healing therapies (use of hands to manipulate and balance energy fields). @barnes2008 found that 19.9% of adults report using biologically based therapies, 19.2% report using mind-body therapies, 3.4% report using alternative medical systems, 0.5% report using energy healing therapy, and 15.2% report using manipulative and body-based therapies.
+
+## Trends in CAM Use by SES
+
+Those with higher levels of education tend to use CAMs at higher rates [@barnes2008; @clarke2015; @honda2005; @mbizo2018; @ni2002; @upchurch2018]. For example, @clarke2015 found that 15.6%-18.8% of adults with less than a high school diploma reported CAM use in 2002, 2007, and 2012 surveys. In contrast, 24.4%-28.1% of adults with a high school diploma or GED, 35.6-41.3% of adults with some college education, and 42.1%-46.7% of adults iwth a college degree or high reported CAM use [@clarke2015]. @barnes2008 reported the following rates of CAM use in 2007 for six educational categories: 20.8% of adults with less than high school, 31.0% of adults with a high school diploma or equivalent, 45% of adults with some college, 47.2% of adults with an Associates degree, 49.6% of those with a Bachelors, and 55.4% of those with a Masters, Doctorate, or Professional degree. @hildreth2007 also found that use of any CAMs increased by level of education; however, among those that used any CAM in the past year, the authors found a threshold effect. Only those with a college degree or more used significantly more types of CAMs compared to those without a high school diploma.
+
+Findings on the rate of CAM use by income have been mixed across studies. @mbizo2018 found that significant differences in overall CAM use across five income categories. Overall CAM use increased by income across the first four income categories; however, the highest income category (\$75,000+) only reported greater use than the lowest income category (\<\$20,000). Among those who have utilized CAMs in the past year, @hildreth2007 did not find a significant association between income and any CAM use or number of CAMs utilized. @clarke2015 found that CAM use was higher for non-poor adults (measured as poverty-income ratio), followed by near poor, and lowest among the poor across 2002, 2007, and 2012. CAM use ranged from 20.6%-26.6% among the poor, from 25.5%-27.7% among the near poor, and 36.8%-40.3% among the not poor. Similarly, @ni2002 found that those making less than \$20,000 per year reported less CAM use than those making \$20,000 per year or more.
+
+## CAM Efficacy
+
+Evidence of efficacy varies across CAMs and across health conditions. CAM efficacy is important because if CAMs are not effective for improving health then they are unlikely to mediate the SES-health relationship. In the following sections, I will review evidence of CAM efficacy for four categories of CAMs that I can measure using the MIDUS surveys. (These categories reflect the factors identified in an exploratory factor analysis that will be reviewed in Chapter 2). Categories of CAMs include mind-body medicine, alternative medical systems, physical and nutritional approaches, and manipulative treatments.
+
+### Mind-Body Medicines
+
+Mind-body medicines or practices represent an array of techniques that aim to connect the body and mind to improve health and wellness. Mind-body medicines include prayer or spiritual healing, energy healing, imagery techniques, relaxation and meditation techniques, and hypnosis.
+
+The MIDUS surveys ask respondents if they have used energy healing in the past year. Evidence for the efficacy of energy healing is weak. For example, Reiki is a form of energy healing that involves noninvasive, nonmanipulative touch. It is performed by a practitioner who has been "attuned" by a Reiki master. When performed, the practitioner lightly lays their hands on or just above the body, working in a slow progression about the body. In a review of clinical studies conducted between 1998 and 2016, @mcmanus2017 identified 13 studies that compared the effects of Reiki to a sham Reiki/placebo. Eight of the 13 studies found that Reiki was more effective than a placebo for producing physical relaxation [@witte2001; @baldwin2006; @baldwin2008; @díaz-rodríguez2011; @salles2014] and for reducing pain, depression, and anxiety among chronically ill patients [@dressen1998]. Studies have also found that Reiki decreases depression among older adults living in nursing homes compared to a placebo and control group [@erdogan2016].
+
+The MIDUS surveys also ask about use of imagery techniques, also known as guided imagery or mental imagery. Imagery techniques involve imagining a scene or experience in the "mind's eye" absent external stimuli, and are often used to reduce stress [@clarke2015]. Experimental studies have also found imagery techniques can reduce pain perception and increase pain tolerance [@milling2003; @alden2001]. Studies on the effectiveness of imagery techniques for treating asthma symptoms have yielded mixed results. @freeman2005 found that biologically target imagery techniques resulted in significant improvement across several asthma related outcomes, while @epstein2004 found no significant effect. In other words, the use of imagery techniques may or may not mediate the SES-health relationship, but its effects are likely weak.
+
+Meditation is a Buddhist practice that aims to increase awareness of the present moment and one's experience. It has been investigated as a possible treatment for chronic pain, showing promising evidence of its effectiveness. In a randomized controlled trial of 282 participants, @morone2017 found that an 8 week mindfulness based stress reduction program effectively reduced self-reported pain disability among adults with low back pain, though the effects of the program did not hold at the 6 month follow-up. @garland2014 tested the effectiveness of an 8 week mindfulness intervention program for treating chronic pain in opioid-abusing patients in a randomized controlled trial. The authors found that the treatment groups experienced significantly lower pain severity and pain interference, and that the mindfulness intervention was more effective than enrollment in a support group. @cherkin2016 compared a mindfulness based stress reduction program, cognitive behavioral therapy, and usual care in a study of 342 adults ages 20 to 70 years old with chronic low back pain. The authors found that the mindfulness intervention was more effective at improving back pain and functional limitations at 26 weeks compared to usual care. Research has also examined mindfulness techniques as a possible treatment for headaches, although mindfulness techniques did not reduce the frequency, length, or pain intensity of headaches compared to usual care [@anheyer2019]. Research ha similarly studied the utility of imagery techniques as a treatment for pain and has found them to be possibly effective treating pain in postoperative orthopedic patients [@carpenter2017] and cancer patients [@depaolis2019].
+
+Research has also found mind-body practices to be largely effective for treating anxiety, depression, and stress [@breedvelt2019; @cillessen2019]. In a sample of adults experiencing moderate sleep disturbances, @black2015 found that mindfulness meditation improved depression symptoms in addition to improving sleep and fatigue. Meditation also reduces anxiety and depression in patients with chronic heart failure [@sullivan2009; @jayadevappa2007], patients experiencing acute depression [@strauss2014], and patients with treatment resistant depression [@eisendrath2016]. Imagery techniques also decrease anxiety and depression in the general population[@klaus2000; @nguyen2018] as well as in patients with cancer [@depaolis2019; @mahdizadeh2019], chronic heart failure [@chang2004], and undergoing hemodialysis [@beizaee2018].
+
+Despite the mixed results of studies of the efficacy of individual mind-body CAMs for improving health, the effectiveness of a combination of techniques on well-being as a whole is unknown. Does the use of one or more mind-body techniques improve health and well-being? Also, does the use of mind-body CAMs play a role in the better health outcomes of higher SES groups?
+
+### Alternative Medicines
+
+Alternative medicines or alternative medical systems reflect CAMs based on complete systems of theory and practice. The MIDUS surveys ask respondents about use of homeopathy, herbal therapy, and acupuncture.
+
+Homeopathy is a medical system that originated in Germany more than 200 years ago. There are two underlying theories to homeopathy. The first is "like cures like," which posits that a disease may be treated with a substance that "produces similar symptoms in healthy people." The second is the "law of minimum dose," which posits that lower doses of medication increase effectiveness. Homeopathic treatments consist of plant products, minerals, and animal products. Treatments are individualized to suit each person. Systematic reviews and meta-analyses of randomized controlled trials have found little to no support for homeopathy's effectiveness.In large, high quality trials homeopathy fails to outperform the placebo @shang2005. A review by @altunç2007 did not find evidence for homeopathy's effectiveness for treating asthma, upper respiratory infection, conjunctivitis, or warts. Some studies found support homeopathy's effective treatment of acute otitis media and postoperative pain-agitation syndrome, though these results need to be replicated. Similarly, a review of 11 independent systematic reviews did not provide strong evidence for the effectiveness of homeopathy [@ernst2002]. Indeed the more rigorous the trial the smaller the effects sizes became. Despite the lack of evidence, practitioners and users of homeopathy swear by its effectiveness and present plenty of anecdotal evidence. @ernst2008 posits that the answer to this contradiction is likely either due to a placebo effect or the fact that sometimes symptoms simply improve on their own regardless of treatment. Given the weak evidence from clinical trials for homeopathy's effectiveness it is unlikely that homeopathy contributes to the SES-health relationship.
+
+Herbal therapy refers to the use of plants to improve health and treat disease. With regards to efficacy, it is not possible to make generalizations about herbal therapy's overall effectiveness. Each herb must be tested for its own effectiveness in treatment and prevention of specific diseases [@ernst2005]. Most have not been subjected to extensive clinical testing, though some of the more popular herbal medicines have been investigated for effectiveness. For example, garlic's anti-bacterial, anti-viral, anti-fungal, anti-hypertensive, blood-glucose lowering anti-thrombotic, anti-mutagenic, and anti-platelet activities have been identified [@ernst2005]. Research has found weak evidence that garlic reduces total cholesterol and low-density lipoprotein [@stevinson]. With regard to blood pressure, there is evidence garlic has a small anti-hypertensive effect [@silagy1994], reduces blood pressure [@ried2008], and may prevent the development of arteriosclerosis [@breithaupt-grögler1997]. Studies have further identified uses for garlic eradicating brain cancer cells [@das2007] and decreasing the odds of developing lung cancer [@jin2013].
+
+Ginkgo biloba has been promoted as a supplement for conditions including anxiety, allergies, dementia, eye problems, peripheral artery disease, and tinnitus [@ernst1999], though overall evidence for ginkgo in treating health conditions is weak [@nationalcenterforcomplementaryandalternativemedicine]. Ginkgo biloba has been shown to be effective in delaying clinical deterioration of dementia in patients and to bring about symptom improvement [@ernst1999], though it has not been determined whether the herb also improves cognitive function in healthy individuals [@canter2007].
+
+Ginseng has been the subject of many studies on effectiveness for a variety of health purposes. Research has found that ginseng improves glucose metabolism and moderates immune system response [@shergis2013], assists in maintaining homeostasis of the immune system, and enhances resistance to illness or microbial attacks through the regulation of the immune system [@wee2011], suggesting beneficial effects for controlling inflammatory diseases and microbial infections [@kang2012]. Ginger has also shown promise as a preventive of cancer [@wee2011; @helmes2004] and is associated with lower risk of stomach, lung, liver, pancreas, ovarian, colon, and oral cancer [@yun2003]. Ginseng may also be effective in treating type 2 diabetes [@wee2011; @kimura1981; @chung2001; @dey2003; @sotaniemi1995; @vuksan2008] and protecting against neurodegenerative diseases such as Alzheimer's [@wee2011].
+
+Studies on the health benefits of echinacea have largely focused on its possible effectiveness in the prevention and treatment of upper respiratory tract infections. It is believed that echinacea stimulates the immune system [@nationalcenterforcomplementaryandalternativemedicine]. There is evidence that echinacea may protect against upper respiratory infections [@melchart1999] but does not reduce the duration of infection [@barrett2010; @karsch-völk2014; @david2019] or severity [@melchart1999].
+
+St. John's Wort has most commonly been recommended for treating depression, though it has also been suggested as treatment for menopausal symptoms, attention-deficit hyperactivity disorder (ADHD), somatic symptom disorder, and obsessive-compulsive disorder (OCD) [@nationalcenterforcomplementaryandalternativemedicine]. Research has found evidence that St. John's Wort is as effective as antidepressants in treating depression and is associated with fewer adverse events [@apaydin2016; @ng2017]. @geller2007 found St. John's Wort to be effective in treating mood and anxiety in menopausal women. There is also evidence that hyperforin and hypericin, found in St. John's Wort, have anticancer properties [@you2018; @klemow2011].
+
+The efficacy of ginger root in treating and preventing has been studied for many health outcomes. Oxidative stress is associated with numerous diseases, thus ginger's antioxidant properties have been put forth as a possible explanation for associated health benefits [@aeschbach1994; @ahmad2000; @halvorsen2002]. Ginger root has been found to decrease inflammation, swelling, and pain [@young2005; @minghetti2007; @eldershaw1992; @ueki2008] and has been proposed as a possible treatment against inflammation, osteoarthritis, and rheumatism [@reginster2000], though evidence of its effectiveness has been inconsistent [@marcus2001]. Ginger's anticarcinogenic activities have been explored for the possible prevention and suppression of lymphoma, hepatoma, colorectal cancer, breast cancer, skin cancer, liver cancer, and bladder cancer [@bode2011]. Furthermore evidence suggests that the various properties of ginger may be effective in treating cardiovascular disease [@nicoll2009], asthma [@chen2009], and symptoms of diabetes [@bode2011; @daily2015].
+
+The MIDUS surveys ask respondents whether they use herbal therapy, but do not include information on which herbs are used at what dosage or for what purpose. Thus, while there is evidence to support specific herb's usefulness in treating specific diseases, it may or may not contribute to the SES-health relationship observed in the MIDUS data. In the analyses that follow I try to account for this by including specific disease outcomes that have been the subject of herbal therapy trials.
+
+The final alternative medical system included in the MIDUS data is acupuncture. Acupuncture is a traditional Chinese medicine in which the practitioner stimulates specific points in the body typically through the insertion of thin needles. One of the primary applications studied for acupuncture has been chronic pain. A meta-analysis of 29 clinical trials found that acupuncture decreases pain compared to no acupuncture and sham acupuncture (when needles are inserted into patients' skin but not as deep as in acupuncture or in the body points specified by acupuncture) [@vickers2014]. Acupuncture is associated with modest improvements pain and function among patients with chronic knee pain [@hinman2015] and a reduction in pain and disability among patients with chronic neck pain [@becker-witt2004]. Acupuncture is widely used for treating low back pain, the second most frequently reported reason for seeing a physician [@manheimer2005]. Acupuncture is significantly more effective in producing short-term relief of chronic low back pain compared to sham acupuncture and no treatment [@manheimer2005]. A randomized controlled trial by @cherkin2009 found similar reductions in back-related dysfunction for traditional as well as sham acupuncture. These results indicate that placement of the needling sites may be unimportant in producing effects, raising questions about the mechanisms by which acupuncture influences outcomes. It is possible the results represent a placebo effect. The current research available on acupuncture's effectiveness in treating chronic headaches demonstrates that acupuncture is associated with improvement in clinical outcomes compared to usual care, medical therapy, and sham acupuncture [@coeytaux2016; @linde2015; @linde2016; @sun2008].
+
+Acupuncture has been studied extensively for its possible utility as a treatment for depression. Several systematic reviews and meta-analyses have been published examining acupuncture's effectiveness in treating depression compared to no treatment, usual care, sham acupuncture, and antidepressant medication. Some meta-analyses have found that acupuncture is moderately more effective compared to no treatment in reducing depression symptoms [@smith2018; @zhang2010] while others have not found this effect [@leo2007; @mukaino2005]. Studies have provided support for acupuncture's effectiveness over usual care [@armour2019; @smith2018]. Evidence of acupuncture's effectiveness in reducing depression symptoms compared to sham acupuncture has been mixed with some studies finding acupuncture to be more effective [@smith2018], others finding inconclusive evidence [@mukaino2005], and others finding no significant difference in effects [@zhang2010; @leo2007]. @smith2018 found acupuncture to be slightly more beneficial compared to medication therapy, though the authors note that there was substantial variation across studies depending on the class of medication and mode of acupuncture stimulation. Compared to medication, @zhang2010 found that acupuncture led to better improvements in symptom severity in patients with post-stroke depression. In the overall meta-analysis, the effectiveness of acupuncture was comparable to antidepressants alone. @mukaino2005 and @leo2007's analyses showed similar patterns. Results from @armour2019's meta-analysis showed that acupuncture resulted in significantly greater reductions in depression severity when used as an additional therapy to anti-depressant medication. @mukaino2005 on the other hand report that evidence of acupuncture as an effective adjunct therapy to antidepressant medication is inconclusive. Given the evidence from the studies cited, acupuncture may contribute to socioeconomic variations in chronic pain and depression.
+
+While there is substantial evidence for the effectiveness of some alternative medical systems, evidence for others is weak. The mixed results cited above make it unclear what the combined effect of using alternative medical systems will be on the SES-health relationship. The analyses in the following chapters will examine whether the use of one or multiple alternative medical systems improves health and well-being for higher SES groups.
+
+### Physical and Nutritional Approaches
+
+Physical and nutritional approaches represent another subset of CAMs. MIDUS surveys include measures of vitamin supplementation, exercise and movement therapy, and special diet. Below I review evidence from randomized controlled trials and epidemiological studies on the effectiveness of each approach in preventing and treating various health conditions. The evidence below guides the selection of disease outcomes for analyses of the role of AHL in the SES-health relationship.
+
+The MIDUS surveys ask respondents about general vitamin use, but do not provide information on the usage of specific vitamins. There are many different vitamins in use in the United States. To gain some sense of the effectiveness of vitamin supplementation, I focus on the use and effectiveness of multivitamin and multimineral (MVMM) supplements. Studies in this literature have investigated the use of MVMM supplementation in the prevention and treatment of cardiovascular disease (CVD), cancer, stroke, infection, and blood pressure, as well as it's relationship to all-cause mortality. Studies have found no association between MVMM supplementation and stroke mortality or stroke incidence [@kim2018]. MVMM supplementation significantly reduces infection episodes in young and middle-aged adults [@stephen2006] and lowers systolic and diastolic blood pressure in patients with chronic disease [@li2018]. Sporadic MVMM supplementation is associated with increased usual intake of micronutrients, with a greater effect observed in regular users [@wallace2019]. Prevention trials have found some evidence of a reduced risk of all-cause mortality associated with MVMM supplementation [@macpherson2013], though some studies have only observed this effect in men [@hercberg2004].
+
+Evidence of a relationship between MVMM supplementation and CVD incidence is overall weak. @alexander2013 review results from 12 cohort studies and 3 primary prevention randomized controlled trials of the effect of MVMM supplementation on CVD incidence in healthy adults. The results of 2 randomized controlled trials show that MVMM is associated with a lowered incidence of CVD, however the observational epidemiological studies did not confirm this association. @kim2018 found that MVMM was associated with lower risk of cardiovascular heart disease (CHD) incidence, though this relationship did not hold in subgroup analyses of randomized controlled trials.In a review of 26 studies, @fortmann2013 report that a majority of the studies did not show a preventive effect of MVMM supplementation on CVD incidence in healthy populations. In a recommendation statement published in the Annals of Internal Medicine in 2014, the U.S. Preventive Services Task Force concluded that the current evidence was not sufficient to assess the benefits and harms of MVMM supplementation for the prevention of CVD [@moyer2014].
+
+While some preventive effects against cancer have been found for MVMM supplementation, this in some studies this effect is only observed in men[@hercberg2004; @gaziano2012]. Two randomized controlled trials of generally healthy adults reviewed by @alexander2013 found a lower incidence of cancer in the MVMM supplementation group, though this association was not confirmed in the observational epidemiological studies reviewed. Similarly, a majority of the studies reviewed by @fortmann2013 did not find a preventive effect of MVMM supplementation on cancer incidence in healthy populations.
+
+The MIDUS surveys ask respondents whether they've utilized exercise or movement therapy, including yoga. In the following paragraphs, I review studies on the effects of yoga and physical exercise on health. Yoga is a practice rooted in India that combines physical postures, breathing techniques, and meditation to promote physical and mental well-being. Yoga's effectiveness in promoting health has been examined for several health outcomes, including headaches, pain, brain structure, and mental health. Yoga is associated with a reduction in headache frequency, headache duration, and pain intensity in patients suffering from tension-type headaches [@anheyer2020]. Yoga has a positive effect on neck pain intensity, neck pain-related functional disability, and mood among patients with chronic, nonspecific neck pain [@li2019]. In a review of 11 studies on the effects of yoga on brain structure, @gothe2019 found that yoga has a positive effect on the structure and function of the hippocampus, amygdala, prefrontal cortex, cingulate cortex, and brain networks including the default mode network. The authors conclude that yoga may be a promising intervention for mitigating age-relate and neurodegenerative declines. Research has found that yoga significantly reduces depression symptoms compared to psychoeducation [@vollbehr2018] and usual care [@cramer2013]. The evidence for yoga's effects on anxiety are mixed [@cramer2013; @vollbehr2018]. Most type of yoga have a positive effect on stress reduction in health populations [@wang2020] and is associate with a significant increase in psychological well-being compared to no intervention [@hendriks2017].
+
+There is an abundance of evidence for the positive effect of exercise on health. Physical inactivity is associated with an increased risk of chronic disease [@anderson2019] including cancer [@magnusson1998] and diabetes [@uusitupa2000]. Physical activity has been found to reduce risk of declining health in overweight and obese populations independent of weight reduction [@he2004]. In combination with adherence to a Mediterranean diet, moderate alcohol use, and non-smoking, physical activity is associated with a 50% lower rate of all-cause and cause-specific mortality [@knoops2004]. In patients with type 2 diabetes, physical activity has been found to decrease systolic blood pressure, in turn reducing the risk for diabetes-related complications, diabetes-related death, and myocardial infarction [@adler2000]. Among cancer patients, physical activity is related to better health-related quality of life [@calle2002] and reduced risk and disease burden conveyed by co-morbid conditions [@penedo2004]. Physical activity is associated with a reduced risk of adverse cardiovascular events [@wessel2004; @blumenthal2004]. Consistent physical activity has been shown to prevent the onset of depression [@paffenbargerjr1994] and to reduce depression and anxiety symptoms [@ross1988; @stephens1988; @babyak2000].
+
+The final physical and nutritional approach included in the MIDUS survey is special diet. There are a plethora of dietary patterns and popular diets observed in the general population. Generally, dietary patterns characterized by fruit, vegetable, whole grain, fish, and poultry consumption tend to be related to increased micronutrient intake and lower disease risk [@kant2004]. More healthful diets are inversely related to all-cause mortality and cardiovascular disease risk, though a systematic review of dietary studies notes that risk reduction is modest and tends to be attenuated when controls are introduced [@kant2004]. Low salt diets are associated with a reduction in death from cardiovascular disease, and tends to be recommended for heart failure and chronic kidney disease [@suckling2015]. Over the last couple of decades, many different diets have gained popularity. The effectiveness of any given popular diet is something that requires further study, however a randomized controlled trial of overweight and obese adults comparing four popular diets (Atkins, Zone, Weight Watchers, and Ornish) found that diet adherence was a better predictor of weight loss and reduction of cardiac risk factors than the type of diet used [@dansinger2005]. Plant-based and vegetarian diets have been associated with reduced risk of negative health outcomes, including lower cholesterol, diabetes, heart disease, and cancer [@oussalah2020; @mcevoy2012].
+
+While there is strong evidence for the effectiveness of some physical and nutritional approaches in promoting health, it is unclear what their effects will be taken together. Analyses in the following chapters will examine whether use of one or more physical and nutritional approaches play a role in the SES-health relationship.
+
+### Manipulative Treatments
+
+Manipulative treatments are treatments in which practitioners physically manipulate the systems and structures of the body, such as bones, joints, and soft tissues, to improve physical ailments. Manipulative treatments are based on the belief that the systems and structures of the body are dependent on each other and self-regulating. The MIDUS survey asks respondents whether they use two manipulative treatments: massage and chiropractic care. Evidence indicates that manipulative treatments may constribute to SES differences in chronic pain and depression and anxiety.
+
+Massage has been examined as a possible treatment for a variety of pain conditions. Research has shown that massage is more effective in treating pain compared to sham controls, no treatment, and active controls (e.g. joint manipulation, physical therapy, acupuncture) [@crawford2016]. Among patients with fibromyalgia, massage has been shown to significantly improve pain after 5 weeks of treatment [@li2014]. Research has found that massage relieves pain in the short term in patients with low back pain [@furlan2015; @kumar2013]. Massage therapy is effective in treating both neck and should pain compared to inactive therapy [@kong2013]. Compared to active therapies, massage shows short effects for relieving shoulder pain but not neck pain. In patients with headaches, massage is associated with a greater reduction in headache pain compared to a placebo [@moraska2015] and a reduction in migraine frequency [@happe2016]. Massage therapy has similarly been associated with improvement in depression and anxiety symptoms [@hou2010; @li2014; @crawford2016], showing similar effectiveness to psychotherapy in meta-analyses [@moyer2004].
+
+Chiropractic care has been examined as a possible treatment for several health outcomes. @salehi2015 reviewed 11 systematic reviews that were specifically concerned with chiropractic care effectiveness and included evidence from clinical trials focused on as specific disease. Results showed that chiropractic care may effectively improve neck pain, shoulder and neck trigger points, and sports injuries. The authors found no conclusive evidence for chiropractic care's effectiveness in treating asthma, infant colic, autism spectrum disorder, gastrointestinal problems, fibromyalgia, back pain, carpal tunnel syndrome.
+
+## Motivations for CAM Use
+
+With such variation in efficacy, what motivates CAM use? A range of motivations have been considered by previous literature, including perceptions of effectiveness and safety, congruence with spiritual philosophy and health beliefs, a sense of control over one's health, dissatisfaction with conventional medicine, and treatment of specific conditions, particularly chronic pain [@barnes2008; @ernst2000; @greene2009; @sirois2002]. Whereas the effectiveness of CAMs has been mixed in clinical trials, CAM users report both physical and psychological health benefits, such as improved physical functioning, relief of negative physical symptoms, improved coping and resilience, and decreased symptoms of depression and anxiety [@greene2009]. Perceived effectiveness of CAMs among users appears to be amplified by a motivation toward general health and wellness. Drawing on 2012 National Health Interview Survey data, @rhee2018 found that compared to individuals who use CAMs for treatment only, individuals who utilize CAMs for general wellness in addition to the treatment of specific conditions report a better sense of control over their health and improved overall health. This may indicate that CAM use has particularly positive perceived benefits for those who are consciously motivated toward general health and well-being.
+
+## Theoretical Perspectives on Health Lifestyles and Socioeconomic Status
+
+In this section, I discuss theoretical perspectives on health lifestyles and socioeconomic status. I first discuss two general theories of stratification and health. Then, I discuss theoretical perspectives relevant to the components of socioeconomic status. All theories point to similar conclusions, namely that higher SES is associated with resources that can be leveraged to gain better health. Health behaviors are one pathway through which the resources associated with SES are utilized to improve health and well-being. Some theories argue that high SES individuals experience better health in part due to patterns of health behaviors associated with their status group. These theories predict that health promoting behaviors will cluster at higher rates within high SES groups. CAMs are a subset of health behaviors that are more common among high SES individuals and promote health. This dissertation investigates whether this is a spurious relationship or patterns of CAM use in high SES groups contribute to better health.
+
+### Fundamental Causes
+
+In response to epidemiology's focus on proximate, individual-level risk factors, @link1995 developed the theory of fundamental causes to draw attention to social conditions as the root cause of health disparities. Link and Phelan observe that the association between socioeconomic status and health has persisted across changing historical contexts involving extraordinary advancements in public health, advancements which were fully expected to eradicate socioeconomic health disparities (e.g. mass immunization and public sanitation improvements). Link and Phelan that the association between SES and health endures because SES is a fundamental cause of health. There are four defining features of a fundamental social cause of health disparities. First, a fundamental cause influences multiple disease outcomes. Second, a fundamental cause affects health through a multiplicity of mechanisms. Third, fundamental social causes involve access to flexible resources (e.g. knowledge, money, power, prestige, and social connections) that can be leveraged toward protective behaviors and environments that favor better health. Fourth, the association between a fundamental social cause and health endures over time because the intervening mechanisms by which it affects health are replaced. As some diseases are eradicated, new ones take their place. As risk factors, and therefore the mechanisms that had produced the association between SES and health from the mid-20th century, disappeared, new risk factors took their place. As risk factors and mechanisms changed, individuals with higher SES were better situated to leverage their resources (e.g. knowledge, money, power, prestige, and social connections) toward protective behaviors and environments that favor better health. Thus, the association between SES and health is not attributable to any one set of mechanisms, but to the flexibility with which socioeconomic resources may be employed in pursuit of better health [@link2008; @lutfey2005].
+
+The flexible resources associated with high SES operate at two levels: individual and contextual. At the individual level, flexible resources can be defined as the "cause of causes" or "risks of risk." At this level flexible resources influence individuals' knowledge of, access to, and social support for engaging in behaviors that promote or protect health. At the contextual level, the resources associated with high SES shape access to contexts that are characterized by health promoting factors and low-risk profiles. For example, the economic resources associated with high SES shape access to high SES neighborhoods with low crime, low noise and environmental pollution, and more green spaces. Education credentials associated with high SES shape access to desirable and safe work environments. At the contextual level, high SES individuals benefit passively from their social position, without actively constructing a healthy situation. Research on epigenetics [@landecker2013] and stressful life conditions [@house2000; @turner1995] demonstrate how SES operates on a contextual level to promote health. This dissertation focuses on how the flexible resources associated with high SES operate on the individual level to reproduce health advantages through health behaviors.
+
+@freese2010 extend fundamental causes theory by explicating four metamechanisms by which fundamental causes influence health. The first metamechanism is "means," and refers to processes in which the individual intentional leverages their socioeconomic resources to enhance or protect health. The second mechanism, "spillovers," refers to situations in which the individual benefits from the health promoting efforts of others in their network without taking purposeful action of their own. This metamechanism operates on the contextual level described above. The third metamechanism, habitus, refers to internalized dispositions to act produced through socialization processes. People of the same social class tend to share habitus. The high SES habitus tends to be more beneficial to health compared to other class habiti. The habitus concept is explored in full in the following section. The habitus metamechanism is similar to the means metamechanism in that health is produced through the individual's behaviors, but in the case of habitus actions are not consciously aimed toward health. Action flows from class preferences unthinkingly. The fourth mechanism, institutions, refers to the ways in which institutions contribute to SES health disparities through differential treatment according to SES. For example, variation in aspects of medical care and educational resources offered to low and high SES patients [@lutfey2005].
+
+In sum, fundamental causes theory asserts that SES is a fundamental cause of health inequalities. High SES individuals have access to flexible resources that operate through a multiplicity of mechanisms to generate an SES health advantage across an array of heath outcomes. The following theories elaborate on the relationship between SES and one of those mechanisms, health behaviors.
+
+### Health Lifestyle Theory
+
+William Cockerham and colleagues [@cockerham1997; @cockerham2005; @cockerham2007; @cockerham2013; @cockerham1993; @cockerham2002] developed Health Lifestyle Theory by synthesizing, among other works, Max Weber's Economy and Society [@weber1978] and Pierre Bourdieu' Distinction [@bourdieu1984]. @cockerham1997 [p. 321] defines health lifestyles as "collective patterns of health-related behavior based on choices from options available to people according to their life chances." His precise theoretical model can be divided into two primary components: structural influences and the habitus.
+
+@weber1978's contribution to the structural component of health lifestyle theory begins with his assertion that lifestyles are formed in status groups. Status groups are aggregates of people with similar status and class backgrounds whose association features a sharing of similar lifestyles. Social statuses or structural locations within systems of stratification direct our exposure to specific elements of culture like health-related beliefs, norms, and customs through socialization and experience. The idea is that people with common social backgrounds will subscribe to the same elements of culture because they tend to have similar socialization experiences. The most powerful structural variable involved in this process is class circumstances, along with age, race, gender, and the influence of collectivities (e.g., family, work, and religion) and living conditions. Common socialization experiences and common elements of culture within the context of these structural variables (what Bourdieu calls "fields") eventually shape our life choices (agency). At the same time, our social positions also drive our life chances (structure) by regulating our access to resources through basic social stratification processes. People have lifestyle choices, but those choices are constrained by what is available to them given their social position. The final feature of the structural component is the dialectical interplay of agency (choices) and structure (chances). @cockerham2005 [p. 61] explains that people "align their goals, needs, and desires with their probabilities for realizing them and choose a lifestyle according to their assessments of the reality of their resources and class circumstances."
+
+The repetitive interplay of choices (agency) and chances (structure) through socialization and experience leads to the development of habitus or internalized dispositions toward behavior or action. The modern concept of the habitus was refined by @bourdieu1984 and represents perhaps his most lasting contribution to sociological theory. According to @cockerham2005 [p. 61], "the habitus serves as a cognitive map or set of perceptions that routinely guides and evaluates a person's choices and options. It provides enduring dispositions toward acting deemed appropriate by a person in particular social situations and settings." Once the habitus is formed, health-related practices like smoking, exercise, and dietary behavior become "integrated into routine behavioral repertories that can be acted out more or less unthinkingly" [@cockerham2005, p. 62]. The final element of the habitus component is the reproduction of health lifestyles through feedback processes. When health lifestyles are formed and enacted, "they tend to reproduce or modify the habitus from which they are derived" [@cockerham2005, p.63]. In other words, when we carry out our lifestyles, we either reinforce or alter our dispositions and practices.
+
+Health lifestyle theory proposes health lifestyles as a mechanism by which SES shapes health inequalities. Due to its effect on life chances, life choices, and, in turn, the habitus, high SES produces similar health promoting lifestyles among its members. This dissertation examines whether SES similarly influences the formation of alternative health lifestyles consisting of CAMs, and whether an alternative health lifestyle contributes to the SES-health relationship.
+
+### Human Capital Theory
+
+John Mirowsky and Catherine Ross [@mirowsky1998; @mirowsky2003] developed their Human Capital Theory by synthesizing the works of @becker1964 in economics and @rotter1966 in psychology. In contrast to Cockerham's General Theory (which can be applied to any system of stratification), Mirowsky and Ross' theory is focused exclusively on explaining how healthy lifestyles flow from years of formal education. Mirowsky and Ross' theoretical model can be divided into two primary components: the human capital component and the learned-effectiveness component.
+
+The first component, drawing primarily from @becker1964, argues that "formal education indicates investment in 'human capital' - the productive capacity developed, embodied, and stocked in human beings themselves" [@mirowsky2003, p. 51]. The idea is relatively straightforward: The process of formal education nurtures knowledge, skills, and abilities that help people to solve problems and to be productive in their own lives. Some of the more important elements of education include health-related knowledge and skills associated with reading, writing, researching, critical thinking, and communicating.
+
+The second component, drawing primarily from @rotter1966, argues that formal educational attainment, human capital investment, and the development of skills and abilities tends to foster a healthy lifestyle by promoting a general sense of learned-effectiveness or personal control over one's life. According to @mirowsky2003 [p. 64], "education raises the sense of personal control because it helps people successfully prevent problems, or solve them if prevention fails, to achieve their goals, and shape their own lives." Through years of formal education, skill development, and structured problem solving, people learn that they can organize their lives, achieve goals, and actively manage the good and bad things that happen to them. The sense of control then contributes to a healthy lifestyle by cultivating a proactive or agentic orientation toward one's health. @mirowsky2003 [p. 66] explain that "people with a sense of personal control know more about health, they are more likely to initiate preventive behaviors like quitting smoking, exercising, or maintaining a normal weight."
+
+### Health Commodity Theory
+
+The Health Commodity Theory was initially described by @ross2000 in the context of explaining the link between socioeconomic status (SES) and health. A commodity is something of value that can be bought and sold. Health commodity theory argues that SES promotes health through purchasing power. Similar to fundamental social causes theory [@link2010], health commodity theory is structural and materialistic. That is, health commodity theory tends to reduce the complex association between SES and health to mechanisms linked to financial resources or things people can buy like health care, pharmaceuticals, and healthier foods. Ultimately, the defining question is "who gets what?"
+
+Health Lifestyle Theory and Human Capital Theory take the same general form. Both theories argue that social structure shapes and clusters health related behavior through social psychological processes. While Cockerham emphasizes the mechanisms of socialization and habitus (internalized behavior norms), Mirowsky and Ross stress the development of human capital (skills and abilities) and the sense of personal control (beliefs about one's personal effectiveness). Health commodity theory competes with these social psychological theories by emphasizing a direct link between social structure and health-related behavior. Although health lifestyle theory and human capital theory acknowledge the role of resource stratification in explaining broader structural disparities in health lifestyles, they also recognize more elaborate downstream social psychological processes. If the predictions of health commodity theory are correct, income should partially mediate or explain educational variations in health lifestyles. Under these conditions, the effects of education on health-related behavior would be partially due to the fact that people with higher levels of education tend to earn more money. This fact would minimize (not eliminate) the explanatory power of processes related to socialization and habitus, human capital, and the sense of personal control.
+
+## Data
+
+For this dissertation, I utilize data from all three waves of the Midlife in the United States (MIDUS) study, a national longitudinal study of health and well-being. The first wave of MIDUS was collected in 1995-1996 by the MacArthur Foundation Research Network on Successful Midlife Development. The purpose of the study was to examine the role of behavioral, psychological, and social factors in producing health and well-being across age groups. Respondents at all three waves completed telephone and mail in questionnaires which comprise the survey project. This dissertation uses the survey projects, which are currently available across all three waves. Data collection for MIDUS I began with a national random digit dialing sample (RDD) (n=3,487). Households were randomly selected from working telephone banks. One household member between the ages of 25 and 74 was selected for participation. MIDUS I was expanded to also include an oversample of five metropolitan areas (n=757), siblings of individuals from the RDD sample (n=950), and a national RDD sample of twin pairs (n=1,914). Respondents were asked to complete a telephone survey and two mail-in self-administered questionnaires (SAQs). Response rates for the telephone survey ranged from 60-70% across subsamples (n=7,108). Response rates for the SAQs averaged 89% (n=6,329).
+
+In 2004-2006, the Institute on Aging at the University of Wisconsin-Madison conducted MIDUS II, a follow-up on MIDUS I respondents, with funding from the National Institute on Aging. Of the 7,108 participants in MIDUS I, 75% completed the telephone survey for MIDUS II (n=4963), adjusted for mortality. Of those that completed the telephone survey, 81% completed the two SAQs (n=4032). Completion time between MIDUS I and MIDUS II ranged from 7.8 to 10.4 years.
+
+Data collection for MIDUS III began in 2013. Survey project (telephone and mail in questionnaires) data collection ended in 2014, however, data collection for other projects within this wave continues today. Of the 4,963 MIDUS II participants contacted, 66% were eligible for participation at MIDUS III and completed the telephone survey (n=3,294). Of those that completed the telephone survey, 83% completed the SAQs at MIDUS III (n=2,732). Completion time between MIDUS II and MIDUS III ranged from 7.9 to 10.3 years.
+
+## Contributions
+
+This dissertation addresses the following overarching question: Do CAMs form a lifestyle that contributes to the SES-health relationship? Findings advance the literature on health lifestyles and the SES-health gradient in several ways. First, to this point in time, studies on health lifestyles have not included CAMs, which are utilized by a substantial portion of the US population. This dissertation empirically examines patterns in CAM use to identify dimensions of alternative health lifestyles. Second, this dissertation examines relationships between dimensions of alternative health lifestyle and two components of SES, income and education. Findings show that education, but not income, is associated with use of more dimensions of alternative health lifestyle. I discuss the implications of these findings for Health Lifestyle Theory, Human Capital Theory, and Health Commodity Theory. Third, I empirically analyze the role of alternative health lifestyles' (AHL) in producing the socioeconomic gradient in health using longitudinal data. Findings show that higher SES is associated with greater CAM use and better health. I investigate whether this is a spurious relationship or if CAMs actually contribute to better health. Findings show that CAM use does not contribute to the SES health gradient. I discuss implications for theories on social stratification and health. Fourth, I examine how SES moderates CAM use in response to a decline in health status, a critical point for shaping health disparities across the life course. Findings show that resources associated with high SES do not shape access to CAMs among the chronically ill.

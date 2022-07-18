@@ -2,32 +2,117 @@
 title: " "
 output:
   pdf_document:
-    number_sections: TRUE
+    latex_engine: xelatex
+    number_sections: FALSE
+    fig_caption: yes
 geometry: "left = 2.5cm, right = 2cm, top = 2cm, bottom = 2cm"
-fontsize: 11pt
+fontsize: 12pt
 header-includes:
   - \usepackage{float}
   - \usepackage{sectsty}
   - \usepackage{paralist}
-  - \usepackage{setspace}\spacing{1.5}
+  - \usepackage{setspace}\doublespacing
   - \usepackage{fancyhdr}
   - \usepackage{lastpage}
   - \usepackage{dcolumn}
-  - \usepackage{natbib}\bibliographystyle{agsm}
+  - \usepackage{rotating, graphicx, longtable}
+  - \extrafloats{200}
   - \usepackage[nottoc, numbib]{tocbibind}
-bibliography: bibliography.bib
+bibliography: references.bib
+link-citations: true
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(tinytex.verbose = TRUE)
+```
+
 \allsectionsfont{\centering}
 \subsectionfont{\raggedright}
 \subsubsectionfont{\raggedright}
 
 \pagenumbering{gobble}
-```
 
 \begin{centering}
 \vspace{3cm}
 
+\Large
+
+\doublespacing
+THE ROLE OF ALTERNATIVE HEALTH LIFESTYLES IN THE SES-HEALTH RELATIONSHIP: MEASUREMENT, MEDIATION, AND MODERATION
+
+\vspace{1cm}
+
+\normalsize
+\singlespacing
+By 
+
+\vspace{0.5 cm}
+Hannah Andrews
+
+
+
 \end{centering}
 
+\newpage
+\pagenumbering{gobble}
+
+\begin{centering}
+
+\Large
+{\bf ABSTRACT}
+
+\end{centering}
+\vspace{1 cm}
+
+\normalsize
+\singlespacing
+
+This dissertation examines whether CAMs form an alternative health lifestyle that contributes to the socioeconomic gradient in health. CAMs, a subset of health behaviors used by a substantial portion of the population, have been largely ignored by health lifestyles research. To address this research gap, I utilize exploratory and confirmatory factor analyses on data from the Midlife in the United States (MIDUS) survey to examine whether patterns of CAM use. Results reveal four distinct dimensions of alternative health lifestyle: Mind-Body Medicine, Alternative Medical Systems, Physical and Nutritional Approaches, and Manipulative Treatments. Drawing on Health Lifestyles Theory, I examine associations between socioeconomic status (SES) and alternative health lifestyles using generalized linear mixed modeling. Results reveal a strong, consistent association between education and alternative health lifestyle. Income does not predict alternative health lifestyle. I use structural equation modeling to investigate whether greater CAM use among high SES groups contributes to their better health. I also test the role of health in contributing to the relationship between SES and alternative health lifestyle. Results show that alternative health lifestyle does not contribute to the socioeconomic gradient health. These results support the assertion of Fundamental Cause Theory that SES is a fundamental social cause of health. Worse health was associated with greater CAM use, indicating that people tend to use CAMs to address poor health. Finally, I examine SES as a moderator of the relationship between change in health status and change in CAM use. Results show that economic constraints and resources associated with education do not shape access to CAMs for the chronically ill.   
+
+
+\pagenumbering{roman}
+
+
+\newpage
+
+\centering
+\raggedright
+\newpage
+\tableofcontents
+
+\newpage
+\listoffigures
+
+\newpage
+\listoftables
+\newpage
+\pagenumbering{arabic}
+\doublespacing
+```{r introduction, child = 'introduction.Rmd'}
+```
+
+\newpage
+```{r chapter-two, child = 'measurement.Rmd'}
+```
+
+\newpage
+```{r chapter-three, child = 'mediation.Rmd'}
+```
+
+\newpage
+```{r chapter-four, child= 'moderation.Rmd'}
+```
+
+\newpage
+```{r chapter-five, child = 'conclusion.Rmd'}
+```
+
+\newpage
+```{r appendix, child = 'appendix.Rmd'}
+```
+
+\singlespacing
+\newpage
+```{r biblio, child = 'bibliography.Rmd'}
+```

@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.5)  5 JUL 2022 14:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.9)  13 JUL 2022 09:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **mediation.tex
 (./mediation.tex
-LaTeX2e <2022-06-01> patch level 4
-L3 programming layer <2022-07-01> (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+LaTeX2e <2022-06-01> patch level 5
+L3 programming layer <2022-07-04> (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
@@ -262,11 +262,11 @@ with kernel methods
 \Fld@listcount=\count280
 \c@bookmark@seq@number=\count281
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
-Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 286.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip52
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
@@ -364,7 +364,11 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 )
 \Gin@req@height=\dimen179
 \Gin@req@width=\dimen180
-) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
+)
+\cslhangindent=\skip62
+\csllabelwidth=\skip63
+\cslentryspacingunit=\skip64
+(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count298
 \float@exts=\toks27
@@ -383,24 +387,24 @@ LaTeX Warning: Command \underline  has changed.
 
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/paralist/paralist.sty
 Package: paralist 2017/01/22 v2.7 Extended list environments
-\pltopsep=\skip62
-\plpartopsep=\skip63
-\plitemsep=\skip64
-\plparsep=\skip65
+\pltopsep=\skip65
+\plpartopsep=\skip66
+\plitemsep=\skip67
+\plparsep=\skip68
 \pl@lab=\toks29
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2022/05/18 v4.0.3 Extensive control of page headers and footers
-\f@nch@headwidth=\skip66
-\f@nch@O@elh=\skip67
-\f@nch@O@erh=\skip68
-\f@nch@O@olh=\skip69
-\f@nch@O@orh=\skip70
-\f@nch@O@elf=\skip71
-\f@nch@O@erf=\skip72
-\f@nch@O@olf=\skip73
-\f@nch@O@orf=\skip74
+\f@nch@headwidth=\skip69
+\f@nch@O@elh=\skip70
+\f@nch@O@erh=\skip71
+\f@nch@O@olh=\skip72
+\f@nch@O@orh=\skip73
+\f@nch@O@elf=\skip74
+\f@nch@O@erf=\skip75
+\f@nch@O@olf=\skip76
+\f@nch@O@orf=\skip77
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lastpage/lastpage.sty
 Package: lastpage 2021/09/03 v1.2n Refers to last page's name (HMM; JPG)
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/dcolumn.sty
@@ -411,15 +415,15 @@ Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 )
 \c@r@tfl@t=\count299
-\rotFPtop=\skip75
-\rotFPbot=\skip76
+\rotFPtop=\skip78
+\rotFPbot=\skip79
 \rot@float@box=\box63
 \rot@mess@toks=\toks30
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip77
+\multirow@colwidth=\skip80
 \multirow@cntb=\count300
-\multirow@dima=\skip78
+\multirow@dima=\skip81
 \bigstrutjot=\dimen181
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
 \wrapoverhang=\dimen182
@@ -431,7 +435,7 @@ Package: wrapfig 2003/01/31  v 3.6
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
 \everycr=\toks32
-\minrowclearance=\skip79
+\minrowclearance=\skip82
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
@@ -468,7 +472,7 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \tabu@arstrutbox=\box67
 \tabu@hleads=\box68
 \tabu@vleads=\box69
-\tabu@cellskip=\skip80
+\tabu@cellskip=\skip83
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
 \@tempboxb=\box70
@@ -479,11 +483,11 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-\TPTL@width=\skip81
+\TPTL@width=\skip84
 ) (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
 \UL@box=\box71
 \UL@hyphenbox=\box72
-\UL@skip=\skip82
+\UL@skip=\skip85
 \UL@hook=\toks35
 \UL@height=\dimen195
 \UL@pe=\count309
@@ -507,34 +511,37 @@ LaTeX Warning: Label `tab:descriptives-table' multiply defined.
 
 LaTeX Warning: Label `tab:descriptives-table' multiply defined.
 
+
+LaTeX Warning: Label `tab:descriptives-table' multiply defined.
+
 )
 \openout1 = `mediation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 102.
-LaTeX Font Info:    ... okay on input line 102.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 125.
+LaTeX Font Info:    ... okay on input line 125.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 102.
+Package hyperref Info: Link coloring OFF on input line 125.
 (./mediation.out) (./mediation.out)
 \@outlinefile=\write3
 \openout3 = `mediation.out'.
@@ -575,34 +582,34 @@ Package hyperref Info: Link coloring OFF on input line 102.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 102.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 104.
+(lastpage)             ! on input line 125.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 104.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 104.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 104.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 104.
+(Font)              <12> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 104.
+(Font)              <8> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 104.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 104.
+(Font)              <6> on input line 127.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 104.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 127.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./mediation.toc
@@ -618,1342 +625,78 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 [1
 
-{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 123.
+{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 144.
 (c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3] [4] [5] [6] [7] [8] [9] [10] [11
+) [2] [3] [4] [5] [6] [7] [8] [9] [10] [11
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.340 \end{landscape}
+l.381 \end{landscape}
                      ] [12
 pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.368 
-      
+l.410 M
+       odel 4 adds control variables and logged income is no longer a signif...
 
 
-] [13] [14
+] [13] [14] [15
 pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.409 \end{landscape}
-                     ] [15
+l.452 \end{landscape}
+                     ] [16
 pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.439 
+l.484 
       
 
 
-] [16] [17
+] [17] [18
 pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.478 \end{landscape}
-                     ] [18
+l.521 \end{landscape}
+                     ] [19
 pdfTeX warning (ext4): destination with the same identifier (name{table.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.508 
+l.553 
       
 
 
-] [19] [20
+] [20] [21
 pdfTeX warning (ext4): destination with the same identifier (name{table.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.547 \end{landscape}
-                     ] [21
+l.590 \end{landscape}
+                     ] [22
 pdfTeX warning (ext4): destination with the same identifier (name{table.9}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.577 
+l.620 
       
 
 
-] [22] [23
+] [23] [24
 pdfTeX warning (ext4): destination with the same identifier (name{table.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.618 \end{landscape}
-                     ] [24
+l.661 \end{landscape}
+                     ] [25
 pdfTeX warning (ext4): destination with the same identifier (name{table.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.648 
+l.691 
       
 
 
-]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 662.
-(c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Overfull \hbox (364.99255pt too wide) in paragraph at lines 664--664
-[]\T1/lmtt/m/n/10 Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'fitMeasures': object 'model.summ.2' not found[] 
- []
-
-[25] [26]
-<mediation_files/figure-latex/path-totcams-chron-1.pdf, id=224, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-chron-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-chron-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-chron-1.pdf  used on input line 676.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[27
-pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.680 \begin{landscape}
-                       \begin{table} <./mediation_files/figure-latex/path-totcams-chron-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 753.
-
-[28
-pdfTeX warning (ext4): destination with the same identifier (name{table.12}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.754 \end{landscape}
-                     ] [29
-pdfTeX warning (ext4): destination with the same identifier (name{table.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.786 \end{landscape}
-                     ] [30
-pdfTeX warning (ext4): destination with the same identifier (name{table.14}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.805 \begin{landscape}
-                       \begin{table}]
-
-LaTeX Warning: Float too large for page by 27.24742pt on input line 892.
-
-[31
-pdfTeX warning (ext4): destination with the same identifier (name{table.15}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.893 \end{landscape}
-                     ] [32
-pdfTeX warning (ext4): destination with the same identifier (name{table.16}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.924 \end{landscape}
-                     ]
-<mediation_files/figure-latex/path-totcams-SRH-1.pdf, id=266, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-SRH-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-SRH-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-SRH-1.pdf  used on input line 943.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[33
-
-
-
-
-
-
-
-
-] [34
-pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.947 \begin{landscape}
-                       \begin{table} <./mediation_files/figure-latex/path-totcams-SRH-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 1020.
-
-[35
-pdfTeX warning (ext4): destination with the same identifier (name{table.17}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1021 \end{landscape}
-                      ] [36
-pdfTeX warning (ext4): destination with the same identifier (name{table.18}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1053 \end{landscape}
-                      ] [37
-pdfTeX warning (ext4): destination with the same identifier (name{table.19}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1072 \begin{landscape}
-                        \begin{table}] [38
-pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1152 \end{landscape}
-                      ] [39
-pdfTeX warning (ext4): destination with the same identifier (name{table.21}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1183 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-totcams-diabetes-1.pdf, id=316, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-diabetes-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-diabetes-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-diabetes-1.pdf  used on input line 1198.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[40
-
-
-
-
-
-
-
-
-] [41
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1202 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-totcams-diabetes-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 1275.
-
-[42
-pdfTeX warning (ext4): destination with the same identifier (name{table.22}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1276 \end{landscape}
-                      ] [43
-pdfTeX warning (ext4): destination with the same identifier (name{table.23}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1308 \end{landscape}
-                      ] [44
-pdfTeX warning (ext4): destination with the same identifier (name{table.24}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1327 \begin{landscape}
-                        \begin{table}] [45
-pdfTeX warning (ext4): destination with the same identifier (name{table.25}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1410 \end{landscape}
-                      ] [46
-pdfTeX warning (ext4): destination with the same identifier (name{table.26}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1441 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-totcams-chronicpain-1.pdf, id=365, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-chronicpain-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-chronicpain-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-chronicpain-1.pdf  used on input line 1456.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[47
-
-
-
-
-
-
-
-
-] [48
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1460 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-totcams-chronicpain-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 1533.
-
-[49
-pdfTeX warning (ext4): destination with the same identifier (name{table.27}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1534 \end{landscape}
-                      ] [50
-pdfTeX warning (ext4): destination with the same identifier (name{table.28}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1566 \end{landscape}
-                      ] [51
-pdfTeX warning (ext4): destination with the same identifier (name{table.29}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1585 \begin{landscape}
-                        \begin{table}] [52
-pdfTeX warning (ext4): destination with the same identifier (name{table.30}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1668 \end{landscape}
-                      ] [53
-pdfTeX warning (ext4): destination with the same identifier (name{table.31}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1699 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-totcams-highbp-1.pdf, id=415, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-highbp-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-highbp-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-highbp-1.pdf  used on input line 1714.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[54
-
-
-
-
-
-
-
-
-] [55
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1718 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-totcams-highbp-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 1791.
-
-[56
-pdfTeX warning (ext4): destination with the same identifier (name{table.32}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1792 \end{landscape}
-                      ] [57
-pdfTeX warning (ext4): destination with the same identifier (name{table.33}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1824 \end{landscape}
-                      ] [58
-pdfTeX warning (ext4): destination with the same identifier (name{table.34}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1843 \begin{landscape}
-                        \begin{table}] [59
-pdfTeX warning (ext4): destination with the same identifier (name{table.35}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1926 \end{landscape}
-                      ] [60
-pdfTeX warning (ext4): destination with the same identifier (name{table.36}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1957 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-totcams-dep-1.pdf, id=464, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-totcams-dep-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-totcams-dep-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-totcams-dep-1.pdf  used on input line 1972.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[61
-
-
-
-
-
-
-
-
-] [62
-pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1976 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-totcams-dep-1.pdf>]
-
-LaTeX Warning: Float too large for page by 23.24756pt on input line 2049.
-
-[63
-pdfTeX warning (ext4): destination with the same identifier (name{table.37}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2050 \end{landscape}
-                      ] [64
-pdfTeX warning (ext4): destination with the same identifier (name{table.38}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2082 \end{landscape}
-                      ] [65
-pdfTeX warning (ext4): destination with the same identifier (name{table.39}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2101 \begin{landscape}
-                        \begin{table}] [66
-pdfTeX warning (ext4): destination with the same identifier (name{table.40}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2184 \end{landscape}
-                      ] [67
-pdfTeX warning (ext4): destination with the same identifier (name{table.41}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2215 \end{landscape}
-                      ] [68
-
-
-
-
-
-
-
-
-]
-<mediation_files/figure-latex/path-mb-chron-1.pdf, id=528, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-mb-chron-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-mb-chron-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-mb-chron-1.pdf  used on input line 2235.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[69
-pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2239 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-mb-chron-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 2312.
-
-[70
-pdfTeX warning (ext4): destination with the same identifier (name{table.42}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2313 \end{landscape}
-                      ] [71
-pdfTeX warning (ext4): destination with the same identifier (name{table.43}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2345 \end{landscape}
-                      ] [72
-pdfTeX warning (ext4): destination with the same identifier (name{table.44}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2364 \begin{landscape}
-                        \begin{table}] [73
-pdfTeX warning (ext4): destination with the same identifier (name{table.45}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2447 \end{landscape}
-                      ] [74
-pdfTeX warning (ext4): destination with the same identifier (name{table.46}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2478 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-mb-srh-1.pdf, id=566, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-mb-srh-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-mb-srh-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-mb-srh-1.pdf  used on input line 2493.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[75
-
-
-
-
-
-
-
-
-] [76
-pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2497 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-mb-srh-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 2570.
-
-[77
-pdfTeX warning (ext4): destination with the same identifier (name{table.47}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2571 \end{landscape}
-                      ] [78
-pdfTeX warning (ext4): destination with the same identifier (name{table.48}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2603 \end{landscape}
-                      ] [79
-pdfTeX warning (ext4): destination with the same identifier (name{table.49}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2622 \begin{landscape}
-                        \begin{table}] [80
-pdfTeX warning (ext4): destination with the same identifier (name{table.50}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2702 \end{landscape}
-                      ] [81
-pdfTeX warning (ext4): destination with the same identifier (name{table.51}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2733 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-mb-chronicpain-1.pdf, id=615, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-mb-chronicpain-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-mb-chronicpain-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-mb-chronicpain-1.pdf  used on input line 2750.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[82
-
-
-
-
-
-
-
-
-] [83
-pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2754 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-mb-chronicpain-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 2827.
-
-[84
-pdfTeX warning (ext4): destination with the same identifier (name{table.52}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2828 \end{landscape}
-                      ] [85
-pdfTeX warning (ext4): destination with the same identifier (name{table.53}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2860 \end{landscape}
-                      ] [86
-pdfTeX warning (ext4): destination with the same identifier (name{table.54}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2879 \begin{landscape}
-                        \begin{table}] [87
-pdfTeX warning (ext4): destination with the same identifier (name{table.55}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2962 \end{landscape}
-                      ] [88
-pdfTeX warning (ext4): destination with the same identifier (name{table.56}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2993 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-mb-dep-1.pdf, id=665, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-mb-dep-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-mb-dep-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-mb-dep-1.pdf  used on input line 3006.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[89
-
-
-
-
-
-
-
-
-] [90
-pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3010 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-mb-dep-1.pdf>]
-
-LaTeX Warning: Float too large for page by 23.24756pt on input line 3083.
-
-[91
-pdfTeX warning (ext4): destination with the same identifier (name{table.57}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3084 \end{landscape}
-                      ] [92
-pdfTeX warning (ext4): destination with the same identifier (name{table.58}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3116 \end{landscape}
-                      ] [93
-pdfTeX warning (ext4): destination with the same identifier (name{table.59}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3135 \begin{landscape}
-                        \begin{table}] [94
-pdfTeX warning (ext4): destination with the same identifier (name{table.60}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3218 \end{landscape}
-                      ] [95
-pdfTeX warning (ext4): destination with the same identifier (name{table.61}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3249 \end{landscape}
-                      ] [96
-
-
-
-
-
-
-
-
-]
-<mediation_files/figure-latex/path-altmed-chron-1.pdf, id=728, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-chron-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-chron-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-chron-1.pdf  used on input line 3267.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[97
-pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3271 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-chron-1.pdf>] [98
-pdfTeX warning (ext4): destination with the same identifier (name{table.62}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3340 \end{landscape}
-                      ] [99
-pdfTeX warning (ext4): destination with the same identifier (name{table.63}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3372 \end{landscape}
-                      ] [100
-pdfTeX warning (ext4): destination with the same identifier (name{table.64}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3391 \begin{landscape}
-                        \begin{table}] [101
-pdfTeX warning (ext4): destination with the same identifier (name{table.65}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3474 \end{landscape}
-                      ] [102
-pdfTeX warning (ext4): destination with the same identifier (name{table.66}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3505 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-altmed-srh-1.pdf, id=765, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-srh-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-srh-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-srh-1.pdf  used on input line 3518.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[103
-
-
-
-
-
-
-
-
-] [104
-pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3522 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-srh-1.pdf>]
-
-LaTeX Warning: Float too large for page by 31.6363pt on input line 3595.
-
-[105
-pdfTeX warning (ext4): destination with the same identifier (name{table.67}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3596 \end{landscape}
-                      ] [106
-pdfTeX warning (ext4): destination with the same identifier (name{table.68}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3628 \end{landscape}
-                      ] [107
-pdfTeX warning (ext4): destination with the same identifier (name{table.69}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3647 \begin{landscape}
-                        \begin{table}] [108
-pdfTeX warning (ext4): destination with the same identifier (name{table.70}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3727 \end{landscape}
-                      ]
-Overfull \hbox (6.80458pt too wide) in paragraph at lines 3734--3757
- [] 
- []
-
-[109
-pdfTeX warning (ext4): destination with the same identifier (name{table.71}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3758 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-altmed-highbp-1.pdf, id=816, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-highbp-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-highbp-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-highbp-1.pdf  used on input line 3771.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[110
-
-
-
-
-
-
-
-
-] [111
-pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3775 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-highbp-1.pdf>]
-
-LaTeX Warning: Float too large for page by 31.6363pt on input line 3848.
-
-[112
-pdfTeX warning (ext4): destination with the same identifier (name{table.72}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3849 \end{landscape}
-                      ] [113
-pdfTeX warning (ext4): destination with the same identifier (name{table.73}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3881 \end{landscape}
-                      ] [114
-pdfTeX warning (ext4): destination with the same identifier (name{table.74}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3900 \begin{landscape}
-                        \begin{table}] [115
-pdfTeX warning (ext4): destination with the same identifier (name{table.75}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.3983 \end{landscape}
-                      ] [116
-pdfTeX warning (ext4): destination with the same identifier (name{table.76}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4014 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-altmed-diabetes-1.pdf, id=865, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-diabetes-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-diabetes-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-diabetes-1.pdf  used on input line 4027.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[117
-
-
-
-
-
-
-
-
-] [118
-pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4031 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-diabetes-1.pdf>]
-
-LaTeX Warning: Float too large for page by 31.6363pt on input line 4104.
-
-[119
-pdfTeX warning (ext4): destination with the same identifier (name{table.77}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4105 \end{landscape}
-                      ] [120
-pdfTeX warning (ext4): destination with the same identifier (name{table.78}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4137 \end{landscape}
-                      ] [121
-pdfTeX warning (ext4): destination with the same identifier (name{table.79}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4156 \begin{landscape}
-                        \begin{table}] [122
-pdfTeX warning (ext4): destination with the same identifier (name{table.80}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4239 \end{landscape}
-                      ] [123
-pdfTeX warning (ext4): destination with the same identifier (name{table.81}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4270 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-altmed-chronicpain-1.pdf, id=915, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-chronicpain-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-chronicpain-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-chronicpain-1.pdf  used on input line 4283.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[124
-
-
-
-
-
-
-
-
-] [125
-pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4287 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-chronicpain-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 4360.
-
-[126
-pdfTeX warning (ext4): destination with the same identifier (name{table.82}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4361 \end{landscape}
-                      ] [127
-pdfTeX warning (ext4): destination with the same identifier (name{table.83}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4393 \end{landscape}
-                      ] [128
-pdfTeX warning (ext4): destination with the same identifier (name{table.84}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4412 \begin{landscape}
-                        \begin{table}] [129
-pdfTeX warning (ext4): destination with the same identifier (name{table.85}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4495 \end{landscape}
-                      ] [130
-pdfTeX warning (ext4): destination with the same identifier (name{table.86}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4526 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-altmed-dep-1.pdf, id=964, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-altmed-dep-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-altmed-dep-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-altmed-dep-1.pdf  used on input line 4539.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[131
-
-
-
-
-
-
-
-
-] [132
-pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4543 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-altmed-dep-1.pdf>]
-
-LaTeX Warning: Float too large for page by 23.24756pt on input line 4616.
-
-[133
-pdfTeX warning (ext4): destination with the same identifier (name{table.87}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4617 \end{landscape}
-                      ] [134
-pdfTeX warning (ext4): destination with the same identifier (name{table.88}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4649 \end{landscape}
-                      ] [135
-pdfTeX warning (ext4): destination with the same identifier (name{table.89}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4668 \begin{landscape}
-                        \begin{table}] [136
-pdfTeX warning (ext4): destination with the same identifier (name{table.90}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4751 \end{landscape}
-                      ] [137
-pdfTeX warning (ext4): destination with the same identifier (name{table.91}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4782 \end{landscape}
-                      ] [138
-
-
-
-
-
-
-
-
-]
-<mediation_files/figure-latex/path-pna-chron-1.pdf, id=1027, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-pna-chron-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-pna-chron-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-pna-chron-1.pdf  used on input line 4806.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[139] [140
-pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4810 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-pna-chron-1.pdf>] [141
-pdfTeX warning (ext4): destination with the same identifier (name{table.92}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4879 \end{landscape}
-                      ]
-Overfull \hbox (3.71933pt too wide) in paragraph at lines 4886--4910
- [] 
- []
-
-[142
-pdfTeX warning (ext4): destination with the same identifier (name{table.93}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4911 \end{landscape}
-                      ] [143
-pdfTeX warning (ext4): destination with the same identifier (name{table.94}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.4930 \begin{landscape}
-                        \begin{table}] [144
-pdfTeX warning (ext4): destination with the same identifier (name{table.95}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5013 \end{landscape}
-                      ]
-Overfull \hbox (36.05316pt too wide) in paragraph at lines 5020--5043
- [] 
- []
-
-[145
-pdfTeX warning (ext4): destination with the same identifier (name{table.96}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5044 \end{landscape}
-                      ] [146
-
-
-
-
-
-
-
-
-]
-<mediation_files/figure-latex/path-pna-srh-1.pdf, id=1082, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-pna-srh-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-pna-srh-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-pna-srh-1.pdf  used on input line 5061.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[147] [148
-pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5065 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-pna-srh-1.pdf>]
-
-LaTeX Warning: Float too large for page by 31.6363pt on input line 5138.
-
-[149
-pdfTeX warning (ext4): destination with the same identifier (name{table.97}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5139 \end{landscape}
-                      ]
-Overfull \hbox (15.74771pt too wide) in paragraph at lines 5146--5170
- [] 
- []
-
-[150
-pdfTeX warning (ext4): destination with the same identifier (name{table.98}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5171 \end{landscape}
-                      ] [151
-pdfTeX warning (ext4): destination with the same identifier (name{table.99}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5190 \begin{landscape}
-                        \begin{table}] [152
-pdfTeX warning (ext4): destination with the same identifier (name{table.100}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5270 \end{landscape}
-                      ]
-Overfull \hbox (43.08154pt too wide) in paragraph at lines 5277--5300
- [] 
- []
-
-[153
-pdfTeX warning (ext4): destination with the same identifier (name{table.101}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5301 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-pna-highbp-1.pdf, id=1123, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-pna-highbp-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-pna-highbp-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-pna-highbp-1.pdf  used on input line 5314.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[154
-
-
-
-
-
-
-
-
-] [155
-pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5318 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-pna-highbp-1.pdf>]
-
-LaTeX Warning: Float too large for page by 31.6363pt on input line 5391.
-
-[156
-pdfTeX warning (ext4): destination with the same identifier (name{table.102}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5392 \end{landscape}
-                      ]
-Overfull \hbox (9.08063pt too wide) in paragraph at lines 5399--5423
- [] 
- []
-
-[157
-pdfTeX warning (ext4): destination with the same identifier (name{table.103}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5424 \end{landscape}
-                      ] [158
-pdfTeX warning (ext4): destination with the same identifier (name{table.104}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5443 \begin{landscape}
-                        \begin{table}] [159
-pdfTeX warning (ext4): destination with the same identifier (name{table.105}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5526 \end{landscape}
-                      ]
-Overfull \hbox (31.41446pt too wide) in paragraph at lines 5533--5556
- [] 
- []
-
-[160
-pdfTeX warning (ext4): destination with the same identifier (name{table.106}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5557 \end{landscape}
-                      ] [161
-
-
-
-
-
-
-
-
-]
-<mediation_files/figure-latex/path-pna-chronicpain-1.pdf, id=1185, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-pna-chronicpain-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-pna-chronicpain-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-pna-chronicpain-1.pdf  used on input line 5574.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[162
-pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5578 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-pna-chronicpain-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 5651.
-
-[163
-pdfTeX warning (ext4): destination with the same identifier (name{table.107}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5652 \end{landscape}
-                      ] [164
-pdfTeX warning (ext4): destination with the same identifier (name{table.108}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5684 \end{landscape}
-                      ] [165
-pdfTeX warning (ext4): destination with the same identifier (name{table.109}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5703 \begin{landscape}
-                        \begin{table}] [166
-pdfTeX warning (ext4): destination with the same identifier (name{table.110}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5786 \end{landscape}
-                      ]
-Overfull \hbox (3.63663pt too wide) in paragraph at lines 5793--5816
- [] 
- []
-
-[167
-pdfTeX warning (ext4): destination with the same identifier (name{table.111}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5817 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-pna-dep-1.pdf, id=1222, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-pna-dep-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-pna-dep-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-pna-dep-1.pdf  used on input line 5830.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[168
-
-
-
-
-
-
-
-
-] [169
-pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5834 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-pna-dep-1.pdf>]
-
-LaTeX Warning: Float too large for page by 23.24756pt on input line 5907.
-
-[170
-pdfTeX warning (ext4): destination with the same identifier (name{table.112}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5908 \end{landscape}
-                      ]
-Overfull \hbox (5.30394pt too wide) in paragraph at lines 5915--5939
- [] 
- []
-
-[171
-pdfTeX warning (ext4): destination with the same identifier (name{table.113}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5940 \end{landscape}
-                      ] [172
-pdfTeX warning (ext4): destination with the same identifier (name{table.114}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.5959 \begin{landscape}
-                        \begin{table}] [173
-pdfTeX warning (ext4): destination with the same identifier (name{table.115}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6042 \end{landscape}
-                      ]
-Overfull \hbox (32.63777pt too wide) in paragraph at lines 6049--6072
- [] 
- []
-
-[174
-pdfTeX warning (ext4): destination with the same identifier (name{table.116}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6073 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-manipulative-chron-1.pdf, id=1269, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-manipulative-chron-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-manipulative-chron-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-manipulative-chron-1.pdf  used on input line 6082.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[175
-
-
-
-
-
-
-
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.22}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6086 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-manipulative-chron-1.pdf>] [176
-pdfTeX warning (ext4): destination with the same identifier (name{table.117}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6155 \end{landscape}
-                      ] [177
-pdfTeX warning (ext4): destination with the same identifier (name{table.118}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6187 \end{landscape}
-                      ] [178
-pdfTeX warning (ext4): destination with the same identifier (name{table.119}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6206 \begin{landscape}
-                        \begin{table}] [179
-pdfTeX warning (ext4): destination with the same identifier (name{table.120}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6289 \end{landscape}
-                      ] [180
-pdfTeX warning (ext4): destination with the same identifier (name{table.121}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6320 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-manipulative-SRH-1.pdf, id=1311, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-manipulative-SRH-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-manipulative-SRH-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-manipulative-SRH-1.pdf  used on input line 6324.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[181
-
-
-
-
-
-
-
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.23}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6328 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-manipulative-SRH-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 6401.
-
-[182
-pdfTeX warning (ext4): destination with the same identifier (name{table.122}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6402 \end{landscape}
-                      ] [183
-pdfTeX warning (ext4): destination with the same identifier (name{table.123}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6434 \end{landscape}
-                      ] [184
-pdfTeX warning (ext4): destination with the same identifier (name{table.124}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6457 \begin{landscape}
-                        \begin{table}
-
-
-
-
-] [185
-pdfTeX warning (ext4): destination with the same identifier (name{table.125}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6486 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-manipulative-chronicpain-1.pdf, id=1343, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-manipulative-chronicpain-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-manipulative-chronicpain-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-manipulative-chronicpain-1.pdf  used on input line 6490.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[186
-
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.24}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6494 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-manipulative-chronicpain-1.pdf>]
-
-LaTeX Warning: Float too large for page by 22.6363pt on input line 6567.
-
-[187
-pdfTeX warning (ext4): destination with the same identifier (name{table.126}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6568 \end{landscape}
-                      ] [188
-pdfTeX warning (ext4): destination with the same identifier (name{table.127}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6600 \end{landscape}
-                      ] [189
-pdfTeX warning (ext4): destination with the same identifier (name{table.128}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6619 \begin{landscape}
-                        \begin{table}] [190
-pdfTeX warning (ext4): destination with the same identifier (name{table.129}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6702 \end{landscape}
-                      ] [191
-pdfTeX warning (ext4): destination with the same identifier (name{table.130}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6733 \end{landscape}
-                      ]
-<mediation_files/figure-latex/path-manipulative-dep-1.pdf, id=1380, 469.755pt x 325.215pt>
-File: mediation_files/figure-latex/path-manipulative-dep-1.pdf Graphic file (type pdf)
-<use mediation_files/figure-latex/path-manipulative-dep-1.pdf>
-Package pdftex.def Info: mediation_files/figure-latex/path-manipulative-dep-1.pdf  used on input line 6737.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[192
-
-
-
-
-
-
-
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.25}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6741 \begin{landscape}
-                        \begin{table} <./mediation_files/figure-latex/path-manipulative-dep-1.pdf>]
-
-LaTeX Warning: Float too large for page by 23.24756pt on input line 6814.
-
-[193
-pdfTeX warning (ext4): destination with the same identifier (name{table.131}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6815 \end{landscape}
-                      ] [194
-pdfTeX warning (ext4): destination with the same identifier (name{table.132}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6847 \end{landscape}
-                      ] [195
-pdfTeX warning (ext4): destination with the same identifier (name{table.133}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6870 \begin{landscape}
-                        \begin{table}
-
-
-
-
-] [196
-pdfTeX warning (ext4): destination with the same identifier (name{table.134}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.6899 \end{landscape}
-                      ] 
+] [26] [27] [28] [29] [30] [31] [32] [33] [34] [35] 
 AED: lastpage setting LastPage
-[197
-
-
-] (./mediation.aux)
+[36] (./mediation.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -1962,21 +705,21 @@ Package rerunfilecheck Info: File `mediation.out' has not changed.
  )
 (\end occurred inside a group at level 1)
 
-### semi simple group (level 1) entered at line 74 (\begingroup)
+### semi simple group (level 1) entered at line 97 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 14455 strings out of 479996
- 235042 string characters out of 5886759
- 609538 words of memory out of 5000000
- 31899 multiletter control sequences out of 15000+600000
- 537100 words of font info for 75 fonts, out of 8000000 for 9000
+ 13730 strings out of 479984
+ 217416 string characters out of 5886427
+ 588908 words of memory out of 5000000
+ 31554 multiletter control sequences out of 15000+600000
+ 532513 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 203i,13n,203p,2085b,3013s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on mediation.pdf (197 pages, 850585 bytes).
+ 203i,10n,203p,1649b,3013s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/hanna/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb>
+Output written on mediation.pdf (36 pages, 317141 bytes).
 PDF statistics:
- 1587 PDF objects out of 1728 (max. 8388607)
- 1293 compressed objects within 13 object streams
- 434 named destinations out of 1000 (max. 500000)
- 182 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 378 PDF objects out of 1000 (max. 8388607)
+ 314 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
+ 57 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,28 +1,7 @@
 ---
-title: "Ch. 3 Alternative Health Lifestyle as Mediator of the SES-Health Relationship"
-output:
-  bookdown::pdf_document2: default
-link-citations: true
-header-includes:
-- \usepackage{float}
-- \usepackage{sectsty}
-- \usepackage{paralist}
-- \usepackage{setspace}\spacing{2}
-- \usepackage{fancyhdr}
-- \usepackage{lastpage}
-- \usepackage{dcolumn}
-- \usepackage{rotating, graphicx, longtable}
-- \extrafloats{200}
+title: ""
+bibliography: references.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-
-```
-
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
-```
 
 ```{r, echo = FALSE}
 library(lme4)
@@ -47,21 +26,15 @@ library(rstatix)
 library(gtsummary)
 library(forcats)
 library(haven)
-setwd("C:/Users/hanna/Documents/git/AHL/R/")
 load("waves123.long.rda")
 load("waves123.long.complete.rda")
 load("waves123.wide.rda")
 load("waves12.wide.complete.rda")
 load("waves23.wide.complete.rda")
 load("waves13.wide.complete.rda")
-setwd("C:/Users/hanna/Documents/git/AHL/R/dissertation_template_with_rmd-main")
 # Tutorials
 # https://lmudge13.github.io/sample_code/mixed_effects.html
 # Converting html to pdf https://github.com/gorkang/html2latex/
-```
-
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
 ```
 
 ```{r path-data-recodes, echo = FALSE, results='hide'}
@@ -133,7 +106,9 @@ knitr::opts_chunk$set(engine.path=list(stata=stataexe))
 
 ```
 
-# Questions and hypotheses
+# Chapter 3: Alternative Health Lifestyle as Mediator of the SES-Health Relationship
+
+## Questions and Hypotheses
 
 Health lifestyle represents an important pathway by which socioeconomic status, contributing to the well-known positive association between social position and health (i.e. the social gradient in health) [@adler1994; @brunello2016; @burdette2008; @lantz1998; @lantz2001]. This chapter considers the role of AHL as a mediator of the socioeconomic status-health relationship by examining the relationships between SES, CAM use, and health. Do individuals with higher SES (education and income) use more CAMs? And does this CAM use contribute to better health for those with higher SES? In short, can CAM use explain some of the association between SES and health. The alternative is that the relationship between SES and health is unrelated to individuals' use of CAMs.
 
@@ -163,7 +138,7 @@ The second mediation process I examine is whether health mediates the relationsh
     -   *Hypothesis 4a* Health will mediate the relationship between income and CAM use, with income being positively associated with health, and individuals with poor health being more likely to utilize CAMs.
     -   *Hypothesis 4b* Health will mediate the relationship between education and CAM use, with education being positively associated with health, and individuals with poor health being more likely to utilize CAMs.
 
-# Data and Measures
+## Data and Measures
 
 To test these hypotheses, I use two samples from the MIDUS survey (See Chapter 1). In the first stage of analysis I use generalized linear mixed modeling to analyze all respondents that responded to at least two waves (*n* = `r length(unique(waves123.long.complete$M2ID))` ). The second stage of analysis uses structural equation modeling (SEM) and includes only respondents with complete data on all variables that were included in analyses (*n* = `r nrow(path.complete)`).
 
@@ -177,7 +152,7 @@ Socioeconomic status is measured with income and education. Income represents ho
 
 Race, sex, marital status, health insurance, age, spirituality and religiosity are included as controls. Race at wave 1 includes categories for non-Hispanic White, non-Hispanic Black, and other race. Race additionally includes a category for Mexican American and other Hispanic at waves 2 and 3. White is the reference category in analyses. Sex is a dummy variable coded as 1 = female, 0 = male. Health insurance is a dummy variable coded as 1 = insured, 0 = uninsured. Age is measured in years. Spirituality is a summed index ranging from 0 to 8. Respondents were asked to indicate on a scale of 1 to 4 (1 = Very, 2 = Somewhat, 3 = Not very, and 4 = Not at all) their response to the following questions: "How spiritual are you?" and "How important is spirituality in your life?". Religiosity is a summed index ranging from 0 to 24 based on responses on a scale of 1 to 4 (1 = Very, 2 = Somewhat, 3 = Not very, and 4 = Not at all) for the following questions: "How religious are you?"; "How important is religion in your life?"; "How important is it for you -- or would it be if you had children now -- to send your children for religious or spiritual services or instruction?"; "How closely do you identify with being a member of your religious group?"; "How much do you prefer to be with other people who are the same religion as you?"; "How important do you think it is for people of your religion to marry other people who are the same religion?"; "How important is it for you to celebrate or practice on religious holidays with your family, friends, or members of your religious community?"
 
-# Methods
+## Methods
 
 This chapter examines whether socioeconomic status (SES) predicts the use of mind body approaches, alternative medical systems, physical and nutritional approaches, manipulative treatments, and total CAMs. To address this question, I used generalized linear mixed models (GLMMs). I used logistic GLMMs to model the effect of SES on each of the CAM factor indices and a Poisson GLMM to model the effect of SES on total CAM use.
 
@@ -185,13 +160,13 @@ GLMMs are an extension of generalized linear models that account for the nested 
 
 Then I conducted mediation analyses using structural equation modeling (SEM). In cases like this, where all variables are observed as opposed to unobserved (i.e. latent), it is also known as path analysis. SEM is an extension of multiple regression. It allows for the inclusion of more than one dependent variable in a model, and allows for the testing of models that specify chains of causality. The SEM models in this chapter simultaneously estimate two mediation processes. First, I examine CAM use as a mediator of the relationship between SES and health. Second, I analyze health as a mediator of the relationship between SES and CAM use. I measured SES by income and education at wave 1. I measured CAM use and health at waves 2 and 3, with the wave 2 variables representing mediators and the wave 3 variables being the outcome of interest. Wave 3 variables are lagged, meaning the wave 2 variable is included as a control. This allows the models to isolate the effect of the mediator, independent of the effect of the outcome variable at the previous wave.
 
-Analyses includes tests of the relationships between all CAMs and measures of general health (sum of chronic conditions and self-reported health). The review of CAM efficacy in Chapter 1 guided the selection of specific health outcomes to be included in models with each CAM. Analyses test the relationship between total CAMs used measures of general health, diabetes, chronic pain, high blood pressure, and depression/anxiety. Analyses test the relationship between use of mind-body medicine and measures of general health, chronic pain, and depression/anxiety. Analyses test the relationship between use of alternative medical systems and measures of general health, high blood pressure, diabetes, chronic pain, and depression/anxiety. Analyses test the relationships between use of physical and nutritional approaches and measures of general health, high blood pressure, chronic pain, and depression/anxiety. Finally, analyses test the relationships between use of manipulative treatments and measures of general health, chronic pain, and depression/anxiety.
+Analyses includes tests of the relationships between all CAMs and measures of general health (sum of chronic conditions and self-reported health). The review of CAM efficacy in Chapter 1 guided the selection of specific health outcomes to be included in models with each CAM. Analyses test the relationship between total CAMs used and measures of general health, diabetes, chronic pain, high blood pressure, and depression/anxiety. Analyses test the relationship between use of mind-body medicine and measures of general health, chronic pain, and depression/anxiety. Analyses test the relationship between use of alternative medical systems and measures of general health, high blood pressure, diabetes, chronic pain, and depression/anxiety. Analyses test the relationships between use of physical and nutritional approaches and measures of general health, high blood pressure, chronic pain, and depression/anxiety. Finally, analyses test the relationships between use of manipulative treatments and measures of general health, chronic pain, and depression/anxiety.
 
 An important aspect of SEM is model fit. Fit refers to how well the relationships in the model reproduce the relationships observed in the data. Goodness of fit indices used in the following analyses to assess model fit include $\chi$^2^ tests, comparative fit index (CFI), Tucker Lewis Index (TLI), root mean square error of approximation (RMSEA), and standardized root mean square residual (SRMR). A non-significant $\chi$^2^ indicates good model fit, though the test is affected by sample size, with larger sample sizes almost always producing a significant result. Cutoffs indicating good fit include CFI \> 0.90, TLI \> 0.90, RMSEA \< 0.08, and SRMR \< 0.08.
 
 I first completed the analyses in R version 4.2.0 using the lavaan program. However, the outcome variables in the models are a mixture of binary, count, and ordinal outcomes. Lavaan does not allow the user to specify non-normal distributions for endogenous (i.e. outcome) variables, assuming all variables are normally distributed. To address this violation of the model assumptions, I also completed analyses in Stata Version 17 using the gsem command for generalized SEM (GSEM). The gsem command allows the user to specify non-normal distributions such as logit or poisson. In GSEM analyses below, I estimated total CAMs with a Poisson distribution, binary outcomes with a binomial distribution and logit link, and SRH, an ordinal outcome, with an ordinal distribution and ordered probit link function. Goodness of fit indices presented below are from SEM analyses in lavaan. Goodness of fit indices are currently not available in gsem. Both SEM analyses using lavaan and GSEM analyses using gsem are presented below.
 
-```{r wave-comp-educ-recodes, echo=FALSE}
+```{r wave-comp-educ-recodes1, echo=FALSE}
 
 
 #  Education.2 so that college graduate is the reference category. 
@@ -226,7 +201,7 @@ waves13.wide.complete$Education_W1.2 <- factor(waves13.wide.complete$Education_W
 
 ```
 
-# Results
+## Results
 
 Table \ref{tab:descriptives-table} shows summary statistics for variables across all three waves included in the following analyses along with information about missing data.
 
@@ -272,9 +247,9 @@ waves123.long %>%
                 font_size = 7) 
 ```
 
-## Relationship Between SES and CAM Use
+### Relationship Between SES and CAM Use
 
-### Mind Body
+#### Mind Body
 
 ```{r model-glmm-mb, echo = FALSE}
 # baseline model 
@@ -362,7 +337,7 @@ kable(df.2,
       escape = F,
       caption = "Mind Body Models: Random Effects") %>%
    kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) %>% 
   footnote(general = c("$\\\\sigma^2$ = within subject variance. 
                        $\\\\tau$00 = between subject variance.
                        ICC = intraclass correlation coefficient"), 
@@ -380,7 +355,7 @@ Notably, the control variables make substantial contributions to the variance ex
 
 As Table \ref{tab:mindbody-random-table} illustrates, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 1.42 in Model 4 to 2.91 in Model 1. The Intraclass Correlation Coefficient also ranges from 0.30-0.47, indicating that 30-47% of the variation in use of mind-body approaches occurs between-subjects. Thus while income and education significantly predict the use of mind-body approaches, most of the variation in the use of these CAMs is explained by differences between-subjects that the data do not account for rather than by the predictors in the models. Also, it is notable that income has no significant effect without accounting for education, which suggests that income matters for mind-body CAM use within education groups but only when the larger effects of education are taken into account.
 
-### Alternative medicine
+#### Alternative medicine
 
 ```{r model-glmm-altmed, echo = FALSE}
 # baseline model 
@@ -469,7 +444,7 @@ kable(df.2,
       escape = F, 
       caption = "Alternative Medical Systems: Random Effects") %>%
    kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
+  kable_styling(latex_options = c("striped","scale_down")) %>% 
   footnote(general = c("$\\\\sigma^2$ = within subject variance. 
                        $\\\\tau$00 = between subject variance.
                        ICC = intraclass correlation coefficient"), 
@@ -485,7 +460,7 @@ Model 4 adds control variables, and the effects of logged income and education r
 
 The results of these models indicate that education significantly predicts the use of alternative medical systems, although education and demographic variables explain a much smaller amount of the variation than unmeasured differences between subjects. As shown in Table \ref{tab:altmed-random-table}, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 2.33 in Model 4 and 2.83 in Model 1. The ICC also ranges from 0.41-0.46, indicating that 41-46% of the variation in use of alternative medical systems occurs between-subjects. Thus, while education significantly predicts the use of alternative medical systems, most of the variation in the use of these CAMs is explained by differences between subjects that the data do not account for rather the by the predictors in the model.
 
-### Physical and nutritional approaches
+#### Physical and nutritional approaches
 
 ```{r model-glmm-pna, echo = FALSE}
 # baseline model 
@@ -543,7 +518,7 @@ df.1 <- df[c(1:15),]
 rownames(df.1)<-NULL
 kable(df.1,
       booktabs = T,
-      caption = "Physical and Nutritional: Fixed Effects") %>%
+      caption = "Physical and Nutritional Approaches: Fixed Effects") %>%
   add_header_above(c(" " = 1, "Model 1" = 3, "Model 2" = 3, 
                      "Model 3" = 3, "Model 4" = 3)) %>%
   kable_classic(html_font = "CMU Serif") %>% 
@@ -570,7 +545,7 @@ kable(df.2,
       escape = F, 
       caption = "Physical and Nutritional Approaches: Random Effects") %>%
    kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) %>% 
   footnote(general = c("$\\\\sigma^2$ = within subject variance. 
                        $\\\\tau$00 = between subject variance.
                        ICC = intraclass correlation coefficient"), 
@@ -589,7 +564,7 @@ Model 4 adds control variables. As in Model 3, logged income does not significan
 
 As Table \ref{tab:pna-random-table} demonstrates, within-subject variance is 3.29 across all 4 models and between-subject variance ranges from 0.77 in Model 4 to 0.83 in Model 1. The ICC also ranges from 0.19-0.20, indicating that 19-20% of the variation in the use of physical and nutritional approaches occurs between-subjects. While income and education significantly predict the use of physical and nutritional approaches, most of the variation is explained by differences between-subjects that the data do not account for rather than the predictors in the model.
 
-### Manipulative
+#### Manipulative
 
 ```{r model-glmm-manipulative, echo = FALSE}
 # baseline model 
@@ -674,7 +649,7 @@ kable(df.2,
       escape = F, 
       caption = "Manipulative Treatments: Random Effects") %>%
    kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) %>% 
   footnote(general = c("$\\\\sigma^2$ = within subject variance. 
                        $\\\\tau$00 = between subject variance.
                        ICC = intraclass correlation coefficient"), 
@@ -695,7 +670,7 @@ As Table \ref{tab:manipulative-random-table} illustrates, within-in subject vari
 
 Overall, the results in Tables \ref{tab:mindbody-fixed-table} - \ref{tab:manipulative-random-table} reveal that education has consistent, positive effects on the odds of using each type of CAM. While income has less consistent effects, the effect of education suggests a positive relationship between SES and CAM use. Next, I examine the effects of SES on the total number of CAMs that individuals used.
 
-### Total CAMs
+#### Total CAMs
 
 ```{r model-glmm-totcams, echo = FALSE}
 # Model with income
@@ -780,7 +755,7 @@ kable(df.2,
       escape = F,
       caption = "Total CAMs: Random Effects") %>%
    kable_classic(html_font = "CMU Serif") %>%
-  kable_styling(latex_options = c("striped")) %>% 
+  kable_styling(latex_options = c("striped", "scale_down")) %>% 
   footnote(general = c("$\\\\sigma^2$ = within subject variance. 
                        $\\\\tau$00 = between subject variance.
                        ICC = intraclass correlation coefficient"), 
@@ -799,13 +774,13 @@ As shown in Table \ref{tab:total-random-table}, within-in subject variance is 3.
 
 Results from the GLMM models provide weak support for *Hypothesis 1a* and strong support for *Hypothesis 1b*. These results support the predictions of HLT and Human Capital Theory. SES, particularly income, predicts greater overall use of CAM and use of more dimensions of AHL. Next, I examine whether greater use of CAMs among high SES groups contributes to socioeconomic health disparities.
 
-## Mediation Models
+### Mediation Models
 
 In the following section, I will report results from several models testing whether CAM use mediates the relationship between SES and health as well as whether health mediates the relationship between SES and CAM use. I included controls as covariates of CAM and health variables in all path models, but excluded them from the path diagrams for ease of interpretation. I present standardized coefficients in the path diagrams (See Appendix A) and unstandardized coefficients in the text. Path diagrams present a visual representation of the causal paths tested in the model. Coefficients for count outcomes represent log of expected counts. Coefficients for binary outcomes represent log odds. Coefficients for ordinal outcomes represent the expected change in z-score for each one unit change in the predictor. Stata's gsem command does not provide standardized coefficients in output. Coefficients in the text are from GSEM analyses. First, I present model fit statistics from the SEM analyses. Second, I present results for the relationship between SES and CAMs (*Hypothesis 1*). Third, I present results for the relationship between SES and health (*Hypothesis 2*). Fourth, I present results for CAMs as a mediator of the SES-health relationship (*Hypothesis 3*). Finally, I present results for health as a mediator of the SES-CAM relationship (*Hypothesis 4*).
 
-### Model Fit
+#### Model Fit
 
-Tables presenting model fit statistics for all SEM models can be found in Appendix B. \$\\chi\$^2^ tests were significant for all models, indicating poor model fit. However, this fit statistic is sensitive to sample size, and large sample sizes almost always produce a significant results [@kyriazos2018].
+Tables presenting model fit statistics for all SEM models can be found in Appendix B. $\chi$^2^ tests were significant for all models, indicating poor model fit. However, this fit statistic is sensitive to sample size, and large sample sizes almost always produce a significant results @kyriazos2018.
 
 Model fit for total CAM models was overall good. TLI was a bit below the cutoff in the chronic conditions model (CFI = 0.948; TLI = 0.872; RMSEA = 0.046; SRMR = 0.02). CFI and TLI were below acceptable cutoffs in the self-reported health model (CFI = 0.883; TLI = 0.716; RMSEA = 0.069; SRMR = 0.032). The diabetes (CFI = 0.972; TLI = 0.931; RMSEA = 0.033; SRMR = 0.014), chronic pain (CFI = 0.957; TLI = 0.895; RMSEA = 0.035; SRMR = 0.015), high blood pressure (CFI = 0.98; TLI = 0.951; RMSEA = 0.027; SRMR = 0.011) and depression/anxiety (CFI = 0.958; TLI = 0.897; RMSEA = 0.036; SRMR = 0.016) models presented no model fit concerns.
 
@@ -817,15 +792,15 @@ While most fit statistics indicated good model fit for the physical and nutritio
 
 At least one of the fit statistics was low for all of the manipulative treatment models. TLI was low in the chronic pain (CFI = 0.948; TLI = 0.873; RMSEA = 0.028; SRMR = 0.014), depression/anxiety (CFI = 0.947; TLI = 0.871; RMSEA = 0.031; SRMR = 0.015), and chronic conditions models (CFI = 0.941; TLI = 0.817; RMSEA = 0.049; SRMR = 0.023). CFI and TLI were low in the self-reported health model (CFI = 0.842; TLI = 0.614; RMSEA = 0.066; SRMR = 0.031). All other fit statistics indicated good model fit.
 
-### SES and CAMs
+#### SES and CAMs
 
 *Hypothesis 1* predicts that SES will be positively related to CAM use. Results do not support *Hypothesis 1a*. I find that income at wave 1 does not predict CAM use at waves 2 or 3. Results support *Hypothesis 1b*. Summarizing the effects of education on CAM use across models, I find that education at wave 1 is positively related to total CAMs (*b* = 0.139-0.145), use of mind-body medicines (*b* = 0.340), use of alternative medical systems (*b* = 0.275), and use of physical and nutritional approaches (*b* = 0.179) at waves 2. Similarly, education at wave 1 is positively related to total CAMs (*b* = 0.056-0.062), use of mind-body medicines (*b* = 0.227-0.230), use of alternative medical systems (*b* = 0.148-0.160), and use of physical and nutritional approaches (*b* = 0.140-0.162) at wave 3. These results provide support for Health Lifestyle Theory and Human Capital Theory.
 
-### SES and Health
+#### SES and Health
 
 *Hypothesis 2* predicts that SES is positively related to health. Results support *Hypothesis 2a*. Income at wave 1 is negatively related to chronic conditions at wave 2 (*b* = -0.064 - -0.070) and wave 3 (*b* = -0.059 - -0.062), and depression/anxiety at wave 2 (*b* = -0.148). Income at wave 1 is positively related to self-reported health at wave 2 (*b* = 0.105) and wave 3 (*b* = 0.171). Results support *Hypothesis 2b*. Education at wave 1 is negatively related to chronic conditions at wave 2 (*b* = -0.044 - -0.046) and wave 3 (*b* = -0.032 - -0.040), diabetes at wave 3 (*b* = -0.206 - -0.214), chronic pain at wave 2 (*b* = -0.096) and wave 3 (*b* = -0.091 - -0.095), high blood pressure at wave 2 (*b* = -0.115), and depression/anxiety at wave 3 (*b* = -0.115 - -0.123). Education is positively related to self-reported health at wave 2 (*b* = 0.176 - 0.177) and wave 3 (*b* = 0.068 - 0.073). SES is positively related to health as predicted by Fundamental Causes Theory.
 
-### CAM as a Mediator for the SES-Health Relationship
+#### CAM as a Mediator for the SES-Health Relationship
 
 To test *Hypothesis 3*, I conducted SEM and GSEM models on the effects of SES in wave 1 on CAM use in wave 2 and health in wave 3. Results do not support *Hypothesis 3a*. CAM use does not mediate the relationship between income and health across all models. This is expected given the lack of association between income and CAM use reported in previous sections.
 
@@ -841,7 +816,7 @@ Use of physical and nutritional approaches mediates the relationship between edu
 
 These results do not support *Hypothesis 3a* and contradict *Hypothesis 3b* generated by HLT. There are some mediating effects of CAMs, but these effects operate in the opposite direction HLT predicts. Education is positively related to better health and CAM use. People with higher levels of education are more likely to utilize CAMs. However, people who use CAMs are more likely to report poor health in the future. CAM use at wave 2 is consistently associated with worse health at wave 3. This pattern appears in models without a mediation effect as well. While previous research has found that people in poor health are more likely to use CAMs [@astin1998; @bell2006; @thorne2002], HLT predicts that higher CAM use among high SES groups will produce better health.
 
-### Health as a Mediator of the SES-CAM Relationship
+#### Health as a Mediator of the SES-CAM Relationship
 
 Findings presented in the previous section indicate that CAMs are associated with worse health. It is possible that people are using CAMs to address health problems that they already have, rather than to prevent health problems or to improve well-being. Next, I review results for health as a mediator of the SES-CAM relationship. *Hypothesis 4* predicts that low SES will be associated with worse health at wave 2, and worse health at wave 2 will be associated with greater CAM use at wave 3. Results from 3 models found a mediation effect for health on the SES-CAM relationship indicated by a significant indirect effect.
 
@@ -853,7 +828,7 @@ Self-reported health mediates the relationship between education and use of phys
 
 These results suggest that poor health may be an alternative path to use of physical and nutritional approaches, which is higher among high SES respondents and among respondents with more chronic conditions and worse self-reported health, who are less likely to be high SES. These results indicate that people use CAMs to address poor health.
 
-# Conclusion
+## Conclusion
 
 This chapter examined the relationship between SES and CAM use, as well as possible mediation models for the relationships between SES, CAM use, and health. Results provided weak support for the *Hypothesis 1a* and strong support for *Hypothesis 1b*. The relationship between income and CAM use was inconsistent, most often becoming non-significant after accounting for the influence of education. SEM analyses did not find a relationship between income and future CAM use. Higher levels of education were consistently associated with greater levels of CAM use across analyses, specifically greater overall CAM use, use of mind-body medicines, use of alternative medical systems, and use of physical and nutritional approaches. These results support HLT, which predicts that high SES will be associated with healthier lifestyles. Individuals with similar socialization and life experiences related to their structural position develop similar internalized dispositions toward health and health behavior and are therefore likely to engage in health lifestyles characteristic of their status group. These results also speak to the significant role of education in producing health lifestyles. Human Capital Theory asserts that the human capital (skills and abilities) and psychosocial resources (learned effectiveness and sense of personal control) associated with higher education increase the effective agency of high SES individuals to construct healthy lifestyles.
 
